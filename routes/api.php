@@ -13,7 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/user', function (Request $request) {
+Route::group(['prefix' => 'v1'], function () {
+	Route::group(['middleware'=>['auth:api','cors']], function(){
+		Route::get('/user', function (Request $request) {
+		    return $request->user();
+		});
+		Route::post('/dataset/import',['as'=>'import','uses'=>'ImportdatasetController@uploadDataset']);
+		Route::get('/csv',['as'=>'csv','uses'=>'ImportdatasetController@checkCSV']);
+	});
+});
+
+/*Route::get('/user', function (Request $request) {
     return $request->user();
-})->middleware('auth:api');
+})->middleware('auth:api');*/
 

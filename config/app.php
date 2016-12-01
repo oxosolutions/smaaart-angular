@@ -165,6 +165,7 @@ return [
         Yajra\Datatables\DatatablesServiceProvider::class,
         Barryvdh\Debugbar\ServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
         //Laravel\Passport\PassportServiceProvider::class,
 
         /*
@@ -239,6 +240,8 @@ return [
         'Image' => Intervention\Image\Facades\Image::class,
 
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+
+        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
 
     ],
 

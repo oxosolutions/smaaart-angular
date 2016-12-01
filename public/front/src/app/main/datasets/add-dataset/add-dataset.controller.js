@@ -6,9 +6,17 @@
         .controller('AddDatasetController', AddDatasetController);
 
     /** @ngInject */
-    function AddDatasetController(SampleData, $scope)
+    function AddDatasetController(SampleData, $scope, api)
     {   
         var vm = this;
+
+       api.getUsers.user.get({},
+
+                function(res){
+                    console.log(res);
+                }
+        );
+
         //$scope.replaceVal = 'true';
         $scope.data = {
 
