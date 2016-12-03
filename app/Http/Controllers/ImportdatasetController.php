@@ -15,12 +15,12 @@ class ImportdatasetController extends Controller
 {
     function __construct(){
 
-
     }
 
 
     function uploadDataset(Request $request){
 
+        //dd($request->all());
     	$validate = $this->validateRequst($request);
 
     	if(!$validate){
@@ -78,6 +78,7 @@ class ImportdatasetController extends Controller
 
     function storeInDatabase($filename, $origName){
 
+
     	$FileData = [];
     	$data = Excel::load($filename, function($reader){
     	})->get();
@@ -86,7 +87,6 @@ class ImportdatasetController extends Controller
 
 			$FileData[] = $value->all();
     	}
-		
 		$model = new DL();
 		$model->dataset_name = $origName;
 		$model->dataset_records = json_encode($FileData);

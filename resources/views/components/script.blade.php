@@ -39,3 +39,21 @@
 
 <script src="{{asset('/bower_components/admin-lte/dist/js/demo.js')}}"></script>
 
+ <script type="text/javascript">
+  	$(document).ready(function(){
+      var rand = function() {
+          return Math.random().toString(36).substr(2); // remove `0.`
+      };
+
+      var token = function() {
+          return rand() + rand() + rand(); // to make it longer
+      };
+
+      $('.generate-token').click(function(){
+
+      		$('#token').val(token());
+      });
+      $('#token').val(token());
+      
+  });
+ </script>
