@@ -9,6 +9,24 @@
     /** @ngInject */
     function apiService($resource)
     {
+
+
+// api.blog = {
+//                   list     : $resource('http://192.168.0.105/smaart-angular/public/api/v1/dataset/import?api_token=e10adc3949ba59abbe56e057f20f883e'),
+//                   getById  : $resource('http://api.example.com/blog/:id', {id: '@id'}),
+//                   getByDate: $resource('http://api.example.com/blog/:date', {id: '@date'}, {
+//                   get: {
+//                   method: 'POST',
+//                   data: {
+//                   test: "abc"
+//                   }
+//                   }
+//                   })
+//                }
+
+
+    
+
         /**
          * You can use this service to define your API urls. The "api" service
          * is designed to work in parallel with "apiResolver" service which you can
@@ -181,11 +199,13 @@
         api.baseUrl = 'http://192.168.0.104/smaart-angular/public/api/v1/';
 
         api.getUsers = {
-                      user     : $resource('http://localhost/smaart-angular/public/api/v1/user?api_token=e10adc3949ba59abbe56e057f20f883e'),
+                      user     : $resource('http://192.168.0.105/smaart-angular/public/api/v1/dataset/import?api_token=e10adc3949ba59abbe56e057f20f883e',{
+                        get:{method:'POST'}
+                      }),
                       getById  : $resource('http://api.example.com/blog/:id', {id: '@id'}),
                       getByDate: $resource('http://api.example.com/blog/:date', {id: '@date'}, {
                           get: {
-                               method: 'GET',
+                               method: 'POST',
                           }
                       })
           }

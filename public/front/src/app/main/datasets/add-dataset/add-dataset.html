@@ -27,10 +27,14 @@
 
             <!-- BASIC FORM -->
             <div class="form-wrapper md-whiteframe-1dp" flex="100">
-
                 <form name="dataset" class="md-inline-form" novalidate>
 
-                    <div class="form-title">Import Tables</div>
+                <!--  <input type="file" id="file1" name="file" multiple
+            ng-files="getTheFiles($files)" />
+
+        <input type="button" ng-click="uploadFiles()" value="Upload" /> -->
+        <h1 style="color:red"> {{add_replace}} {{file}}</h1>
+                    <div id="form_data" class="form-title">Import Tables</div>
 					
                     <div layout="column" layout-gt-sm="row">
                         <md-input-container flex>
@@ -44,49 +48,62 @@
                         </md-input-container>
                     
                     </div>
-                    
+                    <!--  -->
                     <md-input-container class="md-block">
                     	<md-button id="uploadButton" class="md-raised md-primary" ng-click="upload()"> Choose Files </md-button>
-                    	<input id="fileInput" name="file" type="file" class="ng-hide"  multiple aria-label="file input">
+                    	<input id="fileInput" name="file" type="file" class="ng-hide"  multiple ng-files="getTheFiles($files)" aria-label="file input" >
+                   <div class="errors" ng-messages="dataset.file.$error">
+                    <div ng-message="required">Required</div>
+                    </div>
+
                     </md-input-container>
 
                     <div layout="column" layout-gt-xs="row">
 						<md-input-container flex>
 	                        <label>Import Format</label>
-	                        <md-select ng-model="vm.basicForm.state">
+	                        <md-select name="state" ng-model="data.state" required><!-- // ng-model="vm.basicForm.state" -->
 	                            <md-option value="csv">CSV (Character-Seprated Values</md-option>
 	                            <md-option value="excel">Excel (Microsoft Excel 2013)</md-option>
 	                            <md-option value="html">HTML (Hypertext Markup Language)</md-option>
 	                            <md-option value="json">JSON (Javascript Object Notation)</md-option>
 	                        </md-select>
+                    <div class="errors" ng-messages="dataset.state.$error">
+                    <div ng-message="required">Required</div>
+                    </div>
 	                    </md-input-container>
 					</div>
 
 					<div layout="column" layout-gt-xs="row">
 						<md-input-container flex>
 	                        <label>Add, Replace or Append?</label>
-	                        <md-select ng-model="data.action" ng-change="addReplaceOrAppend()">
+	                        <md-select name="action"  ng-model="data.action" ng-change="addReplaceOrAppend()" required>
+
 	                            <md-option value="newtable">Add as new table</md-option>
 	                            <md-option value="replace">Replace existing table</md-option>
 	                            <md-option value="append">Append rows to existing table</md-option>
 	                        </md-select>
+                            <div class="errors" ng-messages="dataset.action.$error">
+                             <div ng-message="required">Required</div>
+                            </div>
 	                    </md-input-container>
 					</div>
 
 					<div layout="column" layout-gt-xs="row">
 						<md-input-container flex>
 	                        <label>Table to replace or append to:</label>
-	                        <md-select ng-model="data.tableToreplace" ng-disabled="model.isDisabled">
+	                        <md-select name="tableToreplace" ng-model="data.tableToreplace" ng-disabled="model.isDisabled" required>
 	                            <md-option value="dataset1">Dataset 1</md-option>
 	                            <md-option value="dataset2">Dataset 2</md-option>
 	                            <md-option value="dataset3">Dataset 3</md-option>
 	                            <md-option value="dataset4">Dataset 4</md-option>
 	                            <md-option value="dataset5">Dataset 5</md-option>
 	                        </md-select>
+                             <div class="errors" ng-messages="dataset.tableToreplace.$error">
+                             <div ng-message="required">Required</div>
+                            </div>
 	                    </md-input-container>
 					</div>
-
-                    <md-button type="submit" class="md-raised md-accent" aria-label="Submit">
+                    <md-button type="submit" ng-click="uploadFiles()" class="md-raised md-accent" aria-label="Submit">
                         Import
                     </md-button>
                 </form>
