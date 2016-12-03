@@ -3,7 +3,10 @@
 namespace App\Exceptions;
 
 use Exception;
+use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 
 class Handler extends ExceptionHandler
@@ -42,9 +45,25 @@ class Handler extends ExceptionHandler
      * @param  \Exception  $exception
      * @return \Illuminate\Http\Response
      */
-    public function render($request, Exception $exception)
-    {
-        return parent::render($request, $exception);
+    public function render($request, Exception $e)
+    {   
+        if($request->is('api/*')){
+            
+            if ($e instanceof \Symfony\Component\HttpKernel\Exception\NotFoundHttpException){
+
+                $message = 'Method not found!';
+                $code = 404;
+                return response()->json(['code'=>$code,'error'=>$message],$code);
+            }
+
+            if($e instanceof \Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException){
+
+                $message = 'Method not allowed!';
+                $code = 405;
+                return response()->json(['code'=>$code,'error'=>$message],$code);
+            }
+        }
+        return parent::render($request, $e);
     }
 
     /**

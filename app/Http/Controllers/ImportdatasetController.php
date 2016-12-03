@@ -13,23 +13,21 @@ use App\DatasetsList as DL;
 
 class ImportdatasetController extends Controller
 {
-    function __construct(){
-
-
-    }
-
-
+   
     function uploadDataset(Request $request){
 
+        //dd($request->all());
     	$validate = $this->validateRequst($request);
+    	
+    	if($validate['status'] == 'false'){
 
-    	if(!$validate){
-
-    		$response = ['status'=>'error','message'=>'required fields are missing!'];
+    		$response = ['status'=>'error','error'=>$validate['error']];
     		return $response;
     	}
 
     	$path = 'datasets';
+    	
+    	
     	$file = $request->file('file');
     	if($file->isValid()){
 
@@ -57,26 +55,41 @@ class ImportdatasetController extends Controller
 
     protected function validateRequst($request){
 
+    	$errors = [];
+    	if($request->file('file') == '' || empty($request->file('file')) || $request->file('file') == null){
 
-    	$validator = Validator::make($request->all(),[
-
-    			'file' => 'required',
-    			'format' => 'required',
-    			'add_replace' => 'required',
-    			'with_dataset' => ($request->add_replace == 'replace' || $request->add_replace == 'append')?'required':'',
-    	]);
-
-
-    	if($validator->fails()){
-
-    		return false;
-    	}else{
-
-    		return true;
+    		$errors['file'] = 'File field should not empty!';
     	}
+
+    	if($request->format == 'undefined' || empty($request->format) || $request->format  == null){
+
+    		$errors['format'] = 'Please select file format';
+    	}
+    	if($request->add_replace == 'undefined' || empty($request->add_replace) || $request->add_replace  == null){
+
+    		$errors['add_replace'] = 'Please select file format!';
+    	}
+    	if($request->add_replace == 'replace' || $request->add_replace == 'append'){
+
+    		if($request->with_dataset == '' || $request->with_dataset == 'undefined' || empty($request->with_dataset)){
+
+    			$errors['dataset'] = 'Please select dataset to '.$request->add_replace;
+    		}
+    	}
+    	if(count($errors)>=1){
+
+    		$return = ['status' => 'false','error'=>$errors];
+    		return $return;
+    	}else{
+    		$return = ['status' => 'true','error'];
+    		return $return;
+    	}
+
+
     }
 
     function storeInDatabase($filename, $origName){
+
 
     	$FileData = [];
     	$data = Excel::load($filename, function($reader){
@@ -86,7 +99,6 @@ class ImportdatasetController extends Controller
 
 			$FileData[] = $value->all();
     	}
-		
 		$model = new DL();
 		$model->dataset_name = $origName;
 		$model->dataset_records = json_encode($FileData);
