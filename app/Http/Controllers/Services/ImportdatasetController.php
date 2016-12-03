@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Services;
+use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
 
@@ -101,7 +102,8 @@ class ImportdatasetController extends Controller
     	}
 		$model = new DL();
 		$model->dataset_name = $origName;
-		$model->dataset_records = json_encode($FileData);
+        $model->dataset_records = json_encode($FileData);
+		$model->user_id = Auth::user()->id;
 		$model->uploaded_by = Auth::user()->name;
 		$model->save();
 

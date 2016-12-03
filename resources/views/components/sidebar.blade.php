@@ -46,6 +46,23 @@
             <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
         </li>
+
+        <li class="treeview">
+          <a href="#">
+            <i class="fa fa-building-o"></i>
+            <span>Ministries</span>
+            <!-- <span class="pull-right-container">
+              <span class="label label-primary pull-right">4</span>
+            </span> -->
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{{ route('api.users') }}"><i class="fa fa-circle-o"></i> List Ministries</a></li>
+            <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Add New</a></li>
+          </ul>
+        </li>
         <!-- <li>
           <a href="pages/widgets.html">
             <i class="fa fa-th"></i> <span>Widgets</span>

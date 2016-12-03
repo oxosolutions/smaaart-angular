@@ -18,8 +18,9 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/user', function (Request $request) {
 		    return $request->user();
 		});
-		Route::post('/dataset/import',['as'=>'import','uses'=>'ImportdatasetController@uploadDataset']);
-		Route::get('/csv',['as'=>'csv','uses'=>'ImportdatasetController@checkCSV']);
+		Route::post('/dataset/import',['as'=>'import','uses'=>'Services\ImportdatasetController@uploadDataset']);
+		Route::get('/dataset/list',['as'=>'list','uses'=>'Services\DatasetsController@getDatasetsList']);
+		Route::get('/csv',['as'=>'csv','uses'=>'Services\ImportdatasetController@checkCSV']);
 	});
 });
 
