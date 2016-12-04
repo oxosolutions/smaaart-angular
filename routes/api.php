@@ -20,6 +20,11 @@ Route::group(['prefix' => 'v1'], function () {
 		});
 		Route::post('/dataset/import',['as'=>'import','uses'=>'Services\ImportdatasetController@uploadDataset']);
 		Route::get('/dataset/list',['as'=>'list','uses'=>'Services\DatasetsController@getDatasetsList']);
+		Route::get('/dataset/view/{id}',['as'=>'list','uses'=>'Services\DatasetsController@getDatasets']);
+		Route::get('/department/list',['as'=>'department.list','uses'=>'Services\DepartmentApiController@departmentList']);
+		Route::get('/department/{id}',['as'=>'department.single','uses'=>'Services\DepartmentApiController@singleDepartment']);
+		Route::get('/ministry/list',['as'=>'ministry.list','uses'=>'Services\MinistryApiController@ministryList']);
+		Route::get('/ministry/{id}',['as'=>'ministry.single','uses'=>'Services\MinistryApiController@singleMinistry']);
 		Route::get('/csv',['as'=>'csv','uses'=>'Services\ImportdatasetController@checkCSV']);
 	});
 });

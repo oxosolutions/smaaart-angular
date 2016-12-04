@@ -25,12 +25,12 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
         <li class="header">MAIN NAVIGATION</li>
-        <li>
+        <li class="{{Request::is('/')?'active':''}}">
           <a href="{{url('/')}}">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
           </a>
         </li>
-        <li class="treeview">
+        <li class="treeview {{in_array(Request::path(),array('api_users/create','api_users'))?'active':''}}">
           <a href="#">
             <i class="fa fa-users"></i>
             <span>Api Users</span>
@@ -42,12 +42,12 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{{ route('api.users') }}"><i class="fa fa-circle-o"></i> List Users</a></li>
-            <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Add New</a></li>
+            <li class="{{Request::is('api_users')?'active':''}}"><a href="{{ route('api.users') }}"><i class="fa fa-circle-o"></i> List Users</a></li>
+            <li class="{{Request::is('api_users/create')?'active':''}}"><a href="javascript:;"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
         </li>
 
-        <li class="treeview">
+        <li class="treeview {{in_array(Request::path(),array('ministries/create','ministries'))?'active':''}}">
           <a href="#">
             <i class="fa fa-building-o"></i>
             <span>Ministries</span>
@@ -59,10 +59,45 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li><a href="{{ route('api.users') }}"><i class="fa fa-circle-o"></i> List Ministries</a></li>
-            <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Add New</a></li>
+            <li class="{{Request::is('ministries')?'active':''}}"><a href="{{ route('ministries.list') }}"><i class="fa fa-circle-o"></i> List Ministries</a></li>
+            <li class="{{Request::is('ministries/create')?'active':''}}"><a href="javascript:;"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
         </li>
+
+        <li class="treeview {{in_array(Request::path(),array('departments/create','departments'))?'active':''}}">
+          <a href="#">
+            <i class="fa fa-cubes"></i>
+            <span>Department</span>
+            <!-- <span class="pull-right-container">
+              <span class="label label-primary pull-right">4</span>
+            </span> -->
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="{{Request::is('departments')?'active':''}}"><a href="{{ route('department.list') }}"><i class="fa fa-circle-o"></i> List Department</a></li>
+            <li class="{{Request::is('departments/create')?'active':''}}"><a href="javascript:;"><i class="fa fa-circle-o"></i> Add New</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview {{in_array(Request::path(),array('goals/create','goals'))?'active':''}}">
+          <a href="#">
+            <i class="fa fa-gg"></i>
+            <span>Goals</span>
+            <!-- <span class="pull-right-container">
+              <span class="label label-primary pull-right">4</span>
+            </span> -->
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="{{Request::is('goals')?'active':''}}"><a href="{{ route('goals.list') }}"><i class="fa fa-circle-o"></i> List Goals</a></li>
+            <li class="{{Request::is('goals/create')?'active':''}}"><a href="javascript:;"><i class="fa fa-circle-o"></i> Add New</a></li>
+          </ul>
+        </li>
+
         <!-- <li>
           <a href="pages/widgets.html">
             <i class="fa fa-th"></i> <span>Widgets</span>

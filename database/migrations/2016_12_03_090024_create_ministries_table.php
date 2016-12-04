@@ -18,16 +18,16 @@ class CreateMinistriesTable extends Migration
             $table->increments('id');
             $table->integer('ministry_id');
             $table->index('ministry_id');
-            $tabel->string('ministry_title');
-            $tabel->string('ministry_description');
-            $tabel->string('ministry_icon');
-            $tabel->string('ministry_image');
-            $tabel->bigInteger('ministry_phone');
-            $tabel->string('ministry_ministers');
-            $tabel->string('ministry_departments');
-            $tabel->string('ministry_order');
-            $tabel->unsignedInteger('created_by');
-            $tabel->index('created_by');
+            $table->string('ministry_title');
+            $table->string('ministry_description');
+            $table->string('ministry_icon');
+            $table->string('ministry_image');
+            $table->bigInteger('ministry_phone');
+            $table->string('ministry_ministers');
+            $table->index('ministry_departments');
+            $table->string('ministry_order');
+            $table->unsignedInteger('created_by');
+            $table->index('created_by');
             $table->timestamps();
             
         });
@@ -40,6 +40,6 @@ class CreateMinistriesTable extends Migration
      */
     public function down()
     {
-        Schema::drop();
+        Schema::drop('ministries');
     }
 }

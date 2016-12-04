@@ -30,6 +30,9 @@
             'app.datasets.add-dataset',
 
             //List Datasets
-            'app.datasets.list-datasets'
+            'app.datasets.list-datasets',
+
+            //list dataset Record
+             'app.datasets.dataset-record'
         ]);
 })();

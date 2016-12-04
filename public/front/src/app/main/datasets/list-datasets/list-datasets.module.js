@@ -3,7 +3,12 @@
     'use strict';
 
     angular
-        .module('app.datasets.list-datasets', [])
+        .module('app.datasets.list-datasets',
+            [
+                // 3rd Party Dependencies
+                'datatables'
+            ]
+        )
         .config(config);
 
     /** @ngInject */

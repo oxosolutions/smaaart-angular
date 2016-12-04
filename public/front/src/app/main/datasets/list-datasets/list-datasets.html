@@ -6,30 +6,50 @@
 	     <div class="top">
 	        <div id="DataTables_Table_0_filter" class="dataTables_filter"><label>Search:<input class="" placeholder="" aria-controls="DataTables_Table_0" type="search"></label></div>
 	     </div>
+	     <button ng-click="listData()"> List data </button>
+	    <!--  {{listdataset}}
+	     <ul>
+	     <li ng-repeat="list in listdataset"> {{list.dataset_id}}
+			<ul >
+						<li ng-repeat="rec in  list.dataset_records">{{rec.state}}</li>
+				     </ul>
+			</li>
+				     
+		</ul> -->
 	     <table class="dataTable row-border hover ng-isolate-scope no-footer dtr-inline" datatable="ng" dt-options="vm.dtOptions" style="display: table;" id="DataTables_Table_0" role="grid" aria-describedby="DataTables_Table_0_info">
 	        <thead>
 	           <tr role="row">
 	              <th class="secondary-text sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending">
-	                 <div class="table-header"><span class="column-title">Name</span></div>
+	                 <div class="table-header"><span class="column-title">Sr</span></div>
 				  </th>
 	              <th class="secondary-text sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending">
-	                 <div class="table-header"><span class="column-title">Position</span></div>
+	                 <div class="table-header"><span class="column-title">File Name</span></div>
 	              </th>
 	              <th class="secondary-text sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending">
-	                 <div class="table-header"><span class="column-title">Office</span></div>
+	                 <div class="table-header"><span class="column-title">Created date</span></div>
 	              </th>
 	              <th class="secondary-text sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending">
-	                 <div class="table-header"><span class="column-title">Age</span></div>
+	                 <div class="table-header"><span class="column-title">Action</span></div>
 	              </th>
-	              <th class="secondary-text sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Start Date: activate to sort column ascending">
+	              <!-- <th class="secondary-text sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Start Date: activate to sort column ascending">
 	                 <div class="table-header"><span class="column-title">Start Date</span></div>
-	              </th>
-	              <th class="secondary-text sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">
+	              </th> -->
+	             <!--  <th class="secondary-text sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Salary: activate to sort column ascending">
 	                 <div class="table-header"><span class="column-title">Salary</span></div>
-	              </th>
+	              </th> -->
 	           </tr>
 	        </thead>
-	        <tbody>
+	        <tbody >
+<tr ng-repeat="dataSet in listdataset"><td> {{$index + 1 }}</td><td>{{dataSet.dataset_name}}</td> <td>{{dataSet.created_date}} </td> <td><a href="datasets/dataset-record/{{dataSet.dataset_id}}" id="{{dataSet.dataset_id}}/">View Records</a></td>
+ </tr>
+	      <!-- <tr ng-repeat="rec in  list.dataset_records" ><td>{{rec.state}}</td></tr> -->
+	        <!-- <ul ng-repeat="list in listdataset">
+	     <li> {{list.dataset_name}}</li>
+	     <ul ng-repeat="rec in  list.dataset_records">
+			<li>{{rec.state}}</li>
+	     </ul>
+	     </ul> -->
+
 	           <!-- ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees --><!-- end ngRepeat: employee in ::vm.employees -->
 	           <tr ng-repeat="employee in ::vm.employees" class="ng-scope odd" role="row">
 	              <td class="ng-binding sorting_1" tabindex="0">Aaron Williamson</td>

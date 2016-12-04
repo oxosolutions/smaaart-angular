@@ -6,13 +6,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Api Usres
-        <small>list of api usres</small>
+        Ministries
+        <small>list of ministries</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="javascript:;">Api Users</a></li>
-        <li class="active">List Users</li>
+        <li><a href="javascript:;">Ministries</a></li>
+        <li class="active">List Ministries</li>
       </ol>
     </section>
     
@@ -28,7 +28,7 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="box-header">
-              <button class="btn btn-primary" onclick="window.location='{{url('api_users/create')}}'">Create New Ministry</button>
+              <button class="btn btn-primary" onclick="window.location='{{route('ministries.create')}}'">Create New Ministry</button>
           </div>
           <div class="box">
             <!-- /.box-header -->
@@ -36,12 +36,13 @@
               <table id="ministry" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Id</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Token</th>
+                  <th>Ministry ID</th>
+                  <th>Ministry Title</th>
+                  <th>Description</th>
+                  <th>Ministry Phone</th>
+                  <th>Ministry Ministers</th>
+                  <th>Created By</th>
                   <th>Created At</th>
-                  <th>Updated At</th>
                   <th>Action</th>
                 </tr>
                 </thead>
@@ -50,12 +51,13 @@
                 </tbody>
                 <tfoot>
                 <tr>
-                  <th>Id</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Token</th>
+                  <th>Ministry ID</th>
+                  <th>Ministry Title</th>
+                  <th>Description</th>
+                  <th>Ministry Phone</th>
+                  <th>Ministry Ministers</th>
+                  <th>Created By</th>
                   <th>Created At</th>
-                  <th>Updated At</th>
                   <th>Action</th>
                 </tr>
                 </tfoot>

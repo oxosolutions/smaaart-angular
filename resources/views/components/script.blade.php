@@ -21,7 +21,13 @@
 <!--Include Plugin -->
 @if(@$js)
 	@foreach(@$js as $key => $file)
-		@include('components.plugins.js.'.$file)
+    @if(is_array($file))
+      @foreach(@$file as $iKey => $iVal)
+        <script type="text/javascript" src="{{asset('js/'.$iVal.'.js')}}?ref={{rand(8899,9999)}}"></script>
+      @endforeach
+    @else
+		  @include('components.plugins.js.'.$file)
+    @endif
 	@endforeach
 @endif
 
