@@ -37,6 +37,8 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/goals/create',['as'=>'goals.create','uses'=>'GoalsController@create']);
 	Route::post('/goals/store',['as'=>'goals.store','uses'=>'GoalsController@store']);
 	Route::get('/goals/delete/{id}',['as'=>'goals.delete', 'uses'=>'GoalsController@destroy']);
+	Route::get('/goals/edit/{id}',['as'=>'goals.edit', 'uses'=>'GoalsController@edit']);
+	Route::patch('/goals/update/{id}',['as'=>'goals.update', 'uses'=>'GoalsController@update']);
 
 	/*Routes of API users*/
 	Route::get('/api_users', ['as'=>'api.users', 'uses'=>'ApiusersController@index']);

@@ -30,9 +30,17 @@ class GoalApiController extends Controller
     		$responseArray[$index]['goal_nodal_ministry'] = $goal->goal_nodal_ministry;
     		$inIndex = 0;
     		foreach($goal->ministry as $ky => $vl){
+    			try{
+    				$responseArray[$index]['ministry'][$inIndex]['ministry_id'] = $vl->ministry->ministry_id;
+    				$responseArray[$index]['ministry'][$inIndex]['ministry_title'] = $vl->ministry->ministry_title;
+    			}catch(\Exception $e){
 
-    			$responseArray[$index]['ministry'][$inIndex]['ministry_id'] = $vl->ministry->ministry_id;
-    			$responseArray[$index]['ministry'][$inIndex]['ministry_title'] = $vl->ministry->ministry_title;
+    				if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
+
+    					echo "Test";
+    				}
+    			}
+    			
     			$inIndex++;
     		}
     		$responseArray[$index]['ministry_order'] = $goal->ministry_order;

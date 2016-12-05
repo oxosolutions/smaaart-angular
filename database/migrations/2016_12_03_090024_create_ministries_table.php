@@ -19,7 +19,7 @@ class CreateMinistriesTable extends Migration
             $table->integer('ministry_id');
             $table->index('ministry_id');
             $table->string('ministry_title');
-            $table->string('ministry_description');
+            $table->text('ministry_description');
             $table->string('ministry_icon');
             $table->string('ministry_image')->nullable();
             $table->bigInteger('ministry_phone');

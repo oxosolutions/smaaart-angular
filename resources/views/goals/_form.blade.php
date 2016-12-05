@@ -99,10 +99,10 @@
       </span>
     @endif
   </div>  
-
+  
   <div class="{{ $errors->has('goal_other_ministries') ? ' has-error' : '' }} form-group">
     {!!Form::label('goal_other_ministries','Goal Other Ministry') !!}
-    {!!Form::select('goal_other_ministries[]',\App\Ministrie::ministryList(),null, ['class'=>'form-control select2','multiple']) !!}
+    {!!Form::select('goal_other_ministries[]',\App\Ministrie::ministryList(),@$minis, ['class'=>'form-control select2','multiple']) !!}
     @if($errors->has('goal_other_ministries'))
       <span class="help-block">
             {{ $errors->first('goal_other_ministries') }}

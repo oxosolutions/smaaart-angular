@@ -113,4 +113,52 @@ class GoalsController extends Controller
         }
     }
 
+    public function edit($id){
+
+        $model = Goal::findOrFail($id);
+        $minis = [];
+        foreach($model->ministry as $key => $value){
+
+            $minis[] = $value->ministry_id;
+        }
+       
+        return view('goals.edit',[
+                'model' => $model,
+                'minis' => $minis,
+                'css' => ['select2'],
+                'js' => ['select2','custom'=>['goals-create']]
+            ]);
+    }
+
+    public function update(Request $request, $id){
+        
+        $model = Goal::findOrFail($id);
+
+        $this->modelValidate($request);
+
+        DB::beginTransaction();
+        try{
+            $model->fill($request->all($request->except(['goal_other_ministries','_token'])));
+
+            $model->save();
+
+            foreach($request->goal_other_ministries as $key => $value){
+
+                $minis = new GMM();
+
+                $minis->ministry_id = $value;
+
+                $model->ministry()->save($minis);
+            }
+            DB::commit();
+            Session::flash('success','Successfully update!');
+            return redirect()->route('goals.list');
+
+        }catch(\Exception $e){
+
+            DB::rollback();
+            throw $e;
+        }
+    }
+
 }
