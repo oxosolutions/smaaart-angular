@@ -138,10 +138,10 @@ class GoalsController extends Controller
 
         DB::beginTransaction();
         try{
-            $model->fill($request->all($request->except(['goal_other_ministries','_token'])));
+            $model->fill($request->except(['goal_other_ministries','_token']));
 
             $model->save();
-
+            $model->ministry()->delete();
             foreach($request->goal_other_ministries as $key => $value){
 
                 $minis = new GMM();
@@ -153,7 +153,6 @@ class GoalsController extends Controller
             DB::commit();
             Session::flash('success','Successfully update!');
             return redirect()->route('goals.list');
-
         }catch(\Exception $e){
 
             DB::rollback();
