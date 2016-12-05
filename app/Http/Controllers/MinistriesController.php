@@ -86,8 +86,8 @@ class MinistriesController extends Controller
 
         $rules = [
 
-            'ministry_id' => 'required|regex:/^[0-9]+$/',
-            'ministry_title' => 'required|min:5|regex:/^[a-z A-Z]+$/|max:100',
+            'ministry_id' => 'required',
+            'ministry_title' => 'required|min:5|max:100',
             'ministry_description' => 'required',
             'ministry_icon' => 'required',
             'ministry_phone' => 'required|min:10|max:12',

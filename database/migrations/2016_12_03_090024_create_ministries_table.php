@@ -21,7 +21,7 @@ class CreateMinistriesTable extends Migration
             $table->string('ministry_title');
             $table->string('ministry_description');
             $table->string('ministry_icon');
-            $table->string('ministry_image');
+            $table->string('ministry_image')->nullable();
             $table->bigInteger('ministry_phone');
             $table->string('ministry_ministers');
             $table->index('ministry_departments');

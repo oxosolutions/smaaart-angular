@@ -81,7 +81,7 @@
 
 
   <div class="{{ $errors->has('ministry_order') ? ' has-error' : '' }} form-group">
-    {!!Form::label('ministry_order','Ministry Ministers') !!}
+    {!!Form::label('ministry_order','Ministry Order') !!}
     {!!Form::text('ministry_order',null, ['class'=>'form-control','placeholder'=>'Enter Minsiters Order']) !!}
     @if($errors->has('ministry_order'))
       <span class="help-block">
