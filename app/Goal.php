@@ -22,4 +22,9 @@ class Goal extends Model
     		 	  ->leftJoin('users','users.id','=','goals.created_by')
     		 	  ->addSelect('users.name as created_by');
     }
+
+    public function ministry(){
+
+    	return $this->morphMany('App\GoalsMinistryMapping','goal');
+    }
 }

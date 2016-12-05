@@ -8,6 +8,7 @@ use Session;
 use DB;
 use Auth;
 use App\Goal;
+use App\GoalsMinistryMapping as GMM;
 class GoalsController extends Controller
 {
     public function index(){
@@ -46,7 +47,32 @@ class GoalsController extends Controller
 
         $this->modelValidate($request);
 
-        
+        DB::beginTransaction();
+
+        try{
+
+            $model = new Goal($request->except(['goal_other_ministries','_token']));
+
+            $model->created_by = Auth::user()->id;
+
+            $model->save();
+
+            foreach($request->goal_other_ministries as $key => $value){
+
+                $minis = new GMM();
+
+                $minis->ministry_id = $value;
+
+                $model->ministry()->save($minis);
+            }
+            DB::commit();
+            Session::flash('success','Successfully created!');
+            return redirect()->route('goals.list');
+        }catch(\Exception $e){
+
+            DB::rollback();
+            throw $e;
+        }
     }
 
 
@@ -69,6 +95,22 @@ class GoalsController extends Controller
         ];
 
         $this->validate($request, $rules);
+    }
+
+    public function destroy($id){
+
+        $model = Goal::findOrFail($id);
+
+        try{
+
+            $model->ministry()->delete();
+            $model->delete();
+            Session::flash('success','Successfully deleted!');
+            return redirect()->route('goals.list');
+        }catch(\Exception $e){
+
+            throw $e;
+        }
     }
 
 }

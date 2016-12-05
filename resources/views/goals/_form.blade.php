@@ -79,10 +79,20 @@
     @endif
   </div>
 
+  <div class="{{ $errors->has('goal_opacity') ? ' has-error' : '' }} form-group">
+    {!!Form::label('goal_opacity','Goal Opacity') !!}
+    {!!Form::text('goal_opacity',null, ['class'=>'form-control','placeholder'=>'Enter Goal Opacity']) !!}
+    @if($errors->has('goal_opacity'))
+      <span class="help-block">
+            {{ $errors->first('goal_opacity') }}
+      </span>
+    @endif
+  </div>
+
 
   <div class="{{ $errors->has('goal_nodal_ministry') ? ' has-error' : '' }} form-group">
     {!!Form::label('goal_nodal_ministry','Goal Nodal Ministry') !!}
-    {!!Form::select('goal_nodal_ministry[]',\App\Ministrie::ministryList(),null, ['class'=>'form-control', 'placeholder'=>'Select Goal Nodal Ministry']) !!}
+    {!!Form::select('goal_nodal_ministry',\App\Ministrie::ministryList(),null, ['class'=>'form-control', 'placeholder'=>'Select Goal Nodal Ministry']) !!}
     @if($errors->has('goal_nodal_ministry'))
       <span class="help-block">
             {{ $errors->first('goal_nodal_ministry') }}

@@ -1,34 +1,4 @@
 
-// (function () {
-//     var app = angular.module('paging-app', ['ui.bootstrap']);
-
-//     app.controller('MainCtrl', function ($scope) {
-//         // a sample array use for paging
-//         $scope.list = [];
-
-//         $scope.currentPage = 1; // keeps track of the current page
-//         $scope.pageSize = 5; // holds the number of items per page
-
-//         $scope.init = function () { // initialize the sample list with some values
-//             for (var i = 0; i < 100; i++) {
-//                 $scope.list.push({ 'name': 'name ' + i });
-//             }
-//         };
-//     })
-
-//     .filter('start', function () {
-//         return function (input, start) {
-//             if (!input || !input.length) { return; }
-
-//             start = +start;
-//             return input.slice(start);
-//         };
-//     });
-
-// }());
-
-
-
 (function ()
 {
     'use strict';

@@ -36,6 +36,7 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/list_goals',['as'=>'goals.list.ajax','uses'=>'GoalsController@goalsList']);
 	Route::get('/goals/create',['as'=>'goals.create','uses'=>'GoalsController@create']);
 	Route::post('/goals/store',['as'=>'goals.store','uses'=>'GoalsController@store']);
+	Route::get('/goals/delete/{id}',['as'=>'goals.delete', 'uses'=>'GoalsController@destroy']);
 
 	/*Routes of API users*/
 	Route::get('/api_users', ['as'=>'api.users', 'uses'=>'ApiusersController@index']);

@@ -1,0 +1,82 @@
+<div class="page-layout carded fullwidth single-scroll" layout="row">
+
+    <!-- TOP BACKGROUND -->
+    <div class="top-bg md-accent-bg"></div>
+    <!-- / TOP BACKGROUND -->
+
+    <!-- CENTER -->
+    <div class="center" flex>
+
+        <!-- CONTENT HEADER -->
+        <div class="header">
+            <span class="h2 white-fg">Datasets</span>
+        </div>
+        <!-- / CONTENT HEADER -->
+
+        <!-- CONTENT CARD -->
+        <div class="content-card">
+
+            <!-- CONTENT TOOLBAR -->
+            <div class="toolbar" layout="row" layout-align="start center">
+                <div class="left" layout-align="start center">
+					<span>List of Available Datasets</span>
+				</div>
+				<div class="right" layout-align="end center">
+					<a href="dataset/add/" id="import_dataset_button" class="import-dataset-button ">Add Dataset</a>
+					<a href="dataset/import/" id="import_dataset_button" class="import-dataset-button ">Import Dataset</a>
+				</div>
+            </div>
+            <!-- / CONTENT TOOLBAR -->
+
+            <!-- CONTENT -->
+            <md-content class="content" ms-scroll>
+
+                <!-- CONTENT -->
+				<div >
+					<table class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
+						<thead>
+							<tr>
+								<th class="secondary-text sorting_asc" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-sort="ascending" aria-label="Name: activate to sort column descending">
+									<div class="table-header"><span class="column-title">Sr</span></div>
+								</th>
+								<th class="secondary-text sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending">
+									<div class="table-header"><span class="column-title">File Name</span></div>
+								</th>
+								<th class="secondary-text sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Office: activate to sort column ascending">
+									<div class="table-header"><span class="column-title">Created date</span></div>
+								</th>
+								<th class="secondary-text sorting" tabindex="0" aria-controls="DataTables_Table_0" rowspan="1" colspan="1" aria-label="Age: activate to sort column ascending">
+									<div class="table-header"><span class="column-title">Action</span></div>
+								</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="dataset in ::vm.datasets">
+								<td>{{ dataset.dataset_id }}</td>
+								<td>{{ dataset.dataset_name }}</td>
+								<td>{{ dataset.created_date }}</td>
+								<td>
+								<a href="dataset/view/{{dataset.dataset_id}}" id="{{dataset.dataset_id}}/" class="action-link">View</a>
+								<a href="dataset/edit/{{dataset.dataset_id}}" id="{{dataset.dataset_id}}/" class="action-link">Edit</a>
+								<a href="#" id="{{dataset.dataset_id}}/" class="action-link">Delete</a>
+								<a href="dataset/validate/{{dataset.dataset_id}}" id="{{dataset.dataset_id}}/" class="action-link">Validate</a>
+								<a href="dataset/export/{{dataset.dataset_id}}" id="{{dataset.dataset_id}}/" class="action-link">Export</a>
+
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+				
+                <!-- /CONTENT -->
+
+            </md-content>
+            <!-- / CONTENT -->
+
+        </div>
+        <!-- / CONTENT CARD -->
+
+    </div>
+    <!-- / CENTER -->
+
+</div>

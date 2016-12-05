@@ -26,19 +26,19 @@
         //////////
 
 
-      var listData = function()
+     $scope.listData = function()
         {
 
-            console.log("list data");
+    console.log("list data 231");
     //$http.defaults.headers.get['Content-Type'] = undefined;
 
  $http.get("http://192.168.0.101/smaart-angular/public/api/v1/dataset/list?api_token=yicnudlyiqghrr116323wq7pimihrhy17")
     .then(function(response) {
-
-            $scope.listdataset = response.data;
+       
+        $scope.listdataset = response.data;
     });
 } 
 
-        listData();
+      //  listData();
     }
 })();

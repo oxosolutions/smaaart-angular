@@ -25,6 +25,8 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/department/{id}',['as'=>'department.single','uses'=>'Services\DepartmentApiController@singleDepartment']);
 		Route::get('/ministry/list',['as'=>'ministry.list','uses'=>'Services\MinistryApiController@ministryList']);
 		Route::get('/ministry/{id}',['as'=>'ministry.single','uses'=>'Services\MinistryApiController@singleMinistry']);
+		Route::get('/goals/list',['as'=>'goals.list','uses'=>'Services\GoalApiController@goalsList']);
+		Route::get('/goals/{id}',['as'=>'goal.single','uses'=>'Services\GoalApiController@singleGoal']);
 		Route::get('/csv',['as'=>'csv','uses'=>'Services\ImportdatasetController@checkCSV']);
 	});
 });

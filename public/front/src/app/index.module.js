@@ -33,6 +33,9 @@
             'app.datasets.list-datasets',
 
             //list dataset Record
+             'app.datasets.dataset-record',
+
+              //list visualization 
              'app.datasets.dataset-record'
         ]);
 })();

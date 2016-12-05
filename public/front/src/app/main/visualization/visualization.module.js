@@ -3,7 +3,7 @@
     'use strict';
 
     angular
-        .module('app.datasets.dataset-record', ['datatables'])
+        .module('app.visualization', ['datatables'])
         .config(config);
 
     /** @ngInject */
@@ -11,12 +11,12 @@
     {
         // State
         $stateProvider
-            .state('app.dataset_record', {
-                url    : '/datasets/dataset-record/:id',
+            .state('app.visualization', {
+                url    : '/visualization',
                 views  : {
                     'content@app': {
-                        templateUrl: 'app/main/datasets/dataset-record/dataset-record.html',
-                        controller : 'DatasetRecordController as vm'
+                        templateUrl: 'app/main/visualization/visualization.html',
+                        controller : 'VisualizationController as vm'
                     }
                 },
                 resolve: {
@@ -26,10 +26,8 @@
                     }
                 }
             });
-
         // Translation
-        $translatePartialLoaderProvider.addPart('app/main/datasets/dataset-record');
-
+        $translatePartialLoaderProvider.addPart('app/main/visualization');
         // Api
         msApiProvider.register('sample', ['app/data/sample/sample.json']);
 

@@ -2,9 +2,9 @@
     <!-- Logo -->
     <a href="index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>Web</b>API</span>
+      <span class="logo-mini"><b>S</b></span>
       <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>WebApp</b> API</span>
+      <span class="logo-lg"><b>SMAART</b>&trade; Api</span>
     </a>
     <!-- Header Navbar: style can be found in header.less -->
     <nav class="navbar navbar-static-top">
@@ -16,84 +16,84 @@
       <div class="navbar-custom-menu">
         <ul class="nav navbar-nav">
           <!-- Messages: style can be found in dropdown.less-->
-          <li class="dropdown messages-menu">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-envelope-o"></i>
-              <span class="label label-success">4</span>
-            </a>
-            <ul class="dropdown-menu">
-              <li class="header">You have 4 messages</li>
-              <li>
-                <!-- inner menu: contains the actual data -->
-                <ul class="menu">
-                  <li><!-- start message -->
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="{{asset('/bower_components/admin-lte/dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Support Team
-                        <small><i class="fa fa-clock-o"></i> 5 mins</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <!-- end message -->
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="{{asset('/bower_components/admin-lte/dist/img/user3-128x128.jpg')}}" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        AdminLTE Design Team
-                        <small><i class="fa fa-clock-o"></i> 2 hours</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="{{asset('/bower_components/admin-lte/dist/img/user4-128x128.jpg')}}" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Developers
-                        <small><i class="fa fa-clock-o"></i> Today</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="{{asset('/bower_components/admin-lte/dist/img/user3-128x128.jpg')}}" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Sales Department
-                        <small><i class="fa fa-clock-o"></i> Yesterday</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#">
-                      <div class="pull-left">
-                        <img src="{{asset('/bower_components/admin-lte/dist/img/user4-128x128.jpg')}}" class="img-circle" alt="User Image">
-                      </div>
-                      <h4>
-                        Reviewers
-                        <small><i class="fa fa-clock-o"></i> 2 days</small>
-                      </h4>
-                      <p>Why not buy a new awesome theme?</p>
-                    </a>
-                  </li>
-                </ul>
-              </li>
-              <li class="footer"><a href="#">See All Messages</a></li>
-            </ul>
-          </li>
+         <!--  <li class="dropdown messages-menu">
+           <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+             <i class="fa fa-envelope-o"></i>
+             <span class="label label-success">4</span>
+           </a>
+           <ul class="dropdown-menu">
+             <li class="header">You have 4 messages</li>
+             <li>
+               inner menu: contains the actual data
+               <ul class="menu">
+                 <li>start message
+                   <a href="#">
+                     <div class="pull-left">
+                       <img src="{{asset('/bower_components/admin-lte/dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
+                     </div>
+                     <h4>
+                       Support Team
+                       <small><i class="fa fa-clock-o"></i> 5 mins</small>
+                     </h4>
+                     <p>Why not buy a new awesome theme?</p>
+                   </a>
+                 </li>
+                 end message
+                 <li>
+                   <a href="#">
+                     <div class="pull-left">
+                       <img src="{{asset('/bower_components/admin-lte/dist/img/user3-128x128.jpg')}}" class="img-circle" alt="User Image">
+                     </div>
+                     <h4>
+                       AdminLTE Design Team
+                       <small><i class="fa fa-clock-o"></i> 2 hours</small>
+                     </h4>
+                     <p>Why not buy a new awesome theme?</p>
+                   </a>
+                 </li>
+                 <li>
+                   <a href="#">
+                     <div class="pull-left">
+                       <img src="{{asset('/bower_components/admin-lte/dist/img/user4-128x128.jpg')}}" class="img-circle" alt="User Image">
+                     </div>
+                     <h4>
+                       Developers
+                       <small><i class="fa fa-clock-o"></i> Today</small>
+                     </h4>
+                     <p>Why not buy a new awesome theme?</p>
+                   </a>
+                 </li>
+                 <li>
+                   <a href="#">
+                     <div class="pull-left">
+                       <img src="{{asset('/bower_components/admin-lte/dist/img/user3-128x128.jpg')}}" class="img-circle" alt="User Image">
+                     </div>
+                     <h4>
+                       Sales Department
+                       <small><i class="fa fa-clock-o"></i> Yesterday</small>
+                     </h4>
+                     <p>Why not buy a new awesome theme?</p>
+                   </a>
+                 </li>
+                 <li>
+                   <a href="#">
+                     <div class="pull-left">
+                       <img src="{{asset('/bower_components/admin-lte/dist/img/user4-128x128.jpg')}}" class="img-circle" alt="User Image">
+                     </div>
+                     <h4>
+                       Reviewers
+                       <small><i class="fa fa-clock-o"></i> 2 days</small>
+                     </h4>
+                     <p>Why not buy a new awesome theme?</p>
+                   </a>
+                 </li>
+               </ul>
+             </li>
+             <li class="footer"><a href="#">See All Messages</a></li>
+           </ul>
+         </li> -->
           <!-- Notifications: style can be found in dropdown.less -->
-          <li class="dropdown notifications-menu">
+          <!-- <li class="dropdown notifications-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-bell-o"></i>
               <span class="label label-warning">10</span>
@@ -101,7 +101,7 @@
             <ul class="dropdown-menu">
               <li class="header">You have 10 notifications</li>
               <li>
-                <!-- inner menu: contains the actual data -->
+                inner menu: contains the actual data
                 <ul class="menu">
                   <li>
                     <a href="#">
@@ -133,9 +133,9 @@
               </li>
               <li class="footer"><a href="#">View all</a></li>
             </ul>
-          </li>
+          </li> -->
           <!-- Tasks: style can be found in dropdown.less -->
-          <li class="dropdown tasks-menu">
+          <!-- <li class="dropdown tasks-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <i class="fa fa-flag-o"></i>
               <span class="label label-danger">9</span>
@@ -143,9 +143,9 @@
             <ul class="dropdown-menu">
               <li class="header">You have 9 tasks</li>
               <li>
-                <!-- inner menu: contains the actual data -->
+                inner menu: contains the actual data
                 <ul class="menu">
-                  <li><!-- Task item -->
+                  <li>Task item
                     <a href="#">
                       <h3>
                         Design some buttons
@@ -158,8 +158,8 @@
                       </div>
                     </a>
                   </li>
-                  <!-- end task item -->
-                  <li><!-- Task item -->
+                  end task item
+                  <li>Task item
                     <a href="#">
                       <h3>
                         Create a nice theme
@@ -172,8 +172,8 @@
                       </div>
                     </a>
                   </li>
-                  <!-- end task item -->
-                  <li><!-- Task item -->
+                  end task item
+                  <li>Task item
                     <a href="#">
                       <h3>
                         Some task I need to do
@@ -186,8 +186,8 @@
                       </div>
                     </a>
                   </li>
-                  <!-- end task item -->
-                  <li><!-- Task item -->
+                  end task item
+                  <li>Task item
                     <a href="#">
                       <h3>
                         Make beautiful transitions
@@ -200,19 +200,19 @@
                       </div>
                     </a>
                   </li>
-                  <!-- end task item -->
+                  end task item
                 </ul>
               </li>
               <li class="footer">
                 <a href="#">View all tasks</a>
               </li>
             </ul>
-          </li>
+          </li> -->
           <!-- User Account: style can be found in dropdown.less -->
           <li class="dropdown user user-menu">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
               <img src="{{asset('/bower_components/admin-lte/dist/img/user2-160x160.jpg')}}" class="user-image" alt="User Image">
-              <span class="hidden-xs">{{$name = Auth::user()->name}}</span>
+              <span class="hidden-xs">{{ucfirst($name = Auth::user()->name)}}</span>
             </a>
             <ul class="dropdown-menu">
               <!-- User image -->
@@ -220,7 +220,7 @@
                 <img src="{{asset('/bower_components/admin-lte/dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
 
                 <p>
-                  {{$name}} - Web Developer
+                  {{ucfirst($name)}} - Web Developer
                   <small>Member since Nov. 2012</small>
                 </p>
               </li>

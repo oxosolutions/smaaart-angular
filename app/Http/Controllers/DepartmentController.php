@@ -15,7 +15,7 @@ class DepartmentController extends Controller
     	$plugins = [
 
     			'css' => ['datatables'],
-    			'js'  => ['datatables','custom']
+    			'js'  => ['datatables','custom'=>['gen-datatables']]
     	];
 
     	return view('departments.index',$plugins);

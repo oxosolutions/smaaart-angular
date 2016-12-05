@@ -27,7 +27,7 @@
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-              {!! Form::open(['route' => 'ministries.store', 'files'=>true]) !!}
+              {!! Form::open(['route' => 'goals.store', 'files'=>true]) !!}
                 @include('goals._form')
               <div class="box-footer">
                 {!! Form::submit('Save Ministry', ['class' => 'btn btn-primary']) !!}
