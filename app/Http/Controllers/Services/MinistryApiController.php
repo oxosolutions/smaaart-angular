@@ -15,6 +15,7 @@ class MinistryApiController extends Controller
     	$index = 0;
     	foreach($model as $key => $ministry){
 
+            $responseArray[$index]['id'] = $ministry->id;
     		$responseArray[$index]['ministry_id'] = $ministry->ministry_id;
     		$responseArray[$index]['ministry_title'] = $ministry->ministry_title;
     		$responseArray[$index]['ministry_description'] = $ministry->ministry_description;
@@ -46,6 +47,7 @@ class MinistryApiController extends Controller
         $index = 0;
         
 
+        $responseArray[$index]['id'] = $model->id;
         $responseArray[$index]['ministry_id'] = $model->ministry_id;
         $responseArray[$index]['ministry_title'] = $model->ministry_title;
         $responseArray[$index]['ministry_description'] = $model->ministry_description;

@@ -18,6 +18,7 @@ class GoalApiController extends Controller
     	$index = 0;
     	foreach($model as $key => $goal){
 
+            $responseArray[$index]['goal_id'] = $goal->id;
     		$responseArray[$index]['goal_number'] = $goal->goal_number;
     		$responseArray[$index]['goal_title'] = $goal->goal_title;
     		$responseArray[$index]['goal_tagline'] = $goal->goal_tagline;
@@ -65,6 +66,7 @@ class GoalApiController extends Controller
         $index = 0;
         
 
+        $responseArray[$index]['goal_id'] = $model->goal_id;
         $responseArray[$index]['goal_number'] = $model->goal_number;
 		$responseArray[$index]['goal_title'] = $model->goal_title;
 		$responseArray[$index]['goal_tagline'] = $model->goal_tagline;

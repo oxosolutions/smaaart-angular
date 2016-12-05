@@ -23,6 +23,8 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::post('/department/store',['as'=>'department.store', 'uses'=>'DepartmentController@store']);
 	Route::get('/department/delete/{id}',['as'=>'department.delete', 'uses'=>'DepartmentController@destroy']);
 	Route::get('/list_depart',['as'=>'department.ajax', 'uses'=>'DepartmentController@get_departments']);
+	Route::get('/department/edit/{id}',['as'=>'department.edit', 'uses'=>'DepartmentController@edit']);
+	Route::patch('/department/update/{id}',['as'=>'department.update', 'uses'=>'DepartmentController@update']);
 
 	/*Routes for ministries operations*/
 	Route::get('/ministries',['as'=>'ministries.list','uses'=>'MinistriesController@index']);

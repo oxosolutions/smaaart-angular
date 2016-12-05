@@ -44,7 +44,7 @@ class DepartmentController extends Controller
     	try{
 
     		$model = new DP;
-	    	$model->dep_code = $request->code;
+	    	$model->dep_code = $request->dep_code;
 	    	$model->dep_name = $request->dep_name;
 	    	$model->created_by = Auth::user()->id;
 	    	$model->save();
@@ -66,7 +66,7 @@ class DepartmentController extends Controller
 
     	$rules = [
 
-    			'code' => 'required|regex:/^[A-Z a-z 0-9]+$/|min:3',
+    			'dep_code' => 'required|regex:/^[A-Z a-z 0-9]+$/|min:3',
     			'dep_name' => 'required|min:3'
     	];
 
@@ -88,5 +88,31 @@ class DepartmentController extends Controller
     	}
 
     	return redirect()->route('department.list');
+    }
+    public function edit($id){
+
+        $model = DP::findOrFail($id);
+
+        return view('departments.edit', ['model'=>$model]);
+    }
+
+    public function update(Request $request, $id){
+
+        $model = DP::findOrFail($id);
+
+        $this->modelValidate($request);
+
+        DB::beginTransaction();
+        try{
+
+            $model->fill($request->except(['_token']));
+            $model->save();
+            DB::commit();
+            Session::flash('success','Successfully update!');
+            return redirect()->route('department.list');
+        }catch(\Exception $e){
+
+            throw $e;
+        }
     }
 }
