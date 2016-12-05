@@ -2,7 +2,7 @@
     <!-- sidebar: style can be found in sidebar.less -->
     <section class="sidebar">
       <!-- Sidebar user panel -->
-      <div class="user-panel">
+      <!-- <div class="user-panel">
         <div class="pull-left image">
           <img src="{{asset('/bower_components/admin-lte/dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
         </div>
@@ -10,9 +10,9 @@
           <p>{{ucfirst(Auth::user()->name)}}</p>
           <a href="#"><i class="fa fa-circle text-success"></i> Online</a>
         </div>
-      </div>
+      </div> -->
       <!-- search form -->
-      <form action="#" method="get" class="sidebar-form">
+      <!-- <form action="#" method="get" class="sidebar-form">
         <div class="input-group">
           <input type="text" name="q" class="form-control" placeholder="Search...">
               <span class="input-group-btn">
@@ -20,7 +20,7 @@
                 </button>
               </span>
         </div>
-      </form>
+      </form> -->
       <!-- /.search form -->
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
@@ -43,7 +43,7 @@
           </a>
           <ul class="treeview-menu">
             <li class="{{Request::is('api_users')?'active':''}}"><a href="{{ route('api.users') }}"><i class="fa fa-circle-o"></i> List Users</a></li>
-            <li class="{{Request::is('api_users/create')?'active':''}}"><a href="javascript:;"><i class="fa fa-circle-o"></i> Add New</a></li>
+            <li class="{{Request::is('api_users/create')?'active':''}}"><a href="{{route('api.create_users')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
         </li>
 
@@ -60,7 +60,7 @@
           </a>
           <ul class="treeview-menu">
             <li class="{{Request::is('ministries')?'active':''}}"><a href="{{ route('ministries.list') }}"><i class="fa fa-circle-o"></i> List Ministries</a></li>
-            <li class="{{Request::is('ministries/create')?'active':''}}"><a href="javascript:;"><i class="fa fa-circle-o"></i> Add New</a></li>
+            <li class="{{Request::is('ministries/create')?'active':''}}"><a href="{{route('ministries.create')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
         </li>
 
@@ -77,7 +77,7 @@
           </a>
           <ul class="treeview-menu">
             <li class="{{Request::is('departments')?'active':''}}"><a href="{{ route('department.list') }}"><i class="fa fa-circle-o"></i> List Department</a></li>
-            <li class="{{Request::is('departments/create')?'active':''}}"><a href="javascript:;"><i class="fa fa-circle-o"></i> Add New</a></li>
+            <li class="{{Request::is('departments/create')?'active':''}}"><a href="{{route('department.create')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
         </li>
 
@@ -94,7 +94,7 @@
           </a>
           <ul class="treeview-menu">
             <li class="{{Request::is('goals')?'active':''}}"><a href="{{ route('goals.list') }}"><i class="fa fa-circle-o"></i> List Goals</a></li>
-            <li class="{{Request::is('goals/create')?'active':''}}"><a href="javascript:;"><i class="fa fa-circle-o"></i> Add New</a></li>
+            <li class="{{Request::is('goals/create')?'active':''}}"><a href="{{route('goals.create')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
         </li>
 
