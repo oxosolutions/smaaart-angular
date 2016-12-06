@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 //use Apiauth;
  //use Illuminate\Auth;
 //use Illuminate\Foundation\Auth;
+use App\User;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 //use Auth;
@@ -41,6 +42,16 @@ class ApiauthController extends Controller
     public function Register(Request $request)
     {
     	echo "res";
+    	echo $request->name;
+	if($request)
+	{
+    	  User::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => bcrypt($request->password),
+            'api_token' => $request->api_token
+        ]);
+   }
     	//print_r($request);
     }
 

@@ -16,7 +16,7 @@ class GoalApiController extends Controller
     	}
     	$responseArray = [];
     	$index = 0;
-        $classIndex = 1;
+        $classArray = [];
         $className = 'triangle-right';
     	foreach($model as $key => $goal){
 
@@ -50,23 +50,19 @@ class GoalApiController extends Controller
     		$responseArray[$index]['ministry_order'] = $goal->ministry_order;
     		$responseArray[$index]['created_by'] = $goal->created_by;
     		$responseArray[$index]['created_at'] = $goal->created_at->format('Y-m-d H:i:s');
+            $classArray[] = $index;
+            if(count($classArray) == 2){
 
-            if($classIndex == 2){
-                $classIndex = 1;
-                $className = 'triangle-left';
-            }else{
-                $className = 'triangle-right';
+                if($className == 'triangle-right'){
+
+                    $className = 'triangle-left';
+                }else{
+
+                    $className = 'triangle-right';
+                }
+
+                $classArray = [];
             }
-
-            if($index >= 1 && $index <= 2){
-                $className = 'triangle-left';
-            }else{
-
-                $classIndex++;
-            }
-            
-            
-
     		$index++;
 
     	}
