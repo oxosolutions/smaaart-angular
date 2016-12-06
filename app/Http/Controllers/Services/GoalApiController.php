@@ -9,13 +9,15 @@ class GoalApiController extends Controller
 {
     public function goalsList(){
 
-    	$model = Goal::WithUsers()->get();
+    	$model = Goal::WithUsers()->orderBy('goal_number')->get();
     	if($model == null){
     		$response = ['status'=>'success','message'=>'No result found!'];
     		return $response;
     	}
     	$responseArray = [];
     	$index = 0;
+        $classIndex = 1;
+        $className = 'triangle-right';
     	foreach($model as $key => $goal){
 
             $responseArray[$index]['goal_id'] = $goal->id;
@@ -44,10 +46,29 @@ class GoalApiController extends Controller
     			
     			$inIndex++;
     		}
+            $responseArray[$index]['repeat_class'] = $className;
     		$responseArray[$index]['ministry_order'] = $goal->ministry_order;
     		$responseArray[$index]['created_by'] = $goal->created_by;
     		$responseArray[$index]['created_at'] = $goal->created_at->format('Y-m-d H:i:s');
+
+            if($classIndex == 2){
+                $classIndex = 1;
+                $className = 'triangle-left';
+            }else{
+                $className = 'triangle-right';
+            }
+
+            if($index >= 1 && $index <= 2){
+                $className = 'triangle-left';
+            }else{
+
+                $classIndex++;
+            }
+            
+            
+
     		$index++;
+
     	}
 
     	$response = ['status'=>'success','records'=>$responseArray];

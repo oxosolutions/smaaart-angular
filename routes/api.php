@@ -12,12 +12,21 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+Route::group(['prefix' => 'v1'], function () {
+Route::post('/auth','Services\ApiauthController@Authenicates');
+Route::post('/register','Services\ApiauthController@Register');
+
+
+});
+
 
 Route::group(['prefix' => 'v1'], function () {
 	Route::group(['middleware'=>['auth:api','cors']], function(){
 		Route::get('/user', function (Request $request) {
 		    return $request->user();
 		});
+		
+
 		Route::post('/dataset/import',['as'=>'import','uses'=>'Services\ImportdatasetController@uploadDataset']);
 		Route::get('/dataset/list',['as'=>'list','uses'=>'Services\DatasetsController@getDatasetsList']);
 		Route::get('/dataset/view/{id}',['as'=>'list','uses'=>'Services\DatasetsController@getDatasets']);

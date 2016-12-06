@@ -11,8 +11,6 @@
 |
 */
 
-
-
 Route::group(['middleware'=>'auth'], function(){
 
 	Route::get('/', ['as'=>'home', 'uses'=>'DashboardController@index']);
@@ -47,6 +45,11 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/get_users', ['as'=>'api.get_users', 'uses'=>'ApiusersController@get_users']);
 	Route::get('/api_users/create', ['as'=>'api.create_users', 'uses'=>'ApiusersController@create']);
 	Route::post('/api_users/store', ['as'=>'api.store_users', 'uses'=>'ApiusersController@store']);
+
+/*Routes For API goal schema*/
+	Route::get('/schema/create',['as'=>'schema.create','uses'=>'GoalsController@create']);
+
+
 });
 
 Auth::routes();
