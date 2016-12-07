@@ -205,7 +205,7 @@ class GoalsController extends Controller
 
         DB::beginTransaction();
         try{
-            $model->fill($request->except(['goal_other_ministries','_token']));
+            $model->fill($request->except(['goal_other_ministries','_token','goal_schemes','goal_interventions','goal_targets','goal_resources']));
 
             $model->save();
             $model->ministry()->delete();
@@ -217,6 +217,46 @@ class GoalsController extends Controller
 
                 $model->ministry()->save($minis);
             }
+            $model->schema()->delete();
+            foreach ($request->goal_schemes as $key => $value) {
+               
+               $schemaObj = new GSM();
+
+               $schemaObj->schemas_id = $value;
+
+               $model->schema()->save($schemaObj);
+            }
+
+            $model->intervention()->delete();
+            foreach ($request->goal_interventions as $key => $value) {
+               
+               $intervObj = new GIM();
+
+               $intervObj->interventions_id = $value;
+
+               $model->intervention()->save($intervObj);
+            }
+
+            $model->target()->delete();
+            foreach ($request->goal_targets as $key => $value) {
+               
+               $targetObj = new GTM();
+
+               $targetObj->targets_id = $value;
+
+               $model->target()->save($targetObj);
+            }
+
+            $model->resources()->delete();
+            foreach ($request->goal_resources as $key => $value) {
+               
+               $resourceObj = new GRM();
+
+               $resourceObj->resources_id = $value;
+
+               $model->resources()->save($resourceObj);
+            }
+
             DB::commit();
             Session::flash('success','Successfully update!');
             return redirect()->route('goals.list');
