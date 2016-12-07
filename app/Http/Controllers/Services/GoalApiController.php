@@ -39,7 +39,8 @@ class GoalApiController extends Controller
     			try{
                     $responseArray[$index]['ministry'][$inIndex]['id'] = $vl->ministry->id;
     				$responseArray[$index]['ministry'][$inIndex]['ministry_id'] = $vl->ministry->ministry_id;
-    				$responseArray[$index]['ministry'][$inIndex]['ministry_title'] = $vl->ministry->ministry_title;
+                    $responseArray[$index]['ministry'][$inIndex]['ministry_title'] = $vl->ministry->ministry_title;
+    				$responseArray[$index]['ministry'][$inIndex]['ministry_desc'] = $vl->ministry->ministry_description;
     			}catch(\Exception $e){
 
     				if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
@@ -57,6 +58,7 @@ class GoalApiController extends Controller
                     $responseArray[$index]['schema'][$inIndex]['schema_id'] = $vl->schemas->schema_id;
                     $responseArray[$index]['schema'][$inIndex]['schema_title'] = $vl->schemas->schema_title;
                     $responseArray[$index]['schema'][$inIndex]['schema_image'] = $vl->schemas->schema_image;
+                    $responseArray[$index]['schema'][$inIndex]['schema_desc'] = $vl->schemas->schema_desc;
                 }catch(\Exception $e){
 
                     if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
@@ -172,6 +174,7 @@ class GoalApiController extends Controller
 
 			$responseArray[$index]['ministry'][$inIndex]['ministry_id'] = $vl->ministry->ministry_id;
 			$responseArray[$index]['ministry'][$inIndex]['ministry_title'] = $vl->ministry->ministry_title;
+            $responseArray[$index]['ministry'][$inIndex]['ministry_desc'] = $vl->ministry->ministry_description;
 			$inIndex++;
 		}
         $inIndex = 0;
@@ -180,6 +183,7 @@ class GoalApiController extends Controller
                 $responseArray[$index]['schema'][$inIndex]['schema_id'] = $vl->schemas->schema_id;
                 $responseArray[$index]['schema'][$inIndex]['schema_title'] = $vl->schemas->schema_title;
                 $responseArray[$index]['schema'][$inIndex]['schema_image'] = $vl->schemas->schema_image;
+                $responseArray[$index]['schema'][$inIndex]['schema_desc'] = $vl->schemas->schema_desc;
             }catch(\Exception $e){
 
                 if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
