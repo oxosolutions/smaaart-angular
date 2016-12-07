@@ -4,11 +4,16 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
+use Illuminate\Database\Query;
 use Session;
 use DB;
 use Auth;
 use App\Goal;
 use App\GoalsMinistryMapping as GMM;
+use App\GoalsInterventionsMappings as GIM;
+use App\GoalsResourcesMappings as GRM;
+use App\GoalsTargetMappings as GTM;
+use App\GoalsSchemasMappings as GSM;
 class GoalsController extends Controller
 {
     public function index(){
@@ -51,7 +56,7 @@ class GoalsController extends Controller
 
         try{
 
-            $model = new Goal($request->except(['goal_other_ministries','_token']));
+            $model = new Goal($request->except(['goal_other_ministries','_token','goal_schemes','goal_interventions','goal_targets','goal_resources']));
 
             $model->created_by = Auth::user()->id;
 
@@ -60,11 +65,46 @@ class GoalsController extends Controller
             foreach($request->goal_other_ministries as $key => $value){
 
                 $minis = new GMM();
-
                 $minis->ministry_id = $value;
-
                 $model->ministry()->save($minis);
             }
+
+            foreach ($request->goal_schemes as $key => $value) {
+               
+               $schemaObj = new GSM();
+
+               $schemaObj->schemas_id = $value;
+
+               $model->schema()->save($schemaObj);
+            }
+
+            foreach ($request->goal_interventions as $key => $value) {
+               
+               $intervObj = new GIM();
+
+               $intervObj->interventions_id = $value;
+
+               $model->intervention()->save($intervObj);
+            }
+
+            foreach ($request->goal_targets as $key => $value) {
+               
+               $targetObj = new GTM();
+
+               $targetObj->targets_id = $value;
+
+               $model->target()->save($targetObj);
+            }
+
+            foreach ($request->goal_resources as $key => $value) {
+               
+               $resourceObj = new GRM();
+
+               $resourceObj->resources_id = $value;
+
+               $model->resources()->save($resourceObj);
+            }
+
             DB::commit();
             Session::flash('success','Successfully created!');
             return redirect()->route('goals.list');
@@ -87,7 +127,7 @@ class GoalsController extends Controller
                 'goal_url'  =>  'required',
                 'goal_icon' =>  'required',
                 'goal_icon_url' => 'required',
-                'goal_color' => 'required',
+                'goal_color_hex' => 'required',
                 'goal_nodal_ministry' => 'required',
                 'goal_other_ministries' => 'required',
                 'goal_schemes' => 'required',
@@ -117,14 +157,41 @@ class GoalsController extends Controller
 
         $model = Goal::findOrFail($id);
         $minis = [];
+        $schema = [];
+        $target = [];
+        $resources = [];
+        $intervention = [];
         foreach($model->ministry as $key => $value){
 
             $minis[] = $value->ministry_id;
         }
-       
+        
+        foreach($model->schema as $key => $value){
+
+            $schema[] = $value->schemas_id;
+        }
+
+        foreach($model->target as $key => $value){
+
+            $target[] = $value->targets_id;
+        }
+
+        foreach($model->resources as $key => $value){
+
+            $resources[] = $value->resources_id;
+        }
+
+        foreach($model->intervention as $key => $value){
+
+            $intervention[] = $value->interventions_id;
+        }
         return view('goals.edit',[
                 'model' => $model,
                 'minis' => $minis,
+                'schema'=> $schema,
+                'target'=> $target,
+                'resources' => $resources,
+                'intervention' => $intervention,
                 'css' => ['select2'],
                 'js' => ['select2','custom'=>['goals-create']]
             ]);

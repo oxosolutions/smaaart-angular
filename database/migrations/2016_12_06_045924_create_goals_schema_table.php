@@ -14,13 +14,18 @@ class CreateGoalsSchemaTable extends Migration
     public function up()
     {
         //
-         Schema::create('goals_schema', function(Blueprint $table){
+         Schema::create('goals_schemas', function(Blueprint $table){
 
             $table->increments('id');
+            $table->string('schema_id')->nullable();
             $table->string('schema_title');
+            $table->string('schema_image')->nullable();
+            $table->text('schema_desc')->nullable();
             $table->unsignedInteger('created_by')->index();
             $table->softDeletes();
             $table->timestamps();
+            $table->foreign('created_by')->references('id')->on('users')->onUpdate('cascade');
+
         });
     }
 

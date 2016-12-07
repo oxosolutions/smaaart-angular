@@ -69,15 +69,37 @@
     @endif
   </div>
 
-  <div class="{{ $errors->has('goal_color') ? ' has-error' : '' }} form-group">
-    {!!Form::label('goal_color','Goal Color') !!}
-    {!!Form::text('goal_color',null, ['class'=>'form-control','placeholder'=>'Enter Goal Color']) !!}
-    @if($errors->has('goal_color'))
+  <div class="{{ $errors->has('goal_color_hex') ? ' has-error' : '' }} form-group">
+    {!!Form::label('goal_color_hex','Goal Color Hex') !!}
+    {!!Form::text('goal_color_hex',null, ['class'=>'form-control','placeholder'=>'Enter Goal Color']) !!}
+    @if($errors->has('goal_color_hex'))
       <span class="help-block">
-            {{ $errors->first('goal_color') }}
+            {{ $errors->first('goal_color_hex') }}
       </span>
     @endif
   </div>
+
+   <div class="{{ $errors->has('goal_color_rgb') ? ' has-error' : '' }} form-group">
+    {!!Form::label('goal_color_rgb','Goal Color RGB') !!}
+    {!!Form::text('goal_color_rgb',null, ['class'=>'form-control','placeholder'=>'Enter Goal Color RGB']) !!}
+    @if($errors->has('goal_color_rgb'))
+      <span class="help-block">
+            {{ $errors->first('goal_color_rgb') }}
+      </span>
+    @endif
+  </div>
+
+   <div class="{{ $errors->has('goal_color_rgb_a') ? ' has-error' : '' }} form-group">
+    {!!Form::label('goal_color_rgb_a','Goal Color RGBA') !!}
+    {!!Form::text('goal_color_rgb_a',null, ['class'=>'form-control','placeholder'=>'Enter Goal Color RGB A']) !!}
+    @if($errors->has('goal_color_rgb_a'))
+      <span class="help-block">
+            {{ $errors->first('goal_color_rgb_a') }}
+      </span>
+    @endif
+  </div>
+
+
 
   <div class="{{ $errors->has('goal_opacity') ? ' has-error' : '' }} form-group">
     {!!Form::label('goal_opacity','Goal Opacity') !!}
@@ -112,9 +134,9 @@
 
 
   <div class="{{ $errors->has('goal_schemes') ? ' has-error' : '' }} form-group">
-    {!!Form::label('goal_schemes','Goal Schema') !!}
-    {!!Form::text('goal_schemes',null, ['class'=>'form-control','placeholder'=>'Enter Goal Schema']) !!}
-    @if($errors->has('goal_schemes'))
+    {!!Form::label('goal_schemes','Goal Schemes') !!}
+    {!!Form::select('goal_schemes[]',\App\GoalsSchema::schemaList(),@$schema, ['class'=>'form-control select2','multiple']) !!}
+  @if($errors->has('goal_schemes'))
       <span class="help-block">
             {{ $errors->first('goal_schemes') }}
       </span>
@@ -123,10 +145,33 @@
 
   <div class="{{ $errors->has('goal_interventions') ? ' has-error' : '' }} form-group">
     {!!Form::label('goal_interventions','Goal Intervations') !!}
-    {!!Form::text('goal_interventions',null, ['class'=>'form-control','placeholder'=>'Enter Goal Intervations']) !!}
+        {!!Form::select('goal_interventions[]',\App\GoalsIntervention::interventionList(),@$intervention, ['class'=>'form-control select2','multiple']) !!}
+
     @if($errors->has('goal_interventions'))
       <span class="help-block">
             {{ $errors->first('goal_interventions') }}
+      </span>
+    @endif
+  </div>
+
+  <div class="{{ $errors->has('goal_targets') ? ' has-error' : '' }} form-group">
+    {!!Form::label('goal_targets','Goal Targets') !!}
+        {!!Form::select('goal_targets[]',\App\GoalsTarget::targetList(),@$target, ['class'=>'form-control select2','multiple']) !!}
+
+    @if($errors->has('goal_targets'))
+      <span class="help-block">
+            {{ $errors->first('goal_targets') }}
+      </span>
+    @endif
+  </div>
+
+  <div class="{{ $errors->has('goal_resources') ? ' has-error' : '' }} form-group">
+    {!!Form::label('goal_resources','Goal Resources') !!}
+        {!!Form::select('goal_resources[]',\App\GoalsResource::resourceList(),@$resources, ['class'=>'form-control select2','multiple']) !!}
+
+    @if($errors->has('goal_resources'))
+      <span class="help-block">
+            {{ $errors->first('goal_resources') }}
       </span>
     @endif
   </div>

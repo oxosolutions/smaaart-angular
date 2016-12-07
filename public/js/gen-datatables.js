@@ -63,6 +63,67 @@
       ]
     });
 
+    $('#schema').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: route()+'/schema_list',
+      columns: [
+            { data: 'id', name: 'id' },
+            { data: 'schema_id', name: 'schema_id' },
+            { data: 'schema_title', name: 'schema_title' },
+            { data: 'schema_desc', name: 'schema_desc' },
+            { data: 'created_by', name: 'created_by' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },
+      ]
+    });
+
+    $('#Intervention').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: route()+'/intervention_list',
+      columns: [
+            { data: 'id', name: 'id' },
+            { data: 'intervent_id', name: 'intervent_id' },
+            { data: 'intervent_title', name: 'intervent_title' },
+            { data: 'intervent_desc', name: 'intervent_desc' },
+            { data: 'created_by', name: 'created_by' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },
+      ]
+    });
+
+
+    $('#target').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: route()+'/target_list',
+      columns: [
+            { data: 'id', name: 'id' },
+            { data: 'target_id', name: 'target_id' },
+            { data: 'target_title', name: 'target_title' },
+            { data: 'target_desc', name: 'target_desc' },
+            { data: 'created_by', name: 'created_by' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },
+      ]
+    });
+
+    $('#resource').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: route()+'/resource_list',
+      columns: [
+            { data: 'id', name: 'id' },
+            { data: 'resource_id', name: 'resource_id' },
+            { data: 'resource_title', name: 'resource_title' },
+            { data: 'resource_desc', name: 'resource_desc' },
+            { data: 'created_by', name: 'created_by' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },
+      ]
+    });
+
     $('body').on('click','.delete', function(){
 
         if(confirm('Are you sure to delete ?')){

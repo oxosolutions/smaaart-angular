@@ -23,12 +23,14 @@ class CreateGoalsTable extends Migration
             $table->string('goal_url');
             $table->string('goal_icon');
             $table->string('goal_icon_url');
-            $table->string('goal_color');
+            $table->string('goal_color_hex')->nullable();
+            $table->string('goal_color_rgb')->nullable();
+            $table->string('goal_color_rgb_a')->nullable();
             $table->string('goal_opacity');
             $table->string('goal_nodal_ministry');
             //$table->string('goal_other_ministrie');
-            $table->string('goal_schemes');
-            $table->string('goal_interventions');
+            //$table->string('goal_schemes');
+            //$table->string('goal_interventions');
             $table->unsignedInteger('created_by')->index();
             $table->softDeletes();
             $table->timestamps();

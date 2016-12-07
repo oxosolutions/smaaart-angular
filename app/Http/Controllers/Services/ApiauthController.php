@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Services;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-//use Apiauth;
- //use Illuminate\Auth;
-//use Illuminate\Foundation\Auth;
+//use DB;
 use App\User;
 use Validator;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+
 //use Auth;
 
 class ApiauthController extends Controller
@@ -18,9 +18,15 @@ class ApiauthController extends Controller
    public  function Authenicates(Request $request)
     {
 
- 	if($request->email=="")
+
+
+ 	if(empty ( $request->email ))
 		{
 			return ['status'=>'error','message'=>'We need to know your e-mail address!'];
+		}
+		else if(!filter_var($request->email, FILTER_VALIDATE_EMAIL))
+		{
+				return ['status'=>'error','message'=>'Invalid email format!'];	
 		}
 		else if($request->password=="")
 		{
@@ -37,24 +43,55 @@ class ApiauthController extends Controller
 			}
 
     }
+
+
+     protected function modelValidate($request){
+
+        $rules = [
+				'name'  => 'min:5|regex:/^[A-Z a-z]+$/',
+                'email' => 'required|email|unique:users,email',
+                'password' => 'min:6|required',
+                'token' => 'required'
+        ];
+
+        $this->validate($request, $rules);;
+    }
     
 
     public function Register(Request $request)
     {
-    	echo "res";
-    	echo $request->name;
-	if($request)
-	{
-    	  User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => bcrypt($request->password),
-            'api_token' => $request->api_token
-        ]);
+    	// $check_email = DB::table('users')->where('email', $request->email)->count();
+    	 $api_token = uniqid('',30);
+    	if($request->name && $request->email && $request->password )
+		{
+			if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
+     			
+     			return ['status'=>'error','message'=>'Invalid email format!'];
+			 }
+				try{
+						User::create([
+						'name' => $request->name,
+						'email' => $request->email,
+						'password' => bcrypt($request->password),
+						'api_token' => $api_token
+						]);
+
+						return ['status'=>'successful','message'=>'Successful register!'];
+					}catch(\Exception $e)
+							{
+ 								if($e instanceOf \Illuminate\Database\QueryException){
+ 									return ['status'=>'error','message'=>'Email already in use!'];
+ 								}else{
+ 									return ['status'=>'error','message'=>'Some thing go wrong!'];
+ 								}
+							}		
+		}
+	   else{
+			return ['status'=>'error','message'=>'fill all required field!'];
+			}
    }
-    	//print_r($request);
-    }
+}
 
    
 
-}
+

@@ -46,8 +46,42 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/api_users/create', ['as'=>'api.create_users', 'uses'=>'ApiusersController@create']);
 	Route::post('/api_users/store', ['as'=>'api.store_users', 'uses'=>'ApiusersController@store']);
 
-/*Routes For API goal schema*/
-	Route::get('/schema/create',['as'=>'schema.create','uses'=>'GoalsController@create']);
+	/*Routes For API goal schema*/
+	Route::get('/schema',['as'=>'schema.list','uses'=>'GoalsSchemaController@index']);
+	Route::get('/schema_list',['as'=>'schema.list.ajax','uses'=>'GoalsSchemaController@indexData']);
+	Route::get('/schema/create',['as'=>'schema.create','uses'=>'GoalsSchemaController@create']);
+	Route::post('/schema/store',['as'=>'schema.store','uses'=>'GoalsSchemaController@store']);
+	Route::get('/schema/delete/{id}',['as'=>'schema.delete', 'uses'=>'GoalsSchemaController@destroy']);
+	Route::get('/schema/edit/{id}',['as'=>'schema.edit', 'uses'=>'GoalsSchemaController@edit']);
+	Route::patch('/schema/update/{id}',['as'=>'schema.update', 'uses'=>'GoalsSchemaController@update']);
+
+	/*Routes For goal Targets*/
+	Route::get('/target',['as'=>'target.list','uses'=>'GoalsTargetController@index']);
+	Route::get('/target_list',['as'=>'target.list.ajax','uses'=>'GoalsTargetController@indexData']);
+	Route::get('/target/create',['as'=>'target.create','uses'=>'GoalsTargetController@create']);
+	Route::post('/target/store',['as'=>'target.store','uses'=>'GoalsTargetController@store']);
+	Route::get('/target/delete/{id}',['as'=>'target.delete', 'uses'=>'GoalsTargetController@destroy']);
+	Route::get('/target/edit/{id}',['as'=>'target.edit', 'uses'=>'GoalsTargetController@edit']);
+	Route::patch('/target/update/{id}',['as'=>'target.update', 'uses'=>'GoalsTargetController@update']);
+
+	/*Routes For goal resources*/
+	Route::get('/resource',['as'=>'resource.list','uses'=>'GoalsResourceController@index']);
+	Route::get('/resource_list',['as'=>'resource.list.ajax','uses'=>'GoalsResourceController@indexData']);
+	Route::get('/resource/create',['as'=>'resource.create','uses'=>'GoalsResourceController@create']);
+	Route::post('/resource/store',['as'=>'resource.store','uses'=>'GoalsResourceController@store']);
+	Route::get('/resource/delete/{id}',['as'=>'resource.delete', 'uses'=>'GoalsResourceController@destroy']);
+	Route::get('/resource/edit/{id}',['as'=>'resource.edit', 'uses'=>'GoalsResourceController@edit']);
+	Route::patch('/resource/update/{id}',['as'=>'resource.update', 'uses'=>'GoalsResourceController@update']);
+	
+	/*Routes For API goal intervention*/
+	Route::get('/intervention',['as'=>'intervention.list','uses'=>'GoalsInterventionController@index']);
+	Route::get('/intervention_list',['as'=>'intervention.list.ajax','uses'=>'GoalsInterventionController@indexData']);
+	Route::get('/intervention/create',['as'=>'intervention.create','uses'=>'GoalsInterventionController@create']);
+	Route::post('/intervention/store',['as'=>'intervention.store','uses'=>'GoalsInterventionController@store']);
+	Route::get('/intervention/edit/{id}',['as'=>'intervention.edit', 'uses'=>'GoalsInterventionController@edit']);
+	Route::patch('/intervention/update/{id}',['as'=>'intervention.update', 'uses'=>'GoalsInterventionController@update']);
+	Route::get('/intervention/delete/{id}',['as'=>'intervention.delete', 'uses'=>'GoalsInterventionController@destroy']);
+
 
 
 });

@@ -13,13 +13,17 @@ class CreateGoalsIntervationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('goals_interations', function(Blueprint $table){
+        Schema::create('goals_interventions', function(Blueprint $table){
 
             $table->increments('id');
-            $table->string('interation_title');
+            $table->string('intervent_id')->nullable();
+            $table->string('intervent_title');
+            $table->string('intervent_image')->nullable();
+            $table->text('intervent_desc')->nullable();
             $table->unsignedInteger('created_by')->index();
             $table->softDeletes();
             $table->timestamps();
+            $table->foreign('created_by')->references('id')->on('users')->onUpdate('cascade');
         });
     }
 
@@ -30,6 +34,6 @@ class CreateGoalsIntervationsTable extends Migration
      */
     public function down()
     {
-       Schema::drop('goal_interations');
+       Schema::drop('goals_interventions');
     }
 }
