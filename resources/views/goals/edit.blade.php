@@ -30,7 +30,7 @@
               {!! Form::model($model,['method'=>'PATCH', 'route' => ['goals.update', $model->id], 'files'=>true]) !!}
                 @include('goals._form')
               <div class="box-footer">
-                {!! Form::submit('Save Ministry', ['class' => 'btn btn-primary']) !!}
+                {!! Form::submit('Save Goal', ['class' => 'btn btn-primary']) !!}
               </div>
               {!! Form::close() !!}
 

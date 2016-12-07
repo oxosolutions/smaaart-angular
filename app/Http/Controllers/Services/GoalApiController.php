@@ -162,9 +162,9 @@ class GoalApiController extends Controller
 		$responseArray[$index]['goal_url'] = $model->goal_url;
 		$responseArray[$index]['goal_icon'] = $model->goal_icon;
 		$responseArray[$index]['goal_icon_url'] = $model->goal_icon_url;
-		$responseArray[$index]['goal_color_hax'] = $goal->goal_color_hex;
-        $responseArray[$index]['goal_color_rgb'] = $goal->goal_color_rgb;
-        $responseArray[$index]['goal_color_rgba'] = $goal->goal_color_rgb_a;
+		$responseArray[$index]['goal_color_hax'] = $model->goal_color_hex;
+        $responseArray[$index]['goal_color_rgb'] = $model->goal_color_rgb;
+        $responseArray[$index]['goal_color_rgba'] = $model->goal_color_rgb_a;
 		$responseArray[$index]['goal_opacity'] = $model->goal_opacity;
 		$responseArray[$index]['goal_nodal_ministry'] = $model->goal_nodal_ministry;
 		$inIndex = 0;
