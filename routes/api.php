@@ -18,20 +18,19 @@ Route::group(['prefix' => 'v1'], function () {
 	Route::group(['middleware'=>['cors']], function(){
 	Route::post('/auth','Services\ApiauthController@Authenicates');
 	Route::post('/register','Services\ApiauthController@Register');
-	Route::get('/target','Services\TargetController@getTarget');
-
-
 	});
 });
 
 
 Route::group(['prefix' => 'v1'], function () {
+
+	Route::get('/dataset/download/{fileName}',['as'=>'dataset.download','uses'=>'Services\ExportDatasetController@downloadFile']);
+	
 	Route::group(['middleware'=>['auth:api','cors']], function(){
-		Route::get('/user', function (Request $request) {
+
+		Route::get('/users', function (Request $request) {
 		    return $request->user();
 		});
-		
-
 		Route::post('/dataset/import',['as'=>'import','uses'=>'Services\ImportdatasetController@uploadDataset']);
 		Route::get('/dataset/list',['as'=>'list','uses'=>'Services\DatasetsController@getDatasetsList']);
 		Route::get('/dataset/view/{id}',['as'=>'list','uses'=>'Services\DatasetsController@getDatasets']);
@@ -41,7 +40,10 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/ministry/{id}',['as'=>'ministry.single','uses'=>'Services\MinistryApiController@singleMinistry']);
 		Route::get('/goals/list',['as'=>'goals.list','uses'=>'Services\GoalApiController@goalsList']);
 		Route::get('/goals/{id}',['as'=>'goal.single','uses'=>'Services\GoalApiController@singleGoal']);
+		Route::get('/dataset/export/{id}',['as'=>'dataset.export','uses'=>'Services\ExportDatasetController@export']);
+		Route::get('/schema',['as'=>'Services\SchemaApiController','uses'=>'Services\SchemaApiController@allSchema']);
 		Route::get('/csv',['as'=>'csv','uses'=>'Services\ImportdatasetController@checkCSV']);
+		Route::get('/goalData/{id}','Services\GoalApiController@goalData');
 	});
 });
 

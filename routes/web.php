@@ -82,6 +82,8 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::patch('/intervention/update/{id}',['as'=>'intervention.update', 'uses'=>'GoalsInterventionController@update']);
 	Route::get('/intervention/delete/{id}',['as'=>'intervention.delete', 'uses'=>'GoalsInterventionController@destroy']);
 
+	/*API Config Routes*/
+	Route::get('/config',['as'=>'api.config','uses'=>'ApiConfigController@index']);
 
 
 });

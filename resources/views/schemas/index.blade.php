@@ -6,13 +6,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Schemas
-        <small>list of Schemas</small>
+        Schemes
+        <small>list of Schemes</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="javascript:;">Schemas</a></li>
-        <li class="active">List Schemas</li>
+        <li><a href="javascript:;">Schemes</a></li>
+        <li class="active">List Schemes</li>
       </ol>
     </section>
     
@@ -28,7 +28,7 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="box-header">
-              <button class="btn btn-primary" onclick="window.location='{{route('schema.create')}}'">Create New Schema</button>
+              <button class="btn btn-primary" onclick="window.location='{{route('schema.create')}}'">Create New Scheme</button>
           </div>
           <div class="box">
             <!-- /.box-header -->
@@ -37,9 +37,9 @@
                 <thead>
                 <tr>
                   <th>ID</th>
-                  <th>Schema ID</th>
-                  <th>Schema Title</th>
-                  <th>Schema Desc</th>
+                  <th>Scheme ID</th>
+                  <th>Scheme Title</th>
+                  <th>Scheme Desc</th>
                   <th>Created By</th>
                   <th>Created At</th>
                   <th>Action</th>
@@ -51,9 +51,9 @@
                 <tfoot>
                 <tr>
                   <th>ID</th>
-                  <th>Schema ID</th>
-                  <th>Schema Title</th>
-                  <th>Schema Desc</th>
+                  <th>Scheme ID</th>
+                  <th>Scheme Title</th>
+                  <th>Scheme Desc</th>
                   <th>Created By</th>
                   <th>Created At</th>
                   <th>Action</th>

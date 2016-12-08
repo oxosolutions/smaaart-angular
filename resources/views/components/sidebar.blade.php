@@ -99,10 +99,10 @@
         </li>
 
 
-        <li class="treeview">
+        <li class="treeview {{in_array(Request::path(),array('schema/create','schema'))?'active':''}}">
           <a href="#">
-            <i class="fa fa-gg"></i>
-            <span>Goal Schema</span>
+            <i class="fa fa-bullseye"></i>
+            <span>Goal Schemes</span>
             <!-- <span class="pull-right-container">
               <span class="label label-primary pull-right">4</span>
             </span> -->
@@ -111,14 +111,14 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class=""><a href="{{ route('schema.list') }}"><i class="fa fa-circle-o"></i> List Goal Schema</a></li>
-            <li class="{{Request::is('goals/create')?'active':''}}"><a href="{{route('goals.create')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
+            <li class="{{Request::is('schema')?'active':''}}"><a href="{{ route('schema.list') }}"><i class="fa fa-circle-o"></i> List Goal Schemes</a></li>
+            <li class="{{Request::is('schema/create')?'active':''}}"><a href="{{route('schema.create')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
         </li>
 
-        <li class="treeview">
+        <li class="treeview {{in_array(Request::path(),array('target/create','target'))?'active':''}}">
           <a href="#">
-            <i class="fa fa-gg"></i>
+            <i class="fa fa-dot-circle-o"></i>
             <span>Goal Targets</span>
             <!-- <span class="pull-right-container">
               <span class="label label-primary pull-right">4</span>
@@ -128,14 +128,14 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class=""><a href="{{ route('target.list') }}"><i class="fa fa-circle-o"></i> List Goal Targets</a></li>
-            <li class="{{Request::is('goals/create')?'active':''}}"><a href="{{route('target.create')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
+            <li class="{{Request::is('target')?'active':''}}"><a href="{{ route('target.list') }}"><i class="fa fa-circle-o"></i> List Goal Targets</a></li>
+            <li class="{{Request::is('target/create')?'active':''}}"><a href="{{route('target.create')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
         </li>
 
-        <li class="treeview">
+        <li class="treeview {{in_array(Request::path(),array('intervention/create','intervention'))?'active':''}}">
           <a href="#">
-            <i class="fa fa-gg"></i>
+            <i class="fa fa-sun-o"></i>
             <span>Goal Interventions</span>
             <!-- <span class="pull-right-container">
               <span class="label label-primary pull-right">4</span>
@@ -145,15 +145,15 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class=""><a href="{{ route('intervention.list') }}"><i class="fa fa-circle-o"></i> List Goal Interventions</a></li>
-            <li class=""><a href="{{ route('intervention.create') }}"><i class="fa fa-circle-o"></i> Add New</a></li>
+            <li class="{{Request::is('intervention')?'active':''}}"><a href="{{ route('intervention.list') }}"><i class="fa fa-circle-o"></i> List Goal Interventions</a></li>
+            <li class="{{Request::is('intervention/create')?'active':''}}"><a href="{{ route('intervention.create') }}"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
         </li>
 
 
-        <li class="treeview">
+        <li class="treeview {{in_array(Request::path(),array('resource/create','resource'))?'active':''}}">
           <a href="#">
-            <i class="fa fa-gg"></i>
+            <i class="fa fa-minus-square"></i>
             <span>Goal Resources</span>
             <!-- <span class="pull-right-container">
               <span class="label label-primary pull-right">4</span>
@@ -163,9 +163,15 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class=""><a href="{{ route('resource.list') }}"><i class="fa fa-circle-o"></i> List Goal Resources</a></li>
-            <li class=""><a href="{{ route('resource.create') }}"><i class="fa fa-circle-o"></i> Add New</a></li>
+            <li class="{{Request::is('resource')?'active':''}}"><a href="{{ route('resource.list') }}"><i class="fa fa-circle-o"></i> List Goal Resources</a></li>
+            <li class="{{Request::is('resource/create')?'active':''}}"><a href="{{ route('resource.create') }}"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
+        </li>
+
+        <li class="{{Request::is('config')?'active':''}}">
+          <a href="{{url('config')}}">
+            <i class="fa fa-gears"></i> <span>API Config</span>
+          </a>
         </li>
 
         <!-- <li>
