@@ -94,6 +94,15 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/indicators/delete/{id}',['as'=>'indicators.delete', 'uses'=>'IndicatorsController@destroy']);
 	Route::get('/indicators/edit/{id}',['as'=>'indicators.edit', 'uses'=>'IndicatorsController@edit']);
 	Route::patch('/indicators/update/{id}',['as'=>'indicators.update', 'uses'=>'IndicatorsController@update']);
+
+	/*Routes For indicators resources*/
+	Route::get('/visualisation',['as'=>'visualisation.list','uses'=>'VisualisationController@index']);
+	Route::get('/visualisation_list',['as'=>'visualisation.list.ajax','uses'=>'VisualisationController@indexData']);
+	Route::get('/visualisation/create',['as'=>'visualisation.create','uses'=>'VisualisationController@create']);
+	Route::post('/visualisation/store',['as'=>'visualisation.store','uses'=>'VisualisationController@store']);
+	Route::get('/visualisation/delete/{id}',['as'=>'visualisation.delete', 'uses'=>'VisualisationController@destroy']);
+	Route::get('/visualisation/edit/{id}',['as'=>'visualisation.edit', 'uses'=>'VisualisationController@edit']);
+	Route::patch('/visualisation/update/{id}',['as'=>'visualisation.update', 'uses'=>'VisualisationController@update']);
 	
 	/*Routes For API goal intervention*/
 	Route::get('/intervention',['as'=>'intervention.list','uses'=>'GoalsInterventionController@index']);

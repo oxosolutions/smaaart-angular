@@ -46,6 +46,12 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/goalData/{id}','Services\GoalApiController@goalData');
 		Route::post('/store/visual',['as'=>'visualization.store','uses'=>'Services\VisualizationController@store']);
 
+
+		Route::get('/visual/list',['as'=>'visualization.list','uses'=>'Services\VisualizationController@visualList']);
+		Route::get('/visual/{id}',['as'=>'visualization.single','uses'=>'Services\VisualizationController@visualByID']);
+
+
+
 	});
 });
 

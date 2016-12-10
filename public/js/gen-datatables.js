@@ -151,6 +151,22 @@
       ]
     });
 
+    $('#visualisations').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: route()+'/visualisation_list',
+      columns: [
+            { data: 'id', name: 'id' },
+            { data: 'dataset_id', name: 'dataset_id' },
+            { data: 'visual_name', name: 'visual_name' },
+            { data: 'settings', name: 'settings' },
+            { data: 'options', name: 'options' },
+            { data: 'created_by', name: 'created_by' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },
+      ]
+    });
+
     $('body').on('click','.delete', function(){
 
         if(confirm('Are you sure to delete ?')){

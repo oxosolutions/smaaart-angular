@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 class Visualisation extends Model
 {
-    protected $fillable = ['dataset_id','visual_name','created_by'];
+    protected $fillable = ['dataset_id','visual_name','options','settings','created_by'];
 
     protected $dates = ['deleted_at'];
 
@@ -16,4 +16,10 @@ class Visualisation extends Model
 
     	return $this->belongsTo('App\User','created_by','id');
     }
+
+    public function dataset(){
+
+    	return $this->belongsTo('App\DatasetsList');
+    }
+
 }

@@ -178,7 +178,23 @@
             <li class="{{Request::is('intervention/create')?'active':''}}"><a href="{{ route('intervention.create') }}"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
         </li>
-
+        
+        <li class="treeview {{in_array(Request::path(),array('visualisation/create','visualisation'))?'active':''}}">
+          <a href="#">
+            <i class="fa fa-arrows-h"></i>
+            <span>Manage Visualisation</span>
+            <!-- <span class="pull-right-container">
+              <span class="label label-primary pull-right">4</span>
+            </span> -->
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="{{Request::is('visualisation')?'active':''}}"><a href="{{ route('visualisation.list') }}"><i class="fa fa-circle-o"></i> List Visualisations</a></li>
+            <li class="{{Request::is('visualisation/create')?'active':''}}"><a href="{{route('visualisation.create')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
+          </ul>
+        </li>
 
         <li class="treeview {{in_array(Request::path(),array('resource/create','resource'))?'active':''}}">
           <a href="#">
