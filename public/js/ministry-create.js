@@ -7,5 +7,7 @@ $(function(){
 	    fileType: "any",
 	        previewFileIcon: "<i class='glyphicon glyphicon-king'></i>"
 	});
-	$(".select2").select2();
+	$(".select2").select2({
+		tags: true
+	});
 }());

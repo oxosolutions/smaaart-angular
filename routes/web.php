@@ -24,6 +24,15 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/department/edit/{id}',['as'=>'department.edit', 'uses'=>'DepartmentController@edit']);
 	Route::patch('/department/update/{id}',['as'=>'department.update', 'uses'=>'DepartmentController@update']);
 
+	/*Routes of Designations Operations*/
+	Route::get('/designations',['as'=>'designations.list', 'uses'=>'DesignationController@index']);
+	Route::get('/list_desig',['as'=>'designation.ajax', 'uses'=>'DesignationController@indexData']);
+	Route::get('/designations/create',['as'=>'designations.create', 'uses'=>'DesignationController@create']);
+	Route::post('/designations/store',['as'=>'designations.store', 'uses'=>'DesignationController@store']);
+	Route::get('/designations/delete/{id}',['as'=>'designations.delete', 'uses'=>'DesignationController@destroy']);
+	Route::get('/designations/edit/{id}',['as'=>'designations.edit', 'uses'=>'DesignationController@edit']);
+	Route::patch('/designations/update/{id}',['as'=>'designations.update', 'uses'=>'DesignationController@update']);
+
 	/*Routes for ministries operations*/
 	Route::get('/ministries',['as'=>'ministries.list','uses'=>'MinistriesController@index']);
 	Route::get('/list_minist',['as'=>'ministries.ajax', 'uses'=>'MinistriesController@get_ministries']);
@@ -45,6 +54,10 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/get_users', ['as'=>'api.get_users', 'uses'=>'ApiusersController@get_users']);
 	Route::get('/api_users/create', ['as'=>'api.create_users', 'uses'=>'ApiusersController@create']);
 	Route::post('/api_users/store', ['as'=>'api.store_users', 'uses'=>'ApiusersController@store']);
+	Route::get('/api_users_meta/create', ['as'=>'api.create_users_meta', 'uses'=>'ApiusersController@createUserMeta']);
+	
+	Route::post('/api_users_meta/store', ['as'=>'api.store_users_meta', 'uses'=>'ApiusersController@storeUserMeta']);
+
 
 	/*Routes For API goal schema*/
 	Route::get('/schema',['as'=>'schema.list','uses'=>'GoalsSchemaController@index']);
@@ -72,6 +85,15 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/resource/delete/{id}',['as'=>'resource.delete', 'uses'=>'GoalsResourceController@destroy']);
 	Route::get('/resource/edit/{id}',['as'=>'resource.edit', 'uses'=>'GoalsResourceController@edit']);
 	Route::patch('/resource/update/{id}',['as'=>'resource.update', 'uses'=>'GoalsResourceController@update']);
+
+	/*Routes For indicators resources*/
+	Route::get('/indicators',['as'=>'indicators.list','uses'=>'IndicatorsController@index']);
+	Route::get('/indicators_list',['as'=>'indicators.list.ajax','uses'=>'IndicatorsController@indexData']);
+	Route::get('/indicators/create',['as'=>'indicators.create','uses'=>'IndicatorsController@create']);
+	Route::post('/indicators/store',['as'=>'indicators.store','uses'=>'IndicatorsController@store']);
+	Route::get('/indicators/delete/{id}',['as'=>'indicators.delete', 'uses'=>'IndicatorsController@destroy']);
+	Route::get('/indicators/edit/{id}',['as'=>'indicators.edit', 'uses'=>'IndicatorsController@edit']);
+	Route::patch('/indicators/update/{id}',['as'=>'indicators.update', 'uses'=>'IndicatorsController@update']);
 	
 	/*Routes For API goal intervention*/
 	Route::get('/intervention',['as'=>'intervention.list','uses'=>'GoalsInterventionController@index']);

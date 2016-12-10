@@ -9,6 +9,7 @@ use App\User;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 //use Auth;
 
@@ -60,8 +61,7 @@ class ApiauthController extends Controller
 
     public function Register(Request $request)
     {
-    	// $check_email = DB::table('users')->where('email', $request->email)->count();
-    	 $api_token = uniqid('',30);
+    	$api_token = uniqid('',30);
     	if($request->name && $request->email && $request->password )
 		{
 			if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
@@ -72,23 +72,23 @@ class ApiauthController extends Controller
 						User::create([
 						'name' => $request->name,
 						'email' => $request->email,
-						'password' => bcrypt($request->password),
+						'password' => Hash::make($request->password),
 						'api_token' => $api_token
 						]);
 
-						return ['status'=>'successful','message'=>'Successful register!'];
+						return ['status'=>'successful','message'=>'Successful register!', "token"=>$api_token];
 					}catch(\Exception $e)
-							{
- 								if($e instanceOf \Illuminate\Database\QueryException){
- 									return ['status'=>'error','message'=>'Email already in use!'];
- 								}else{
- 									return ['status'=>'error','message'=>'Some thing go wrong!'];
- 								}
-							}		
+						{
+							if($e instanceOf \Illuminate\Database\QueryException){
+								return ['status'=>'error','message'=>'Email already in use!'];
+							}else{
+								return ['status'=>'error','message'=>'Some thing go wrong!'];
+							}
+						}		
 		}
 	   else{
-			return ['status'=>'error','message'=>'fill all required field!'];
-			}
+			return ['status'=>'error','message'=>'fill all required fields!'];
+		}
    }
 }
 

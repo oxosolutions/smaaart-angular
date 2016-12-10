@@ -89,6 +89,7 @@ class DepartmentController extends Controller
 
     	return redirect()->route('department.list');
     }
+    
     public function edit($id){
 
         $model = DP::findOrFail($id);

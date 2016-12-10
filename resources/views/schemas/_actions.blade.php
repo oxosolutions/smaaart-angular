@@ -1,2 +1,2 @@
-<a class="btn btn-success" href="{{route('schema.edit',$model->id)}}">Edit</a>
-<a href="javascript:;" class="btn btn-danger delete" data-link="{{route('schema.delete',$model->id)}}">Delete</a>
+<a href="{{route('schema.edit',$model->id)}}" title="Edit"><span class="fa fa-edit"></span></a> | 
+<a href="javascript:;" class="delete" data-link="{{route('schema.delete',$model->id)}}"  style="color:red" title="Delete"><span class="fa fa-trash"></span></a>

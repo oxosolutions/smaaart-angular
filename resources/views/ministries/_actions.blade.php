@@ -1,2 +1,2 @@
-<button class="btn btn-success">Edit</button>
-<a href="javascript:;" class="btn btn-danger delete" data-link="{{route('ministries.delete', $model->id)}}">Delete</a>
+<a href="javascript:;" title="edit"><span class="fa fa-edit"></span></a> | 
+<a href="javascript:;" class="delete" data-link="{{route('ministries.delete', $model->id)}}" title="Delete"><span class="fa fa-trash"  style="color:red"></span></a>

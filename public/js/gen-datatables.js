@@ -31,6 +31,19 @@
       ]
     });
 
+    $('#designations').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: route()+'/list_desig',
+      columns: [
+            { data: 'id', name: 'id' },
+            { data: 'designation', name: 'designation' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'updated_at', name: 'created_at' },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },
+      ]
+    });
+
     $('#ministry').DataTable({
       processing: true,
       serverSide: true,
@@ -118,6 +131,20 @@
             { data: 'resource_id', name: 'resource_id' },
             { data: 'resource_title', name: 'resource_title' },
             { data: 'resource_desc', name: 'resource_desc' },
+            { data: 'created_by', name: 'created_by' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },
+      ]
+    });
+
+    $('#indicator').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: route()+'/indicators_list',
+      columns: [
+            { data: 'id', name: 'id' },
+            { data: 'indicator_title', name: 'indicator_title' },
+            { data: 'targets_id', name: 'targets_id' },
             { data: 'created_by', name: 'created_by' },
             { data: 'created_at', name: 'created_at' },
             { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },

@@ -10,4 +10,6 @@ class ApiUsers extends Model
 
     	'username','password','email','token' 
     ];
+
+    
 }

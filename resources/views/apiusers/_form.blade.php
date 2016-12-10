@@ -9,12 +9,27 @@
     @endif
   </div>
 
+  
+
+  
+
   <div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">
-    {!!Form::label('email','Email address') !!}
+    {!!Form::label('email','Email') !!}
     {!!Form::text('email',null, ['class'=>'form-control','placeholder'=>'Enter Email']) !!}
     @if($errors->has('email'))
       <span class="help-block">
             {{ $errors->first('email') }}
+      </span>
+    @endif
+  </div>
+
+
+  <div class="form-group {{ $errors->has('username') ? ' has-error' : '' }}">
+    {!!Form::label('username','Username') !!}
+    {!!Form::text('username',null, ['class'=>'form-control','placeholder'=>'Enter username']) !!}
+    @if($errors->has('username'))
+      <span class="help-block">
+            {{ $errors->first('username') }}
       </span>
     @endif
   </div>
@@ -28,6 +43,18 @@
       </span>
     @endif
   </div>
+
+  <div class="col-md-4 form-group {{ $errors->has('profile_pic') ? ' has-error' : '' }}">
+    {!!Form::label('file','Upload Pic') !!}
+    {!!Form::file('profile_pic', ['class'=>'form-control','placeholder'=>'','id'=>'file-3']) !!}
+    @if($errors->has('profile_pic'))
+      <span class="help-block">
+            {{ $errors->first('profile_pic') }}
+      </span>
+    @endif
+  </div>
+  
+  <div style="clear: both"></div>
 
   <div class="{{ $errors->has('title') ? ' has-error' : '' }} input-group input-group-sm">
     {!!Form::label('token','Api Token') !!}
@@ -43,3 +70,19 @@
   </div>
 </div>
 <!-- /.box-body -->
+<style type="text/css">
+  .file-actions{
+      float: right;
+  }
+  .file-upload-indicator{
+     display: none;
+  }
+  .select2-selection__choice{
+
+      background-color: #3c8dbc !important;
+  }
+  .select2-selection__choice__remove{
+
+      color: #FFF !important;
+  }
+</style>

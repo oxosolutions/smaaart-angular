@@ -29,6 +29,39 @@
           <div class="col-md-12">
             <div class="box box-primary">
               <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i> User Register</h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>
+                    API: {{url('/')}}/api/v1/register
+                  </code>
+                  <!-- &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a> -->
+                </p>
+                <p>
+                  <code>
+                    Method: POST
+                  </code>
+                </p>
+                Params:
+                <code>
+                  <ul class="api_param well ">
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">name </spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">email </spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">password </spam> <span class="label label-danger">Required</span></li>
+                  </ul>
+                </code>
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+      </div>
+      <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
                 <h3 class="box-title"><i class="fa fa-code"></i> Dataset Import API</h3>
               </div>
               <div class="box-body">

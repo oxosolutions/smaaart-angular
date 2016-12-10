@@ -16,8 +16,8 @@ use Illuminate\Http\Request;
 
 Route::group(['prefix' => 'v1'], function () {
 	Route::group(['middleware'=>['cors']], function(){
-	Route::post('/auth','Services\ApiauthController@Authenicates');
-	Route::post('/register','Services\ApiauthController@Register');
+		Route::post('/auth','Services\ApiauthController@Authenicates');
+		Route::post('/register',['as'=>'register','uses'=>'Services\ApiauthController@Register']);
 	});
 });
 
@@ -44,6 +44,8 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/schema',['as'=>'Services\SchemaApiController','uses'=>'Services\SchemaApiController@allSchema']);
 		Route::get('/csv',['as'=>'csv','uses'=>'Services\ImportdatasetController@checkCSV']);
 		Route::get('/goalData/{id}','Services\GoalApiController@goalData');
+		Route::post('/store/visual',['as'=>'visualization.store','uses'=>'Services\VisualizationController@store']);
+
 	});
 });
 

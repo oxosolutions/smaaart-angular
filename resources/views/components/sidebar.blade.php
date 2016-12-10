@@ -34,9 +34,6 @@
           <a href="#">
             <i class="fa fa-users"></i>
             <span>Api Users</span>
-            <!-- <span class="pull-right-container">
-              <span class="label label-primary pull-right">4</span>
-            </span> -->
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -44,6 +41,21 @@
           <ul class="treeview-menu">
             <li class="{{Request::is('api_users')?'active':''}}"><a href="{{ route('api.users') }}"><i class="fa fa-circle-o"></i> List Users</a></li>
             <li class="{{Request::is('api_users/create')?'active':''}}"><a href="{{route('api.create_users')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
+            <li class="{{Request::is('api_users/create')?'active':''}}"><a href="{{route('api.create_users_meta')}}"><i class="fa fa-circle-o"></i>Add User Meta</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview {{in_array(Request::path(),array('designations/create','designations'))?'active':''}}">
+          <a href="#">
+            <i class="fa fa-child"></i>
+            <span>Designations</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="{{Request::is('designations')?'active':''}}"><a href="{{ route('designations.list') }}"><i class="fa fa-circle-o"></i> List Designations</a></li>
+            <li class="{{Request::is('designations/create')?'active':''}}"><a href="{{route('designations.create')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
         </li>
 
@@ -113,6 +125,23 @@
           <ul class="treeview-menu">
             <li class="{{Request::is('schema')?'active':''}}"><a href="{{ route('schema.list') }}"><i class="fa fa-circle-o"></i> List Goal Schemes</a></li>
             <li class="{{Request::is('schema/create')?'active':''}}"><a href="{{route('schema.create')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
+          </ul>
+        </li>
+
+        <li class="treeview {{in_array(Request::path(),array('indicators/create','indicators'))?'active':''}}">
+          <a href="#">
+            <i class="fa fa-arrows-h"></i>
+            <span>Manage Indicators</span>
+            <!-- <span class="pull-right-container">
+              <span class="label label-primary pull-right">4</span>
+            </span> -->
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="{{Request::is('indicators')?'active':''}}"><a href="{{ route('indicators.list') }}"><i class="fa fa-circle-o"></i> List Indicators</a></li>
+            <li class="{{Request::is('indicators/create')?'active':''}}"><a href="{{route('indicators.create')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
         </li>
 

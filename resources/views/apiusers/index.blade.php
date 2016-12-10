@@ -35,29 +35,29 @@
             <div class="box-body">
               <table id="apiusers" class="table table-bordered table-striped">
                 <thead>
-                <tr>
-                  <th>Id</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Token</th>
-                  <th>Created At</th>
-                  <th>Updated At</th>
-                  <th>Action</th>
-                </tr>
+                  <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Token</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                    <th>Action</th>
+                  </tr>
                 </thead>
                 <tbody>
                 
                 </tbody>
                 <tfoot>
-                <tr>
-                  <th>Id</th>
-                  <th>Name</th>
-                  <th>Email</th>
-                  <th>Token</th>
-                  <th>Created At</th>
-                  <th>Updated At</th>
-                  <th>Action</th>
-                </tr>
+                  <tr>
+                    <th>Id</th>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Token</th>
+                    <th>Created At</th>
+                    <th>Updated At</th>
+                    <th>Action</th>
+                  </tr>
                 </tfoot>
               </table>
             </div>
