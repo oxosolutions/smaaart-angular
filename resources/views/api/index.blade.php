@@ -58,6 +58,7 @@
           </div>
           <!-- /.col -->
       </div>
+
       <div class="row" style="margin-top: 10px;">
           <div class="col-md-12">
             <div class="box box-primary">
@@ -154,7 +155,6 @@
           </div>
           <!-- /.col -->
       </div>
-
 
       <div class="row" style="margin-top: 10px;">
           <div class="col-md-12">
@@ -490,6 +490,128 @@
                 Params:
                 <code>
                   none
+                </code>
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+      </div>
+
+      <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i> Get All Schems API</h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>
+                    API: {{url('/')}}/api/v1/schema?api_token=YOUR_UNIQUE_USER_TOKEN
+                  </code>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
+                </p>
+                <p>
+                  <code>
+                    Method: GET
+                  </code>
+                </p>
+                Params:
+                <code>
+                  none
+                </code>
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+      </div>
+      
+      <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i> Get All Visual list API</h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>
+                    API: {{url('/')}}/api/v1/visual/list?api_token=YOUR_UNIQUE_USER_TOKEN
+                  </code>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
+                </p>
+                <p>
+                  <code>
+                    Method: GET
+                  </code>
+                </p>
+                Params:
+                <code>
+                  none
+                </code>
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+      </div>
+
+      <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i> Get Visual Data By ID API</h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>
+                    API: {{url('/')}}/api/v1/visual/{id}?api_token=YOUR_UNIQUE_USER_TOKEN
+                  </code>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
+                </p>
+                <p>
+                  <code>
+                    Method: GET
+                  </code>
+                </p>
+                Params:
+                <code>
+                  none
+                </code>
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+      </div>
+
+      <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i> User Register</h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>
+                    API: {{url('/')}}/api/v1/store/visual
+                  </code>
+                </p>
+                <p>
+                  <code>
+                    Method: POST
+                  </code>
+                </p>
+                Params:
+                <code>
+                  <ul class="api_param well ">
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">dataset </spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">visual_name </spam> <span class="label label-danger">Required</span></li>
+                  </ul>
                 </code>
               </div>
               <!-- /.box-body -->

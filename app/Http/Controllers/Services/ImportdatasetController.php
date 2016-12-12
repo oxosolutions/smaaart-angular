@@ -32,10 +32,6 @@ class ImportdatasetController extends Controller
     	$file = $request->file('file');
     	if($file->isValid()){
 
-    		//$extension = $request->file('file')->getClientOriginalExtension();
-
-    		//$filename = rand(11111,99999).'.'.$extension;
-
     		$filename = date('Y-m-d-H-i-s')."-".$request->file('file')->getClientOriginalName();
 
     		$uploadFile = $request->file('file')->move($path, $filename);

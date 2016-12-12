@@ -57,6 +57,7 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/api_users_meta/create', ['as'=>'api.create_users_meta', 'uses'=>'ApiusersController@createUserMeta']);
 	
 	Route::post('/api_users_meta/store', ['as'=>'api.store_users_meta', 'uses'=>'ApiusersController@storeUserMeta']);
+	Route::get('user_detail/{id}',['as'=>'api.user_detaila', 'uses'=>'ApiusersController@userDetail']);
 
 
 	/*Routes For API goal schema*/
@@ -103,6 +104,15 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/visualisation/delete/{id}',['as'=>'visualisation.delete', 'uses'=>'VisualisationController@destroy']);
 	Route::get('/visualisation/edit/{id}',['as'=>'visualisation.edit', 'uses'=>'VisualisationController@edit']);
 	Route::patch('/visualisation/update/{id}',['as'=>'visualisation.update', 'uses'=>'VisualisationController@update']);
+
+	/*Routes For datasets resources*/
+	Route::get('/dataset',['as'=>'datasets.list','uses'=>'DataSetsController@index']);
+	Route::get('/dataset_list',['as'=>'datasets.list.ajax','uses'=>'DataSetsController@indexData']);
+	Route::get('/dataset/create',['as'=>'dataset.create','uses'=>'DataSetsController@create']);
+	Route::post('/dataset/store',['as'=>'dataset.store','uses'=>'DataSetsController@store']);
+	Route::get('/dataset/delete/{id}',['as'=>'datasets.delete', 'uses'=>'DataSetsController@destroy']);
+	Route::get('/dataset/edit/{id}',['as'=>'datasets.edit', 'uses'=>'DataSetsController@edit']);
+	Route::patch('/dataset/update/{id}',['as'=>'datasets.update', 'uses'=>'DataSetsController@update']);
 	
 	/*Routes For API goal intervention*/
 	Route::get('/intervention',['as'=>'intervention.list','uses'=>'GoalsInterventionController@index']);

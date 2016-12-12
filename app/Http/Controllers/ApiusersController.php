@@ -8,6 +8,8 @@ use App\User;
 use App\UserMeta as UM;
 use App\Designation as DES;
 use Session;
+use App\Ministrie as MIN; 
+use App\Department as DEP;
 
 class ApiusersController extends Controller
 {
@@ -97,7 +99,7 @@ class ApiusersController extends Controller
                 'profile_pic'=>'required'
               ];
 
-        $this->validate($request, $rules);;
+        $this->validate($request, $rules);
     }
 
     public function  createUserMeta()
@@ -130,15 +132,25 @@ class ApiusersController extends Controller
                      }
                 }
 
-
+                    //$index = 0;
+                         //$ministryMetaVal; 
                 foreach ($request->ministry as $key => $value){
 
-                    $ministryMeta = new UM();
-                    $ministryMeta->key = "ministry";
-                    $ministryMeta->user_id = $request->user_list;
-                    $ministryMeta->value  = $value;
-                    $ministryMeta->save();
+                    $ministryMetaVal[] = $value;
+                    
                 }
+
+                $minMetaVal = json_encode($ministryMetaVal);
+                $ministryMeta = new UM();
+                $ministryMeta->key = "ministry";
+                $ministryMeta->user_id = $request->user_list;
+                $ministryMeta->value = $minMetaVal;
+                $ministryMeta->save();
+                   
+
+              
+
+               
                
                 $phoneMeta = new UM();
                 $phoneMeta->key = "phone";
@@ -154,12 +166,15 @@ class ApiusersController extends Controller
 
                 foreach($request->department as $key => $value){
                 
-                    $departmentMeta  = new UM();
+                   $depValues[] =  $value;
+                }
+                    
+                $depJsonVal =     json_encode($depValues);
+                $departmentMeta  = new UM();
                     $departmentMeta->user_id = $request->user_list;
                     $departmentMeta->key = "department";
-                    $departmentMeta->value   =  $value;
+                    $departmentMeta->value   =  $depJsonVal;
                     $departmentMeta->save();
-                }
 
                 $designationMeta  = new UM();
                 $designationMeta->user_id = $request->user_list;
@@ -189,6 +204,55 @@ class ApiusersController extends Controller
             }
        
         }
+
+        public function userDetail($id)
+        {
+
+           $userName =  User::select('id','name')->where('id',$id)->get();
+           $ud['name'] = $userName[0]->name;
+           $ud['user_id'] = $userName[0]->id;
+           $userDetail = UM::where('user_id',$id)->get();
+            foreach ($userDetail as $key => $value) {
+              // echo $value->key ."--->".$value->value."<br>";
+               if($value->key=="phone")
+                {
+                   $ud['phone'] = $value->value;
+                }
+                if($value->key=="address")
+                {
+                   $ud['address'] = $value->value;
+                }
+                if($value->key=="designation")
+                {
+                   $ud['designation'] = $value->value;
+                }
+                if($value->key=="profile_pic")
+                {
+                   $ud['profile_pic'] = $value->value;
+                }
+             if($value->key=="ministry")
+                {
+                   $minId = $value->value;
+                }
+            if($value->key=="department")
+                {
+                   $depId = $value->value;
+                }
+            }
+
+           $DepId =  json_decode($depId);
+           $MinId =   json_decode($minId);
+
+            $depDetail = DEP::select('id','dep_code','dep_name')->WhereIN('id',$DepId)->get();
+           
+            $minDetail = MIN::select('id','ministry_id','ministry_title')->whereIn('id',$MinId)->get();
+
+           // dump($ud);
+    // dump($depDetail);
+
+         return view('apiusers.user_detail' , ['user_detail'=>$ud,'depDetail'=>$depDetail ,'minDetail' =>$minDetail ]);
+        }
+
 
     
 }

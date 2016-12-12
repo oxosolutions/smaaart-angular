@@ -13,4 +13,18 @@ class DatasetsList extends Model
 
     	return self::orderBy('id')->pluck('dataset_name','id');
     }
+
+    public function userId(){
+
+    	return $this->belongsTo('App\User','user_id','id');
+    }
+
+    public static function datasetOperations(){
+
+    	return [
+    				'new'		=>	'Add New',
+    				'replace'	=>	'Reaplce with old one',
+    				'append'	=>	'Append old dataset'
+    		   ];
+    }
 }

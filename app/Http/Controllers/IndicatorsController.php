@@ -10,6 +10,7 @@ use Session;
 use DB;
 class IndicatorsController extends Controller
 {
+
     public function index(){
 
     	$plugins = [

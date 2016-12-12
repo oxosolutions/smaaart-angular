@@ -167,6 +167,21 @@
       ]
     });
 
+    $('#datasets').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: route()+'/dataset_list',
+      columns: [
+            { data: 'id', name: 'id' },
+            { data: 'dataset_name', name: 'dataset_name' },
+            { data: 'dataset_records', name: 'dataset_records' },
+            { data: 'user_id', name: 'user_id' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'updated_at', name: 'updated_at' },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },
+      ]
+    });
+
     $('body').on('click','.delete', function(){
 
         if(confirm('Are you sure to delete ?')){
