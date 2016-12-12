@@ -21,4 +21,6 @@ class Indicator extends Model
 
     	return $this->belongsTo('App\User','created_by','id');
     }
+
+
 }

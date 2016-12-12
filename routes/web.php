@@ -57,7 +57,8 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/api_users_meta/create', ['as'=>'api.create_users_meta', 'uses'=>'ApiusersController@createUserMeta']);
 	
 	Route::post('/api_users_meta/store', ['as'=>'api.store_users_meta', 'uses'=>'ApiusersController@storeUserMeta']);
-	Route::get('user_detail/{id}',['as'=>'api.user_detaila', 'uses'=>'ApiusersController@userDetail']);
+
+	Route::get('user_detail/{id}',['as'=>'api.user_detail', 'uses'=>'ApiusersController@userDetail']);
 
 
 	/*Routes For API goal schema*/

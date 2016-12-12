@@ -579,7 +579,9 @@
                 </p>
                 Params:
                 <code>
-                  none
+                  <ul class="api_param well ">
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">id </spam> <span class="label label-danger">Required</span></li>
+                  </ul>
                 </code>
               </div>
               <!-- /.box-body -->
@@ -593,13 +595,14 @@
           <div class="col-md-12">
             <div class="box box-primary">
               <div class="box-header">
-                <h3 class="box-title"><i class="fa fa-code"></i> User Register</h3>
+                <h3 class="box-title"><i class="fa fa-code"></i> Store Visual</h3>
               </div>
               <div class="box-body">
                 <p>
                   <code>
-                    API: {{url('/')}}/api/v1/store/visual
+                    API: {{url('/')}}/api/v1/store/visual?api_token=YOUR_UNIQUE_USER_TOKEN
                   </code>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
                 </p>
                 <p>
                   <code>
@@ -612,6 +615,35 @@
                     <li><spam class="col-md-2 col-sm-4 col-xs-6">dataset </spam> <span class="label label-danger">Required</span></li>
                     <li><spam class="col-md-2 col-sm-4 col-xs-6">visual_name </spam> <span class="label label-danger">Required</span></li>
                   </ul>
+                </code>
+              </div>
+              <!-- /.box-body -->
+            </div>
+            <!-- /.box -->
+          </div>
+          <!-- /.col -->
+      </div>
+      <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i> All Indicators</h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>
+                    API: {{url('/')}}/api/v1/indicators?api_token=YOUR_UNIQUE_USER_TOKEN
+                  </code>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
+                </p>
+                <p>
+                  <code>
+                    Method: GET
+                  </code>
+                </p>
+                Params:
+                <code>
+                  none
                 </code>
               </div>
               <!-- /.box-body -->

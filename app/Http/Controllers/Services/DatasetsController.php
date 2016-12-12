@@ -34,12 +34,15 @@ class DatasetsController extends Controller
     public function getDatasets($id){
 
     	$datasetDetails = DL::find($id);
+        if(empty($datasetDetails)){
 
+            return ['status'=>'success','records'=>[]];
+        }
     	$responseArray = [];
 
     	$responseArray['dataset_id'] = $id;
     	$responseArray['records'] = json_decode($datasetDetails->dataset_records);
 
-    	return $responseArray;
+    	return ['status'=>'success','records'=>$responseArray];
     }
 }

@@ -18,12 +18,15 @@ class VisualizationController extends Controller
             $response = ['status'=>'error','error'=>$validate['error']];
             return $response;
         }
+        
         try{
 
             $model = new VS();
 
             $model->dataset_id = $request->dataset;
             $model->visual_name = $request->visual_name;
+            $model->options = $request->options;
+            $model->settings = $request->settings;
             $model->created_by = Auth::User()->id;
             $model->save();
         }catch(\Exception $e){
@@ -40,7 +43,7 @@ class VisualizationController extends Controller
 
     protected function validateRequest($request){
 
-        if($request->has('dataset') && $request->has('visual_name')){
+        if($request->has('dataset') && $request->has('visual_name') && $request->has('options') && $request->has('settings')){
 
             return ['status'=>'true','errors'=>''];
         }else{
@@ -72,8 +75,10 @@ class VisualizationController extends Controller
 
     public function visualByID($id){
 
-        $model = VS::findOrFail($id);
-
+        $model = VS::find($id);
+        if(empty($model)){
+            return ['status'=>'success','records'=>[]];
+        }
         $responseArray = [];
         $index = 0;
 

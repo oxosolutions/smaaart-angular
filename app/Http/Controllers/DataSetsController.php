@@ -61,11 +61,18 @@ class DataSetsController extends Controller
 	    			$this->storeInDatabase($path.'/'.$filename, $request->file('dataset_file')->getClientOriginalName());
 	    		}elseif($request->select_operation == 'replace'){
 
+	    			Session::flash('error','Not Yet Setup this');
+	    			return redirect()->route('datasets.list');
+
 	    		}elseif($request->select_operation == 'append'){
-	    			
+
+	    			Session::flash('error','Not Yet Setup this');
+	    			return redirect()->route('datasets.list');
 	    		}
 	    	}
 	    	DB::commit();
+	    	Session::flash('success','Successfully upload!');
+	    	return redirect()->route('datasets.list');
     	} catch(\Exception $e){
 
     		DB::rollback();
@@ -75,7 +82,7 @@ class DataSetsController extends Controller
 
     	Session::flash('success','Successfully created!');
 
-        return redirect()->route('department.list');
+        return redirect()->route('datasets.list');
     }
 
     function storeInDatabase($filename, $origName){
@@ -125,7 +132,7 @@ class DataSetsController extends Controller
 
     public function destroy($id){
 
-    	$model = DP::findOrFail($id);
+    	$model = DL::findOrFail($id);
 
     	try{
 
@@ -136,33 +143,7 @@ class DataSetsController extends Controller
     		throw $e;
     	}
 
-    	return redirect()->route('department.list');
+    	return redirect()->route('datasets.list');
     }
     
-    public function edit($id){
-
-        $model = DP::findOrFail($id);
-
-        return view('departments.edit', ['model'=>$model]);
-    }
-
-    public function update(Request $request, $id){
-
-        $model = DP::findOrFail($id);
-
-        $this->modelValidate($request);
-
-        DB::beginTransaction();
-        try{
-
-            $model->fill($request->except(['_token']));
-            $model->save();
-            DB::commit();
-            Session::flash('success','Successfully update!');
-            return redirect()->route('department.list');
-        }catch(\Exception $e){
-
-            throw $e;
-        }
-    }
 }

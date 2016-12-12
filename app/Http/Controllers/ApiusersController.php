@@ -28,10 +28,10 @@ class ApiusersController extends Controller
     }
 
     public function get_users(){
-
-    	return Datatables::of(User::query())
-            ->addColumn('actions',function(){
-                return view('apiusers._actions')->render();
+        $model = User::get();
+    	return Datatables::of($model)
+            ->addColumn('actions',function($model){
+                return view('apiusers._actions',['model'=>$model])->render();
             })
             ->make(true);
     }
@@ -212,6 +212,11 @@ class ApiusersController extends Controller
            $ud['name'] = $userName[0]->name;
            $ud['user_id'] = $userName[0]->id;
            $userDetail = UM::where('user_id',$id)->get();
+
+           echo "<pre>";
+           print_r($userDetail);
+           exit();
+           
             foreach ($userDetail as $key => $value) {
               // echo $value->key ."--->".$value->value."<br>";
                if($value->key=="phone")

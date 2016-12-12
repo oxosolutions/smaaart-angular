@@ -25,10 +25,18 @@
           {{$message}}
         </div>
       @endif
+
+      @if ($message = Session::get('error'))
+        <div class="alert alert-danger alert-dismissible">
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+         <i class="icon fa fa-check"></i> 
+          {{$message}}
+        </div>
+      @endif
       <div class="row">
         <div class="col-xs-12">
           <div class="box-header">
-              <button class="btn btn-primary" onclick="window.location='{{route('department.create')}}'">Add New Dataset</button>
+              <button class="btn btn-primary" onclick="window.location='{{route('dataset.create')}}'">Add New Dataset</button>
           </div>
           <div class="box">
             <!-- /.box-header -->

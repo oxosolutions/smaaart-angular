@@ -30,4 +30,9 @@ class GoalsTarget extends Model
 
         return self::orderBy('id')->pluck('target_title','id');
     }
+
+    public function indicators(){
+
+        return $this->hasMany('App\Indicator','targets_id');
+    }
 }
