@@ -46,6 +46,7 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/pages',['as'=>'pages.list','uses'=>'Services\PagesApiController@getAllPages']);
 		Route::get('/pages/{page_slug}',['as'=>'pages.by_slug','uses'=>'Services\PagesApiController@getPageBySlug']);
 		Route::get('/dataset/chartdata/{id}',['as'=>'list','uses'=>'Services\DatasetsController@getFormatedDataset']);
+		Route::get('/dataset/lastdataset/columns',['as'=>'last.dataset.columns','uses'=>'Services\ImportdatasetController@getColumns']);
 		// API routes
 		Route::get('routes',function(){
 			return view('roles.index');

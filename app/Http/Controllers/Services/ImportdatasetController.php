@@ -28,9 +28,9 @@ class ImportdatasetController extends Controller
     		$uploadFile = $request->file('file')->move($path, $filename);
     		$this->storeInDatabase($path.'/'.$filename, $request->file('file')->getClientOriginalName());
     	}
-      $columnsArray = $this->getColumns();
+      // $columnsArray = $this->getColumns();
   		if($uploadFile){
-  			$response = ['status'=>'success','message'=>'file uploaded successfully!','columns'=>$columnsArray];
+  			$response = ['status'=>'success','message'=>'file uploaded successfully!'];//,'columns'=>$columnsArray];
   			return $response;
   		}else{
   			$response = ['status'=>'error','message'=>'unable to upload file!'];
@@ -65,20 +65,18 @@ class ImportdatasetController extends Controller
 
     }
 
-    protected function getColumns(){
+    public function getColumns(){
 
         $model = DL::orderBy('created_at','desc')->first();
-        $records = $model->dataset_records;
+        $records = json_decode($model->dataset_records);
         $headers = [];
         foreach($records[0] as $key => $val){
-            foreach($val as $k => $v){
-                if(!in_array($k,$headers)){
-                    $headers[] = $k;
-                }
+            if(!in_array($key,$headers)){
+                $headers[] = $key;
             }
         }
 
-        return $headers;
+        return ['status'=>'sucess','data'=>['columns'=>$headers,'dataset_id'=>$model->id]];
     }
 
     function storeInDatabase($filename, $origName){
