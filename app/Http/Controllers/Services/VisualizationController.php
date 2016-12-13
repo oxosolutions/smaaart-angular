@@ -93,4 +93,9 @@ class VisualizationController extends Controller
 
         return ['status'=>'success','records'=>$responseArray];
     }
+
+		public function storeVisualOptionsAndSettings(){
+
+			
+		}
 }

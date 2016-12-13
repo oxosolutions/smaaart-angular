@@ -16,13 +16,13 @@ class GoalApiController extends Controller
         $goal = Goal::where('goal_number',$id)->get();
         $response =[];
         foreach($goal as $key => $value){
-            
+
             $response['goal']['goal_id'] = $value->id;
             $response['goal']['goal_number'] = $value->goal_number;
-            $response['goal']['goal_title'] = $value->goal_title; 
+            $response['goal']['goal_title'] = $value->goal_title;
             $response['goal']['goal_tagline'] = $value->goal_tagline;
-            $response['goal']['goal_description'] = $value->goal_description; 
-            $response['goal']['goal_url'] = $value->goal_url; 
+            $response['goal']['goal_description'] = $value->goal_description;
+            $response['goal']['goal_url'] = $value->goal_url;
             $response['goal']['goal_icon'] = $value->goal_icon;
             $response['goal']['goal_icon_url'] = $value->goal_icon_url;
             $response['goal']['goal_color_hax'] = $value->goal_color_hex;
@@ -33,27 +33,28 @@ class GoalApiController extends Controller
 
             $resIndex = 0;
             $tarIndex = 0;
-            $intIndex =0;
-            $schIndex =0;
-            $minIndex =0;
+            $intIndex = 0;
+            $schIndex = 0;
+            $minIndex = 0;
+            $inIndex  = 0;
             foreach ($value->ministry as  $ministryData) {
-           
-                $response['ministry'][$minIndex]['id'] = $ministryData->ministry->id;
-                $response['ministry'][$minIndex]['ministry_id'] = $ministryData->ministry->ministry_id;
-                $response['ministry'][$minIndex]['ministry_title'] =$ministryData->ministry->ministry_title;
-                $response['ministry'][$minIndex]['ministry_description']  = $ministryData->ministry->ministry_description;
-                $response['ministry'][$minIndex]['ministry_icon']  =$ministryData->ministry->ministry_icon;
-                $response['ministry'][$minIndex]['ministry_image'] = $ministryData->ministry->ministry_image;
-                $response['ministry'][$minIndex]['ministry_phone'] =$ministryData->ministry->ministry_phone;
-                $response['ministry'][$minIndex]['ministry_ministers']= $ministryData->ministry->ministry_ministers;
-                $response['ministry'][$minIndex]['ministry_order'] =$ministryData->ministry->ministry_order;
-                $response['ministry'][$minIndex]['created_by'] = $ministryData->ministry->created_by;
+
+                $response['ministry'][$minIndex]['id']                  = $ministryData->ministry->id;
+                $response['ministry'][$minIndex]['ministry_id']         = $ministryData->ministry->ministry_id;
+                $response['ministry'][$minIndex]['ministry_title']      = $ministryData->ministry->ministry_title;
+                $response['ministry'][$minIndex]['ministry_description']= $ministryData->ministry->ministry_description;
+                $response['ministry'][$minIndex]['ministry_icon']       = $ministryData->ministry->ministry_icon;
+                $response['ministry'][$minIndex]['ministry_image']      = $ministryData->ministry->ministry_image;
+                $response['ministry'][$minIndex]['ministry_phone']      = $ministryData->ministry->ministry_phone;
+                $response['ministry'][$minIndex]['ministry_ministers']  = $ministryData->ministry->ministry_ministers;
+                $response['ministry'][$minIndex]['ministry_order']      = $ministryData->ministry->ministry_order;
+                $response['ministry'][$minIndex]['created_by']          = $ministryData->ministry->created_by;
                 $minIndex++;
 
             }
             foreach ($value->schema as  $schemaData) {
 
-                $response["schema"][$schIndex]['id']                = $schemaData->schemas->id;   
+                $response["schema"][$schIndex]['id']                = $schemaData->schemas->id;
                 $response["schema"][$schIndex]["schema_id"]         = $schemaData->schemas->schema_id;
                 $response["schema"][$schIndex]["schema_title"]      = $schemaData->schemas->schema_title;
                 $response["schema"][$schIndex]["schema_image"]      = $schemaData->schemas->schema_image;
@@ -61,10 +62,10 @@ class GoalApiController extends Controller
                 $response["schema"][$schIndex]["created_by"]        = $schemaData->schemas->created_by;
                 $schIndex++;
             }
-           
+
             foreach ($value->intervention as  $intervenData) {
                 # code...
-                $response['intervention'][$intIndex]["id"]    = $intervenData->interventions->id;    
+                $response['intervention'][$intIndex]["id"]              = $intervenData->interventions->id;
                 $response['intervention'][$intIndex]["intervent_id"]    = $intervenData->interventions->intervent_id;
                 $response['intervention'][$intIndex]["intervent_title"] = $intervenData->interventions->intervent_title;
                 $response['intervention'][$intIndex]["intervent_image"] = $intervenData->interventions->intervent_image;
@@ -82,7 +83,13 @@ class GoalApiController extends Controller
                 $response['target'][$tarIndex]["target_image"]       =   $targetData->targets->target_image;
                 $response['target'][$tarIndex]["target_desc"]        =   $targetData->targets->target_desc;
                 $response['target'][$tarIndex]["created_by"]         =   $targetData->targets->created_by;
+                $indicatorsIndex = 0;
+                foreach($targetData->targets->indicators as $inKey => $indVal){
 
+                    $response['target'][$tarIndex]['indicators'][$indicatorsIndex]['id']              = $indVal->id;
+                    $response['target'][$tarIndex]['indicators'][$indicatorsIndex]['indicator_title'] = $indVal->indicator_title;
+                    $indicatorsIndex++;
+                }
                 $tarIndex++;
             }
             foreach($value->resources as $res){
@@ -93,12 +100,20 @@ class GoalApiController extends Controller
                 $response['resource'][$resIndex]['resource_desc'] = $res->resources->resource_desc;
                 $response['resource'][$resIndex]['created_by'] = $res->resources->created_by;
 
-                $resIndex++;   
+                $resIndex++;
             }
 
+            foreach($value->target as $indKeys => $indVal){
+
+                foreach($indVal->targets->indicators as $inK => $inV){
+                    $response['indicators'][$inIndex]['id'] = $inV->id;
+                    $response['indicators'][$inIndex]['indicator_title'] = $inV->indicator_title;
+                    $inIndex++;
+                }
+            }
 
         }
-        return  ['status'=>'success','records'=>[$response]]; 
+        return  ['status'=>'success','records'=>[$response]];
     }
 
     public function goalsList(){
@@ -141,9 +156,9 @@ class GoalApiController extends Controller
 
     					//echo "Test";
     				}
-    			}
-    			
-    			$inIndex++;
+			    }
+
+				$inIndex++;
     		}
 
             $inIndex = 0;
@@ -160,7 +175,7 @@ class GoalApiController extends Controller
                         //echo "Test";
                     }
                 }
-                
+
                 $inIndex++;
             }
 
@@ -186,7 +201,7 @@ class GoalApiController extends Controller
                         //echo "Test";
                     }
                 }
-                
+
                 $inIndex++;
             }
 
@@ -203,7 +218,7 @@ class GoalApiController extends Controller
                         //echo "Test";
                     }
                 }
-                
+
                 $inIndex++;
             }
 
@@ -220,13 +235,13 @@ class GoalApiController extends Controller
                         //echo "Test";
                     }
                 }
-                
+
                 $inIndex++;
             }
 
             $inIndex = 0;
             foreach($goal->target as $indKeys => $indVal){
-                
+
                 foreach($indVal->targets->indicators as $inK => $inV){
                     $responseArray[$index]['indicators'][$inIndex]['id'] = $inV->id;
                     $responseArray[$index]['indicators'][$inIndex]['indicator_title'] = $inV->indicator_title;
@@ -267,7 +282,7 @@ class GoalApiController extends Controller
         }
         $responseArray = [];
         $index = 0;
-        
+
 
         $responseArray[$index]['goal_id'] = $model->id;
         $responseArray[$index]['goal_number'] = $model->goal_number;
@@ -304,7 +319,7 @@ class GoalApiController extends Controller
                     //echo "Test";
                 }
             }
-            
+
             $inIndex++;
         }
 
@@ -327,7 +342,7 @@ class GoalApiController extends Controller
                     //echo "Test";
                 }
             }
-            
+
             $inIndex++;
         }
 
@@ -344,7 +359,7 @@ class GoalApiController extends Controller
                     //echo "Test";
                 }
             }
-            
+
             $inIndex++;
         }
 
@@ -361,24 +376,24 @@ class GoalApiController extends Controller
                     //echo "Test";
                 }
             }
-            
+
             $inIndex++;
         }
         $inIndex = 0;
         foreach($model->target as $indKeys => $indVal){
-            
+
             foreach($indVal->targets->indicators as $inK => $inV){
                 $responseArray[$index]['indicators'][$inIndex]['id'] = $inV->id;
                 $responseArray[$index]['indicators'][$inIndex]['indicator_title'] = $inV->indicator_title;
                 $inIndex++;
             }
         }
-		$responseArray[$index]['ministry_order'] = $model->ministry_order;
-		$responseArray[$index]['created_by'] = $model->created_by;
-		$responseArray[$index]['created_at'] = $model->created_at->format('Y-m-d H:i:s');
-		$index++;
-       
-		$response = ['status'=>'success', 'record'=>$responseArray];
+    		$responseArray[$index]['ministry_order'] = $model->ministry_order;
+    		$responseArray[$index]['created_by'] = $model->created_by;
+    		$responseArray[$index]['created_at'] = $model->created_at->format('Y-m-d H:i:s');
+    		$index++;
+
+    		$response = ['status'=>'success', 'record'=>$responseArray];
         return $response;
     }
 }
