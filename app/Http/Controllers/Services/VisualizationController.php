@@ -94,8 +94,28 @@ class VisualizationController extends Controller
         return ['status'=>'success','records'=>$responseArray];
     }
 
-		public function storeVisualOptionsAndSettings(){
+		public function storeVisualOptionsAndSettings(Request $request){
 
-			
+			if(!$this->updateValidate($request)){
+				return ['status'=>'error','message'=>'Requierd fields are missing!'];
+			}
+			$model = VS::findOrFail($request->id);
+			$model->options = $request->options;
+			$model->settings = $request->settings;
+			$model->save();
+
+			return ['status'=>'success','message'=>'Settings updated Successfully!'];
+
+		}
+
+		protected function updateValidate($request){
+
+			if($request->has('options') && $request->has('settings') && $request->has('id')){
+
+				return true;
+			}else{
+
+				return false;
+			}
 		}
 }
