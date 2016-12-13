@@ -15,8 +15,8 @@ class AddColumnsInVisualisationTable extends Migration
     {
         Schema::table('visualisations',function($table){
 
-            $table->text('options')->after('visual_name');
-            $table->text('settings')->after('visual_name');
+            $table->text('options')->after('visual_name')->nullable();
+            $table->text('settings')->after('visual_name')->nullable();
         });
     }
 
@@ -29,8 +29,8 @@ class AddColumnsInVisualisationTable extends Migration
     {
         Schema::table('visualisations', function($table){
 
-            $table->drop('options'); 
-            $table->drop('settings'); 
+            $table->drop('options');
+            $table->drop('settings');
         });
     }
 }

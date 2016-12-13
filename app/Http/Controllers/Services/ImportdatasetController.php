@@ -28,6 +28,7 @@ class ImportdatasetController extends Controller
     		$uploadFile = $request->file('file')->move($path, $filename);
     		$this->storeInDatabase($path.'/'.$filename, $request->file('file')->getClientOriginalName());
     	}
+
   		if($uploadFile){
   			$response = ['status'=>'success','message'=>'file uploaded successfully!'];
   			return $response;
@@ -62,6 +63,15 @@ class ImportdatasetController extends Controller
     	}
 
 
+    }
+
+    protected function getColumns(){
+
+        $model = DL::orderBy('created_at','desc')->first();
+        $records = $model->dataset_records;
+        foreach($records[0] as $key => $val){
+
+        }
     }
 
     function storeInDatabase($filename, $origName){

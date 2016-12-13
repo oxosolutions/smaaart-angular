@@ -18,7 +18,7 @@ class VisualizationController extends Controller
             $response = ['status'=>'error','error'=>$validate['error']];
             return $response;
         }
-        
+
         try{
 
             $model = new VS();
@@ -37,13 +37,13 @@ class VisualizationController extends Controller
                 return ['status'=>'error','message'=>'something went wrong!'];
             }
         }
-		
+
 		return ['status'=>'success','message'=>'Successfully created!'];
 	}
 
     protected function validateRequest($request){
 
-        if($request->has('dataset') && $request->has('visual_name') && $request->has('options') && $request->has('settings')){
+        if($request->has('dataset') && $request->has('visual_name')){
 
             return ['status'=>'true','errors'=>''];
         }else{
