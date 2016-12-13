@@ -13,9 +13,10 @@ class AddColumnsInDatasetTable extends Migration
      */
     public function up()
     {
-        /*Schema::table('datasets_lists', function($table){
-            $table->
-        });*/
+        Schema::table('datasets_lists', function($table){
+            $table->text('dataset_columns')->nullable();
+            $table->boolean('validated')->default('0');
+        });
     }
 
     /**
@@ -25,6 +26,9 @@ class AddColumnsInDatasetTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('datasets_lists', function($table){
+            $table->drop('dataset_columns');
+            $table->drop('validated');
+        });
     }
 }
