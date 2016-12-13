@@ -17,8 +17,8 @@ class Designation extends Model
     	return self::orderBy('id')->pluck('designation','id');
     }
 
-    public function checkDesignation()
+    public static function getDesignation($id)
     {
-    	
+    	return self::where('id',$id)->first()->designation;
     }
 }

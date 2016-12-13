@@ -1,6 +1,6 @@
 <aside class="main-sidebar">
     <section class="sidebar">
-     
+
       <ul class="sidebar-menu" style="padding-bottom: 50px">
         <li class="header">MAIN NAVIGATION</li>
         <li class="{{Request::is('/')?'active':''}}">
@@ -22,6 +22,28 @@
             <li class="{{Request::is('api_users/create')?'active':''}}"><a href="{{route('api.create_users_meta')}}"><i class="fa fa-circle-o"></i>Add User Meta</a></li>
           </ul>
         </li>
+
+
+
+
+      <li class="treeview {{in_array(Request::path(),array('pages/create','pages'))?'active':''}}">
+          <a href="#">
+            <i class="fa fa-file-o"></i>
+            <span>App Pages</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="{{Request::is('pages')?'active':''}}"><a href="{{ route('pages.list') }}"><i class="fa fa-circle-o"></i> List Pages</a></li>
+            <li class="{{Request::is('pages/create')?'active':''}}"><a href="{{ route('pages.create') }}"><i class="fa fa-circle-o"></i> Add New</a></li>
+          </ul>
+        </li>
+
+
+
+
+
 
         <li class="treeview {{in_array(Request::path(),array('designations/create','designations'))?'active':''}}">
           <a href="#">
@@ -149,7 +171,7 @@
             <li class="{{Request::is('intervention/create')?'active':''}}"><a href="{{ route('intervention.create') }}"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
         </li>
-        
+
         <li class="treeview {{in_array(Request::path(),array('visualisation/create','visualisation'))?'active':''}}">
           <a href="#">
             <i class="fa fa-arrows-h"></i>

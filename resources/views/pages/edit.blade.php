@@ -5,13 +5,14 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Detail User Meta
-        <small>Api User Meta</small>
+        Create Page Form
+        <small>Pages
+        </small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="{{url('api_users')}}">Api User Meta</a></li>
-        <li class="active">Detail New User Meta</li>
+        <li><a href="{{url('pages')}}">Pages</a></li>
+        <li class="active">Create Pages</li>
       </ol>
     </section>
 
@@ -23,24 +24,25 @@
           <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Detail New User Meta</h3>
+              <h3 class="box-title">Create Page</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-             
-              @include('apiusers._user_detail')
-
+              {!! Form::model($model, ['method' => 'PATCH','route'=>['pages.update', $model->id], 'files'=>true]) !!}
+                @include('pages._form')
               <div class="box-footer">
+                {!! Form::submit('Save Page', ['class' => 'btn btn-primary']) !!}
               </div>
+              {!! Form::close() !!}
 
           </div>
           <!-- /.box -->
 
-               
+
 
         </div>
         <!--/.col (left) -->
-        
+
       </div>
       <!-- /.row -->
     </section>

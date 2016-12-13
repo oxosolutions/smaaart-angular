@@ -45,4 +45,30 @@ class DatasetsController extends Controller
 
     	return ['status'=>'success','records'=>$responseArray];
     }
+
+    public function getFormatedDataset($id){
+
+        $model = DL::find($id);
+        $records = json_decode($model->dataset_records);
+
+        $headers = [];
+        $index = 0;
+        foreach($records[0] as $key =>  $value){
+            if(!in_array($key, $headers)){
+
+                $headers[$index]['id'] = $key;
+                $headers[$index]['label'] = $key;
+                $headers[$index]['type'] = 'string';
+            }
+            $index++;
+        }
+        foreach($records as $key => $value){
+
+            foreach($value as $ky => $val){
+                
+            }
+        }
+
+        return ['status'=>'success','data'=>['column'=>$headers,'records'=>$records]];
+    }
 }

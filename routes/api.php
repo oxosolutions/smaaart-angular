@@ -13,19 +13,15 @@ use Illuminate\Http\Request;
 |
 */
 
-
+//Routes with auth
 Route::group(['prefix' => 'v1'], function () {
+
 	Route::group(['middleware'=>['cors']], function(){
 		Route::post('/auth','Services\ApiauthController@Authenicates');
 		Route::post('/register',['as'=>'register','uses'=>'Services\ApiauthController@Register']);
 	});
-});
-
-
-Route::group(['prefix' => 'v1'], function () {
-
 	Route::get('/dataset/download/{fileName}',['as'=>'dataset.download','uses'=>'Services\ExportDatasetController@downloadFile']);
-	
+
 	Route::group(['middleware'=>['auth:api','cors']], function(){
 
 		Route::get('/users', function (Request $request) {
@@ -42,18 +38,18 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/goals/{id}',['as'=>'goal.single','uses'=>'Services\GoalApiController@singleGoal']);
 		Route::get('/dataset/export/{id}',['as'=>'dataset.export','uses'=>'Services\ExportDatasetController@export']);
 		Route::get('/schema',['as'=>'Services\SchemaApiController','uses'=>'Services\SchemaApiController@allSchema']);
-		// Route::get('/csv',['as'=>'csv','uses'=>'Services\ImportdatasetController@checkCSV']);
-
 		Route::get('/goalData/{id}','Services\GoalApiController@goalData');
 		Route::post('/store/visual',['as'=>'visualization.store','uses'=>'Services\VisualizationController@store']);
-
-
 		Route::get('/visual/list',['as'=>'visualization.list','uses'=>'Services\VisualizationController@visualList']);
 		Route::get('/visual/{id}',['as'=>'visualization.single','uses'=>'Services\VisualizationController@visualByID']);
-
 		Route::get('/indicators',['as'=>'indicators','uses'=>'Services\IndicatorsController@indicators']);
-
-
+		Route::get('/pages',['as'=>'pages.list','uses'=>'Services\PagesApiController@getAllPages']);
+		Route::get('/pages/{page_slug}',['as'=>'pages.by_slug','uses'=>'Services\PagesApiController@getPageBySlug']);
+		Route::get('/dataset/chartdata/{id}',['as'=>'list','uses'=>'Services\DatasetsController@getFormatedDataset']);
+		// API routes
+		Route::get('routes',function(){
+			return view('roles.index');
+		});
 
 	});
 });
@@ -61,4 +57,3 @@ Route::group(['prefix' => 'v1'], function () {
 /*Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');*/
-

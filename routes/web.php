@@ -1,16 +1,4 @@
 <?php
-
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| This file is where you may define all of the routes that are handled
-| by your application. Just tell Laravel the URIs it should respond
-| to using a Closure or controller method. Build something great!
-|
-*/
-
 Route::group(['middleware'=>'auth'], function(){
 
 	Route::get('/', ['as'=>'home', 'uses'=>'DashboardController@index']);
@@ -55,9 +43,7 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/api_users/create', ['as'=>'api.create_users', 'uses'=>'ApiusersController@create']);
 	Route::post('/api_users/store', ['as'=>'api.store_users', 'uses'=>'ApiusersController@store']);
 	Route::get('/api_users_meta/create', ['as'=>'api.create_users_meta', 'uses'=>'ApiusersController@createUserMeta']);
-	
 	Route::post('/api_users_meta/store', ['as'=>'api.store_users_meta', 'uses'=>'ApiusersController@storeUserMeta']);
-
 	Route::get('user_detail/{id}',['as'=>'api.user_detail', 'uses'=>'ApiusersController@userDetail']);
 
 
@@ -98,6 +84,15 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::patch('/indicators/update/{id}',['as'=>'indicators.update', 'uses'=>'IndicatorsController@update']);
 
 	/*Routes For indicators resources*/
+	Route::get('/pages',['as'=>'pages.list','uses'=>'PagesController@index']);
+	Route::get('/pages_list',['as'=>'pages.list.ajax','uses'=>'PagesController@indexData']);
+	Route::get('/pages/create',['as'=>'pages.create','uses'=>'PagesController@create']);
+	Route::post('/pages/store',['as'=>'pages.store','uses'=>'PagesController@store']);
+	Route::get('/pages/delete/{id}',['as'=>'pages.delete', 'uses'=>'PagesController@destroy']);
+	Route::get('/pages/edit/{id}',['as'=>'pages.edit', 'uses'=>'PagesController@edit']);
+	Route::patch('/pages/update/{id}',['as'=>'pages.update', 'uses'=>'PagesController@update']);
+
+	/*Routes For indicators resources*/
 	Route::get('/visualisation',['as'=>'visualisation.list','uses'=>'VisualisationController@index']);
 	Route::get('/visualisation_list',['as'=>'visualisation.list.ajax','uses'=>'VisualisationController@indexData']);
 	Route::get('/visualisation/create',['as'=>'visualisation.create','uses'=>'VisualisationController@create']);
@@ -114,7 +109,7 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/dataset/delete/{id}',['as'=>'datasets.delete', 'uses'=>'DataSetsController@destroy']);
 	Route::get('/dataset/edit/{id}',['as'=>'datasets.edit', 'uses'=>'DataSetsController@edit']);
 	Route::patch('/dataset/update/{id}',['as'=>'datasets.update', 'uses'=>'DataSetsController@update']);
-	
+
 	/*Routes For API goal intervention*/
 	Route::get('/intervention',['as'=>'intervention.list','uses'=>'GoalsInterventionController@index']);
 	Route::get('/intervention_list',['as'=>'intervention.list.ajax','uses'=>'GoalsInterventionController@indexData']);
@@ -126,6 +121,7 @@ Route::group(['middleware'=>'auth'], function(){
 
 	/*API Config Routes*/
 	Route::get('/config',['as'=>'api.config','uses'=>'ApiConfigController@index']);
+
 
 
 });

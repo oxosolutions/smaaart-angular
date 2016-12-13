@@ -29,9 +29,6 @@
             <!-- form start -->
               {!! Form::open(['route' => 'api.store_users_meta', 'files'=>true]) !!}
               @include('apiusers._form_user_meta')
-
-                 
-                
               <div class="box-footer">
                 {!! Form::submit('Save User', ['class' => 'btn btn-primary']) !!}
               </div>

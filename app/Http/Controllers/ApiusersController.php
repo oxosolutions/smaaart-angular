@@ -17,13 +17,10 @@ class ApiusersController extends Controller
     }
     
     public function index(){
-
     	$plugins = [
-
-    			'css' => ['datatables'],
-    			'js'  => ['datatables','custom'=>['gen-datatables']]
-    	];
-
+                    	'css' => ['datatables'],
+                    	'js'  => ['datatables','custom'=>['gen-datatables']]
+                   ];
     	return view('apiusers.index',$plugins);
     }
 
@@ -35,7 +32,6 @@ class ApiusersController extends Controller
             })
             ->make(true);
     }
-
 
     public function create(){
         $plugins = [
@@ -213,10 +209,7 @@ class ApiusersController extends Controller
            $ud['user_id'] = $userName[0]->id;
            $userDetail = UM::where('user_id',$id)->get();
 
-           echo "<pre>";
-           print_r($userDetail);
-           exit();
-           
+
             foreach ($userDetail as $key => $value) {
               // echo $value->key ."--->".$value->value."<br>";
                if($value->key=="phone")
@@ -235,27 +228,23 @@ class ApiusersController extends Controller
                 {
                    $ud['profile_pic'] = $value->value;
                 }
-             if($value->key=="ministry")
+                if($value->key=="ministry")
                 {
                    $minId = $value->value;
                 }
-            if($value->key=="department")
+                if($value->key=="department")
                 {
                    $depId = $value->value;
                 }
             }
 
-           $DepId =  json_decode($depId);
-           $MinId =   json_decode($minId);
+           $DepId =  json_decode(@$depId);
+           $MinId =   json_decode(@$minId);
 
             $depDetail = DEP::select('id','dep_code','dep_name')->WhereIN('id',$DepId)->get();
-           
             $minDetail = MIN::select('id','ministry_id','ministry_title')->whereIn('id',$MinId)->get();
 
-           // dump($ud);
-    // dump($depDetail);
-
-         return view('apiusers.user_detail' , ['user_detail'=>$ud,'depDetail'=>$depDetail ,'minDetail' =>$minDetail ]);
+            return View::make('apiusers.user_detail')->with(['user_detail'=>$ud,'depDetail'=>$depDetail ,'minDetail' =>$minDetail ]);
         }
 
 

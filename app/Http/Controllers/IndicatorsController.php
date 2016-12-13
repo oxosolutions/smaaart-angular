@@ -74,7 +74,7 @@ class IndicatorsController extends Controller
     public function edit($id){
 
     	$model = IC::findOrFail($id);
-    	
+
     	return view('indicators.edit',['model'=>$model]);
     }
 
