@@ -22,4 +22,5 @@ class Permisson extends Model
     	return $data;
     }
 
+    
 }
