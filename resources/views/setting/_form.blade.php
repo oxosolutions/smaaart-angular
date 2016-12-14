@@ -13,7 +13,11 @@
 @foreach(App\Permisson::permisson_data() as $val)
 
 
-<li><label>{{$val->display_name}}</label><input name ="permisson[]" type="checkbox" value="{{$val->id}}" ></li>
+<li><label>{{$val->display_name}}</label> Read<input name ="read[]" type="checkbox" value="{{$val->id}}" >
+ Write<input name ="write[]" type="checkbox" value="{{$val->id}}" >
+
+
+</li>
 
 @endforeach
 </ul>

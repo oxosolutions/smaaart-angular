@@ -118,8 +118,8 @@ class VisualizationController extends Controller
 
 			$model = VS::find($id);
 
-			if(!empty($mode)){
-				$mdoel->delete();
+			if(!empty($model)){
+				$model->delete();
 				return ['status'=>'success','message'=>'Successfully deleted visaulization!','deleted_id'=>$id];
 			}else{
 				return ['status'=>'error','message'=>'No visualization found with this id!'];

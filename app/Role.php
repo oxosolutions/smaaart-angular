@@ -20,4 +20,11 @@ class Role extends Model
 			return $result;
 		}
 
+		public function permisson()
+		{
+			return $this->morphMany('App\PermissonRole');
+		}
+
+		
+
 }
