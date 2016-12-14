@@ -16,7 +16,7 @@ class CreatePermissonTable extends Migration
         //
         Schema::create('permissons',function(Blueprint $table){
             $table->increments('id');
-            $table->unique('name');
+            $table->string('name')->unique();
             $table->string('display_name')->nullable();
             $table->string('route')->nullable();
             $table->softDeletes();
