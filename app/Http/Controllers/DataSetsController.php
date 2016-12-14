@@ -14,10 +14,9 @@ class DataSetsController extends Controller
     public function index(){
 
     	$plugins = [
-
-    			'css' => ['datatables'],
-    			'js'  => ['datatables','custom'=>['gen-datatables']]
-    	];
+        			'css' => ['datatables'],
+        			'js'  => ['datatables','custom'=>['gen-datatables']]
+    	           ];
 
     	return view('datasets.index',$plugins);
     }
@@ -42,7 +41,7 @@ class DataSetsController extends Controller
     	$plugin = [
     				'css' => ['fileupload'],
     				'js' => ['fileupload','custom'=>['dataset-create']],
-    	];
+    	          ];
     	return view('datasets.create',$plugin);
     }
 
@@ -87,13 +86,11 @@ class DataSetsController extends Controller
 
     function storeInDatabase($filename, $origName){
 
-
     	$FileData = [];
     	$data = Excel::load($filename, function($reader){
     	})->get();
 
     	foreach($data as $key => $value){
-
 			$FileData[] = $value->all();
     	}
 		$model = new DL();
@@ -116,10 +113,9 @@ class DataSetsController extends Controller
     protected function modelValidate($request){
 
     	$rules = [
-
     			'dataset_file' => 'required',
     			'select_operation' => 'required'
-    	];
+    	       ];
 
     	if($request->select_operation == 'append' || $request->select_operation == 'replace'){
 

@@ -13,10 +13,9 @@ class VisualisationController extends Controller
     function index(){
 
     	$plugin = [
-
-    			'css'  =>  ['datatables'],
-    			'js'   =>  ['datatables','custom'=>['gen-datatables']]
-    	];
+                    'css'  =>  ['datatables'],
+                    'js'   =>  ['datatables','custom'=>['gen-datatables']]
+    	           ];
 
     	return view('visualisation.index',$plugin);
     }

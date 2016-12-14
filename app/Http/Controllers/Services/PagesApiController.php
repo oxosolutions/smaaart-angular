@@ -1,13 +1,14 @@
 <?php
 
-  namespace App\Http\Controllers\Services;
+namespace App\Http\Controllers\Services;
 
-  use Illuminate\Http\Request;
-  use App\Http\Controllers\Controller;
-  use App\Page;
-  class PagesApiController extends Controller
-  {
-      public function getAllPages(){
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Page;
+
+class PagesApiController extends Controller
+{
+    public function getAllPages(){
 
         $model = Page::get();
         $index = 0;
@@ -24,20 +25,20 @@
         }
 
         return ['status'=>'success','records'=>$responseArray];
-      }
+    }
 
-      public function getPageBySlug($slug){
+    public function getPageBySlug($slug){
 
-          $model = Page::where(['page_slug'=>$slug,'status'=> 1])->first();
+        $model = Page::where(['page_slug'=>$slug,'status'=> 1])->first();
 
-          $responseArray = [];
-          $responseArray['pages']['page_title'] = $model->page_title;
-          $responseArray['pages']['page_slug'] = $model->page_slug;
-          $responseArray['pages']['page_content'] = $model->content;
-          $responseArray['pages']['page_image'] = asset('page_data').'/'.$model->page_image;
-          $responseArray['pages']['page_status'] = $model->status;
-          $responseArray['pages']['page_status'] = $model->createdBy->name;
+        $responseArray = [];
+        $responseArray['pages']['page_title'] = $model->page_title;
+        $responseArray['pages']['page_slug'] = $model->page_slug;
+        $responseArray['pages']['page_content'] = $model->content;
+        $responseArray['pages']['page_image'] = asset('page_data').'/'.$model->page_image;
+        $responseArray['pages']['page_status'] = $model->status;
+        $responseArray['pages']['page_status'] = $model->createdBy->name;
 
-          return ['status'=>'success','records'=>$responseArray];
-      }
-  }
+        return ['status'=>'success','records'=>$responseArray];
+    }
+}

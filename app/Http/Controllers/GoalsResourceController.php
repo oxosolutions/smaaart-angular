@@ -87,7 +87,7 @@ class GoalsResourceController extends Controller
     				'resource_id' => 'required',
     				'resource_title' => 'required',
     				'resource_desc' => 'required'
-    	];
+    	         ];
 
     	$this->validate($request, $rules);
     }

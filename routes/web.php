@@ -1,6 +1,36 @@
 <?php
 Route::group(['middleware'=>'auth'], function(){
 
+	//Role for user
+
+	Route::get('/role/create',['as'=>'role.create', 'uses'=>'RoleController@create']);
+	Route::post('/role/store', ['as'=>'role.store', 'uses'=>'RoleController@store']);
+	Route::get('/roles', ['as'=>'role.list', 'uses'=>'RoleController@index']);
+	Route::get('/list_roles', ['as'=>'role.list_role.ajax', 'uses'=>'RoleController@list_role']);
+	Route::get('/role/edit/{id}',['as'=>'role.edit', 'uses'=>'RoleController@edit']);
+	Route::patch('/role/update/{id}', ['as'=>'role.update', 'uses'=>'RoleController@update']);
+	Route::get('/role/delete/{id}', ['as'=>'role.delete', 'uses'=>'RoleController@destroy']);
+
+// permisson 
+	Route::get('/permisson/create',['as'=>'permisson.create', 'uses'=>'PermissonController@create']);
+	Route::post('/permisson/store', ['as'=>'permisson.store', 'uses'=>'PermissonController@store']);
+	Route::get('/permisson', ['as'=>'permisson.list', 'uses'=>'PermissonController@index']);
+	Route::get('/list_permisson', ['as'=>'permisson.list_role.ajax', 'uses'=>'PermissonController@list_permisson']);
+	Route::get('/permisson/edit/{id}',['as'=>'permisson.edit', 'uses'=>'PermissonController@edit']);
+	Route::patch('/permisson/update/{id}', ['as'=>'permisson.update', 'uses'=>'PermissonController@update']);
+	Route::get('/permisson/delete/{id}', ['as'=>'permisson.delete', 'uses'=>'PermissonController@destroy']);
+
+//Role permisson Setting
+
+Route::get('/setting/create',['as'=>'setting.create', 'uses'=>'SettingController@create']);
+	Route::post('/permisson/store', ['as'=>'permisson.store', 'uses'=>'PermissonController@store']);
+	Route::get('/permisson', ['as'=>'permisson.list', 'uses'=>'PermissonController@index']);
+	Route::get('/list_permisson', ['as'=>'permisson.list_role.ajax', 'uses'=>'PermissonController@list_permisson']);
+	Route::get('/permisson/edit/{id}',['as'=>'permisson.edit', 'uses'=>'PermissonController@edit']);
+	Route::patch('/permisson/update/{id}', ['as'=>'permisson.update', 'uses'=>'PermissonController@update']);
+	Route::get('/permisson/delete/{id}', ['as'=>'permisson.delete', 'uses'=>'PermissonController@destroy']);
+
+
 	Route::get('/', ['as'=>'home', 'uses'=>'DashboardController@index']);
 
 	/*Routes of Department Operations*/

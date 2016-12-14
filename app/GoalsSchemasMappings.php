@@ -10,13 +10,10 @@ class GoalsSchemasMappings extends Model
     use SoftDeletes;
 
     protected $fillable = ['goal_id','goal_type','schemas_id'];
-
     protected $dates = ['deleted_at'];
-
     protected $softDelete = true;
 
     public function schemas(){
-
     	return $this->belongsTo('App\GoalsSchema');
     }
 }

@@ -2,7 +2,6 @@
 
 @section('content')
  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
         Create Department Form
@@ -16,36 +15,23 @@
       </ol>
     </section>
 
-    <!-- Main content -->
     <section class="content">
       <div class="row">
-        <!-- left column -->
         <div class="col-md-12">
-          <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Create Department</h3>
             </div>
-            <!-- /.box-header -->
-            <!-- form start -->
               {!! Form::open(['route' => 'department.store', 'files'=>true]) !!}
-                @include('departments._form')                
+                @include('departments._form')
               <div class="box-footer">
                 {!! Form::submit('Save Department', ['class' => 'btn btn-primary']) !!}
               </div>
               {!! Form::close() !!}
 
           </div>
-          <!-- /.box -->
-
-               
-
         </div>
-        <!--/.col (left) -->
-        
       </div>
-      <!-- /.row -->
     </section>
-    <!-- /.content -->
   </div>
 @endsection

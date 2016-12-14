@@ -198,6 +198,34 @@
       ]
     });
 
+     $('#roles').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: route()+'/list_roles',
+      columns: [
+            { data: 'name', name: 'name' },
+            { data: 'display_name', name: 'display_name' },
+            { data: 'description', name: 'description' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },
+      ]
+    });
+
+
+
+     $('#permisson').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: route()+'/list_permisson',
+      columns: [
+            { data: 'name', name: 'name' },
+            { data: 'display_name', name: 'display_name' },
+            { data: 'route', name: 'route' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },
+      ]
+    });
+
     $('body').on('click','.delete', function(){
 
         if(confirm('Are you sure to delete ?')){

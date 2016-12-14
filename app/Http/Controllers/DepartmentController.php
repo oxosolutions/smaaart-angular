@@ -13,10 +13,9 @@ class DepartmentController extends Controller
     public function index(){
 
     	$plugins = [
-
-    			'css' => ['datatables'],
-    			'js'  => ['datatables','custom'=>['gen-datatables']]
-    	];
+        			'css' => ['datatables'],
+        			'js'  => ['datatables','custom'=>['gen-datatables']]
+    	           ];
 
     	return view('departments.index',$plugins);
     }
@@ -65,10 +64,9 @@ class DepartmentController extends Controller
     protected function modelValidate($request){
 
     	$rules = [
-
-    			'dep_code' => 'required|regex:/^[A-Z a-z 0-9]+$/|min:3',
-    			'dep_name' => 'required|min:3'
-    	];
+        			'dep_code' => 'required|regex:/^[A-Z a-z 0-9]+$/|min:3',
+        			'dep_name' => 'required|min:3'
+    	       ];
 
     	$this->validate($request, $rules);
     }

@@ -46,7 +46,6 @@ class MinistryApiController extends Controller
         $responseArray = [];
         $index = 0;
         
-
         $responseArray[$index]['id'] = $model->id;
         $responseArray[$index]['ministry_id'] = $model->ministry_id;
         $responseArray[$index]['ministry_title'] = $model->ministry_title;
@@ -67,7 +66,6 @@ class MinistryApiController extends Controller
         $responseArray[$index]['created_at'] = $model->created_at->format('Y-m-d H:i:s');
         $index++;
        
-
         return $responseArray;
     }
 }

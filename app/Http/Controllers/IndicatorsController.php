@@ -63,10 +63,9 @@ class IndicatorsController extends Controller
     public function modelValidate($request){
 
     	$rules = [
-
     				'indicator_title'  => 'required',
     				'targets_id'       =>  'required'
-    	];
+    	         ];
 
     	$this->validate($request, $rules);
     }

@@ -2,7 +2,6 @@
 
 @section('content')
  <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
         Create Page Form
@@ -16,18 +15,13 @@
       </ol>
     </section>
 
-    <!-- Main content -->
     <section class="content">
       <div class="row">
-        <!-- left column -->
         <div class="col-md-12">
-          <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Create Page</h3>
             </div>
-            <!-- /.box-header -->
-            <!-- form start -->
               {!! Form::model($model, ['method' => 'PATCH','route'=>['pages.update', $model->id], 'files'=>true]) !!}
                 @include('pages._form')
               <div class="box-footer">
@@ -36,16 +30,8 @@
               {!! Form::close() !!}
 
           </div>
-          <!-- /.box -->
-
-
-
         </div>
-        <!--/.col (left) -->
-
       </div>
-      <!-- /.row -->
     </section>
-    <!-- /.content -->
   </div>
 @endsection

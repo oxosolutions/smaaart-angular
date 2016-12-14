@@ -64,7 +64,6 @@ class GoalApiController extends Controller
             }
 
             foreach ($value->intervention as  $intervenData) {
-                # code...
                 $response['intervention'][$intIndex]["id"]              = $intervenData->interventions->id;
                 $response['intervention'][$intIndex]["intervent_id"]    = $intervenData->interventions->intervent_id;
                 $response['intervention'][$intIndex]["intervent_title"] = $intervenData->interventions->intervent_title;
@@ -76,7 +75,6 @@ class GoalApiController extends Controller
             }
 
             foreach ($value->target as $targetData) {
-
                 $response['target'][$tarIndex]["id"]                 =   $targetData->targets->id;
                 $response['target'][$tarIndex]["target_id"]          =   $targetData->targets->target_id;
                 $response['target'][$tarIndex]["target_title"]       =   $targetData->targets->target_title;
@@ -84,6 +82,7 @@ class GoalApiController extends Controller
                 $response['target'][$tarIndex]["target_desc"]        =   $targetData->targets->target_desc;
                 $response['target'][$tarIndex]["created_by"]         =   $targetData->targets->created_by;
                 $indicatorsIndex = 0;
+
                 foreach($targetData->targets->indicators as $inKey => $indVal){
 
                     $response['target'][$tarIndex]['indicators'][$indicatorsIndex]['id']              = $indVal->id;
@@ -92,6 +91,7 @@ class GoalApiController extends Controller
                 }
                 $tarIndex++;
             }
+
             foreach($value->resources as $res){
                 $response['resource'][$resIndex]['id']  = $res->resources->id;
                 $response['resource'][$resIndex]['resource_id'] = $res->resources->resource_id;
@@ -102,7 +102,7 @@ class GoalApiController extends Controller
 
                 $resIndex++;
             }
-
+            $response['indicators'] = [];
             foreach($value->target as $indKeys => $indVal){
 
                 foreach($indVal->targets->indicators as $inK => $inV){
@@ -170,9 +170,9 @@ class GoalApiController extends Controller
                     $responseArray[$index]['schema'][$inIndex]['schema_desc'] = $vl->schemas->schema_desc;
                 }catch(\Exception $e){
 
+                    //exception
                     if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
 
-                        //echo "Test";
                     }
                 }
 
@@ -196,12 +196,11 @@ class GoalApiController extends Controller
                     }
                 }catch(\Exception $e){
 
+                    //exception
                     if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
 
-                        //echo "Test";
                     }
                 }
-
                 $inIndex++;
             }
 
@@ -213,9 +212,9 @@ class GoalApiController extends Controller
                     $responseArray[$index]['resources'][$inIndex]['resources_image'] = $vl->resources->resources_image;
                 }catch(\Exception $e){
 
+                    //exception
                     if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
 
-                        //echo "Test";
                     }
                 }
 
@@ -230,9 +229,9 @@ class GoalApiController extends Controller
                     $responseArray[$index]['intervention'][$inIndex]['intervention_image'] = $vl->interventions->intervent_image;
                 }catch(\Exception $e){
 
+                    //exception
                     if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
 
-                        //echo "Test";
                     }
                 }
 
@@ -283,7 +282,6 @@ class GoalApiController extends Controller
         $responseArray = [];
         $index = 0;
 
-
         $responseArray[$index]['goal_id'] = $model->id;
         $responseArray[$index]['goal_number'] = $model->goal_number;
 		$responseArray[$index]['goal_title'] = $model->goal_title;
@@ -314,9 +312,9 @@ class GoalApiController extends Controller
                 $responseArray[$index]['schema'][$inIndex]['schema_desc'] = $vl->schemas->schema_desc;
             }catch(\Exception $e){
 
+                //exception
                 if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
 
-                    //echo "Test";
                 }
             }
 
@@ -337,9 +335,9 @@ class GoalApiController extends Controller
                 }
             }catch(\Exception $e){
 
+                //exception
                 if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
 
-                    //echo "Test";
                 }
             }
 
@@ -354,9 +352,9 @@ class GoalApiController extends Controller
                 $responseArray[$index]['resources'][$inIndex]['resources_image'] = $vl->resources->resources_image;
             }catch(\Exception $e){
 
+                //exception
                 if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
 
-                    //echo "Test";
                 }
             }
 
@@ -366,14 +364,14 @@ class GoalApiController extends Controller
         $inIndex = 0;
         foreach($model->intervention as $ky => $vl){
             try{
-                $responseArray[$index]['intervention'][$inIndex]['intervention_id'] = $vl->interventions->intervent_id;
-                $responseArray[$index]['intervention'][$inIndex]['intervention_title'] = $vl->interventions->intervent_title;
-                $responseArray[$index]['intervention'][$inIndex]['intervention_image'] = $vl->interventions->intervent_image;
+                $responseArray[$index]['intervention'][$inIndex]['intervention_id']     = $vl->interventions->intervent_id;
+                $responseArray[$index]['intervention'][$inIndex]['intervention_title']  = $vl->interventions->intervent_title;
+                $responseArray[$index]['intervention'][$inIndex]['intervention_image']  = $vl->interventions->intervent_image;
             }catch(\Exception $e){
 
+                //exception
                 if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
 
-                    //echo "Test";
                 }
             }
 

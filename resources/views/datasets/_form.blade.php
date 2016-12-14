@@ -30,12 +30,10 @@
   </div>
 
 </div>
-<!-- /.box-body -->
 <style type="text/css">
-	
-	.dataset-view-hide{
-		@if(!$errors->has('dataset_list'))
-			display: none;
-		@endif;
-	}
+.dataset-view-hide{
+	@if(!$errors->has('dataset_list'))
+		display: none;
+	@endif;
+}
 </style>

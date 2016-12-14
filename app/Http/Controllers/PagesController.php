@@ -13,10 +13,9 @@
     public function index(){
 
       $plugins = [
-
-          'css'  => ['datatables'],
-          'js'   => ['datatables','custom'=>['gen-datatables']],
-      ];
+                  'css'  => ['datatables'],
+                  'js'   => ['datatables','custom'=>['gen-datatables']],
+              ];
 
       return view('pages.index',$plugins);
     }

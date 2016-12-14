@@ -1,9 +1,7 @@
 @extends('layouts.main')
 
 @section('content')
-<!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
         Pages
@@ -16,7 +14,6 @@
       </ol>
     </section>
 
-    <!-- Main content -->
     <section class="content">
       @if ($message = Session::get('success'))
         <div class="alert alert-success alert-dismissible">
@@ -65,15 +62,9 @@
                 </tfoot>
               </table>
             </div>
-            <!-- /.box-body -->
           </div>
-          <!-- /.box -->
         </div>
-        <!-- /.col -->
       </div>
-      <!-- /.row -->
     </section>
-    <!-- /.content -->
   </div>
-  <!-- /.content-wrapper -->
 @endsection

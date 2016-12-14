@@ -128,8 +128,7 @@ class ApiusersController extends Controller
                      }
                 }
 
-                    //$index = 0;
-                         //$ministryMetaVal; 
+               
                 foreach ($request->ministry as $key => $value){
 
                     $ministryMetaVal[] = $value;
@@ -144,10 +143,6 @@ class ApiusersController extends Controller
                 $ministryMeta->save();
                    
 
-              
-
-               
-               
                 $phoneMeta = new UM();
                 $phoneMeta->key = "phone";
                 $phoneMeta->user_id = $request->user_list;
@@ -207,6 +202,14 @@ class ApiusersController extends Controller
            $userName =  User::select('id','name')->where('id',$id)->get();
            $ud['name'] = $userName[0]->name;
            $ud['user_id'] = $userName[0]->id;
+          $chkDetail = UM::where('user_id',$id)->count();
+          if($chkDetail==0){
+                Session::flash('error','User Detail not available!');
+
+                return redirect()->route('api.users');
+
+          }
+
            $userDetail = UM::where('user_id',$id)->get();
 
 
@@ -244,7 +247,9 @@ class ApiusersController extends Controller
             $depDetail = DEP::select('id','dep_code','dep_name')->WhereIN('id',$DepId)->get();
             $minDetail = MIN::select('id','ministry_id','ministry_title')->whereIn('id',$MinId)->get();
 
-            return View::make('apiusers.user_detail')->with(['user_detail'=>$ud,'depDetail'=>$depDetail ,'minDetail' =>$minDetail ]);
+           return view('apiusers.user_detail', ['user_detail'=>$ud ,'depDetail'=>$depDetail ,'minDetail' =>$minDetail] );
+
+            // return View::make('apiusers.user_detail')->with(['user_detail'=>$ud,'depDetail'=>$depDetail ,'minDetail' =>$minDetail ]);
         }
 
 

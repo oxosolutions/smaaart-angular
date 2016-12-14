@@ -9,10 +9,6 @@
     @endif
   </div>
 
-  
-
-  
-
   <div class="form-group {{ $errors->has('email') ? ' has-error' : '' }}">
     {!!Form::label('email','Email') !!}
     {!!Form::text('email',null, ['class'=>'form-control','placeholder'=>'Enter Email']) !!}
@@ -53,7 +49,7 @@
       </span>
     @endif
   </div>
-  
+
   <div style="clear: both"></div>
 
   <div class="{{ $errors->has('title') ? ' has-error' : '' }} input-group input-group-sm">
@@ -71,18 +67,18 @@
 </div>
 <!-- /.box-body -->
 <style type="text/css">
-  .file-actions{
-      float: right;
-  }
-  .file-upload-indicator{
-     display: none;
-  }
-  .select2-selection__choice{
+.file-actions{
+  float: right;
+}
+.file-upload-indicator{
+ display: none;
+}
+.select2-selection__choice{
 
-      background-color: #3c8dbc !important;
-  }
-  .select2-selection__choice__remove{
+  background-color: #3c8dbc !important;
+}
+.select2-selection__choice__remove{
 
-      color: #FFF !important;
-  }
+  color: #FFF !important;
+}
 </style>

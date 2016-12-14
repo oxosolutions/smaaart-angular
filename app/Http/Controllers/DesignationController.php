@@ -13,10 +13,9 @@ class DesignationController extends Controller
     public function index(){
 
     	$plugins = [
-
-    			'css' =>  ['datatables'],
-    			'js'  =>  ['datatables','custom'=>['gen-datatables']]
-    	];
+        			'css' =>  ['datatables'],
+        			'js'  =>  ['datatables','custom'=>['gen-datatables']]
+        	       ];
     	return view('designations.index', $plugins);
     }
 
@@ -51,9 +50,7 @@ class DesignationController extends Controller
     		throw $e;
     	}
     	
-
     	Session::flash('success','Successfully created!');
-
         return redirect()->route('designations.list');
     }
 

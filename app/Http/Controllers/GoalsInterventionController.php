@@ -15,10 +15,9 @@ class GoalsInterventionController extends Controller
     public function index(){
 
     	$plugins = [
-
-    			'css' => ['datatables'],
-    			'js' => ['datatables','custom'=>['gen-datatables']]
-    	];
+        			'css' => ['datatables'],
+        			'js' => ['datatables','custom'=>['gen-datatables']]
+        	       ];
 
 
     	return view('intervention.index',$plugins);
@@ -36,10 +35,9 @@ class GoalsInterventionController extends Controller
 
      public function create(){
     	$plugins = [
-
-    			'css' => ['fileupload'],
-    			'js' => ['fileupload','custom'=>['schema-create']]
-    	];
+        			'css' => ['fileupload'],
+        			'js' => ['fileupload','custom'=>['schema-create']]
+        	       ];
     	return view('intervention.create',$plugins);
     }
 
@@ -50,11 +48,8 @@ class GoalsInterventionController extends Controller
     	try{
 
     	 	$model = new GI($request->except(['_token']));
-	    	
 	     	$model->created_by = Auth::user()->id;
-
 	     	$path = 'intervention_file';
-
 	     	if($request->hasFile('intervent_image')){
 
                 $filename = date('Y-m-d-H-i-s')."-".$request->file('intervent_image')->getClientOriginalName();
@@ -143,7 +138,7 @@ class GoalsInterventionController extends Controller
     				'intervent_id' => 'required',
     				'intervent_title' => 'required',
     				'intervent_desc' => 'required'
-    	];
+    	         ];
 
     	$this->validate($request, $rules);
     }

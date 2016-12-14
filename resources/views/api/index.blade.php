@@ -36,7 +36,6 @@
                   <code>
                     API: {{url('/')}}/api/v1/register
                   </code>
-                  <!-- &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a> -->
                 </p>
                 <p>
                   <code>
@@ -52,11 +51,8 @@
                   </ul>
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
       <div class="row" style="margin-top: 10px;">
@@ -87,11 +83,8 @@
                   </ul>
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
       <div class="row" style="margin-top: 10px;">
@@ -117,11 +110,8 @@
                   none
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
       <div class="row" style="margin-top: 10px;">
@@ -149,11 +139,8 @@
                   </ul>
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
       <div class="row" style="margin-top: 10px;">
@@ -179,11 +166,8 @@
                   none
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
       <div class="row" style="margin-top: 10px;">
@@ -211,11 +195,8 @@
                   </ul>
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
       <div class="row" style="margin-top: 10px;">
@@ -241,11 +222,8 @@
                   none
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
 
@@ -274,11 +252,8 @@
                   </ul>
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
       <div class="row" style="margin-top: 10px;">
@@ -304,11 +279,8 @@
                   none
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
       <div class="row" style="margin-top: 10px;">
@@ -336,11 +308,8 @@
                   </ul>
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
       <div class="row" style="margin-top: 10px;">
@@ -366,11 +335,8 @@
                   none
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
       <div class="row" style="margin-top: 10px;">
@@ -398,11 +364,8 @@
                   </ul>
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
       <div class="row" style="margin-top: 10px;">
@@ -430,11 +393,8 @@
                   </ul>
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
       <div class="row" style="margin-top: 10px;">
@@ -462,11 +422,8 @@
                   </ul>
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
       <div class="row" style="margin-top: 10px;">
@@ -492,11 +449,8 @@
                   none
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
       <div class="row" style="margin-top: 10px;">
@@ -522,13 +476,10 @@
                   none
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
-      
+
       <div class="row" style="margin-top: 10px;">
           <div class="col-md-12">
             <div class="box box-primary">
@@ -552,11 +503,8 @@
                   none
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
       <div class="row" style="margin-top: 10px;">
@@ -584,11 +532,8 @@
                   </ul>
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
 
       <div class="row" style="margin-top: 10px;">
@@ -617,11 +562,8 @@
                   </ul>
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
       <div class="row" style="margin-top: 10px;">
           <div class="col-md-12">
@@ -646,11 +588,8 @@
                   none
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
       <div class="row" style="margin-top: 10px;">
           <div class="col-md-12">
@@ -675,22 +614,99 @@
                   none
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
+
       <div class="row" style="margin-top: 10px;">
           <div class="col-md-12">
             <div class="box box-primary">
               <div class="box-header">
-                <h3 class="box-title"><i class="fa fa-code"></i> Store Visual</h3>
+                <h3 class="box-title"><i class="fa fa-code"></i> Page by Slug</h3>
               </div>
               <div class="box-body">
                 <p>
                   <code>
                     API: {{url('/')}}/api/v1/store/pages/{page_slug}?api_token=YOUR_UNIQUE_USER_TOKEN
+                  </code>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
+                </p>
+                <p>
+                  <code>
+                    Method: GET
+                  </code>
+                </p>
+                Params:
+                <code>
+                  none
+                </code>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i> dataset chartdata by id</h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>
+                    api: {{url('/')}}/api/v1/dataset/chartdata/{id}?api_token=your_unique_user_token
+                  </code>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">put token</a>
+                </p>
+                <p>
+                  <code>
+                    method: get
+                  </code>
+                </p>
+                params:
+                <code>
+                  none
+                </code>
+              </div>
+            </div>
+          </div>
+      </div>
+      <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i> Dataset Validate Columns by id</h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>
+                    api: {{url('/')}}/api/v1/dataset/validate/columns/{id}?api_token=your_unique_user_token
+                  </code>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">put token</a>
+                </p>
+                <p>
+                  <code>
+                    method: get
+                  </code>
+                </p>
+                params:
+                <code>
+                  none
+                </code>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i> Visual Settings </h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>
+                    API: {{url('/')}}/api/v1/visual/settings?api_token=YOUR_UNIQUE_USER_TOKEN
                   </code>
                   &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
                 </p>
@@ -702,16 +718,15 @@
                 Params:
                 <code>
                   <ul class="api_param well ">
-                    <li><spam class="col-md-2 col-sm-4 col-xs-6">page_slug </spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">options</spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">settings</spam> <span class="label label-danger">Required</span></li>
                   </ul>
                 </code>
               </div>
-              <!-- /.box-body -->
             </div>
-            <!-- /.box -->
           </div>
-          <!-- /.col -->
       </div>
+
         <!-- /.row -->
     </section>
   </div>

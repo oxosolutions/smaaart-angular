@@ -15,11 +15,9 @@ class GoalsTargetController extends Controller
     public function index(){
 
     	$plugins = [
-
-    			'css' => ['datatables',],
-    			'js' => ['datatables','custom'=>['gen-datatables']]
-    	];
-
+        			'css' => ['datatables',],
+        			'js' => ['datatables','custom'=>['gen-datatables']]
+    	           ];
 
     	return view('target.index',$plugins);
     }
@@ -86,7 +84,7 @@ class GoalsTargetController extends Controller
     				'target_id' => 'required',
     				'target_title' => 'required',
     				'target_desc' => 'required'
-    	];
+    	       ];
 
     	$this->validate($request, $rules);
     }

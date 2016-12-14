@@ -3,17 +3,13 @@
 namespace App\Http\Controllers\Services;
 
 use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
-
 use App\DatasetsList as DL;
-
 use Carbon\Carbon;
 
 class DatasetsController extends Controller
 {
     function getDatasetsList(){
-
     	$list = DL::all();
     	$responseArray = [];
     	$index = 0;
@@ -21,10 +17,8 @@ class DatasetsController extends Controller
 
     		$responseArray[$index]['dataset_id'] = $value->id;
     		$responseArray[$index]['dataset_name'] = $value->dataset_name;
+    		$responseArray[$index]['validated'] = $value->validated;
     		$responseArray[$index]['created_date'] = $value->created_at->format('Y-m-d H:i:s');
-
-    		//$responseArray[$index]['dataset_records'] = json_decode($value->dataset_records);
-
     		$index++;
     	}
 
@@ -32,14 +26,13 @@ class DatasetsController extends Controller
     }
 
     public function getDatasets($id){
-
     	$datasetDetails = DL::find($id);
-        if(empty($datasetDetails)){
 
+        if(empty($datasetDetails)){
             return ['status'=>'success','records'=>[]];
         }
-    	$responseArray = [];
 
+    	$responseArray = [];
     	$responseArray['dataset_id'] = $id;
     	$responseArray['records'] = json_decode($datasetDetails->dataset_records);
 
@@ -63,12 +56,57 @@ class DatasetsController extends Controller
             $index++;
         }
         foreach($records as $key => $value){
-
             foreach($value as $ky => $val){
-                
+
             }
         }
 
         return ['status'=>'success','data'=>['column'=>$headers,'records'=>$records]];
+    }
+
+    protected function validateUpdateColumns($request){
+
+        if($request->has('id') && $request->has('columns')){
+            $return = ['status'=>'true','message'=>''];
+        }else{
+            $return = ['status'=>'false','message'=>'Required fields are missing!'];
+        }
+        return $return;
+    }
+
+    public function SavevalidateColumns(Request $request){
+
+        $result = $this->validateUpdateColumns($request);
+        if($result['status'] == 'false'){
+
+            return ['status'=>'error','message'=>$result['message']];
+        }
+
+        $model = DL::find($request->id);
+        if(!empty($model)){
+
+            $model->dataset_columns = $request->columns;
+            $model->validated       = 1;
+
+            $model->save();
+            return ['status'=>'sucess','message'=>'Columns updated successfully!','updated_id'=>$model->id];
+        }else{
+
+            return ['status'=>'success','message'=>'No record found with given id!'];
+        }
+    }
+
+
+    public function deleteDataset($id){
+
+        $model = DL::find($id);
+
+        if(!empty($model)){
+            $model->delete();
+            return ['status'=>'success','message'=>'Successfully deleted!','deleted_id'=>$id];
+        }else{
+
+            return ['status'=>'error','message'=>'No dataset find with this id'];
+        }
     }
 }

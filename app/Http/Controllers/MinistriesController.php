@@ -14,11 +14,9 @@ class MinistriesController extends Controller
     public function index(){
 
     	$plugins = [
-
-    			'css' => ['datatables'],
-    			'js'  => ['datatables','custom' => ['gen-datatables']]
-    	];
-
+        			'css' => ['datatables'],
+        			'js'  => ['datatables','custom' => ['gen-datatables']]
+            	];
     	return view('ministries.index',$plugins);
     }
 
@@ -37,7 +35,7 @@ class MinistriesController extends Controller
         $plugins = [
                     'css' => ['fileupload','select2'],
                     'js'  => ['fileupload','select2','custom'=>['ministry-create']]
-        ];
+                  ];
 
         return view('ministries.create', $plugins);
     }
@@ -93,7 +91,6 @@ class MinistriesController extends Controller
             'ministry_phone' => 'required|min:10|max:12',
             'ministry_ministers' => 'required',
             'ministry_order' => 'required'
-
         ];
 
         if($request->hasFile('ministry_image')){

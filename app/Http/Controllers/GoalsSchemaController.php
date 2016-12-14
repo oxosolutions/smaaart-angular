@@ -15,10 +15,9 @@ class GoalsSchemaController extends Controller
     public function index(){
 
     	$plugins = [
-
-    			'css' => ['datatables',],
-    			'js' => ['datatables','custom'=>['gen-datatables']]
-    	];
+        			'css' => ['datatables',],
+        			'js' => ['datatables','custom'=>['gen-datatables']]
+    	           ];
 
 
     	return view('schemas.index',$plugins); 
@@ -51,9 +50,7 @@ class GoalsSchemaController extends Controller
     	try{
 
     		$model = new GS($request->except(['_token']));
-	    	
 	    	$model->created_by = Auth::user()->id;
-
 	    	$path = 'schema_file';
 
 	    	if($request->hasFile('schema_image')){

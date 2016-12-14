@@ -19,10 +19,9 @@ class GoalsController extends Controller
     public function index(){
 
     	$plugins = [
-
-    			'css' => ['datatables'],
-    			'js'  => ['datatables', 'custom' => ['gen-datatables']]
-    	];
+        			'css' => ['datatables'],
+        			'js'  => ['datatables', 'custom' => ['gen-datatables']]
+    	           ];
 
     	return view('goals.index', $plugins);
     }
@@ -39,12 +38,10 @@ class GoalsController extends Controller
 
     public function create(){
 
-    	$plugins = [
-
-    			'css' => ['select2'],
-    			'js' => ['select2','custom'=>['goals-create']]
-    	];
-
+        $plugins = [ 
+        			'css' => ['select2'],
+        			'js' => ['select2','custom'=>['goals-create']]
+    	           ];
     	return view('goals.create',$plugins);
     }
 

@@ -10,9 +10,7 @@ class MinistriesDepartmentMapping extends Model
 	use SoftDeletes;
 
     protected $fillable = ['ministry_id','department_id','ministry_type'];
-
     protected $dates = ['deleted_at'];
-
     protected $softDelete = true;
 
     public function department(){

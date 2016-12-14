@@ -7,18 +7,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Visualisation extends Model
 {
     protected $fillable = ['dataset_id','visual_name','options','settings','created_by'];
-
     protected $dates = ['deleted_at'];
-
     protected $softDelete = true;
 
     function createdBy(){
-
     	return $this->belongsTo('App\User','created_by','id');
     }
 
     public function dataset(){
-
     	return $this->belongsTo('App\DatasetsList');
     }
 

@@ -14,33 +14,20 @@
         <li class="active">Detail New User Meta</li>
       </ol>
     </section>
-
     <!-- Main content -->
     <section class="content">
       <div class="row">
         <!-- left column -->
         <div class="col-md-12">
-          <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Detail New User Meta</h3>
             </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-             
               @include('apiusers._user_detail')
-
-              <div class="box-footer">
-              </div>
-
+            <div class="box-footer">
+            </div>
           </div>
-          <!-- /.box -->
-
-               
-
         </div>
-        <!--/.col (left) -->
-        
       </div>
       <!-- /.row -->
     </section>

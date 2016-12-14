@@ -10,7 +10,7 @@ class UserMeta extends Model
 
     public function allUserMeta()
     {
-    	// return User_meta::all();
+    	
 
     }
 

@@ -16,26 +16,32 @@ class ImportdatasetController extends Controller
     function uploadDataset(Request $request){
 
     	$validate = $this->validateRequst($request);
-    	if($validate['status'] == 'false'){
 
+    	if($validate['status'] == 'false'){
     		$response = ['status'=>'error','error'=>$validate['error']];
     		return $response;
     	}
+
     	$path = 'datasets';
     	$file = $request->file('file');
-    	if($file->isValid()){
-    		$filename = date('Y-m-d-H-i-s')."-".$request->file('file')->getClientOriginalName();
-    		$uploadFile = $request->file('file')->move($path, $filename);
-    		$this->storeInDatabase($path.'/'.$filename, $request->file('file')->getClientOriginalName());
-    	}
-      // $columnsArray = $this->getColumns();
-  		if($uploadFile){
-  			$response = ['status'=>'success','message'=>'file uploaded successfully!'];//,'columns'=>$columnsArray];
-  			return $response;
-  		}else{
-  			$response = ['status'=>'error','message'=>'unable to upload file!'];
-  			return $response;
-  		}
+
+      	if($file->isValid()){
+      		$filename = date('Y-m-d-H-i-s')."-".$request->file('file')->getClientOriginalName();
+      		$uploadFile = $request->file('file')->move($path, $filename);
+      		$result = $this->storeInDatabase($path.'/'.$filename, $request->file('file')->getClientOriginalName());
+      	}
+        if($result['status'] == 'true'){
+            if($uploadFile){
+    			$response = ['status'=>'success','message'=>'file uploaded successfully!','id'=>$result['id']];
+    			return $response;
+    		}else{
+    			$response = ['status'=>'error','message'=>'unable to upload file!'];
+    			return $response;
+    		}
+        }else{
+            $response = ['status'=>'error','message'=>'unable to upload file!'];
+            return $response;
+        }
     }
     protected function validateRequst($request){
 
@@ -52,25 +58,24 @@ class ImportdatasetController extends Controller
     	if($request->add_replace == 'replace' || $request->add_replace == 'append'){
     		if($request->with_dataset == '' || $request->with_dataset == 'undefined' || empty($request->with_dataset)){
     			$errors['dataset'] = 'Please select dataset to '.$request->add_replace;
-    		}
+    	   }
     	}
-    	if(count($errors)>=1){
+    	if(count($errors) >= 1){
     		$return = ['status' => 'false','error'=>$errors];
     		return $return;
     	}else{
     		$return = ['status' => 'true','error'];
     		return $return;
     	}
-
-
     }
 
-    public function getColumns(){
+    public function getColumns($id){
 
-        $model = DL::orderBy('created_at','desc')->first();
+        $model = DL::where('id',$id)->first();
         $records = json_decode($model->dataset_records);
         $headers = [];
         foreach($records[0] as $key => $val){
+
             if(!in_array($key,$headers)){
                 $headers[] = $key;
             }
@@ -81,14 +86,11 @@ class ImportdatasetController extends Controller
 
     function storeInDatabase($filename, $origName){
 
-
     	$FileData = [];
-    	$data = Excel::load($filename, function($reader){
-    	})->get();
+    	$data = Excel::load($filename, function($reader){ })->get();
 
     	foreach($data as $key => $value){
-
-			$FileData[] = $value->all();
+            $FileData[] = $value->all();
     	}
 		$model = new DL();
 		$model->dataset_name = $origName;
@@ -97,12 +99,10 @@ class ImportdatasetController extends Controller
 		$model->uploaded_by = Auth::user()->name;
 		$model->save();
 
-		if($model){
-
-			return true;
-		}else{
-
-			return false;
-		}
+  		if($model){
+  			return ['status'=>'true','id'=>$model->id];
+  		}else{
+  			return ['status'=>'false','id'=>''];
+  		}
     }
 }

@@ -18,7 +18,6 @@ class VisualizationController extends Controller
             $response = ['status'=>'error','error'=>$validate['error']];
             return $response;
         }
-
         try{
 
             $model = new VS();
@@ -37,14 +36,12 @@ class VisualizationController extends Controller
                 return ['status'=>'error','message'=>'something went wrong!'];
             }
         }
-
 		return ['status'=>'success','message'=>'Successfully created!'];
 	}
 
     protected function validateRequest($request){
 
         if($request->has('dataset') && $request->has('visual_name')){
-
             return ['status'=>'true','errors'=>''];
         }else{
             return ['status'=>'false','error'=>'Fill required fields!'];
@@ -111,11 +108,21 @@ class VisualizationController extends Controller
 		protected function updateValidate($request){
 
 			if($request->has('options') && $request->has('settings') && $request->has('id')){
-
 				return true;
 			}else{
-
 				return false;
+			}
+		}
+
+		public function deleteVisual($id){
+
+			$model = VS::find($id);
+
+			if(!empty($mode)){
+				$mdoel->delete();
+				return ['status'=>'success','message'=>'Successfully deleted visaulization!','deleted_id'=>$id];
+			}else{
+				return ['status'=>'error','message'=>'No visualization found with this id!'];
 			}
 		}
 }

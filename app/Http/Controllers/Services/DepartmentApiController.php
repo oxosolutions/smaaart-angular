@@ -14,7 +14,6 @@ class DepartmentApiController extends Controller
     	$responseArray = [];
     	$index = 0;
     	foreach($model as $key => $value){
-
     		$responseArray[$index]['id'] = $value->id;
     		$responseArray[$index]['dep_code'] = $value->dep_code;
     		$responseArray[$index]['dep_name'] = $value->dep_name;
@@ -22,14 +21,12 @@ class DepartmentApiController extends Controller
     		$responseArray[$index]['created_at'] = $value->created_at->format('Y-m-d H:i:s');
     		$index++;
     	}
-
     	return $responseArray;
     }
 
     public function singleDepartment($id){
 
         $model = DM::WithUsers()->findOrFail($id);
-
         $responseArray = [];
         $index = 0;
 
@@ -40,7 +37,6 @@ class DepartmentApiController extends Controller
         $responseArray[$index]['created_at'] = $model->created_at->format('Y-m-d H:i:s');
         $index++;
         
-
         return $responseArray;
     }
 }
