@@ -42,13 +42,21 @@ class DatasetsController extends Controller
     public function getFormatedDataset($id){
 
         $model = DL::find($id);
-        if(!empty($model)){
-            $records = json_decode($model->dataset_columns);
-            return ['status'=>'success','data'=>['records'=>$records]];
-        }else{
-            return ['status'=>'error','message'=>'NO dataset found with given id!','dataset_id'=>$id];
+        $records = json_decode($model->dataset_columns);
+
+        $headers = [];
+        $index = 0;
+        foreach($records as $key =>  $value){
+            if(!in_array($key, $headers)){
+
+                $headers[$index]['id'] = $key;
+                $headers[$index]['label'] = $key;
+                $headers[$index]['type'] = $value;
+            }
+            $index++;
         }
 
+        return ['status'=>'success','data'=>['column'=>$headers,'records'=>json_decode($model->dataset_records)]];
     }
 
     protected function validateUpdateColumns($request){
