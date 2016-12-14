@@ -43,8 +43,8 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/dataset/validate/columns/{id}',['as'=>'validate.columns','uses'=>'Services\ImportdatasetController@getColumns']);
 		Route::post('/visual/settings',['as'=>'store.visual.settings','uses'=>'Services\VisualizationController@storeVisualOptionsAndSettings']);
 		Route::post('/dataset/savevalidatecolumns',['as'=>'validate.columns','uses'=>'Services\DatasetsController@SavevalidateColumns']);
-		Route::post('/dataset/delete/{id}',['as'=>'validate.columns','uses'=>'Services\DatasetsController@deleteDataset']);
-		Route::post('/visual/delete/{id}',['as'=>'validate.columns','uses'=>'Services\VisualizationController@deleteVisual']);
+		Route::get('/dataset/delete/{id}',['as'=>'validate.columns','uses'=>'Services\DatasetsController@deleteDataset']);
+		Route::get('/visual/delete/{id}',['as'=>'validate.columns','uses'=>'Services\VisualizationController@deleteVisual']);
 		// API routes
 		Route::get('routes',function(){
 			return view('roles.index');
