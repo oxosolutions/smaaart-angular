@@ -15,4 +15,11 @@ class SettingController extends Controller
     {
     return	view('setting.create');
     }
+
+    public function store(Request $request)
+    {
+
+			dd($request);
+
+    }
 }

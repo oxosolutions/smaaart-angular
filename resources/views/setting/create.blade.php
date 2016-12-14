@@ -5,13 +5,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Create Permisson
-        <small>Permisson</small>
+         Setting
+        <small>Setting</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> Home</a></li>
-        <li><a href="{{url('api_users')}}">Permisson</a></li>
-        <li class="active">Create New Permisson</li>
+        <li><a href="{{url('api_users')}}">Setting</a></li>
+        <li class="active">Create New Setting</li>
       </ol>
     </section>
 
@@ -23,14 +23,14 @@
           <!-- general form elements -->
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Create New Permisson</h3>
+              <h3 class="box-title">Create New Setting</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-              {!! Form::open(['route' => 'permisson.store']) !!}
+              {!! Form::open(['route' => 'setting.store']) !!}
                 @include('setting._form')
               <div class="box-footer">
-                {!! Form::submit('Save Permisson', ['class' => 'btn btn-primary']) !!}
+                {!! Form::submit('Save Setting', ['class' => 'btn btn-primary']) !!}
               </div>
               {!! Form::close() !!}
 

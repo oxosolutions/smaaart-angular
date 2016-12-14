@@ -23,7 +23,7 @@ Route::group(['middleware'=>'auth'], function(){
 //Role permisson Setting
 
 Route::get('/setting/create',['as'=>'setting.create', 'uses'=>'SettingController@create']);
-	Route::post('/permisson/store', ['as'=>'permisson.store', 'uses'=>'PermissonController@store']);
+	Route::post('/setting/store', ['as'=>'setting.store', 'uses'=>'SettingController@store']);
 	Route::get('/permisson', ['as'=>'permisson.list', 'uses'=>'PermissonController@index']);
 	Route::get('/list_permisson', ['as'=>'permisson.list_role.ajax', 'uses'=>'PermissonController@list_permisson']);
 	Route::get('/permisson/edit/{id}',['as'=>'permisson.edit', 'uses'=>'PermissonController@edit']);

@@ -9,8 +9,14 @@
       </span>
     @endif
   </div>
- 
+ <ul>
+@foreach(App\Permisson::permisson_data() as $val)
 
+
+<li><label>{{$val->display_name}}</label><input name ="permisson[]" type="checkbox" value="{{$val->id}}" ></li>
+
+@endforeach
+</ul>
 
 </div>
 
