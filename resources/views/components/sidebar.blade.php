@@ -163,7 +163,7 @@
          <li class="treeview {{in_array(Request::path(),array('visualisation/create','visualisation'))?'active':''}}">
           <a href="#">
             <i class="fa fa-arrows-h"></i>
-            <span>Setting </span>
+            <span>Settings </span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
@@ -171,9 +171,9 @@
           <ul class="treeview-menu">
             <li class="{{Request::is('visualisation')?'active':''}}"><a href="{{ route('role.list') }}"><i class="fa fa-circle-o"></i> List Roles</a></li>
             <li class="{{Request::is('visualisation/create')?'active':''}}"><a href="{{route('role.create')}}"><i class="fa fa-circle-o"></i> Add Role</a></li>
-            <li class="{{Request::is('visualisation')?'active':''}}"><a href="{{ route('permisson.list') }}"><i class="fa fa-circle-o"></i> List Permisson</a></li>
+            <li class="{{Request::is('visualisation')?'active':''}}"><a href="{{ route('permisson.list') }}"><i class="fa fa-circle-o"></i> List Permissons</a></li>
             <li class="{{Request::is('visualisation/create')?'active':''}}"><a href="{{route('permisson.create')}}"><i class="fa fa-circle-o"></i> Add Pernisson</a></li>
-            <li class="{{Request::is('visualisation')?'active':''}}"><a href="{{ route('setting.list') }}"><i class="fa fa-circle-o"></i> List Setting</a></li>
+            <li class="{{Request::is('visualisation')?'active':''}}"><a href="{{ route('setting.list') }}"><i class="fa fa-circle-o"></i> List Settings</a></li>
             <li class="{{Request::is('visualisation/create')?'active':''}}"><a href="{{route('setting.create')}}"><i class="fa fa-circle-o"></i> Add Setting</a></li>
           </ul>
         </li>
@@ -181,7 +181,7 @@
         <li class="treeview {{in_array(Request::path(),array('visualisation/create','visualisation'))?'active':''}}">
           <a href="#">
             <i class="fa fa-arrows-h"></i>
-            <span>Manage Visualisation</span>
+            <span>Manage Visualisations</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>

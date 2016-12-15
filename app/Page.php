@@ -20,4 +20,10 @@
                   '1' => 'Publish'
                 ];
       }
+
+      static function countPage()
+      {
+
+        return self::count();
+      }
   }

@@ -24,4 +24,9 @@ class DatasetsList extends Model
     				'append'	=>	'Append old dataset'
     		   ];
     }
+
+    static function countDataset()
+    {
+            return self::count();
+    }
 }

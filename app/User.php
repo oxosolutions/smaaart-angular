@@ -64,7 +64,12 @@ class User extends Authenticatable
     {    
 
         $res = self::orderBy('id')->pluck('name','id');
-        return $res; //self::orderBy('id')->pluck('name','id');
+        return $res; 
+    }
+
+    public static function countUser()
+    {
+        return self::count();
     }
 
 

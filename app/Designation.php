@@ -18,4 +18,9 @@ class Designation extends Model
     {
     	return self::where('id',$id)->first()->designation;
     }
+
+    static function designationCount()
+    {
+        return self::count();
+    }
 }

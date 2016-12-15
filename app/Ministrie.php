@@ -27,5 +27,10 @@ class Ministrie extends Model
     public static function ministryList(){
         return self::orderBy('id')->pluck('ministry_title','id');
     }
+    static function countMinistry()
+    {
+
+        return self::count();
+    }
 
 }

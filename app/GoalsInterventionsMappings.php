@@ -16,4 +16,9 @@ class GoalsInterventionsMappings extends Model
     public function interventions(){
     	return $this->belongsTo('App\GoalsIntervention');
     }
+
+    static function interventionCount()
+    {
+    	return self::count();
+    }
 }

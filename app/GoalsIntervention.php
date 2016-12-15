@@ -23,4 +23,9 @@ class GoalsIntervention extends Model
     static function interventionList(){
         return self::orderby('id')->pluck('intervent_title','id');
     }
+
+     static function countIntervention()
+     {
+        return self::count();
+     }
 }

@@ -19,4 +19,10 @@ class Visualisation extends Model
     	return $this->belongsTo('App\DatasetsList');
     }
 
+    static function visualisationCount()
+    {
+        return self::count();
+    }
+
+
 }

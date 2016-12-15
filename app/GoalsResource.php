@@ -23,4 +23,9 @@ class GoalsResource extends Model
     public static function resourceList(){
         return self::orderBy('id')->pluck('resource_title','id');
     }
+
+    static function resourceCount()
+    {
+        return self::count();
+    }
 }

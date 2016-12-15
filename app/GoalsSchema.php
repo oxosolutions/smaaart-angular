@@ -24,4 +24,9 @@ class GoalsSchema extends Model
     public static function schemaList(){
         return self::orderBy('id')->pluck('schema_title','id');
     }
+
+    static function schemeCount()
+    {
+        return self::count();
+    }
 }

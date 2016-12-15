@@ -11,7 +11,7 @@ use DB;
 use App\GoalsTarget as GT;
 class GoalsTargetController extends Controller
 {
-    
+
     public function index(){
 
     	$plugins = [
@@ -49,7 +49,7 @@ class GoalsTargetController extends Controller
     	try{
 
     		$model = new GT($request->except(['_token']));
-	    	
+
 	    	$model->created_by = Auth::user()->id;
 
 	    	$path = 'target_file';
@@ -64,14 +64,14 @@ class GoalsTargetController extends Controller
             }
 
             $model->save();
-            
+
 	    	DB::commit();
     	} catch(\Exception $e){
 
     		DB::rollback();
     		throw $e;
     	}
-    	
+
 
     	Session::flash('success','Successfully created!');
 
@@ -119,21 +119,21 @@ class GoalsTargetController extends Controller
         $this->modelValidate($request);
 
         DB::beginTransaction();
-        try{ 
+        try{
 
             $model->fill($request->except(['_token']));
 
             if($request->hasFile('target_image')){
 
                 $path = 'target_file';
-                
+
                 $filename = date('Y-m-d-H-i-s')."-".$request->file('target_image')->getClientOriginalName();
 
                 $request->file('target_image')->move($path, $filename);
 
                 $model->target_image = $filename;
             }
-            
+
             $model->save();
             DB::commit();
             Session::flash('success','Successfully update!');

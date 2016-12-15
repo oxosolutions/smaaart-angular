@@ -23,6 +23,9 @@ class Department extends Model
 
     	return self::orderBy('id')->pluck('dep_name','id');
     }
-
+    static function deptCount()
+    {
+        return self::count();
+    }
     
 }

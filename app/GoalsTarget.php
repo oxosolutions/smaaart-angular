@@ -26,4 +26,9 @@ class GoalsTarget extends Model
     public function indicators(){
         return $this->hasMany('App\Indicator','targets_id');
     }
+
+    static function targetCount()
+    {
+        return self::count();
+    }
 }
