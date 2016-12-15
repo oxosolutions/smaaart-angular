@@ -11,7 +11,7 @@ use DB;
 use App\GoalsSchema as GS;
 class GoalsSchemaController extends Controller
 {
-    
+
     public function index(){
 
     	$plugins = [
@@ -20,7 +20,7 @@ class GoalsSchemaController extends Controller
     	           ];
 
 
-    	return view('schemas.index',$plugins); 
+    	return view('schemas.index',$plugins);
     }
 
 
@@ -63,14 +63,14 @@ class GoalsSchemaController extends Controller
             }
 
             $model->save();
-            
+
 	    	DB::commit();
     	} catch(\Exception $e){
 
     		DB::rollback();
     		throw $e;
     	}
-    	
+
 
     	Session::flash('success','Successfully created!');
 
@@ -101,7 +101,7 @@ class GoalsSchemaController extends Controller
             throw $e;
         }
 
-        return redirect()->route('schemas.list');
+        return redirect()->route('schema.list');
     }
 
     public function edit($id){
@@ -125,14 +125,14 @@ class GoalsSchemaController extends Controller
             if($request->hasFile('schema_image')){
 
                 $path = 'schema_file';
-                
+
                 $filename = date('Y-m-d-H-i-s')."-".$request->file('schema_image')->getClientOriginalName();
 
                 $request->file('schema_image')->move($path, $filename);
 
                 $model->schema_image = $filename;
             }
-            
+
             $model->save();
             DB::commit();
             Session::flash('success','Successfully update!');
