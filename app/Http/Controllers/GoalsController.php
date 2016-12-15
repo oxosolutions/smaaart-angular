@@ -223,23 +223,27 @@ class GoalsController extends Controller
                 $model->ministry()->save($minis);
             }
             $model->schema()->delete();
-            foreach ($request->goal_schemes as $key => $value) {
+            if(!empty($request->goal_schemes)){
+                foreach ($request->goal_schemes as $key => $value) {
 
-               $schemaObj = new GSM();
+                   $schemaObj = new GSM();
 
-               $schemaObj->schemas_id = $value;
+                   $schemaObj->schemas_id = $value;
 
-               $model->schema()->save($schemaObj);
+                   $model->schema()->save($schemaObj);
+                }
             }
 
             $model->intervention()->delete();
-            foreach ($request->goal_interventions as $key => $value) {
+            if(!empty($request->goal_interventions)){
+                foreach ($request->goal_interventions as $key => $value) {
 
-               $intervObj = new GIM();
+                   $intervObj = new GIM();
 
-               $intervObj->interventions_id = $value;
+                   $intervObj->interventions_id = $value;
 
-               $model->intervention()->save($intervObj);
+                   $model->intervention()->save($intervObj);
+                }
             }
 
             $model->target()->delete();
@@ -253,13 +257,15 @@ class GoalsController extends Controller
             }
 
             $model->resources()->delete();
-            foreach ($request->goal_resources as $key => $value) {
+            if(!empty($request->goal_resources)){
+                foreach ($request->goal_resources as $key => $value) {
 
-               $resourceObj = new GRM();
+                   $resourceObj = new GRM();
 
-               $resourceObj->resources_id = $value;
+                   $resourceObj->resources_id = $value;
 
-               $model->resources()->save($resourceObj);
+                   $model->resources()->save($resourceObj);
+                }
             }
 
             DB::commit();
