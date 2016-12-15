@@ -1,16 +1,85 @@
 <?php
 
 namespace App\Http\Controllers;
-
+use Yajra\Datatables\Datatables;
 use Illuminate\Http\Request;
 use App\RolePermissonMapping as RP;
 use App\Role;
 use App\Permisson;
 use App\PermissonRole;
+use Session;
+Use DB;
 
 class SettingController extends Controller
 {
     //
+
+    public function test()
+    {
+
+    	echo "hello its working";
+    }
+    public function index()
+    {
+    		
+    	$plugins = [ 'css'=> ['datatables'],
+    					 'js'=>['datatables', 'custom'=>['gen-datatables'] ]	];
+    	return view('setting.index', $plugins);
+
+    }
+
+    public function list_setting()
+    {
+		$model = Role::get();
+    	// $model =	DB::table('roles as r')->select('r.*')
+    	// 	->rightJoin('permisson_roles as pr','pr.role_id','=','r.id')->get();
+		return Datatables::of($model)
+		->addColumn('actions',function($model){                 
+		return view('setting._actions',['model'=>$model])->render(); 
+		})
+		->make(true);
+
+    }
+
+    public function edit($id)
+    {
+
+    	echo $id;
+
+    	$data = DB::table('roles as r')->select('r.id as rid','r.name as rname', 'r.display_name as rdname','pr.read','pr.write','pr.delete','p.name as pname','p.display_name as pdname','p.id as pid')
+		->leftJoin('permisson_roles as pr','r.id','=','pr.role_id')
+		->leftJoin('permissons as p','p.id','=','pr.permisson_id')
+		->where('r.id',$id)->get();
+
+		$role = Role::findOrFail($id);
+		return view('setting.edit',['model'=>$role,'role_permisson'=>$data]);
+		//dd($data);
+		//return view('setting.edit', ['model'=> $data]);
+
+    }
+    public function update()
+    {
+
+    }
+
+    public function view($id)
+    {
+    	
+		$countRole = DB::table('permisson_roles as pr')->where('pr.role_id',$id)->count();
+		if($countRole==0)
+		{
+
+			Session::flash('error','No Permisson set yet');
+			return redirect()->route('setting.list');
+		}
+
+		$data = DB::table('roles as r')->select('r.id as rid','r.name as rname', 'r.display_name as rdname','pr.read','pr.write','pr.delete','p.name as pname','p.display_name as pdname')
+		->leftJoin('permisson_roles as pr','r.id','=','pr.role_id')
+		->leftJoin('permissons as p','p.id','=','pr.permisson_id')
+		->where('r.id',$id)->get();
+		return view('setting.view', ['role_permisson'=> $data]);
+
+	}
 
     public function create()
     {
@@ -19,25 +88,46 @@ class SettingController extends Controller
 
     public function store(Request $request)
     {
-dump($request);
-   
-    		foreach ($request->permisson_id as $key => $value) {
-    			# code...
-    			$pr =	new PermissonRole($request->except(['_token','read','write','delete']));
-    			$pr->role_id =  $request->role_id;
-    			$pr->permisson_id = $key;
-    			$pr->save();
-    		}
-			dd($request);
+		$this->modelValidation($request);
+		if($request->permisson_id)
+		{
+			DB::beginTransaction();
 
-			// "_token" => "eCh6YhTikCFGaBcUYsO57kLpk1HwDi5CNH1xv1vA"
-   //    "role_list" => "10"
-   //    9 => array:1 [▼
-   //      0 => "read"
-   //    ]
-   //    11 => array:2 [▼
-   //      0 => "read"
-   //      1 => "write"
+			try{
+				foreach ($request->permisson_id as $key => $value) {
 
+					$pr =	new PermissonRole($request->except(['_token','read']));
+					$pr->role_id =  $request->role_id;
+					$pr->permisson_id = $key;
+					$pr->read=0;
+					$pr->write=0;
+					$pr->delete=0;
+					$permSize = count($value);
+					for($i=0; $i<$permSize; $i++){
+					$field = $value[$i];
+					$pr->$field =1;
+					}
+					$pr->save();
+					DB::Commit();
+
+				}
+			}catch(\Exception $e)
+			{
+			throw $e;
+			}
+		}
+		else{
+		Session::flash('error','Must Assign Permisson. ');
+		return redirect()->route('setting.create');
+		}
+				return redirect()->route('setting.list');
+	
+    }
+
+    public function modelValidation($request)
+    {
+
+    	$rules = ['role_id'=>'required'];
+		$this->validate($request, $rules);
     }
 }

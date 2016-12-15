@@ -1,4 +1,13 @@
 <?php
+
+
+Route::get('/test', [
+	'middleware' => ['auth', 'roles'], // A 'roles' middleware must be specified
+	'uses' => 'SettingController@test',
+	'roles' => ['administrator'] // Only an administrator, or a manager can access this route
+]);
+
+
 Route::group(['middleware'=>'auth'], function(){
 
 	//Role for user
@@ -24,10 +33,14 @@ Route::group(['middleware'=>'auth'], function(){
 
 Route::get('/setting/create',['as'=>'setting.create', 'uses'=>'SettingController@create']);
 	Route::post('/setting/store', ['as'=>'setting.store', 'uses'=>'SettingController@store']);
-	Route::get('/permisson', ['as'=>'permisson.list', 'uses'=>'PermissonController@index']);
-	Route::get('/list_permisson', ['as'=>'permisson.list_role.ajax', 'uses'=>'PermissonController@list_permisson']);
-	Route::get('/permisson/edit/{id}',['as'=>'permisson.edit', 'uses'=>'PermissonController@edit']);
-	Route::patch('/permisson/update/{id}', ['as'=>'permisson.update', 'uses'=>'PermissonController@update']);
+
+
+	Route::get('/setting', ['as'=>'setting.list', 'uses'=>'SettingController@index']);
+	Route::get('/list_setting', ['as'=>'setting.list_setting', 'uses'=>'SettingController@list_setting']);
+	Route::get('/setting/view/{id}', ['as'=>'setting.view', 'uses'=>'SettingController@view']);
+
+	Route::get('/setting/edit/{id}',['as'=>'setting.edit', 'uses'=>'SettingController@edit']);
+	Route::patch('/setting/update/{id}', ['as'=>'setting.update', 'uses'=>'SettingController@update']);
 	Route::get('/permisson/delete/{id}', ['as'=>'permisson.delete', 'uses'=>'PermissonController@destroy']);
 
 

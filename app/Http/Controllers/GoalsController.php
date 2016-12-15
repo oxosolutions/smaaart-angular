@@ -38,7 +38,7 @@ class GoalsController extends Controller
 
     public function create(){
 
-        $plugins = [ 
+        $plugins = [
         			'css' => ['select2'],
         			'js' => ['select2','custom'=>['goals-create']]
     	           ];
@@ -66,26 +66,31 @@ class GoalsController extends Controller
                 $model->ministry()->save($minis);
             }
 
-            foreach ($request->goal_schemes as $key => $value) {
-               
-               $schemaObj = new GSM();
+            if(!empty($request->goal_schemes)){
 
-               $schemaObj->schemas_id = $value;
+                foreach ($request->goal_schemes as $key => $value) {
 
-               $model->schema()->save($schemaObj);
+                   $schemaObj = new GSM();
+
+                   $schemaObj->schemas_id = $value;
+
+                   $model->schema()->save($schemaObj);
+                }
             }
 
-            foreach ($request->goal_interventions as $key => $value) {
-               
-               $intervObj = new GIM();
+            if(!empty($request->goal_interventions)){
+                foreach ($request->goal_interventions as $key => $value) {
 
-               $intervObj->interventions_id = $value;
+                   $intervObj = new GIM();
 
-               $model->intervention()->save($intervObj);
+                   $intervObj->interventions_id = $value;
+
+                   $model->intervention()->save($intervObj);
+                }
             }
 
             foreach ($request->goal_targets as $key => $value) {
-               
+
                $targetObj = new GTM();
 
                $targetObj->targets_id = $value;
@@ -93,13 +98,16 @@ class GoalsController extends Controller
                $model->target()->save($targetObj);
             }
 
-            foreach ($request->goal_resources as $key => $value) {
-               
-               $resourceObj = new GRM();
+            if(!empty($request->goal_resources)){
 
-               $resourceObj->resources_id = $value;
+                foreach ($request->goal_resources as $key => $value) {
 
-               $model->resources()->save($resourceObj);
+                   $resourceObj = new GRM();
+
+                   $resourceObj->resources_id = $value;
+
+                   $model->resources()->save($resourceObj);
+                }
             }
 
             DB::commit();
@@ -127,8 +135,8 @@ class GoalsController extends Controller
                 'goal_color_hex' => 'required',
                 'goal_nodal_ministry' => 'required',
                 'goal_other_ministries' => 'required',
-                'goal_schemes' => 'required',
-                'goal_interventions' => 'required'
+                //'goal_schemes' => 'required',
+                //'goal_interventions' => 'required'
         ];
 
         $this->validate($request, $rules);
@@ -162,7 +170,7 @@ class GoalsController extends Controller
 
             $minis[] = $value->ministry_id;
         }
-        
+
         foreach($model->schema as $key => $value){
 
             $schema[] = $value->schemas_id;
@@ -195,7 +203,7 @@ class GoalsController extends Controller
     }
 
     public function update(Request $request, $id){
-        
+
         $model = Goal::findOrFail($id);
 
         $this->modelValidate($request);
@@ -216,7 +224,7 @@ class GoalsController extends Controller
             }
             $model->schema()->delete();
             foreach ($request->goal_schemes as $key => $value) {
-               
+
                $schemaObj = new GSM();
 
                $schemaObj->schemas_id = $value;
@@ -226,7 +234,7 @@ class GoalsController extends Controller
 
             $model->intervention()->delete();
             foreach ($request->goal_interventions as $key => $value) {
-               
+
                $intervObj = new GIM();
 
                $intervObj->interventions_id = $value;
@@ -236,7 +244,7 @@ class GoalsController extends Controller
 
             $model->target()->delete();
             foreach ($request->goal_targets as $key => $value) {
-               
+
                $targetObj = new GTM();
 
                $targetObj->targets_id = $value;
@@ -246,7 +254,7 @@ class GoalsController extends Controller
 
             $model->resources()->delete();
             foreach ($request->goal_resources as $key => $value) {
-               
+
                $resourceObj = new GRM();
 
                $resourceObj->resources_id = $value;

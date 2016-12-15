@@ -226,6 +226,19 @@
       ]
     });
 
+     $('#setting').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: route()+'/list_setting',
+      columns: [
+            { data: 'name', name: 'name' },
+            { data: 'display_name', name: 'display_name' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },
+      ]
+    });
+     
+
     $('body').on('click','.delete', function(){
 
         if(confirm('Are you sure to delete ?')){

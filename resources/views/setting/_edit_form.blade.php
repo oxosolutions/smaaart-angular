@@ -32,6 +32,15 @@
       <th>Delete </th>
 </tr>
        
+       <!-- @foreach($role_permisson as $val)
+        <tr>
+            <td>{{$val->pdname}}</td>
+            <td>@if ($val->read==1) YES @else no @endif</td>
+            <td>@if ($val->write==1) YES @else no @endif</td>
+             <td>@if ($val->delete==1) YES @else no @endif</td>
+
+        </tr>
+ @endforeach -->
 @foreach(App\Permisson::permisson_data() as $val)
 
  <tr>
