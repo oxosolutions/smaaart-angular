@@ -46,26 +46,26 @@ class SettingController extends Controller
     public function edit($id)
     {
 
-    	echo $id;
-
-    	$data = DB::table('roles as r')->select('pr.id as prid','r.id as rid','r.name as rname', 'r.display_name as rdname','pr.read','pr.write','pr.delete','p.name as pname','p.display_name as pdname','p.id as pid')
+		$data = DB::table('roles as r')
+    	->select('pr.id as prid','r.id as rid','r.name as rname', 'r.display_name as rdname','pr.read','pr.write','pr.delete','p.name as pname','p.display_name as pdname','p.id as pid')
 		->leftJoin('permisson_roles as pr','r.id','=','pr.role_id')
 		->leftJoin('permissons as p','p.id','=','pr.permisson_id')
 		->where('r.id',$id)->get();
 
 		$role = Role::findOrFail($id);
 		return view('setting.edit',['model'=>$role,'role_permisson'=>$data]);
-		//dd($data);
-		//return view('setting.edit', ['model'=> $data]);
+		
 
     }
     public function update(Request $request)
     {
+		//dd($request);
 
+		
 		PermissonRole::where('role_id',$request->rid)->delete();
 
 				foreach ($request->permisson_id as $key => $value) {
-
+						$permissonId[] = $key;
 					$pr =	new PermissonRole($request->except(['_token','read']));
 					$pr->role_id =  $request->rid;
 					$pr->permisson_id = $key;
@@ -79,16 +79,22 @@ class SettingController extends Controller
 					}
 					$pr->save();
 				}
+					dump($permissonId);
+			$perId =	Permisson::select('id')->whereNotIn('id', $permissonId)->get();
+				foreach ($perId as  $value) {
+				echo $value->id;
 
+				$pr =	new PermissonRole($request->except(['_token','read']));
+					$pr->role_id =  $request->rid;
+					$pr->permisson_id = $value->id;
+					$pr->read=0;
+					$pr->write=0;
+					$pr->delete=0;
+					$pr->save();	
+				}
+			dd($perId);
 				return redirect()->route('setting.list');
-    	//PermissonRole::where('role_id',2)->delete();
-			// $model = PermissonRole::findOrFail($id);
-   //  		PermissonRole
-			// foreach ($request->prid as  $value) {
-			// 	echo $value;
-			// }
-
-			//dd($request);
+    	
     }
 
     public function view($id)

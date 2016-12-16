@@ -73,15 +73,14 @@
 
   @endforeach
         <!-- <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td> -->
-             @if($rows==0)
-      <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" >
-           <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td>
+    @if($rows==0)
+          <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" >
+          <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td>
           <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="delete" ></td>
     @endif
 
         </tr>
-        <br>
-  
+        
 @endforeach
 </tbody>
 </table>

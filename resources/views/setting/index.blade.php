@@ -40,7 +40,7 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="box-header">
-              <button class="btn btn-primary" onclick="window.location='{{route('setting.create')}}'">Create New Setting</button>
+              <!-- <button class="btn btn-primary" onclick="window.location='{{route('setting.create')}}'">Create New Setting</button> -->
           </div>
           <div class="box">
             <!-- /.box-header -->

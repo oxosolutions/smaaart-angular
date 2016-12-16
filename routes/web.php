@@ -57,12 +57,12 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::patch('/department/update/{id}',['as'=>'department.update', 'uses'=>'DepartmentController@update']);
 
 	/*Routes of Designations Operations*/
-	Route::get('/designations',['as'=>'designations.list', 'uses'=>'DesignationController@index']);
+	Route::get('/designations',['middleware'=>'roles','as'=>'designations.list', 'uses'=>'DesignationController@index']);
 	Route::get('/list_desig',['as'=>'designation.ajax', 'uses'=>'DesignationController@indexData']);
-	Route::get('/designations/create',['as'=>'designations.create', 'uses'=>'DesignationController@create']);
+	Route::get('/designations/create',['middleware'=>'roles','as'=>'designations.create', 'uses'=>'DesignationController@create']);
 	Route::post('/designations/store',['as'=>'designations.store', 'uses'=>'DesignationController@store']);
-	Route::get('/designations/delete/{id}',['as'=>'designations.delete', 'uses'=>'DesignationController@destroy']);
-	Route::get('/designations/edit/{id}',['as'=>'designations.edit', 'uses'=>'DesignationController@edit']);
+	Route::get('/designations/delete/{id}',['middleware'=>'roles','as'=>'designations.delete', 'uses'=>'DesignationController@destroy']);
+	Route::get('/designations/edit/{id}',['middleware'=>'roles','as'=>'designations.edit', 'uses'=>'DesignationController@edit']);
 	Route::patch('/designations/update/{id}',['as'=>'designations.update', 'uses'=>'DesignationController@update']);
 
 	/*Routes for ministries operations*/

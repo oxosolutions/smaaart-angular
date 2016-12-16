@@ -184,7 +184,7 @@
             <li class="{{Request::is('visualisation')?'active':''}}"><a href="{{ route('permisson.list') }}"><i class="fa fa-circle-o"></i> List Permissons</a></li>
             <li class="{{Request::is('visualisation/create')?'active':''}}"><a href="{{route('permisson.create')}}"><i class="fa fa-circle-o"></i> Add Pernisson</a></li>
             <li class="{{Request::is('visualisation')?'active':''}}"><a href="{{ route('setting.list') }}"><i class="fa fa-circle-o"></i> List Settings</a></li>
-            <li class="{{Request::is('visualisation/create')?'active':''}}"><a href="{{route('setting.create')}}"><i class="fa fa-circle-o"></i> Add Setting</a></li>
+           <!--  <li class="{{Request::is('visualisation/create')?'active':''}}"><a href="{{route('setting.create')}}"><i class="fa fa-circle-o"></i> Add Setting</a></li> -->
           </ul>
         </li>
 
