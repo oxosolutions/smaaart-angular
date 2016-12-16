@@ -46,8 +46,10 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/dataset/delete/{id}',['as'=>'validate.columns','uses'=>'Services\DatasetsController@deleteDataset']);
 		Route::get('/visual/delete/{id}',['as'=>'validate.columns','uses'=>'Services\VisualizationController@deleteVisual']);
 
+
 		//User Profile API
-		Route::get('/user/profile',['as'=>'user.profile','uses'=>'Services\ProfileApiController@getUserProfile']);
+		Route::get('/profile',['as'=>'user.profile','uses'=>'Services\ProfileApiController@getUserProfile']);
+		Route::post('/profile/changepass',['as'=>'change.password','uses'=>'Services\ProfileApiController@changePassword']);
 		// API routes
 		/*Route::get('routes',function(){
 			return view('roles.index');

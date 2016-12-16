@@ -8,6 +8,7 @@ use App\User;
 use App\Ministrie as MIN;
 use App\Department as DP;
 use App\Designation as DS;
+use Hash;
 class ProfileApiController extends Controller
 {
     public function getUserProfile(Request $request){
@@ -52,5 +53,38 @@ class ProfileApiController extends Controller
             }
         }
         return ['status'=>'success','details'=>$responseArray];
+    }
+
+
+    public function changePassword(Request $request){
+
+        $validate = $this->validateModel($request);
+        if(!$validate){
+
+            return ['status'=>'error','message'=>'required fields are missing!'];
+        }
+        $model = $request->user();
+        $result = Hash::check($request->old_pass, $model->password);
+        if(!$result){
+            return ['status'=>'error','message'=>'old password not correct!'];
+        }
+        if($request->new_pass != $request->conf_pass){
+            return ['status'=>'error','message'=>'password not match!'];
+        }
+
+        $model->password = Hash::make($request->new_pass);
+        $model->save();
+        return ['status'=>'success','message'=>'Password changed successfully!'];
+
+    }
+
+    protected function validateModel($request){
+
+        if($request->has('old_pass') && $request->has('new_pass') && $request->has('conf_pass')){
+
+            return true;
+        }else{
+            return false;
+        }
     }
 }

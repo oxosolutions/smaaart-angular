@@ -13,13 +13,12 @@ class CheckRole
      * @param  \Closure  $next
      * @return mixed
      */
-   
+
 
     public function handle($request, Closure $next)
     {
-        //get current route  
+        //get current route
         $action = $this->getRequiredRoleForRoute($request->route());
-          // echo "cur ".$currentRoute =  $action['as'];
         $exRotue    =   explode('.' , $action['as']);
         $main       =   $exRotue[0];
         $permisson  =   $exRotue[1];
@@ -36,7 +35,7 @@ class CheckRole
             // echo '<br>'. $value->route;
             if($main == $value->route){
 
-                if($value->read ==true && $permisson=='list')
+                if($value->read == true && $permisson=='list')
                 {
                      return $next($request);
                 }
@@ -57,32 +56,7 @@ class CheckRole
                             'description' => 'You are not authorized to access this resource.'
                         ]
                     ], 401);
-        
-       //  dump($role);
-       //  //->leftJoin('permisson_roles')get();
-       // // dd($request->user());
-           
-       //     // return $user;
 
-       //  // Get the required roles from the route
-       //  // Check if a role is required for the route, and
-       //  // if so, ensure that the user has that role.
-       // // dump($request->user()->hasRole($roles));
-       //  //die;
-
-       //  dump($action['as']);
-
-       //  die;
-       //  if($request->user()->hasRole($roles) || !$roles)
-       //  {
-       //      return $next($request);
-       //  }
-       //  return response([
-       //      'error' => [
-       //          'code' => 'INSUFFICIENT_ROLE',
-       //          'description' => 'You are not authorized to access this resource.'
-       //      ]
-       //  ], 401);
     }
     private function getRequiredRoleForRoute($route)
     {

@@ -10,7 +10,7 @@
   </div>
    <div class="form-group {{ $errors->has('route') ? ' has-error' : '' }}">
     {!!Form::label('route','Route') !!}
-    {!!Form::text('route',null, ['class'=>'form-control','placeholder'=>'url ']) !!}
+    {!!Form::select('route',App\Permisson::getRouteListArray(),null, ['class'=>'form-control','placeholder'=>'url ']) !!}
     @if($errors->has('route'))
       <span class="help-block">
             {{ $errors->first('route') }}

@@ -59,9 +59,7 @@ class SettingController extends Controller
     }
     public function update(Request $request)
     {
-		//dd($request);
-
-		
+			
 		PermissonRole::where('role_id',$request->rid)->delete();
 
 				foreach ($request->permisson_id as $key => $value) {
@@ -79,20 +77,19 @@ class SettingController extends Controller
 					}
 					$pr->save();
 				}
-					dump($permissonId);
+					
 			$perId =	Permisson::select('id')->whereNotIn('id', $permissonId)->get();
-				foreach ($perId as  $value) {
-				echo $value->id;
-
-				$pr =	new PermissonRole($request->except(['_token','read']));
+			foreach ($perId as  $value) {
+					echo $value->id;
+					$pr =	new PermissonRole($request->except(['_token','read']));
 					$pr->role_id =  $request->rid;
 					$pr->permisson_id = $value->id;
 					$pr->read=0;
 					$pr->write=0;
 					$pr->delete=0;
 					$pr->save();	
-				}
-			dd($perId);
+			}
+			
 				return redirect()->route('setting.list');
     	
     }
@@ -158,6 +155,7 @@ class SettingController extends Controller
 				return redirect()->route('setting.list');
 	
     }
+    
 
     public function modelValidation($request)
     {

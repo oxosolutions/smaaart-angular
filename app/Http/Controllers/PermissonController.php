@@ -24,16 +24,16 @@ public function index()
 
     	 $model = Permisson::get();
 			return Datatables::of($model)
-			->addColumn('actions',function($model){                 
-					return view('permisson._actions',['model'=>$model])->render(); 
+			->addColumn('actions',function($model){
+					return view('permisson._actions',['model'=>$model])->render();
 			    })
-			->make(true);     
+			->make(true);
 		}
 
 
 public function create()
     {
-    	
+
 
     	return view('permisson.create');
     }
@@ -46,34 +46,32 @@ public function create()
 			DB::beginTransaction();
 			try{
 	    		$permisson = new Permisson($request->except(['_token']));
-	    		
+                $explodeRoute = explode('.',$request->route);
+	    		$permisson->route = $explodeRoute[0];
 	    		$permisson->save();
 	    		DB::commit();
 	    	Session::flash('success',"Permisson Successful Created!");
 
 	    	}catch(\Exception $e)
 	    	{
-	    	
+                throw $e;
 	    	if($e instanceOf \Illuminate\Database\QueryException){
 
 	    			    	Session::flash('error','Permisson name already Created!');
-						
+
 					}else{
-					Session::flash('error','Try again!');
+					                   Session::flash('error','Try again!');
 
 					}
 
-	    		DB::rollback();	
+	    		DB::rollback();
 	    	}
 
 	         return redirect()->route('permisson.list');
-
-
     }
 
     public function edit($id)
     {
-    	//echo $id;
 		$role = Permisson::findOrFail($id);
 		return view('permisson.edit',['model'=>$role]);
 
@@ -82,7 +80,6 @@ public function create()
     public function update(Request $request, $id)
     {
 					$permisson = Permisson::findOrFail($id);
-
 					$this->modelValidation($request);
 					DB::beginTransaction();
 					try{
