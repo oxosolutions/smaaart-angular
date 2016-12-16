@@ -36,8 +36,6 @@
                   <th>ID</th>
                   <th>Page Title</th>
                   <th>Page Slug</th>
-                  <th>Content</th>
-                  <th width="100">Page Image</th>
                   <th>Status</th>
                   <th>Created By</th>
                   <th>Created At</th>
@@ -52,8 +50,6 @@
                   <th>ID</th>
                   <th>Page Title</th>
                   <th>Page Slug</th>
-                  <th>Content</th>
-                  <th>Page Image</th>
                   <th>Status</th>
                   <th>Created By</th>
                   <th>Created At</th>

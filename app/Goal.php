@@ -39,8 +39,12 @@ class Goal extends Model
         return $this->morphMany('App\GoalsInterventionsMappings','goal');
     }
 
-    public static function countGoal()
-    {
+    public static function countGoal(){
         return self::count();
     }
+
+	public function goalNodalMinistry(){
+
+		return $this->belongsTo('App\Ministrie','goal_nodal_ministry','id');
+	}
 }

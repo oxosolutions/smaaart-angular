@@ -8,10 +8,9 @@ class UserMeta extends Model
 {
     protected $fillable = ['user_id','key','value'];
 
-    public function allUserMeta()
-    {
-    	
+    public function user(){
 
+        return $this->belongsTo('App\User');
     }
 
 }

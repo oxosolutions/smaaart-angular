@@ -1,16 +1,6 @@
 @extends('layouts.main')
 
-<style type="text/css">
-  .api_param li{
-    list-style: none;
-    padding:5px;
-  }
-  .api_param .params{
-    width: 200px;
-  }
-</style>
 @section('content')
-<!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -627,7 +617,7 @@
               <div class="box-body">
                 <p>
                   <code>
-                    API: {{url('/')}}/api/v1/store/pages/{page_slug}?api_token=YOUR_UNIQUE_USER_TOKEN
+                    API: {{url('/')}}/api/v1/pages/{page_slug}?api_token=YOUR_UNIQUE_USER_TOKEN
                   </code>
                   &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
                 </p>
@@ -638,7 +628,7 @@
                 </p>
                 Params:
                 <code>
-                  none
+                  page_slug
                 </code>
               </div>
             </div>
@@ -653,7 +643,7 @@
               <div class="box-body">
                 <p>
                   <code>
-                    api: {{url('/')}}/api/v1/dataset/chartdata/{id}?api_token=your_unique_user_token
+                    api: {{url('/')}}/api/v1/dataset/chartdata/{id}?api_token=YOUR_UNIQUE_USER_TOKEN
                   </code>
                   &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">put token</a>
                 </p>
@@ -664,7 +654,7 @@
                 </p>
                 params:
                 <code>
-                  none
+                  id
                 </code>
               </div>
             </div>
@@ -679,9 +669,9 @@
               <div class="box-body">
                 <p>
                   <code>
-                    api: {{url('/')}}/api/v1/dataset/validate/columns/{id}?api_token=your_unique_user_token
+                    api: {{url('/')}}/api/v1/dataset/validate/columns/{id}?api_token=YOUR_UNIQUE_USER_TOKEN
                   </code>
-                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">put token</a>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
                 </p>
                 <p>
                   <code>
@@ -690,7 +680,7 @@
                 </p>
                 params:
                 <code>
-                  none
+                  id
                 </code>
               </div>
             </div>
@@ -726,8 +716,6 @@
             </div>
           </div>
       </div>
-
-        <!-- /.row -->
     </section>
   </div>
 @endsection

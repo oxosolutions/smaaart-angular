@@ -4,7 +4,8 @@
 Route::get('/test', [
 	'middleware' => ['auth', 'roles'], // A 'roles' middleware must be specified
 	'uses' => 'SettingController@test',
-	'roles' => ['administrator'] // Only an administrator, or a manager can access this route
+	'as'=>'test'
+	//'roles' => ['manager'] // Only an administrator, or a manager can access this route
 ]);
 
 
@@ -29,7 +30,7 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::patch('/permisson/update/{id}', ['as'=>'permisson.update', 'uses'=>'PermissonController@update']);
 	Route::get('/permisson/delete/{id}', ['as'=>'permisson.delete', 'uses'=>'PermissonController@destroy']);
 
-	//Role permisson Setting
+	//Role permisson Setting  'middleware' => 'roles',
 
 	Route::get('/setting/create',['as'=>'setting.create', 'uses'=>'SettingController@create']);
 	Route::post('/setting/store', ['as'=>'setting.store', 'uses'=>'SettingController@store']);
@@ -40,19 +41,19 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/setting/view/{id}', ['as'=>'setting.view', 'uses'=>'SettingController@view']);
 
 	Route::get('/setting/edit/{id}',['as'=>'setting.edit', 'uses'=>'SettingController@edit']);
-	Route::patch('/setting/update/{id}', ['as'=>'setting.update', 'uses'=>'SettingController@update']);
+	Route::post('/setting/update', ['as'=>'setting.update', 'uses'=>'SettingController@update']);
 	Route::get('/permisson/delete/{id}', ['as'=>'permisson.delete', 'uses'=>'PermissonController@destroy']);
 
 
 	Route::get('/', ['as'=>'home', 'uses'=>'DashboardController@index']);
 
 	/*Routes of Department Operations*/
-	Route::get('/departments',['as'=>'department.list', 'uses'=>'DepartmentController@index']);
-	Route::get('/departments/create',['as'=>'department.create', 'uses'=>'DepartmentController@create']);
+	Route::get('/departments',['middleware'=>'roles','as'=>'department.list', 'uses'=>'DepartmentController@index']);
+	Route::get('/departments/create',['middleware'=>'roles','as'=>'department.create', 'uses'=>'DepartmentController@create']);
 	Route::post('/department/store',['as'=>'department.store', 'uses'=>'DepartmentController@store']);
-	Route::get('/department/delete/{id}',['as'=>'department.delete', 'uses'=>'DepartmentController@destroy']);
+	Route::get('/department/delete/{id}',['middleware'=>'roles','as'=>'department.delete', 'uses'=>'DepartmentController@destroy']);
 	Route::get('/list_depart',['as'=>'department.ajax', 'uses'=>'DepartmentController@get_departments']);
-	Route::get('/department/edit/{id}',['as'=>'department.edit', 'uses'=>'DepartmentController@edit']);
+	Route::get('/department/edit/{id}',['middleware'=>'roles','as'=>'department.edit', 'uses'=>'DepartmentController@edit']);
 	Route::patch('/department/update/{id}',['as'=>'department.update', 'uses'=>'DepartmentController@update']);
 
 	/*Routes of Designations Operations*/
@@ -70,6 +71,8 @@ Route::group(['middleware'=>'auth'], function(){
 	Route::get('/ministries/create',['as'=>'ministries.create', 'uses'=>'MinistriesController@create']);
 	Route::post('/ministries/store',['as'=>'ministries.store', 'uses'=>'MinistriesController@store']);
 	Route::get('/ministries/delete/{id}',['as'=>'ministries.delete', 'uses'=>'MinistriesController@destroy']);
+	Route::get('/ministries/edit/{id}',['as'=>'ministries.edit', 'uses'=>'MinistriesController@edit']);
+	Route::patch('/ministries/update/{id}',['as'=>'ministries.update', 'uses'=>'MinistriesController@update']);
 
 	/*Routes for goals operations*/
 	Route::get('/goals',['as'=>'goals.list','uses'=>'GoalsController@index']);

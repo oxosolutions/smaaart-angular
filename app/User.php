@@ -2,13 +2,13 @@
 
 namespace App;
 
-use Laravel\Passport\HasApiTokens;
+//use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use  Notifiable;
 
     /**
      * The attributes that are mass assignable.
@@ -61,15 +61,20 @@ class User extends Authenticatable
 
     //end role
     public static function userList()
-    {    
+    {
 
         $res = self::orderBy('id')->pluck('name','id');
-        return $res; 
+        return $res;
     }
 
     public static function countUser()
     {
         return self::count();
+    }
+
+    public function meta(){
+
+        return $this->hasMany('App\UserMeta','user_id','id');
     }
 
 

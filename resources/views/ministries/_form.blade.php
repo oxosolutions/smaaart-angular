@@ -39,6 +39,17 @@
     @endif
   </div>
 
+  @if(!empty(@$model))
+    <div class="input-group input-group-sm">
+      {!!Form::label('min_images','Current Image') !!}<br/>
+      @if(file_exists('min_images/'.$model->ministry_image))
+       <img src="{{asset('min_images/').'/'.$model->ministry_image}}" width="160px" />
+      @else
+       <img src="http://www.freeiconspng.com/uploads/no-image-icon-1.jpg" width="160px" />
+      @endif
+    </div><br/>
+  @endif
+
   <div class="{{ $errors->has('ministry_image') ? ' has-error' : '' }} input-group input-group-sm">
     {!!Form::label('ministry_image','Ministry Image') !!}
     {!!Form::file('ministry_image',['class'=>'form-control','id'=>'file-3']) !!}
@@ -71,7 +82,7 @@
 
   <div class="{{ $errors->has('ministry_departments') ? ' has-error' : '' }} form-group">
     {!!Form::label('ministry_departments','Ministry Departments') !!}
-    {!!Form::select('ministry_departments[]',\App\Department::departmentList(),null, ['class'=>'form-control select2', 'multiple']) !!}
+    {!!Form::select('ministry_departments[]',\App\Department::departmentList(),@$departments, ['class'=>'form-control select2', 'multiple']) !!}
     @if($errors->has('ministry_departments'))
       <span class="help-block">
             {{ $errors->first('ministry_departments') }}

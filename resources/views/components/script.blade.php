@@ -48,5 +48,19 @@
       });
       $('#token').val(token());
 
+      $("#filter").keyup(function () {
+            var filter = jQuery(this).val();
+            jQuery(".filtered > li").each(function () {
+                if (jQuery(this).text().search(new RegExp(filter, "i")) < 0) {
+                    jQuery(this).hide();
+                } else {
+                    jQuery(this).show()
+                }
+            });
+      });
+
+      $('#search-btn').click(function(e){
+          e.preventDefault();
+      });
   });
  </script>

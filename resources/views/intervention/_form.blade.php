@@ -22,11 +22,15 @@
   @if(@$model)
     <div class="input-group input-group-sm">
       {!!Form::label('intervent_image','Current Image') !!}<br/>
+      @if(file_exists('min_images/'.$model->ministry_image))
       <img src="{{asset('intervention_file/').'/'.$model->intervent_image}}" width="160px" />
+      @else
+      <img src="http://www.freeiconspng.com/uploads/no-image-icon-1.jpg" width="160px" />
+      @endif
     </div><br/>
   @endif
 
-    
+
   <div class="{{ $errors->has('intervention_image') ? ' has-error' : '' }} input-group input-group-sm">
     {!!Form::label('intervention_image','Intervention Image') !!}
     {!!Form::file('intervent_image',['class'=>'form-control','id'=>'file-3']) !!}

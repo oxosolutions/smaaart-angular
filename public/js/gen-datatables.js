@@ -158,8 +158,6 @@
             { data: 'id', name: 'id' },
             { data: 'page_title', name: 'page_title' },
             { data: 'page_slug', name: 'page_slug' },
-            { data: 'content', name: 'content' },
-            { data: 'page_image', name: 'page_image' },
             { data: 'status', name: 'status' },
             { data: 'created_by', name: 'created_by' },
             { data: 'created_at', name: 'created_at' },
@@ -237,7 +235,7 @@
             { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },
       ]
     });
-     
+
 
     $('body').on('click','.delete', function(){
 

@@ -136,7 +136,7 @@ class GoalsSchemaController extends Controller
             $model->save();
             DB::commit();
             Session::flash('success','Successfully update!');
-            return redirect()->route('target.list');
+            return redirect()->route('schema.list');
         }catch(\Exception $e){
 
             throw $e;

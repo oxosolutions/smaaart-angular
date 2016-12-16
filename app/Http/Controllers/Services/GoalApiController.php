@@ -29,7 +29,7 @@ class GoalApiController extends Controller
             $response['goal']['goal_color_rgb'] = $value->goal_color_rgb;
             $response['goal']['goal_color_rgba'] = $value->goal_color_rgb_a;
             $response['goal']['goal_opacity'] = $value->goal_opacity;
-            $response['goal']['goal_nodal_ministry'] = $value->goal_nodal_ministry;
+            $response['goal']['goal_nodal_ministry'] = $value->goal_nodal_ministry->ministry_title;
 
             $resIndex = 0;
             $tarIndex = 0;
@@ -141,7 +141,7 @@ class GoalApiController extends Controller
             $responseArray[$index]['goal_color_rgb'] = $goal->goal_color_rgb;
     		$responseArray[$index]['goal_color_rgba'] = $goal->goal_color_rgb_a;
     		$responseArray[$index]['goal_opacity'] = $goal->goal_opacity;
-    		$responseArray[$index]['goal_nodal_ministry'] = $goal->goal_nodal_ministry;
+    		$responseArray[$index]['goal_nodal_ministry'] = $goal->goalNodalMinistry->ministry_title;
 
     		$inIndex = 0;
     		foreach($goal->ministry as $ky => $vl){
@@ -294,7 +294,7 @@ class GoalApiController extends Controller
         $responseArray[$index]['goal_color_rgb'] = $model->goal_color_rgb;
         $responseArray[$index]['goal_color_rgba'] = $model->goal_color_rgb_a;
 		$responseArray[$index]['goal_opacity'] = $model->goal_opacity;
-		$responseArray[$index]['goal_nodal_ministry'] = $model->goal_nodal_ministry;
+		$responseArray[$index]['goal_nodal_ministry'] = $model->goalNodalMinistry->ministry_title;
 		$inIndex = 0;
 		foreach($model->ministry as $ky => $vl){
 

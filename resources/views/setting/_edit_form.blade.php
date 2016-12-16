@@ -14,14 +14,8 @@
       @endif
 
 <div class="form-group {{ $errors->has('role_id') ? ' has-error' : '' }}">
-    {!!Form::label('role_id','Role List') !!}
-    {!!Form::select('role_id', App\Role::role_list(),'select', ['placeholder' => 'Select Role','class'=>'form-control']) !!}
-    @if($errors->has('role_id'))
-      <span class="help-block">
-            {{ $errors->first('role_id') }}
-      </span>
-    @endif
-
+    <h2>{{$role_permisson[0]->rdname}} Role</h2>
+<input type="hidden" name="rid" value="{{$role_permisson[0]->rid}}" >
      <table id="example2" class="table table-bordered table-hover">
     <tbody>
 
@@ -32,24 +26,51 @@
       <th>Delete </th>
 </tr>
        
-       <!-- @foreach($role_permisson as $val)
-        <tr>
-            <td>{{$val->pdname}}</td>
-            <td>@if ($val->read==1) YES @else no @endif</td>
-            <td>@if ($val->write==1) YES @else no @endif</td>
-             <td>@if ($val->delete==1) YES @else no @endif</td>
+     
+ <!-- {{dump($role_permisson)}}
+ {{dump(App\Permisson::permisson_data())}} -->
 
-        </tr>
- @endforeach -->
+ 
 @foreach(App\Permisson::permisson_data() as $val)
-
- <tr>
-            <td>{{$val->display_name}}</td>
-            <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" >
+<tr>
+  <td>{{$val->display_name}} </td>
+ @foreach($role_permisson as $permisson)
+ 
+    @if($permisson->pid == $val->id)
+         
+      @if($permisson->read==true)
+            <td><input checked name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" >
             </td>
-            <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td>
+          @else
+          <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" >
+            </td>
+        @endif
+        @if($permisson->write==true)
+             <td><input checked name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td>
+          @else
+             <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td>
+        @endif
+        @if($permisson->delete==true)
+            <td><input checked name ="permisson_id[{{$val->id}}][]" type="checkbox" value="delete" ></td>
+          @else
             <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="delete" ></td>
+        @endif
+       
+    @elseif($permisson->pid == null)
+     
+         <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" >
+           <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td>
+          <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="delete" ></td>
+    @endif
+
+   
+
+  @endforeach
+        <!-- <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td> -->
+            
         </tr>
+
+  
 @endforeach
 </tbody>
 </table>

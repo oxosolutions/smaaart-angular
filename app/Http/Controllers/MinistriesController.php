@@ -23,7 +23,7 @@ class MinistriesController extends Controller
     public function get_ministries(){
 
     	$model = MIN::withUsers()->get();
-        
+
     	return Datatables::of($model)
     		   ->addColumn('actions', function($model){
     		   		return view('ministries._actions', ['model'=>$model])->render();
@@ -113,6 +113,62 @@ class MinistriesController extends Controller
             return redirect()->route('ministries.list');
         }catch(\Exception $e){
 
+            throw $e;
+        }
+    }
+
+    public function edit($id){
+
+        $model = MIN::find($id);
+        $departments = [];
+        foreach($model->departments as $key => $value){
+            $departments[] = $value->department_id;
+        }
+        $plugins = [
+                    'departments' => $departments,
+                    'model'=>$model,
+                    'css' => ['fileupload','select2'],
+                    'js'  => ['fileupload','select2','custom'=>['ministry-create']]
+                  ];
+        return view('ministries.edit',$plugins);
+    }
+
+    public function update(Request $request, $id){
+
+        $this->modelValidate($request);
+        $model = MIN::find($id);
+        DB::beginTransaction();
+        try{
+
+            $model->fill($request->except(['ministry_departments','_token']));
+
+            $model->created_by = Auth::user()->id;
+
+            $path = 'min_images';
+
+            if($request->hasFile('ministry_image')){
+
+                $filename = date('Y-m-d-H-i-s')."-".$request->file('ministry_image')->getClientOriginalName();
+
+                $request->file('ministry_image')->move($path, $filename);
+
+                $model->ministry_image = $filename;
+            }
+            $model->save();
+            foreach($request->ministry_departments as $key => $department){
+
+                $depart = new MDM();
+
+                $depart->department_id = $department;
+
+                $model->departments()->save($depart);
+            }
+
+            DB::commit();
+            Session::flash('success','Successfully added!');
+            return redirect()->route('ministries.list');
+        }catch(\Exception $e){
+            DB::rollback();
             throw $e;
         }
     }

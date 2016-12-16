@@ -18,7 +18,7 @@
       </span>
     @endif
   </div>
-  
+
   @if(!empty(@$model))
     <div class="input-group input-group-sm">
       {!!Form::label('schema_image','Current Image') !!}<br/>
@@ -35,13 +35,22 @@
       </span>
     @endif
   </div>
-  
+
   <div class="form-group {{ $errors->has('schema_desc') ? ' has-error' : '' }} " style="margin-top: 2%;">
     {!!Form::label('schema_desc','Schema Description') !!}
     {!!Form::textarea('schema_desc',null,['class'=>'form-control','placeholder'=>'Eenter Description','id'=>'schema_desc']) !!}
     @if($errors->has('schema_desc'))
       <span class="help-block">
             {{ $errors->first('schema_desc') }}
+      </span>
+    @endif
+  </div>
+  <div class="form-group {{ $errors->has('schema_content') ? ' has-error' : '' }} " style="margin-top: 2%;">
+    {!!Form::label('schema_content','Schema Content') !!}
+    {!!Form::textarea('schema_content',null,['class'=>'form-control','placeholder'=>'Eenter Content','id'=>'schema_content']) !!}
+    @if($errors->has('schema_content'))
+      <span class="help-block">
+            {{ $errors->first('schema_content') }}
       </span>
     @endif
   </div>

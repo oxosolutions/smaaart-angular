@@ -1,6 +1,16 @@
 <aside class="main-sidebar">
     <section class="sidebar">
-      <ul class="sidebar-menu" style="padding-bottom: 50px">
+        <!-- search form -->
+        <form action="#" method="GET" class="sidebar-form">
+          <div class="input-group">
+            <input type="text" name="q" class="form-control" id="filter" placeholder="Search..." autocomplete="off">
+                <span class="input-group-btn">
+                  <button type="submit" name="search" id="search-btn" class="btn btn-flat"><i class="fa fa-search"></i>
+                  </button>
+                </span>
+          </div>
+        </form>
+      <ul class="sidebar-menu filtered" style="padding-bottom: 50px">
         <li class="header">MAIN NAVIGATION</li>
         <li class="{{Request::is('/')?'active':''}}">
           <a href="{{url('/')}}">
@@ -50,7 +60,7 @@
 
         <li class="treeview {{in_array(Request::path(),array('dataset/create','dataset'))?'active':''}}">
           <a href="#">
-            <i class="fa fa-child"></i>
+            <i class="fa fa-life-ring"></i>
             <span>Datasets</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -120,7 +130,7 @@
 
         <li class="treeview {{in_array(Request::path(),array('indicators/create','indicators'))?'active':''}}">
           <a href="#">
-            <i class="fa fa-arrows-h"></i>
+            <i class="fa fa-lightbulb-o"></i>
             <span>Manage Indicators</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -162,7 +172,7 @@
 
          <li class="treeview {{in_array(Request::path(),array('visualisation/create','visualisation'))?'active':''}}">
           <a href="#">
-            <i class="fa fa-arrows-h"></i>
+            <i class="fa fa-wrench"></i>
             <span>Settings </span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
