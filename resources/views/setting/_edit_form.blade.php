@@ -16,6 +16,9 @@
 <div class="form-group {{ $errors->has('role_id') ? ' has-error' : '' }}">
     <h2>{{$role_permisson[0]->rdname}} Role</h2>
 <input type="hidden" name="rid" value="{{$role_permisson[0]->rid}}" >
+    <?php $rows = 'abc'; ?>
+{{ $rows }}
+
      <table id="example2" class="table table-bordered table-hover">
     <tbody>
 

@@ -29,7 +29,7 @@ class GoalApiController extends Controller
             $response['goal']['goal_color_rgb'] = $value->goal_color_rgb;
             $response['goal']['goal_color_rgba'] = $value->goal_color_rgb_a;
             $response['goal']['goal_opacity'] = $value->goal_opacity;
-            $response['goal']['goal_nodal_ministry'] = $value->goal_nodal_ministry->ministry_title;
+            $response['goal']['goal_nodal_ministry'] = $value->goalNodalMinistry->ministry_title;
 
             $resIndex = 0;
             $tarIndex = 0;
