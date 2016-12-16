@@ -16,8 +16,7 @@
 <div class="form-group {{ $errors->has('role_id') ? ' has-error' : '' }}">
     <h2>{{$role_permisson[0]->rdname}} Role</h2>
 <input type="hidden" name="rid" value="{{$role_permisson[0]->rid}}" >
-    <?php $rows = 'abc'; ?>
-{{ $rows }}
+
 
      <table id="example2" class="table table-bordered table-hover">
     <tbody>
@@ -35,12 +34,15 @@
 
  
 @foreach(App\Permisson::permisson_data() as $val)
+    <?php $rows = 0; ?>
+
 <tr>
   <td>{{$val->display_name}} </td>
  @foreach($role_permisson as $permisson)
  
     @if($permisson->pid == $val->id)
-         
+          <?php $rows = 1; ?>
+
       @if($permisson->read==true)
             <td><input checked name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" >
             </td>
@@ -66,13 +68,19 @@
           <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="delete" ></td>
     @endif
 
+
    
 
   @endforeach
         <!-- <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td> -->
-            
-        </tr>
+             @if($rows==0)
+      <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" >
+           <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td>
+          <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="delete" ></td>
+    @endif
 
+        </tr>
+        <br>
   
 @endforeach
 </tbody>

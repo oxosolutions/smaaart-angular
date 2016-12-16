@@ -38,67 +38,94 @@ class GoalApiController extends Controller
             $minIndex = 0;
             $inIndex  = 0;
             foreach ($value->ministry as  $ministryData) {
+                try{
+                    $response['ministry'][$minIndex]['id']                  = $ministryData->ministry->id;
+                    $response['ministry'][$minIndex]['ministry_id']         = $ministryData->ministry->ministry_id;
+                    $response['ministry'][$minIndex]['ministry_title']      = $ministryData->ministry->ministry_title;
+                    $response['ministry'][$minIndex]['ministry_description']= $ministryData->ministry->ministry_description;
+                    $response['ministry'][$minIndex]['ministry_icon']       = $ministryData->ministry->ministry_icon;
+                    $response['ministry'][$minIndex]['ministry_image']      = $ministryData->ministry->ministry_image;
+                    $response['ministry'][$minIndex]['ministry_phone']      = $ministryData->ministry->ministry_phone;
+                    $response['ministry'][$minIndex]['ministry_ministers']  = $ministryData->ministry->ministry_ministers;
+                    $response['ministry'][$minIndex]['ministry_order']      = $ministryData->ministry->ministry_order;
+                    $response['ministry'][$minIndex]['created_by']          = $ministryData->ministry->created_by;
+                }catch(\Exception $e){
+                    $response['ministry'] = [];
+                }
 
-                $response['ministry'][$minIndex]['id']                  = $ministryData->ministry->id;
-                $response['ministry'][$minIndex]['ministry_id']         = $ministryData->ministry->ministry_id;
-                $response['ministry'][$minIndex]['ministry_title']      = $ministryData->ministry->ministry_title;
-                $response['ministry'][$minIndex]['ministry_description']= $ministryData->ministry->ministry_description;
-                $response['ministry'][$minIndex]['ministry_icon']       = $ministryData->ministry->ministry_icon;
-                $response['ministry'][$minIndex]['ministry_image']      = $ministryData->ministry->ministry_image;
-                $response['ministry'][$minIndex]['ministry_phone']      = $ministryData->ministry->ministry_phone;
-                $response['ministry'][$minIndex]['ministry_ministers']  = $ministryData->ministry->ministry_ministers;
-                $response['ministry'][$minIndex]['ministry_order']      = $ministryData->ministry->ministry_order;
-                $response['ministry'][$minIndex]['created_by']          = $ministryData->ministry->created_by;
                 $minIndex++;
 
             }
             foreach ($value->schema as  $schemaData) {
+                try{
+                    $response["schema"][$schIndex]['id']                = $schemaData->schemas->id;
+                    $response["schema"][$schIndex]["schema_id"]         = $schemaData->schemas->schema_id;
+                    $response["schema"][$schIndex]["schema_title"]      = $schemaData->schemas->schema_title;
+                    $response["schema"][$schIndex]["schema_image"]      = $schemaData->schemas->schema_image;
+                    $response["schema"][$schIndex]["schema_desc"]       = $schemaData->schemas->schema_desc;
+                    $response["schema"][$schIndex]["created_by"]        = $schemaData->schemas->created_by;
+                }catch(\Exception $e){
+                    $response['schema'] = [];
+                }
 
-                $response["schema"][$schIndex]['id']                = $schemaData->schemas->id;
-                $response["schema"][$schIndex]["schema_id"]         = $schemaData->schemas->schema_id;
-                $response["schema"][$schIndex]["schema_title"]      = $schemaData->schemas->schema_title;
-                $response["schema"][$schIndex]["schema_image"]      = $schemaData->schemas->schema_image;
-                $response["schema"][$schIndex]["schema_desc"]       = $schemaData->schemas->schema_desc;
-                $response["schema"][$schIndex]["created_by"]        = $schemaData->schemas->created_by;
                 $schIndex++;
             }
 
             foreach ($value->intervention as  $intervenData) {
-                $response['intervention'][$intIndex]["id"]              = $intervenData->interventions->id;
-                $response['intervention'][$intIndex]["intervent_id"]    = $intervenData->interventions->intervent_id;
-                $response['intervention'][$intIndex]["intervent_title"] = $intervenData->interventions->intervent_title;
-                $response['intervention'][$intIndex]["intervent_image"] = $intervenData->interventions->intervent_image;
-                $response['intervention'][$intIndex]["intervent_desc"]  = $intervenData->interventions->intervent_desc;
-                $response['intervention'][$intIndex]["created_by"]      = $intervenData->interventions->created_by;
+                try{
+                    $response['intervention'][$intIndex]["id"]              = $intervenData->interventions->id;
+                    $response['intervention'][$intIndex]["intervent_id"]    = $intervenData->interventions->intervent_id;
+                    $response['intervention'][$intIndex]["intervent_title"] = $intervenData->interventions->intervent_title;
+                    $response['intervention'][$intIndex]["intervent_image"] = $intervenData->interventions->intervent_image;
+                    $response['intervention'][$intIndex]["intervent_desc"]  = $intervenData->interventions->intervent_desc;
+                    $response['intervention'][$intIndex]["created_by"]      = $intervenData->interventions->created_by;
+                }catch(\Exception $e){
+                    $response['intervention'] = [];
+                }
+
 
                  $intIndex++;
             }
 
             foreach ($value->target as $targetData) {
-                $response['target'][$tarIndex]["id"]                 =   $targetData->targets->id;
-                $response['target'][$tarIndex]["target_id"]          =   $targetData->targets->target_id;
-                $response['target'][$tarIndex]["target_title"]       =   $targetData->targets->target_title;
-                $response['target'][$tarIndex]["target_image"]       =   $targetData->targets->target_image;
-                $response['target'][$tarIndex]["target_desc"]        =   $targetData->targets->target_desc;
-                $response['target'][$tarIndex]["created_by"]         =   $targetData->targets->created_by;
+                try{
+                    $response['target'][$tarIndex]["id"]                 =   $targetData->targets->id;
+                    $response['target'][$tarIndex]["target_id"]          =   $targetData->targets->target_id;
+                    $response['target'][$tarIndex]["target_title"]       =   $targetData->targets->target_title;
+                    $response['target'][$tarIndex]["target_image"]       =   $targetData->targets->target_image;
+                    $response['target'][$tarIndex]["target_desc"]        =   $targetData->targets->target_desc;
+                    $response['target'][$tarIndex]["created_by"]         =   $targetData->targets->created_by;
+                }catch(\Exception $e){
+                    $response['target'] = [];
+                }
+
                 $indicatorsIndex = 0;
 
                 foreach($targetData->targets->indicators as $inKey => $indVal){
+                    try{
+                        $response['target'][$tarIndex]['indicators'][$indicatorsIndex]['id']              = $indVal->id;
+                        $response['target'][$tarIndex]['indicators'][$indicatorsIndex]['indicator_title'] = $indVal->indicator_title;
+                    }catch(\Exception $e){
+                        $response['target'][$tarIndex]['indicators'] = [];
+                    }
 
-                    $response['target'][$tarIndex]['indicators'][$indicatorsIndex]['id']              = $indVal->id;
-                    $response['target'][$tarIndex]['indicators'][$indicatorsIndex]['indicator_title'] = $indVal->indicator_title;
                     $indicatorsIndex++;
                 }
                 $tarIndex++;
             }
 
             foreach($value->resources as $res){
-                $response['resource'][$resIndex]['id']  = $res->resources->id;
-                $response['resource'][$resIndex]['resource_id'] = $res->resources->resource_id;
-                $response['resource'][$resIndex]['resource_title'] = $res->resources->resource_title;
-                $response['resource'][$resIndex]['resource_image'] = $res->resources->resource_image;
-                $response['resource'][$resIndex]['resource_desc'] = $res->resources->resource_desc;
-                $response['resource'][$resIndex]['created_by'] = $res->resources->created_by;
+                try{
+                    $response['resource'][$resIndex]['id']  = $res->resources->id;
+                    $response['resource'][$resIndex]['resource_id'] = $res->resources->resource_id;
+                    $response['resource'][$resIndex]['resource_title'] = $res->resources->resource_title;
+                    $response['resource'][$resIndex]['resource_image'] = $res->resources->resource_image;
+                    $response['resource'][$resIndex]['resource_desc'] = $res->resources->resource_desc;
+                    $response['resource'][$resIndex]['created_by'] = $res->resources->created_by;
+                }catch(\Exception $e){
+
+                    $response['resource'] = [];
+                }
 
                 $resIndex++;
             }
@@ -106,8 +133,13 @@ class GoalApiController extends Controller
             foreach($value->target as $indKeys => $indVal){
 
                 foreach($indVal->targets->indicators as $inK => $inV){
-                    $response['indicators'][$inIndex]['id'] = $inV->id;
-                    $response['indicators'][$inIndex]['indicator_title'] = $inV->indicator_title;
+                    try{
+                        $response['indicators'][$inIndex]['id'] = $inV->id;
+                        $response['indicators'][$inIndex]['indicator_title'] = $inV->indicator_title;
+                    }catch(\Exception $e){
+                        $response['indicators'] = [];
+                    }
+
                     $inIndex++;
                 }
             }
