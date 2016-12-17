@@ -21,15 +21,13 @@ class Role extends Model
 		}
 
 		public function users()
-		    {
-		        return $this->hasMany('App\User', 'role_id', 'id');
-		    }
-
+	    {
+	        return $this->hasMany('App\User', 'role_id', 'id');
+	    }
+		
 		public function permisson()
 		{
-			return $this->morphMany('App\PermissonRole');
+			return $this->hasMany('App\PermissonRole','role_id','id');
 		}
-
-		
 
 }

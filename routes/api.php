@@ -42,6 +42,7 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/dataset/chartdata/{id}',['as'=>'list','uses'=>'Services\DatasetsController@getFormatedDataset']);
 		Route::get('/dataset/validate/columns/{id}',['as'=>'validate.columns','uses'=>'Services\ImportdatasetController@getColumns']);
 		Route::post('/visual/settings',['as'=>'store.visual.settings','uses'=>'Services\VisualizationController@storeVisualOptionsAndSettings']);
+		
 		Route::post('/dataset/savevalidatecolumns',['as'=>'validate.columns','uses'=>'Services\DatasetsController@SavevalidateColumns']);
 		Route::get('/dataset/delete/{id}',['as'=>'validate.columns','uses'=>'Services\DatasetsController@deleteDataset']);
 		Route::get('/visual/delete/{id}',['as'=>'validate.columns','uses'=>'Services\VisualizationController@deleteVisual']);

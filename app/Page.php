@@ -6,7 +6,7 @@
   use Illuminate\Database\Eloquent\SoftDeletes;
   class Page extends Model
   {
-      protected $fillable = ['page_title','content','page_image','status','created_by','page_slug'];
+      protected $fillable = ['page_title','content','page_image','status','created_by','page_slug','page_subtitle'];
       protected $dates = ['deleted_at'];
       protected $softDelete = true;
 

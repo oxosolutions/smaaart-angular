@@ -87,4 +87,8 @@ class ProfileApiController extends Controller
             return false;
         }
     }
+
+    public function forgetPassword(Request $request){
+
+    }
 }

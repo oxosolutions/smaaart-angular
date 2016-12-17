@@ -8,6 +8,15 @@
       </span>
     @endif
   </div>
+  <div class="form-group {{ $errors->has('page_subtitle') ? ' has-error' : '' }}">
+    {!!Form::label('page_subtitle','Page Sub-Title') !!}
+    {!!Form::text('page_subtitle',null, ['class'=>'form-control','placeholder'=>'Enter Page Sub-title']) !!}
+    @if($errors->has('page_subtitle'))
+      <span class="help-block">
+            {{ $errors->first('page_subtitle') }}
+      </span>
+    @endif
+  </div>
   <div class="form-group {{ $errors->has('page_slug') ? ' has-error' : '' }}">
     {!!Form::label('page_slug','Page Slug') !!}
     {!!Form::text('page_slug',null, ['class'=>'form-control','placeholder'=>'Enter Page Slug']) !!}

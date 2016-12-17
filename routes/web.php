@@ -37,8 +37,8 @@ Route::group(['middleware'=>['auth']], function(){
 		Route::get('/', ['as'=>'home', 'uses'=>'DashboardController@index']);
 
 		/*Routes of Department Operations*/
-		Route::get('/departments',['as'=>'department.list', 'uses'=>'DepartmentController@index']);
-		Route::get('/departments/create',['as'=>'department.create', 'uses'=>'DepartmentController@create']);
+		Route::get('/departments',['middleware'=>'roles','as'=>'department.list', 'uses'=>'DepartmentController@index']);
+		Route::get('/departments/create',['middleware'=>'roles','as'=>'department.create', 'uses'=>'DepartmentController@create']);
 		Route::post('/department/store',['as'=>'department.store', 'uses'=>'DepartmentController@store']);
 		Route::get('/department/delete/{id}',['middleware'=>'roles','as'=>'department.delete', 'uses'=>'DepartmentController@destroy']);
 		Route::get('/list_depart',['as'=>'department.ajax', 'uses'=>'DepartmentController@get_departments']);

@@ -37,6 +37,7 @@ class GoalApiController extends Controller
             $schIndex = 0;
             $minIndex = 0;
             $inIndex  = 0;
+            $response['ministry'] = [];
             foreach ($value->ministry as  $ministryData) {
                 try{
                     $response['ministry'][$minIndex]['id']                  = $ministryData->ministry->id;
@@ -56,6 +57,7 @@ class GoalApiController extends Controller
                 $minIndex++;
 
             }
+            $response['schema'] = [];
             foreach ($value->schema as  $schemaData) {
                 try{
                     $response["schema"][$schIndex]['id']                = $schemaData->schemas->id;
@@ -70,7 +72,7 @@ class GoalApiController extends Controller
 
                 $schIndex++;
             }
-
+            $response['intervention'] = [];
             foreach ($value->intervention as  $intervenData) {
                 try{
                     $response['intervention'][$intIndex]["id"]              = $intervenData->interventions->id;
@@ -86,7 +88,7 @@ class GoalApiController extends Controller
 
                  $intIndex++;
             }
-
+            $response['target'] = [];
             foreach ($value->target as $targetData) {
                 try{
                     $response['target'][$tarIndex]["id"]                 =   $targetData->targets->id;
@@ -113,7 +115,7 @@ class GoalApiController extends Controller
                 }
                 $tarIndex++;
             }
-
+            $response['resource'] = [];
             foreach($value->resources as $res){
                 try{
                     $response['resource'][$resIndex]['id']  = $res->resources->id;

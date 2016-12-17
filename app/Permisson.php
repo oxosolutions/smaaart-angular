@@ -24,18 +24,54 @@ class Permisson extends Model
 
     public static function getRouteListArray(){
 
-        $routesList =  Route::getRoutes();
+        
+            $routes = Route::getRoutes();
+
+                  
+            foreach($routes as $route)
+            {
+               if(substr($route->getPath() ,0,1)=='_'){
+                }
+               else{
+                    $rout =  str_replace('/{id}','',$route->getPath());
+                    $routeList[$rout] = $rout;
+                }
+                //echo($route->getPath()).'<br>';
+            }
+
+            return $routeList;
+
         /*foreach ($routesList as $key => $value) {
             dump($value->getName());
         }
         exit;*/
-        $pluckArray = [];
-        foreach($routesList as $key =>$value){
-            if($value->getName() != null || $value->getName() != ''){
-                $pluckArray[$value->getName()] = ucwords(str_replace('.',' ',$value->getName()));
-            }
-        }
-        return $pluckArray;
+        // $pluckArray = [];
+        //$routesList =  Route::getRoutes();
+        // foreach($routesList as $key =>$value){
+        //     if($value->getName() != null || $value->getName() != ''){
+        //         $pluckArray[$value->getName()] = ucwords(str_replace('.',' ',$value->getName()));
+        //     }
+        //}
+        //return $pluckArray;
+    }
+
+    public static function getRouteFor()
+    {
+        $routeFor['read']   =   "Read";
+        $routeFor['write']  =   "Write";
+        $routeFor['delete'] =   "Delete";
+        return $routeFor;
+
+    }
+
+    public function routeMapping()
+    {
+        $this->hasMany('App\PermissonRouteMapping','permisson_id','id');
+    }
+
+    public function permisson()
+    {
+        $this->hasMany('App\PermissonRole','permisson_id','id');
     }
 
 

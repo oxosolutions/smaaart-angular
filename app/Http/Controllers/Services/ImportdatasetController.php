@@ -14,9 +14,10 @@ class ImportdatasetController extends Controller
 {
 
     function uploadDataset(Request $request){
-
     	$validate = $this->validateRequst($request);
-
+        if(!in_array($request->file('file')->getClientOriginalExtension(),['csv','xlsx','xls'])){
+            return ['status'=>'error','message'=>'File type not allowed!'];
+        }
     	if($validate['status'] == 'false'){
     		$response = ['status'=>'error','error'=>$validate['error']];
     		return $response;
@@ -26,6 +27,7 @@ class ImportdatasetController extends Controller
     	$file = $request->file('file');
 
       	if($file->isValid()){
+
       		$filename = date('Y-m-d-H-i-s')."-".$request->file('file')->getClientOriginalName();
       		$uploadFile = $request->file('file')->move($path, $filename);
       		$result = $this->storeInDatabase($path.'/'.$filename, $request->file('file')->getClientOriginalName());
@@ -44,14 +46,14 @@ class ImportdatasetController extends Controller
         }
     }
     protected function validateRequst($request){
-
-    	$errors = [];
+        $errors = [];
     	if($request->file('file') == '' || empty($request->file('file')) || $request->file('file') == null){
     		$errors['file'] = 'File field should not empty!';
     	}
-    	if($request->format == 'undefined' || empty($request->format) || $request->format  == null){
-    		$errors['format'] = 'Please select file format';
-    	}
+         if($request->format == 'undefined' || empty($request->format) || $request->format  == null){
+             $errors['format'] = 'Please select file format';
+         }
+
     	if($request->add_replace == 'undefined' || empty($request->add_replace) || $request->add_replace  == null){
     		$errors['add_replace'] = 'Please select file format!';
     	}
@@ -73,6 +75,8 @@ class ImportdatasetController extends Controller
 
         $model = DL::where('id',$id)->first();
         $records = json_decode($model->dataset_records);
+        $datasetColumns = json_decode($model->dataset_columns);
+        $datasetValidate = $model->validated;
         $headers = [];
         foreach($records[0] as $key => $val){
 
@@ -81,11 +85,11 @@ class ImportdatasetController extends Controller
             }
         }
 
-        return ['status'=>'sucess','data'=>['columns'=>$headers,'dataset_id'=>$model->id]];
+        return ['status'=>'sucess','data'=>['columns'=>$headers,'dataset_id'=>$model->id,'validated'=>$datasetValidate,'raw_columns'=>$datasetColumns]];
     }
 
-    function storeInDatabase($filename, $origName){
-
+    protected function storeInDatabase($filename, $origName){
+        ini_set('memory_limit', '2048M');
     	$FileData = [];
     	$data = Excel::load($filename, function($reader){ })->get();
 
