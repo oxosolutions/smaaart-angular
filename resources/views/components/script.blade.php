@@ -46,7 +46,7 @@
             x++; //text box increment
            
             $("#append").append($(wrapper).clone());
-            $("#append").append(x+'<a href="#" class="remove_field">Remove</a>');
+            $("#append").append('<a href="#" class="remove_field">Remove</a>');
             // $(wrapper).append("{!!Form::label('route','Route') !!}{!!Form::select('route[]',App\Permisson::getRouteListArray(),null, ['class'=>'form-control','placeholder'=>'url ']) !!}"); //add input box
         }
     });

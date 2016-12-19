@@ -14,20 +14,20 @@ class Role extends Model
 
     protected $dates = ['deleted_at'];
     protected $softDelete = true;
-		public static function role_list()
-		{
-			$result = 	self::orderBy('id')->pluck('name','id');
-			return $result;
-		}
+	public static function role_list()
+	{
+		$result = 	self::orderBy('id')->pluck('name','id');
+		return $result;
+	}
 
-		public function users()
-	    {
-	        return $this->hasMany('App\User', 'role_id', 'id');
-	    }
-		
-		public function permisson()
-		{
-			return $this->hasMany('App\PermissonRole','role_id','id');
-		}
+	public function users()
+	{
+		return $this->hasMany('App\User', 'role_id', 'id');
+	}
+
+	public function permisson()
+	{
+		return $this->hasMany('App\PermissonRole','role_id','id');
+	}
 
 }

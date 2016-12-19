@@ -62,6 +62,9 @@ class SettingController extends Controller
 			
 		PermissonRole::where('role_id',$request->rid)->delete();
 
+		if($request->permisson_id)
+		{
+
 				foreach ($request->permisson_id as $key => $value) {
 						$permissonId[] = $key;
 					$pr =	new PermissonRole($request->except(['_token','read']));
@@ -77,8 +80,13 @@ class SettingController extends Controller
 					}
 					$pr->save();
 				}
+							$perId =	Permisson::select('id')->whereNotIn('id', $permissonId)->get();
+
+		}
+		else{
+				$perId =	Permisson::select('id')->get();
+		}
 					
-			$perId =	Permisson::select('id')->whereNotIn('id', $permissonId)->get();
 			foreach ($perId as  $value) {
 					echo $value->id;
 					$pr =	new PermissonRole($request->except(['_token','read']));

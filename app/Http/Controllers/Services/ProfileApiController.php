@@ -68,6 +68,11 @@ class ProfileApiController extends Controller
         if(!$result){
             return ['status'=>'error','message'=>'old password not correct!'];
         }
+            
+        if ($request->old_pass == $request->new_pass){
+            return ['status' => 'error' , 'message' => 'your old and new password should not be same'];
+        }
+
         if($request->new_pass != $request->conf_pass){
             return ['status'=>'error','message'=>'password not match!'];
         }
@@ -81,7 +86,6 @@ class ProfileApiController extends Controller
     protected function validateModel($request){
 
         if($request->has('old_pass') && $request->has('new_pass') && $request->has('conf_pass')){
-
             return true;
         }else{
             return false;

@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\DatasetsList as DL;
 use Carbon\Carbon;
-
+use Auth;
 class DatasetsController extends Controller
 {
     function getDatasetsList(){
@@ -102,6 +102,69 @@ class DatasetsController extends Controller
         }else{
 
             return ['status'=>'error','message'=>'No dataset find with this id'];
+        }
+    }
+
+    public function saveEditedDatset(Request $request){
+
+        $validate = $this->validateEditDatasetRequest($request);
+        if(!$validate){
+            return ['status'=>'error','message'=>'Required fields are missing!'];
+        }
+        $model = DL::find($request->dataset_id);
+        $model->dataset_records = $request->records;
+        $model->save();
+
+        return ['status'=>'success','message'=>'Dataset updated successfully!','dataset_id'=>$request->dataset_id];
+    }
+
+    protected function validateEditDatasetRequest($request){
+
+        if($request->has('dataset_id') && $request->has('records')){
+
+            return true;
+        }else{
+
+            return false;
+        }
+    }
+
+    public function saveNewSubset(Request $request){
+
+        $validate = $this->validateNewSubset($request);
+        if(!$validate){
+            return ['status'=>'error','message'=>'Required fields are missing!!'];
+        }
+        $old_dataset = DL::find($request->dataset_id);
+        $dataset_records = json_decode($old_dataset->dataset_records);
+        $newColumns = json_decode($request->subset_columns);
+        $newSubset = [];
+        $index = 0;
+        foreach($dataset_records as $key => $value){
+            foreach($value as $colKey => $colVal){
+                if(in_array($colKey,$newColumns)){
+                    $newSubset[$index][$colKey] = $colVal;
+                }
+            }
+            $index++;
+        }
+        $model = new DL();
+        $model->dataset_name = $request->subset_name;
+        $model->dataset_records = json_encode($newSubset);
+        $model->user_id = Auth::user()->id;
+		$model->uploaded_by = Auth::user()->name;
+        $model->save();
+
+        return ['staus'=>'success','message'=>'Subset saved successfully','dataset_id'=>$model->id];
+    }
+    protected function validateNewSubset($request){
+
+        if($request->has('subset_name') && $request->has('subset_columns') && $request->has('dataset_id')){
+
+            return true;
+        }else{
+
+            return false;
         }
     }
 

@@ -852,6 +852,37 @@
             </div>
           </div>
       </div>
+      <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i> User Change Password </h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>
+                    API: {{url('/')}}/api/v1/profile/changepass?api_token=YOUR_UNIQUE_USER_TOKEN
+                  </code>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
+                </p>
+                <p>
+                  <code>
+                    Method: POST
+                  </code>
+                </p>
+                Params:
+                <code>
+                  <ul class="api_param well ">
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">old_pass</spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">new_pass</spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">conf_pass</spam> <span class="label label-danger">Required</span></li>
+                  </ul>
+                </code>
+              </div>
+            </div>
+          </div>
+      </div>
+
       
     </section>
   </div>
