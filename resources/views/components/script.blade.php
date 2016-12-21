@@ -35,37 +35,28 @@
  <script type="text/javascript">
   	$(document).ready(function(){
 
-    var max_fields      = 6; //maximum input boxes allowed
+    var max_fields      = 5; //maximum input boxes allowed
     var wrapper         = $(".input_fields_wrap"); //Fields wrapper
     var add_button      = $(".add_field_button"); //Add button ID
-    
+
     var x = 1; //initlal text box count
     $(add_button).click(function(e){ //on add input button click
         e.preventDefault();
-        if(x < max_fields){ //max input box allowed
-            x++; //text box increment
-           
-            $("#append").append($(wrapper).clone());
-            $("#append").append('<a href="#" class="remove_field">Remove</a>');
+            $("#append").append($(".append-data").html());
+
+           // $("#append").append('<a href="#" class="remove_field">Remove</a>');
             // $(wrapper).append("{!!Form::label('route','Route') !!}{!!Form::select('route[]',App\Permisson::getRouteListArray(),null, ['class'=>'form-control','placeholder'=>'url ']) !!}"); //add input box
-        }
     });
-    
-    $("#append").on("click",".remove_field", function(e){ //user click on remove text
-
-        e.preventDefault(); $(this).parent('div').remove(); x--;
-    })
-
-
-
-
+    $(document).on('click','.remove_field',function(){
+      $(this).parent('div').remove();
+    });
 
       var rand = function() {
           return Math.random().toString(36).substr(2); // remove `0.`
       };
 
       var token = function() {
-          return rand() + rand() + rand(); // to make it longer
+          return rand() + rand() // to make it longer
       };
 
       $('.generate-token').click(function(){

@@ -9,11 +9,18 @@
       </span>
     @endif
   </div>
+   <div class="form-group {{ $errors->has('route') ? ' has-error' : '' }} ">
+    {!!Form::label('icon','Icon') !!}
+    {!!Form::text('icon',null, ['class'=>'form-control','placeholder'=>'Insert Icon']) !!}
+    @if($errors->has('icon'))
+      <span class="help-block">
+            {{ $errors->first('icon') }}
+      </span>
+    @endif
+  </div>
 
 <div class="input_fields_wrap">
-  <div class=" form-group {{ $errors->has('route') ? ' has-error' : '' }}">
-
-
+  <div class=" form-group {{ $errors->has('route') ? ' has-error' : '' }} floating-select-div">
     {!!Form::label('route','Route') !!}
     {!!Form::select('route[]',App\Permisson::getRouteListArray(),null, ['class'=>'form-control','placeholder'=>'url ']) !!}
     @if($errors->has('route'))
@@ -22,9 +29,8 @@
       </span>
     @endif
   </div>
-  <div class="form-group {{ $errors->has('route') ? ' has-error' : '' }}">
 
-
+  <div class="form-group {{ $errors->has('route') ? ' has-error' : '' }} floating-select-div">
     {!!Form::label('route','Route For') !!}
     {!!Form::select('routeFor[]',App\Permisson::getRouteFor(),null, ['class'=>'form-control','placeholder'=>'Route For']) !!}
     @if($errors->has('route'))
@@ -33,20 +39,22 @@
       </span>
     @endif
   </div>
+
+   <div class="form-group {{ $errors->has('route_name') ? ' has-error' : '' }} floating-select-div">
+    {!!Form::label('route_name','Route Name') !!}
+    {!!Form::text('route_name[]',null, ['class'=>'form-control','placeholder'=>'Enter Route Name']) !!}
+    @if($errors->has('route_name'))
+      <span class="help-block">
+            {{ $errors->first('route_name') }}
+      </span>
+    @endif
+  </div>
 </div>  
    <div id="append" class="form-group {{ $errors->has('route') ? ' has-error' : '' }}">
    </div>
    <button class="add_field_button">Add More Fields</button>
 
-  <!-- <?php $routes = Route::getRoutes();
-                   
-foreach($routes as $route)
-{
-    echo($route->getPath()).'<br>';
-}
-?> -->
-
-  <div class="form-group {{ $errors->has('goal_title') ? ' has-error' : '' }}">
+ <!--  <div class="form-group {{ $errors->has('goal_title') ? ' has-error' : '' }}">
     {!!Form::label('display_name','Display Name') !!}
     {!!Form::text('display_name',null, ['class'=>'form-control','placeholder'=>'Optional Display Name']) !!}
     @if($errors->has('display_name'))
@@ -55,7 +63,7 @@ foreach($routes as $route)
       </span>
     @endif
   </div>
-
+ -->
 
 </div>
 
@@ -73,6 +81,12 @@ foreach($routes as $route)
   .select2-selection__choice__remove{
 
       color: #FFF !important;
+  }
+  .floating-select-div{
+      float: left;
+      width: 32%;
+      margin-right: 5px ;
+
   }
 </style>
 

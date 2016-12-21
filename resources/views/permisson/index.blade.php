@@ -6,13 +6,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Goals
-        <small>list of goals</small>
+        Permissions
+        <small>list of Permission</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="javascript:;">Goals</a></li>
-        <li class="active">List Goals</li>
+        <li><a href="javascript:;">Permission</a></li>
+        <li class="active">List Permission</li>
       </ol>
     </section>
     
@@ -28,7 +28,7 @@
       <div class="row">
         <div class="col-xs-12">
           <div class="box-header">
-              <button class="btn btn-primary" onclick="window.location='{{route('permisson.create')}}'">Create New Permisson</button>
+              <button class="btn btn-primary" onclick="window.location='{{route('permisson.create')}}'">Create New Route</button>
           </div>
           <div class="box">
             <!-- /.box-header -->
@@ -37,10 +37,7 @@
                 <thead>
                 <tr>
                   <th>Name</th>
-                  <th>Display Name</th>
-                  <th>Route</th>
                   <th>Created At</th>
-                 
                   <th>Action</th>
                 </tr>
                 </thead>
@@ -50,8 +47,6 @@
                 <tfoot>
                 <tr>
                   <th>Name</th>
-                  <th>Display Name</th>
-                  <th>Route</th>
                   <th>Created At</th>
                   <th>Action</th>
                 </tr>

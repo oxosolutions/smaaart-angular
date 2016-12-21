@@ -47,10 +47,13 @@ class SettingController extends Controller
     {
 
 		$data = DB::table('roles as r')
-    	->select('pr.id as prid','r.id as rid','r.name as rname', 'r.display_name as rdname','pr.read','pr.write','pr.delete','p.name as pname','p.display_name as pdname','p.id as pid')
+    	->select('prm.route_for','prm.route_name','pr.id as prid','r.id as rid','r.name as rname','pr.read','pr.write','pr.delete','pr.other','p.name as pname','p.id as pid')
 		->leftJoin('permisson_roles as pr','r.id','=','pr.role_id')
 		->leftJoin('permissons as p','p.id','=','pr.permisson_id')
+		->leftJoin('permisson_route_mappings as prm', 'prm.permisson_id','=','p.id')
 		->where('r.id',$id)->get();
+
+
 
 		$role = Role::findOrFail($id);
 		return view('setting.edit',['model'=>$role,'role_permisson'=>$data]);
@@ -59,7 +62,7 @@ class SettingController extends Controller
     }
     public function update(Request $request)
     {
-			
+		//dd($request);	
 		PermissonRole::where('role_id',$request->rid)->delete();
 
 		if($request->permisson_id)
@@ -69,10 +72,11 @@ class SettingController extends Controller
 						$permissonId[] = $key;
 					$pr =	new PermissonRole($request->except(['_token','read']));
 					$pr->role_id =  $request->rid;
-					$pr->permisson_id = $key;
+					 $pr->permisson_id = $key;
 					$pr->read=0;
 					$pr->write=0;
 					$pr->delete=0;
+					$pr->other=0;
 					$permSize = count($value);
 					for($i=0; $i<$permSize; $i++){
 					$field = $value[$i];
@@ -80,7 +84,7 @@ class SettingController extends Controller
 					}
 					$pr->save();
 				}
-							$perId =	Permisson::select('id')->whereNotIn('id', $permissonId)->get();
+					$perId = Permisson::select('id')->whereNotIn('id', $permissonId)->get();
 
 		}
 		else{
@@ -88,16 +92,17 @@ class SettingController extends Controller
 		}
 					
 			foreach ($perId as  $value) {
-					echo $value->id;
+					 $value->id;
 					$pr =	new PermissonRole($request->except(['_token','read']));
 					$pr->role_id =  $request->rid;
 					$pr->permisson_id = $value->id;
 					$pr->read=0;
 					$pr->write=0;
 					$pr->delete=0;
+					$pr->other=0;
 					$pr->save();	
 			}
-			
+		
 				return redirect()->route('setting.list');
     	
     }
@@ -113,7 +118,7 @@ class SettingController extends Controller
 			return redirect()->route('setting.list');
 		}
 
-		$data = DB::table('roles as r')->select('r.id as rid','r.name as rname', 'r.display_name as rdname','pr.read','pr.write','pr.delete','p.name as pname','p.display_name as pdname')
+		$data = DB::table('roles as r')->select('r.id as rid','r.name as rname','pr.read','pr.write','pr.delete','p.name as pname')
 		->leftJoin('permisson_roles as pr','r.id','=','pr.role_id')
 		->leftJoin('permissons as p','p.id','=','pr.permisson_id')
 		->where('r.id',$id)->get();

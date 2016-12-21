@@ -18,9 +18,15 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::post('/dataset/import',				['as'=>'import','uses'=>'Services\ImportdatasetController@uploadDataset']);
 		Route::get('/dataset/list',					['as'=>'list','uses'=>'Services\DatasetsController@getDatasetsList']);
 		Route::get('/dataset/view/{id}',			['as'=>'list','uses'=>'Services\DatasetsController@getDatasets']);
+
 		Route::get('/department/list',				['as'=>'department.list','uses'=>'Services\DepartmentApiController@departmentList']);
 		Route::get('/department/{id}',				['as'=>'department.single','uses'=>'Services\DepartmentApiController@singleDepartment']);
+		Route::get('/resources/list',				['as'=>'Resources.list','uses'=>'Services\ResourcesApiController@ResourcesList']);
+		Route::get('/designation/list',				['as'=>'Designation.list','uses'=>'Services\DesignationApiController@DesignitionList']);
+		Route::get('/departments',				['as'=>'Designations','uses'=>'Services\DepartmentApiController@departments']);
+
 		Route::get('/ministry/list',				['as'=>'ministry.list','uses'=>'Services\MinistryApiController@ministryList']);
+		Route::get('/profile/ministries',				['as'=>'ministries','uses'=>'Services\MinistryApiController@Ministries']);
 		Route::get('/ministry/{id}',				['as'=>'ministry.single','uses'=>'Services\MinistryApiController@singleMinistry']);
 		Route::get('/goals/list',					['as'=>'goals.list','uses'=>'Services\GoalApiController@goalsList']);
 		Route::get('/goals/{id}',					['as'=>'goal.single','uses'=>'Services\GoalApiController@singleGoal']);
@@ -44,6 +50,7 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::post('/profile/changepass',			['as'=>'change.password','uses'=>'Services\ProfileApiController@changePassword']);
 		Route::post('dataset/saveEditedDatset',		['as'=>'dataset.save_edited','uses'=>'Services\DatasetsController@saveEditedDatset']);
 		Route::post('dataset/saveSubset',			['as'=>'dataset.save_subset','uses'=>'Services\DatasetsController@saveNewSubset']);
+		Route::post('update/profile',				['as'=>'profile.update','uses'=>'Services\ProfileApiController@saveProfile']);
 
 	});
 });

@@ -14,7 +14,7 @@
       @endif
 
 <div class="form-group {{ $errors->has('role_id') ? ' has-error' : '' }}">
-    <h2>{{$role_permisson[0]->rdname}} Role</h2>
+    <h2>{{$role_permisson[0]->rname}} Role</h2>
 <input type="hidden" name="rid" value="{{$role_permisson[0]->rid}}" >
 
 
@@ -37,13 +37,44 @@
     <?php $rows = 0; ?>
 
 <tr>
-  <td>{{$val->display_name}} </td>
+  <td>{{$val->name}} </td>
  @foreach($role_permisson as $permisson)
  
     @if($permisson->pid == $val->id)
           <?php $rows = 1; ?>
+      
 
-      @if($permisson->read==true)
+      @if($permisson->route_for =='read')
+          @if($permisson->read==true)
+            <td><input checked name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" >
+            </td>
+          @else
+          <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" >
+            </td>
+        @endif
+      @endif
+      @if($permisson->route_for =='write')
+         @if($permisson->write==true)
+             <td><input checked name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td>
+          @else
+             <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td>
+        @endif
+      @endif
+      @if($permisson->route_for =='delete')
+        @if($permisson->delete==true)
+            <td><input checked name ="permisson_id[{{$val->id}}][]" type="checkbox" value="delete" ></td>
+          @else
+            <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="delete" ></td>
+        @endif 
+      @endif
+      @if($permisson->route_for =='other')
+        @if($permisson->other==true)
+         <td><input checked name ="permisson_id[{{$val->id}}][]" type="checkbox" value="other" >{{$permisson->route_name}}</td>
+          @else
+            <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="other" >{{$permisson->route_name}}</td>
+        @endif 
+      @endif
+     <!--  @if($permisson->read==true)
             <td><input checked name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" >
             </td>
           @else
@@ -59,7 +90,7 @@
             <td><input checked name ="permisson_id[{{$val->id}}][]" type="checkbox" value="delete" ></td>
           @else
             <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="delete" ></td>
-        @endif
+        @endif -->
        
     @elseif($permisson->pid == null)
      <?php $rows = 1; ?>
@@ -74,9 +105,25 @@
   @endforeach
         <!-- <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td> -->
     @if($rows==0)
-          <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" >
+        @foreach($val->routeMapping as $routeVal)
+                  @if($routeVal->route_for=='read')
+                  <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" ></td>
+                  @endif
+                  @if($routeVal->route_for=='write')
+                   <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td>
+                  @endif
+                  @if($routeVal->route_for=='delete')
+                  <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="delete" ></td> 
+                  @endif
+
+          @if($routeVal->route_for=='other')
+                     <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="other" >{{$routeVal->route_name}}</td>
+          @endif
+
+        @endforeach
+          <!-- <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" >
           <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td>
-          <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="delete" ></td>
+          <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="delete" ></td> -->
     @endif
 
         </tr>

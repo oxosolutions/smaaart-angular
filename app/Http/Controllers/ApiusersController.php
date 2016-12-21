@@ -8,14 +8,14 @@ use App\User;
 use App\UserMeta as UM;
 use App\Designation as DES;
 use Session;
-use App\Ministrie as MIN; 
+use App\Ministrie as MIN;
 use App\Department as DEP;
-
+use Hash;
 class ApiusersController extends Controller
 {
     function __construct(){
     }
-    
+
     public function index(){
     	$plugins = [
                     	'css' => ['datatables'],
@@ -43,22 +43,26 @@ class ApiusersController extends Controller
     }
 
     public function store(Request $request){
-        print_r($request->session()->get('key'));
-        exit();
+        // print_r($request->session()->get('key'));
+        // exit();
+   $role_id = (int) $request->role_id[0];
+   echo   gettype($role_id);
+
+
         $this->modelValidate($request);
 
         DB::beginTransaction();
-        
+
         try{
                 User::create([
                     'name' => $request->name,
-                    
                     'email' => $request->email,
                     'username' => $request->username,
-                    'password' => bcrypt($request->password),
+                    'password' => Hash::make($request->password),
+                    'role_id' => $role_id,
                     'api_token' => $request->token
                 ]);
-
+                DB::commit();
                 Session::flash('success','Successfully created!');
 
                 return redirect()->route('api.users');
@@ -67,7 +71,7 @@ class ApiusersController extends Controller
 
             DB::rollback();
             throw $e;
-        } 
+        }
     }
 
     protected function modelValidate($request){
@@ -118,7 +122,7 @@ class ApiusersController extends Controller
         DB::beginTransaction();
          try{
                if(!is_numeric($request->designation))
-               {  
+               {
                      $chkDes = DES::where(['designation'=>$request->designation])->get()->count();
                      if($chkDes==0){
                         $newDes =  new DES();
@@ -128,11 +132,11 @@ class ApiusersController extends Controller
                      }
                 }
 
-               
+
                 foreach ($request->ministry as $key => $value){
 
                     $ministryMetaVal[] = $value;
-                    
+
                 }
 
                 $minMetaVal = json_encode($ministryMetaVal);
@@ -141,7 +145,7 @@ class ApiusersController extends Controller
                 $ministryMeta->user_id = $request->user_list;
                 $ministryMeta->value = $minMetaVal;
                 $ministryMeta->save();
-                   
+
 
                 $phoneMeta = new UM();
                 $phoneMeta->key = "phone";
@@ -156,10 +160,10 @@ class ApiusersController extends Controller
                 $adrsMeta->save();
 
                 foreach($request->department as $key => $value){
-                
+
                    $depValues[] =  $value;
                 }
-                    
+
                 $depJsonVal =     json_encode($depValues);
                 $departmentMeta  = new UM();
                     $departmentMeta->user_id = $request->user_list;
@@ -190,10 +194,10 @@ class ApiusersController extends Controller
                 return redirect()->route('api.users');
 
             }catch(\Exception $e){
-                   
-                DB::rollback();   
+
+                DB::rollback();
             }
-       
+
         }
 
         public function userDetail($id)
@@ -306,5 +310,5 @@ class ApiusersController extends Controller
 
         }
 
-    
+
 }

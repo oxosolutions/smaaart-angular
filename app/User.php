@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', 'api_token',
+        'name', 'email', 'password','role_id', 'api_token',
     ];
 
     /**
@@ -75,6 +75,11 @@ class User extends Authenticatable
     public function meta(){
 
         return $this->hasMany('App\UserMeta','user_id','id');
+    }
+
+    public function profileMeta(){
+
+        return $this->belongsToMany('App\UserMeta','user_id','id');
     }
 
 

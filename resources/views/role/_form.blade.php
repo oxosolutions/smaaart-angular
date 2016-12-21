@@ -9,18 +9,6 @@
     @endif
   </div>
 
-  <div class="form-group {{ $errors->has('goal_title') ? ' has-error' : '' }}">
-    {!!Form::label('display_name','Display Name') !!}
-    {!!Form::text('display_name',null, ['class'=>'form-control','placeholder'=>'Optional Display Name']) !!}
-    @if($errors->has('display_name'))
-      <span class="help-block">
-            {{ $errors->first('display_name') }}
-      </span>
-    @endif
-  </div>
-
-
-
   <div class="form-group {{ $errors->has('role_description') ? ' has-error' : '' }}">
     {!!Form::label('role_description','Description') !!}
     {!!Form::textarea('description',null,['class'=>'form-control','placeholder'=>'Optional Description','id'=>'role_description']) !!}

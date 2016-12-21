@@ -30,15 +30,19 @@ class PagesApiController extends Controller
     public function getPageBySlug($slug){
 
         $model = Page::where(['page_slug'=>$slug,'status'=> 1])->first();
+        try{
+            $responseArray = [];
+            $responseArray['pages']['page_title'] = $model->page_title;
+            $responseArray['pages']['page_slug'] = $model->page_slug;
+            $responseArray['pages']['page_content'] = $model->content;
+            $responseArray['pages']['page_image'] = asset('page_data').'/'.$model->page_image;
+            $responseArray['pages']['page_status'] = $model->status;
+            $responseArray['pages']['page_status'] = $model->createdBy->name;
 
-        $responseArray = [];
-        $responseArray['pages']['page_title'] = $model->page_title;
-        $responseArray['pages']['page_slug'] = $model->page_slug;
-        $responseArray['pages']['page_content'] = $model->content;
-        $responseArray['pages']['page_image'] = asset('page_data').'/'.$model->page_image;
-        $responseArray['pages']['page_status'] = $model->status;
-        $responseArray['pages']['page_status'] = $model->createdBy->name;
+            return ['status'=>'success','records'=>$responseArray];
+        }catch(\Exception $e){
 
-        return ['status'=>'success','records'=>$responseArray];
+            return ['status'=>'error','message'=>'Page not found'];
+        }
     }
 }

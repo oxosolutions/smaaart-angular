@@ -10,7 +10,7 @@ use Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
-
+use App\UserMeta;
 class ApiauthController extends Controller
 {
 
@@ -53,6 +53,10 @@ class ApiauthController extends Controller
     public function Register(Request $request)
     {
     	$api_token = uniqid('',30);
+        $validate = $this->validateUserMeta($request);
+        if(!$validate){
+            return ['status'=>'error','message'=>'Required fields are missing!'];
+        }
     	if($request->name && $request->email && $request->password )
 		{
 			if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
@@ -60,13 +64,40 @@ class ApiauthController extends Controller
      			return ['status'=>'error','message'=>'Invalid email format!'];
 			 }
 				try{
-					User::create([
-					'name' => $request->name,
-					'email' => $request->email,
-					'password' => Hash::make($request->password),
-					'api_token' => $api_token
-					]);
+					$user = User::create([
+        					'name' => $request->name,
+        					'email' => $request->email,
+        					'password' => Hash::make($request->password),
+        					'api_token' => $api_token
+        					]);
 
+                    $MetaData = [];
+                    $path = 'profile_pic';
+                    if($request->hasFile('profile_pic')){
+                        $filename = date('Y-m-d-H-i-s')."-".$request->file('profile_pic')->getClientOriginalName();
+                        $request->file('profile_pic')->move($path, $filename);
+                        $MetaData[0]['key'] = 'profile_pic';
+                        $MetaData[0]['value'] = $filename;
+                        $MetaData[0]['user_id'] = $user->id;
+                    }
+                    $MetaData[1]['key'] = 'phone';
+                    $MetaData[1]['value'] = $request->phone;
+                    $MetaData[1]['user_id'] = $user->id;
+                    $MetaData[2]['key'] = 'address';
+                    $MetaData[2]['value'] = $request->address;
+                    $MetaData[2]['user_id'] = $user->id;
+                    $Departments = explode(',',$request->departments);
+                    $Ministries = explode(',',$request->ministries);
+                    $MetaData[3]['key'] = 'department';
+                    $MetaData[3]['value'] = json_encode($Departments);
+                    $MetaData[3]['user_id'] = $user->id;
+                    $MetaData[4]['key'] = 'ministry';
+                    $MetaData[4]['value'] = json_encode($Ministries);
+                    $MetaData[4]['user_id'] = $user->id;
+                    $MetaData[5]['key'] = 'designation';
+                    $MetaData[5]['value'] = $request->designation;
+                    $MetaData[5]['user_id'] = $user->id;
+                    UserMeta::insert($MetaData);
 					return ['status'=>'successful','message'=>'Successful register!', "token"=>$api_token];
 				}catch(\Exception $e){
 					if($e instanceOf \Illuminate\Database\QueryException){
@@ -79,5 +110,15 @@ class ApiauthController extends Controller
 	   else{
 			return ['status'=>'error','message'=>'fill all required fields!'];
 		}
+   }
+
+   protected function validateUserMeta($request){
+
+       if($request->has('departments') && $request->has('ministries')  && $request->has('designation')){
+
+           return true;
+       }else{
+           return false;
+       }
    }
 }

@@ -10,7 +10,7 @@ class Permisson extends Model
 {
     use SoftDeletes;
 
-    protected $fillable =['id', 'name', 'display_name', 'route'];
+    protected $fillable =['id', 'name', 'icon'];
 
      protected $dates = ['deleted_at'];
     protected $softDelete = true;
@@ -36,43 +36,35 @@ class Permisson extends Model
                     $rout =  str_replace('/{id}','',$route->getPath());
                     $routeList[$rout] = $rout;
                 }
-                //echo($route->getPath()).'<br>';
             }
 
             return $routeList;
 
-        /*foreach ($routesList as $key => $value) {
-            dump($value->getName());
-        }
-        exit;*/
-        // $pluckArray = [];
-        //$routesList =  Route::getRoutes();
-        // foreach($routesList as $key =>$value){
-        //     if($value->getName() != null || $value->getName() != ''){
-        //         $pluckArray[$value->getName()] = ucwords(str_replace('.',' ',$value->getName()));
-        //     }
-        //}
-        //return $pluckArray;
+       
     }
 
     public static function getRouteFor()
     {
-        $routeFor['read']   =   "Read";
-        $routeFor['write']  =   "Write";
+        $routeFor['read']   =   "List";
+        $routeFor['write']  =   "Create";
         $routeFor['delete'] =   "Delete";
+        $routeFor['other'] =   "Other";
         return $routeFor;
 
     }
 
     public function routeMapping()
     {
-        $this->hasMany('App\PermissonRouteMapping','permisson_id','id');
+      return  $this->hasMany('App\PermissonRouteMapping','permisson_id','id');
     }
 
+    
     public function permisson()
     {
         $this->hasMany('App\PermissonRole','permisson_id','id');
     }
+
+    
 
 
 }

@@ -1,6 +1,11 @@
 @extends('layouts.main')
 
 @section('content')
+<style type="text/css">
+  ul li{
+    list-style: none
+  }
+</style>
   <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -447,33 +452,6 @@
           <div class="col-md-12">
             <div class="box box-primary">
               <div class="box-header">
-                <h3 class="box-title"><i class="fa fa-code"></i> Get All Schems API</h3>
-              </div>
-              <div class="box-body">
-                <p>
-                  <code>
-                    API: {{url('/')}}/api/v1/schema?api_token=YOUR_UNIQUE_USER_TOKEN
-                  </code>
-                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
-                </p>
-                <p>
-                  <code>
-                    Method: GET
-                  </code>
-                </p>
-                Params:
-                <code>
-                  none
-                </code>
-              </div>
-            </div>
-          </div>
-      </div>
-
-      <div class="row" style="margin-top: 10px;">
-          <div class="col-md-12">
-            <div class="box box-primary">
-              <div class="box-header">
                 <h3 class="box-title"><i class="fa fa-code"></i> Get All Visual list API</h3>
               </div>
               <div class="box-body">
@@ -876,6 +854,67 @@
                     <li><spam class="col-md-2 col-sm-4 col-xs-6">old_pass</spam> <span class="label label-danger">Required</span></li>
                     <li><spam class="col-md-2 col-sm-4 col-xs-6">new_pass</spam> <span class="label label-danger">Required</span></li>
                     <li><spam class="col-md-2 col-sm-4 col-xs-6">conf_pass</spam> <span class="label label-danger">Required</span></li>
+                  </ul>
+                </code>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i> Dataset Save Edited Datset </h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>
+                    API: {{url('/')}}/api/v1/dataset/saveEditedDatset?api_token=YOUR_UNIQUE_USER_TOKEN
+                  </code>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
+                </p>
+                <p>
+                  <code>
+                    Method: POST
+                  </code>
+                </p>
+                Params:
+                <code>
+                  <ul class="api_param well ">
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">dataset_id</spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">records</spam> <span class="label label-danger">Required</span></li>
+                  </ul>
+                </code>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i> Dataset Save Subset </h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>
+                    API: {{url('/')}}/api/v1/dataset/saveSubset?api_token=YOUR_UNIQUE_USER_TOKEN
+                  </code>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
+                </p>
+                <p>
+                  <code>
+                    Method: POST
+                  </code>
+                </p>
+                Params:
+                <code>
+                  <ul class="api_param well ">
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">subset_name</spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">subset_columns</spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">dataset_id</spam> <span class="label label-danger">Required</span></li>
                   </ul>
                 </code>
               </div>

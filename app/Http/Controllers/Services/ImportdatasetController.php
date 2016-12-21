@@ -15,42 +15,51 @@ class ImportdatasetController extends Controller
 
     function uploadDataset(Request $request){
     	$validate = $this->validateRequst($request);
-        if(!in_array($request->file('file')->getClientOriginalExtension(),['csv','xlsx','xls'])){
-            return ['status'=>'error','message'=>'File type not allowed!'];
-        }
-    	if($validate['status'] == 'false'){
-    		$response = ['status'=>'error','error'=>$validate['error']];
-    		return $response;
-    	}
-
-    	$path = 'datasets';
-    	$file = $request->file('file');
-
-      	if($file->isValid()){
-
-      		$filename = date('Y-m-d-H-i-s')."-".$request->file('file')->getClientOriginalName();
-      		$uploadFile = $request->file('file')->move($path, $filename);
-            $filePath = $path.'/'.$filename;
-            if($request->add_replace == 'newtable'){
-                $result = $this->storeInDatabase($filePath, $request->file('file')->getClientOriginalName());
-            }elseif($request->add_replace == 'append'){
-                $result = $this->appendDataset($request, $filePath);
-            }elseif($request->add_replace == 'replace'){
-                $result = $this->replaceDataset($request, $request->file('file')->getClientOriginalName(), $filePath);
+          if($request->file('file') == "" || $request->format == "" || $request->add_replace == "" || $request->with_dataset == ""){
+                return ['status'=>'error','message'=>'Please Provide Require Fields'];
             }
-      	}
-        if($result['status'] == 'true'){
-            if($uploadFile){
-    			$response = ['status'=>'success','message'=>$result['message'],'id'=>@$result['id']];
-    			return $response;
-    		}else{
-    			$response = ['status'=>'error','message'=>'unable to upload file!'];
-    			return $response;
-    		}
-        }else{
-            $response = ['status'=>'error','message'=>$result['message']];
-            return $response;
-        }
+               
+            try {
+                 if(!in_array($request->file('file')->getClientOriginalExtension(),['csv','xlsx','xls'])){
+                    return ['status'=>'error','records'=>'File type not allowed!'];
+                }
+            } catch (Exception $e) {
+                return ['status'=>'error','records'=>'Please Select a File to Upload'];
+            }
+        	if($validate['status'] == 'false'){
+        		$response = ['status'=>'error','error'=>$validate['error']];
+        		return $response;
+        	}
+
+        	$path = 'datasets';
+        	$file = $request->file('file');
+
+          	if($file->isValid()){
+
+          		$filename = date('Y-m-d-H-i-s')."-".$request->file('file')->getClientOriginalName();
+          		$uploadFile = $request->file('file')->move($path, $filename);
+                $filePath = $path.'/'.$filename;
+                if($request->add_replace == 'newtable'){
+                    $result = $this->storeInDatabase($filePath, $request->file('file')->getClientOriginalName());
+                }elseif($request->add_replace == 'append'){
+                    $result = $this->appendDataset($request, $filePath);
+                }elseif($request->add_replace == 'replace'){
+                    $result = $this->replaceDataset($request, $request->file('file')->getClientOriginalName(), $filePath);
+                }
+          	}
+            if($result['status'] == 'true'){
+                if($uploadFile){
+        			$response = ['status'=>'success','message'=>$result['message'],'id'=>@$result['id']];
+        			return $response;
+        		}else{
+        			$response = ['status'=>'error','message'=>'unable to upload file!'];
+        			return $response;
+        		}
+            }else{
+                $response = ['status'=>'error','message'=>$result['message']];
+                return $response;
+            }
+        
     }
     protected function validateRequst($request){
         $errors = [];

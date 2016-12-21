@@ -15,7 +15,6 @@ class GoalsResourceController extends Controller
     public function index(){
 
     	$plugins = [
-
     			'css' => ['datatables',],
     			'js' => ['datatables','custom'=>['gen-datatables']]
     	];

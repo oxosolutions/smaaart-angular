@@ -40,7 +40,17 @@
     @endif
   </div>
 
-  <div class="col-md-4 form-group {{ $errors->has('profile_pic') ? ' has-error' : '' }}">
+  <div class="form-group {{ $errors->has('ministry') ? ' has-error' : '' }}">
+    {!!Form::label('role','Role') !!}
+    {!!Form::select('role_id[]',App\Role::role_list(),null, ['class'=>'form-control select2-department']) !!}
+    @if($errors->has('ministry'))
+      <span class="help-block">
+            {{ $errors->first('ministry') }}
+      </span>
+    @endif
+  </div>
+
+<!--  <div class="col-md-4 form-group {{ $errors->has('profile_pic') ? ' has-error' : '' }}">
     {!!Form::label('file','Upload Pic') !!}
     {!!Form::file('profile_pic', ['class'=>'form-control','placeholder'=>'','id'=>'file-3']) !!}
     @if($errors->has('profile_pic'))
@@ -48,7 +58,7 @@
             {{ $errors->first('profile_pic') }}
       </span>
     @endif
-  </div>
+  </div>-->
 
   <div style="clear: both"></div>
 

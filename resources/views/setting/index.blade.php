@@ -6,7 +6,7 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Goals
+        Setting
         <small>list of Setting</small>
       </h1>
       <ol class="breadcrumb">
@@ -49,7 +49,6 @@
                 <thead>
                 <tr>
                   <th>Role</th>
-                  <th>Display Name</th>
                   <th>Created At</th>
                  <th>Action</th>
                 </tr>
@@ -60,7 +59,6 @@
                 <tfoot>
                 <tr>
                   <th>Role</th>
-                  <th>Display Name</th>
                   <th>Created At</th>
                   <th>Action</th>
                 </tr>

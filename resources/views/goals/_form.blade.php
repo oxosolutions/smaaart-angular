@@ -120,8 +120,8 @@
             {{ $errors->first('goal_nodal_ministry') }}
       </span>
     @endif
-  </div>  
-  
+  </div>
+
   <div class="{{ $errors->has('goal_other_ministries') ? ' has-error' : '' }} form-group">
     {!!Form::label('goal_other_ministries','Goal Other Ministry') !!}
     {!!Form::select('goal_other_ministries[]',\App\Ministrie::ministryList(),@$minis, ['class'=>'form-control select2','multiple']) !!}

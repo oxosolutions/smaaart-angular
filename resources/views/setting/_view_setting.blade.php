@@ -17,7 +17,7 @@
     <tbody>
 @foreach($role_permisson as $val)
         <tr>
-            <td>{{$val->pdname}}</td>
+            <td>{{$val->pname}}</td>
             <td>@if ($val->read==1) YES @else no @endif</td>
             <td>@if ($val->write==1) YES @else no @endif</td>
              <td>@if ($val->delete==1) YES @else no @endif</td>

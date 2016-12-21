@@ -57,9 +57,9 @@ Route::group(['middleware'=>['auth']], function(){
 		Route::get('/role/create',['as'=>'role.create', 'uses'=>'RoleController@create']);
 		Route::get('/role/delete/{id}', ['as'=>'role.delete', 'uses'=>'RoleController@destroy']);
 		//Permisson
-		Route::get('/permisson/create',['as'=>'permisson.create', 'uses'=>'PermissonController@create']);
-		Route::get('/permisson', ['as'=>'permisson.list', 'uses'=>'PermissonController@index']);
-		Route::get('/permisson/delete/{id}', ['as'=>'permisson.delete', 'uses'=>'PermissonController@destroy']);
+		Route::get('/permisson/create',['as'=>'permisson.create', 'uses'=>'PermissionController@create']);
+		Route::get('/permisson', ['as'=>'permisson.list', 'uses'=>'PermissionController@index']);
+		Route::get('/permisson/delete/{id}', ['as'=>'permisson.delete', 'uses'=>'PermissionController@destroy']);
 		//visualisation
 		Route::get('/visualisation',['as'=>'visualisation.list','uses'=>'VisualisationController@index']);
 		Route::get('/visualisation/create',['as'=>'visualisation.create','uses'=>'VisualisationController@create']);
@@ -73,11 +73,12 @@ Route::group(['middleware'=>['auth']], function(){
 	// permisson
 
 
+		Route::get('/permisson/delete_route/{id}', ['as'=>'permisson.delete_route', 'uses'=>'PermissionController@delete_permisson_route']);
 
-		Route::post('/permisson/store', ['as'=>'permisson.store', 'uses'=>'PermissonController@store']);
-		Route::get('/list_permisson', ['as'=>'permisson.list_role.ajax', 'uses'=>'PermissonController@list_permisson']);
-		Route::get('/permisson/edit/{id}',['as'=>'permisson.edit', 'uses'=>'PermissonController@edit']);
-		Route::patch('/permisson/update/{id}', ['as'=>'permisson.update', 'uses'=>'PermissonController@update']);
+		Route::post('/permisson/store', ['as'=>'permisson.store', 'uses'=>'PermissionController@store']);
+		Route::get('/list_permisson', ['as'=>'permisson.list_role.ajax', 'uses'=>'PermissionController@list_permisson']);
+		Route::get('/permisson/edit/{id}',['as'=>'permisson.edit', 'uses'=>'PermissionController@edit']);
+		Route::patch('/permisson/update/{id}', ['as'=>'permisson.update', 'uses'=>'PermissionController@update']);
 
 		//Role for user
 		Route::post('/role/store', ['as'=>'role.store', 'uses'=>'RoleController@store']);

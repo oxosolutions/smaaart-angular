@@ -45,7 +45,7 @@ class GoalApiController extends Controller
                     $response['ministry'][$minIndex]['ministry_title']      = $ministryData->ministry->ministry_title;
                     $response['ministry'][$minIndex]['ministry_description']= $ministryData->ministry->ministry_description;
                     $response['ministry'][$minIndex]['ministry_icon']       = $ministryData->ministry->ministry_icon;
-                    $response['ministry'][$minIndex]['ministry_image']      = $ministryData->ministry->ministry_image;
+                    $response['ministry'][$minIndex]['ministry_image']      = asset('min_images/'.$ministryData->ministry->ministry_image);
                     $response['ministry'][$minIndex]['ministry_phone']      = $ministryData->ministry->ministry_phone;
                     $response['ministry'][$minIndex]['ministry_ministers']  = $ministryData->ministry->ministry_ministers;
                     $response['ministry'][$minIndex]['ministry_order']      = $ministryData->ministry->ministry_order;
@@ -63,7 +63,7 @@ class GoalApiController extends Controller
                     $response["schema"][$schIndex]['id']                = $schemaData->schemas->id;
                     $response["schema"][$schIndex]["schema_id"]         = $schemaData->schemas->schema_id;
                     $response["schema"][$schIndex]["schema_title"]      = $schemaData->schemas->schema_title;
-                    $response["schema"][$schIndex]["schema_image"]      = $schemaData->schemas->schema_image;
+                    $response["schema"][$schIndex]["schema_image"]      = asset('schema_file/'.$schemaData->schemas->schema_image);
                     $response["schema"][$schIndex]["schema_desc"]       = $schemaData->schemas->schema_desc;
                     $response["schema"][$schIndex]["created_by"]        = $schemaData->schemas->created_by;
                 }catch(\Exception $e){
@@ -78,7 +78,7 @@ class GoalApiController extends Controller
                     $response['intervention'][$intIndex]["id"]              = $intervenData->interventions->id;
                     $response['intervention'][$intIndex]["intervent_id"]    = $intervenData->interventions->intervent_id;
                     $response['intervention'][$intIndex]["intervent_title"] = $intervenData->interventions->intervent_title;
-                    $response['intervention'][$intIndex]["intervent_image"] = $intervenData->interventions->intervent_image;
+                    $response['intervention'][$intIndex]["intervent_image"] = asset('intervention_file/'.$intervenData->interventions->intervent_image);
                     $response['intervention'][$intIndex]["intervent_desc"]  = $intervenData->interventions->intervent_desc;
                     $response['intervention'][$intIndex]["created_by"]      = $intervenData->interventions->created_by;
                 }catch(\Exception $e){
@@ -94,7 +94,7 @@ class GoalApiController extends Controller
                     $response['target'][$tarIndex]["id"]                 =   $targetData->targets->id;
                     $response['target'][$tarIndex]["target_id"]          =   $targetData->targets->target_id;
                     $response['target'][$tarIndex]["target_title"]       =   $targetData->targets->target_title;
-                    $response['target'][$tarIndex]["target_image"]       =   $targetData->targets->target_image;
+                    $response['target'][$tarIndex]["target_image"]       =   asset('target_file/'.$targetData->targets->target_image);
                     $response['target'][$tarIndex]["target_desc"]        =   $targetData->targets->target_desc;
                     $response['target'][$tarIndex]["created_by"]         =   $targetData->targets->created_by;
                 }catch(\Exception $e){
@@ -121,7 +121,7 @@ class GoalApiController extends Controller
                     $response['resource'][$resIndex]['id']  = $res->resources->id;
                     $response['resource'][$resIndex]['resource_id'] = $res->resources->resource_id;
                     $response['resource'][$resIndex]['resource_title'] = $res->resources->resource_title;
-                    $response['resource'][$resIndex]['resource_image'] = $res->resources->resource_image;
+                    $response['resource'][$resIndex]['resource_image'] = asset('resource_file/'.$res->resources->resource_image);
                     $response['resource'][$resIndex]['resource_desc'] = $res->resources->resource_desc;
                     $response['resource'][$resIndex]['created_by'] = $res->resources->created_by;
                 }catch(\Exception $e){
@@ -200,7 +200,7 @@ class GoalApiController extends Controller
                 try{
                     $responseArray[$index]['schema'][$inIndex]['schema_id'] = $vl->schemas->schema_id;
                     $responseArray[$index]['schema'][$inIndex]['schema_title'] = $vl->schemas->schema_title;
-                    $responseArray[$index]['schema'][$inIndex]['schema_image'] = $vl->schemas->schema_image;
+                    $responseArray[$index]['schema'][$inIndex]['schema_image'] = asset('schema_file/'.$vl->schemas->schema_image);
                     $responseArray[$index]['schema'][$inIndex]['schema_desc'] = $vl->schemas->schema_desc;
                 }catch(\Exception $e){
 
@@ -219,7 +219,7 @@ class GoalApiController extends Controller
                 try{
                     $responseArray[$index]['target'][$inIndex]['target_id'] = $vl->targets->target_id;
                     $responseArray[$index]['target'][$inIndex]['target_title'] = $vl->targets->target_title;
-                    $responseArray[$index]['target'][$inIndex]['target_image'] = $vl->targets->target_image;
+                    $responseArray[$index]['target'][$inIndex]['target_image'] = asset('target_file/'.$vl->targets->target_image);
                     $indicatorsIndex = 0;
 
                     foreach($vl->targets->indicators as $inKey => $indVal){
@@ -243,7 +243,7 @@ class GoalApiController extends Controller
                 try{
                     $responseArray[$index]['resources'][$inIndex]['resources_id'] = $vl->resources->resources_id;
                     $responseArray[$index]['resources'][$inIndex]['resources_title'] = $vl->resources->resources_title;
-                    $responseArray[$index]['resources'][$inIndex]['resources_image'] = $vl->resources->resources_image;
+                    $responseArray[$index]['resources'][$inIndex]['resources_image'] = asset('resource_file/'.$vl->resources->resources_image);
                 }catch(\Exception $e){
 
                     //exception
@@ -260,7 +260,7 @@ class GoalApiController extends Controller
                 try{
                     $responseArray[$index]['intervention'][$inIndex]['intervention_id'] = $vl->interventions->intervent_id;
                     $responseArray[$index]['intervention'][$inIndex]['intervention_title'] = $vl->interventions->intervent_title;
-                    $responseArray[$index]['intervention'][$inIndex]['intervention_image'] = $vl->interventions->intervent_image;
+                    $responseArray[$index]['intervention'][$inIndex]['intervention_image'] = asset('intervention_file/'.$vl->interventions->intervent_image);
                 }catch(\Exception $e){
 
                     //exception
@@ -342,7 +342,7 @@ class GoalApiController extends Controller
             try{
                 $responseArray[$index]['schema'][$inIndex]['schema_id'] = $vl->schemas->schema_id;
                 $responseArray[$index]['schema'][$inIndex]['schema_title'] = $vl->schemas->schema_title;
-                $responseArray[$index]['schema'][$inIndex]['schema_image'] = $vl->schemas->schema_image;
+                $responseArray[$index]['schema'][$inIndex]['schema_image'] = asset('schema_file/'.$vl->schemas->schema_image);
                 $responseArray[$index]['schema'][$inIndex]['schema_desc'] = $vl->schemas->schema_desc;
             }catch(\Exception $e){
 
@@ -360,7 +360,7 @@ class GoalApiController extends Controller
             try{
                 $responseArray[$index]['target'][$inIndex]['target_id'] = $vl->targets->target_id;
                 $responseArray[$index]['target'][$inIndex]['target_title'] = $vl->targets->target_title;
-                $responseArray[$index]['target'][$inIndex]['target_image'] = $vl->targets->target_image;
+                $responseArray[$index]['target'][$inIndex]['target_image'] = asset('target_file/'.$vl->targets->target_image);
                 $indicatorsIndex = 0;
                 foreach($vl->targets->indicators as $k => $v){
                         $responseArray[$index]['target'][$inIndex]['indicators'][$indicatorsIndex]['id'] = $v->id;
@@ -383,7 +383,7 @@ class GoalApiController extends Controller
             try{
                 $responseArray[$index]['resources'][$inIndex]['resources_id'] = $vl->resources->resources_id;
                 $responseArray[$index]['resources'][$inIndex]['resources_title'] = $vl->resources->resources_title;
-                $responseArray[$index]['resources'][$inIndex]['resources_image'] = $vl->resources->resources_image;
+                $responseArray[$index]['resources'][$inIndex]['resources_image'] = asset('resource_file/'.$vl->resources->resources_image);
             }catch(\Exception $e){
 
                 //exception
@@ -400,7 +400,7 @@ class GoalApiController extends Controller
             try{
                 $responseArray[$index]['intervention'][$inIndex]['intervention_id']     = $vl->interventions->intervent_id;
                 $responseArray[$index]['intervention'][$inIndex]['intervention_title']  = $vl->interventions->intervent_title;
-                $responseArray[$index]['intervention'][$inIndex]['intervention_image']  = $vl->interventions->intervent_image;
+                $responseArray[$index]['intervention'][$inIndex]['intervention_image']  = asset('intervention_file/'.$vl->interventions->intervent_image);
             }catch(\Exception $e){
 
                 //exception

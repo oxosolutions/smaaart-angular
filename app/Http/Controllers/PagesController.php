@@ -134,7 +134,7 @@
       try{
         $model->delete();
         Session::flash('success','Successfully deleted!');
-        return redirect()->route('indicators.list');
+        return redirect()->route('pages.list');
       }catch(\Exception $e){
 
         throw $e;

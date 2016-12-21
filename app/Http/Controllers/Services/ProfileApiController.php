@@ -9,6 +9,7 @@ use App\Ministrie as MIN;
 use App\Department as DP;
 use App\Designation as DS;
 use Hash;
+use App\UserMeta;
 class ProfileApiController extends Controller
 {
     public function getUserProfile(Request $request){
@@ -25,6 +26,7 @@ class ProfileApiController extends Controller
                 switch($metaValue->key){
                     case'ministry':
                         $ministries = json_decode($metaValue->value);
+
                         $index = 0;
                         foreach($ministries as $minKey => $minVal){
                             $MinisModel = MIN::find($minVal);
@@ -47,6 +49,9 @@ class ProfileApiController extends Controller
                         $DesgModel = DS::find($metaValue->value);
                         $responseArray['designation'] = $DesgModel->designation;
                     break;
+                    case'profile_pic':
+                        $responseArray[$metaValue->key] = asset('profile_pic/'.$metaValue->value);
+                    break;
                     default:
                     $responseArray[$metaValue->key] = $metaValue->value;
                 }
@@ -68,7 +73,7 @@ class ProfileApiController extends Controller
         if(!$result){
             return ['status'=>'error','message'=>'old password not correct!'];
         }
-            
+
         if ($request->old_pass == $request->new_pass){
             return ['status' => 'error' , 'message' => 'your old and new password should not be same'];
         }
@@ -94,5 +99,49 @@ class ProfileApiController extends Controller
 
     public function forgetPassword(Request $request){
 
+    }
+
+    public function saveProfile(Request $request){
+
+        $validate = $this->validateProfile($request);
+        if(!$validate){
+            return ['status'=>'error','message'=>'Required fields are missing!'];
+        }
+
+        $userId = $request->user()->id;
+        $model = User::find($userId);
+        if($request->name != 'undefined'){
+            $model->name = $request->name;
+            if($request->email != 'undefined'){
+                $model->email = $request->email;
+                $model->save();
+            }
+            $model->save();
+        }
+
+        $ministries = explode(',',$request->ministry);
+        $departments = explode(',',$request->department);
+
+        UserMeta::where(['key'=>'ministry', 'user_id' => $userId])->update(['value'=>json_encode($ministries)]);
+        if($request->phone != 'undefined'){
+            UserMeta::where(['key'=>'phone', 'user_id' => $userId])->update(['value'=>$request->phone]);
+        }
+        if($request->designation != 'undefined'){
+            UserMeta::where(['key'=>'designation', 'user_id' => $userId])->update(['value'=>$request->designation]);
+        }
+        UserMeta::where(['key'=>'address', 'user_id' => $userId])->update(['value'=>$request->address]);
+        UserMeta::where(['key'=>'department', 'user_id' => $userId])->update(['value'=>json_encode($departments)]);
+
+
+        return ['status'=>'success','message'=>'Profile updated successfully!'];
+
+    }
+
+    protected function validateProfile($request){
+        if($request->has('name') && $request->has('phone') && $request->has('email') && $request->has('designation') && $request->has('address') && $request->has('department') && $request->has('ministry')){
+            return true;
+        }else{
+            return false;
+        }
     }
 }

@@ -6,13 +6,13 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Goals
-        <small>list of goals</small>
+        Roles
+        <small>list of Roles</small>
       </h1>
       <ol class="breadcrumb">
         <li><a href="{{url('/')}}"><i class="fa fa-dashboard"></i> Dashboard</a></li>
-        <li><a href="javascript:;">Goals</a></li>
-        <li class="active">List Goals</li>
+        <li><a href="javascript:;">Roles</a></li>
+        <li class="active">List Roles</li>
       </ol>
     </section>
     
@@ -37,7 +37,7 @@
                 <thead>
                 <tr>
                   <th>Role</th>
-                  <th>Display Name</th>
+                 
                   <th>Description</th>
                   <th>Created At</th>
                  
@@ -50,7 +50,7 @@
                 <tfoot>
                 <tr>
                   <th>Role</th>
-                  <th>Display Name</th>
+                
                   <th>Description</th>
                   <th>Created At</th>
                   <th>Action</th>

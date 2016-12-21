@@ -21,7 +21,7 @@
         <div class="col-md-12">
           <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">{{$role_permisson[0]->rdname }} Role </h3>
+              <h3 class="box-title">{{$role_permisson[0]->rname }} Role </h3>
             </div>
               @include('setting._view_setting')
             <div class="box-footer">

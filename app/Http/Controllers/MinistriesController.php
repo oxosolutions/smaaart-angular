@@ -106,7 +106,7 @@ class MinistriesController extends Controller
         $model = MIN::findOrFail($id);
         try{
             $path = 'min_images/';
-            unlink($path.$model->ministry_image);
+            // unlink($path.$model->ministry_image);
             $model->departments()->delete();
             $model->delete();
             Session::flash('success', 'Successfully deleted!');
