@@ -52,7 +52,7 @@
 </div>  
    <div id="append" class="form-group {{ $errors->has('route') ? ' has-error' : '' }}">
    </div>
-   <button class="add_field_button">Add More Fields</button>
+   <button class=" add_field_create_form btn btn-success "><i class="fa fa-plus"></i></button>
 
  <!--  <div class="form-group {{ $errors->has('goal_title') ? ' has-error' : '' }}">
     {!!Form::label('display_name','Display Name') !!}

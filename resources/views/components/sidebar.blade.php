@@ -58,7 +58,7 @@
                         @if($routes->route_for !='delete')
                           <?php  $route_for = $routes->route_for; ?>
                           @if($permissonRole->$route_for ==true)
-                            <li class="{{{ (Request::is(<?php echo $routes->route; ?>) ? 'active' : '') }}}"><a href="{{ url($routes->route) }}"><i class="fa fa-circle-o"></i>  {{$routes->route_name}}</a></li>
+                            <li class="{{ (Request::is(<?php echo $routes->route; ?>) ? 'active' : '') }}"><a href="{{ url($routes->route) }}"><i class="fa fa-circle-o"></i>  {{$routes->route_name}}</a></li>
                           @endif
                       @endif
                     @endforeach

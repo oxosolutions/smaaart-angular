@@ -5,6 +5,7 @@ use Yajra\Datatables\Datatables;
 use Illuminate\Http\Request;
 Use App\Permisson;
 use App\PermissonRouteMapping as PRM;
+use App\PermissonRole as PR;
 use DB;
 use Session;
 
@@ -194,6 +195,9 @@ class PermissionController extends Controller
 
 	 public function destroy($id)
 	 {
+
+	 	PR::where('permisson_id',$id)->delete();
+	 	PRM::where('permisson_id',$id)->delete();
 		
 		$model  = Permisson::findOrFail($id);
 	 	try{

@@ -167,6 +167,7 @@ return [
         Barryvdh\Debugbar\ServiceProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
+        Spatie\Activitylog\ActivitylogServiceProvider::class,
         //Laravel\Passport\PassportServiceProvider::class,
 
         /*

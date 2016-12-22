@@ -51,7 +51,8 @@
           @else
           <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" >
             </td>
-        @endif
+          @endif
+     
       @endif
       @if($permisson->route_for =='write')
          @if($permisson->write==true)
@@ -93,10 +94,22 @@
         @endif -->
        
     @elseif($permisson->pid == null)
-     <?php $rows = 1; ?>
-         <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" >
-           <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td>
-          <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="delete" ></td>
+      <?php $rows = 1; ?>
+          @foreach($val->routeMapping as $routeVal)
+                  @if($routeVal->route_for=='read')
+                  <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="read" ></td>
+                  @endif
+                  @if($routeVal->route_for=='write')
+                   <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="write" ></td>
+                  @endif
+                  @if($routeVal->route_for=='delete')
+                  <td><input name ="permisson_id[{{$val->id}}][]" type="checkbox" value="delete" ></td> 
+                  @endif
+
+                  @if($routeVal->route_for=='other')
+                             <td><input  name ="permisson_id[{{$val->id}}][]" type="checkbox" value="other" >{{$routeVal->route_name}}</td>
+                  @endif
+          @endforeach 
     @endif
 
 

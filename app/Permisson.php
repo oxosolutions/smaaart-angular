@@ -11,23 +11,19 @@ class Permisson extends Model
     use SoftDeletes;
 
     protected $fillable =['id', 'name', 'icon'];
-
-     protected $dates = ['deleted_at'];
+    protected $dates = ['deleted_at'];
     protected $softDelete = true;
 
     public static function permisson_data()
     {
     	$data =	self::orderBy('id')->get();
-
-    	return $data;
+        return $data;
     }
 
-    public static function getRouteListArray(){
+    public static function getRouteListArray()
+    {
 
-        
             $routes = Route::getRoutes();
-
-                  
             foreach($routes as $route)
             {
                if(substr($route->getPath() ,0,1)=='_'){
@@ -39,8 +35,6 @@ class Permisson extends Model
             }
 
             return $routeList;
-
-       
     }
 
     public static function getRouteFor()
@@ -55,7 +49,7 @@ class Permisson extends Model
 
     public function routeMapping()
     {
-      return  $this->hasMany('App\PermissonRouteMapping','permisson_id','id');
+        return  $this->hasMany('App\PermissonRouteMapping','permisson_id','id');
     }
 
     
