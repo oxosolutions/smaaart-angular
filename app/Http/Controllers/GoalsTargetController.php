@@ -83,7 +83,8 @@ class GoalsTargetController extends Controller
     	$rules = [
     				'target_id' => 'required',
     				'target_title' => 'required',
-    				'target_desc' => 'required'
+    				'target_desc' => 'required',
+                    'target_image'=>'required|mimes:jpeg,jpg,png',
     	       ];
 
     	$this->validate($request, $rules);

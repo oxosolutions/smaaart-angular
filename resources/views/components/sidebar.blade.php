@@ -42,7 +42,7 @@
                   </a>
                 </li> 
               @else
-                  <li class="treeview {{in_array(Request::path(),array('api_users/create','api_users'))?'active':''}}">
+                  <li class="treeview {{ (Request::is(<?php echo $roots->route_name; ?>) ? 'active' : '') }}">
                       <a href="#">
                         <i class="fa {{$route->icon}}"></i>
                         <span>  {{$route->name}}</span>

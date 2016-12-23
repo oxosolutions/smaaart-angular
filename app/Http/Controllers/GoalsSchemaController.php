@@ -80,7 +80,7 @@ class GoalsSchemaController extends Controller
     public function modelValidate($request){
 
     	$rules = [
-    				'schema_id' => 'required',
+    				'schema_id' => 'unique:goals_schemas,schema_id',
     				'schema_title' => 'required',
     				'schema_desc' => 'required'
     	];

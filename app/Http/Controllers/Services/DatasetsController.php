@@ -10,7 +10,7 @@ use Auth;
 class DatasetsController extends Controller
 {
     function getDatasetsList(){
-    	$list = DL::all();
+    	$list = DL::orderBy('id', 'ASC')->get();
     	$responseArray = [];
     	$index = 0;
     	foreach($list as $key => $value){
@@ -87,7 +87,7 @@ class DatasetsController extends Controller
             return ['status'=>'sucess','message'=>'Columns updated successfully!','updated_id'=>$model->id];
         }else{
 
-            return ['status'=>'success','message'=>'No record found with given id!'];
+            return ['status'=>'error','message'=>'No record found with given id!'];
         }
     }
 

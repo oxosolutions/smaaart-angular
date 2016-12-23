@@ -16,7 +16,7 @@ class GoalApiController extends Controller
         $goal = Goal::where('goal_number',$id)->get();
         $response =[];
         foreach($goal as $key => $value){
-
+            //dd($value->goalNodalMinistry);
             $response['goal']['goal_id'] = $value->id;
             $response['goal']['goal_number'] = $value->goal_number;
             $response['goal']['goal_title'] = $value->goal_title;
@@ -29,7 +29,17 @@ class GoalApiController extends Controller
             $response['goal']['goal_color_rgb'] = $value->goal_color_rgb;
             $response['goal']['goal_color_rgba'] = $value->goal_color_rgb_a;
             $response['goal']['goal_opacity'] = $value->goal_opacity;
-            $response['goal']['goal_nodal_ministry'] = $value->goalNodalMinistry->ministry_title;
+            $response['goal']['goal_nodal_ministry'] = [
+                                                            'ministry_id' => $value->goalNodalMinistry->ministry_id,
+                                                            'ministry_title' => $value->goalNodalMinistry->ministry_title,
+                                                            'ministry_description' => $value->goalNodalMinistry->ministry_description,
+                                                            'ministry_icon' => $value->goalNodalMinistry->ministry_icon,
+                                                            'ministry_image' => $value->goalNodalMinistry->ministry_image,
+                                                            'ministry_phone' => $value->goalNodalMinistry->ministry_phone,
+                                                            'ministry_ministers' => $value->goalNodalMinistry->ministry_ministers,
+                                                            'ministry_order' => $value->goalNodalMinistry->ministry_order,
+                                                            'created_by' => $value->goalNodalMinistry->created_by
+                                                       ];
 
             $resIndex = 0;
             $tarIndex = 0;
@@ -175,7 +185,17 @@ class GoalApiController extends Controller
             $responseArray[$index]['goal_color_rgb'] = $goal->goal_color_rgb;
     		$responseArray[$index]['goal_color_rgba'] = $goal->goal_color_rgb_a;
     		$responseArray[$index]['goal_opacity'] = $goal->goal_opacity;
-    		$responseArray[$index]['goal_nodal_ministry'] = $goal->goalNodalMinistry->ministry_title;
+    		$responseArray[$index]['goal_nodal_ministry'] = [
+                                                            'ministry_id' => $goal->goalNodalMinistry->ministry_id,
+                                                            'ministry_title' => $goal->goalNodalMinistry->ministry_title,
+                                                            'ministry_description' => $goal->goalNodalMinistry->ministry_description,
+                                                            'ministry_icon' => $goal->goalNodalMinistry->ministry_icon,
+                                                            'ministry_image' => $goal->goalNodalMinistry->ministry_image,
+                                                            'ministry_phone' => $goal->goalNodalMinistry->ministry_phone,
+                                                            'ministry_ministers' => $goal->goalNodalMinistry->ministry_ministers,
+                                                            'ministry_order' => $goal->goalNodalMinistry->ministry_order,
+                                                            'created_by' => $goal->goalNodalMinistry->created_by
+                                                       ];
 
     		$inIndex = 0;
     		foreach($goal->ministry as $ky => $vl){
@@ -328,7 +348,17 @@ class GoalApiController extends Controller
         $responseArray[$index]['goal_color_rgb'] = $model->goal_color_rgb;
         $responseArray[$index]['goal_color_rgba'] = $model->goal_color_rgb_a;
 		$responseArray[$index]['goal_opacity'] = $model->goal_opacity;
-		$responseArray[$index]['goal_nodal_ministry'] = $model->goalNodalMinistry->ministry_title;
+		$responseArray[$index]['goal_nodal_ministry'] = [
+                                                            'ministry_id' => $model->goalNodalMinistry->ministry_id,
+                                                            'ministry_title' => $model->goalNodalMinistry->ministry_title,
+                                                            'ministry_description' => $model->goalNodalMinistry->ministry_description,
+                                                            'ministry_icon' => $model->goalNodalMinistry->ministry_icon,
+                                                            'ministry_image' => $model->goalNodalMinistry->ministry_image,
+                                                            'ministry_phone' => $model->goalNodalMinistry->ministry_phone,
+                                                            'ministry_ministers' => $model->goalNodalMinistry->ministry_ministers,
+                                                            'ministry_order' => $model->goalNodalMinistry->ministry_order,
+                                                            'created_by' => $model->goalNodalMinistry->created_by
+                                                       ];
 		$inIndex = 0;
 		foreach($model->ministry as $ky => $vl){
 

@@ -113,7 +113,7 @@ class DataSetsController extends Controller
     protected function modelValidate($request){
 
     	$rules = [
-    			'dataset_file' => 'required',
+    			'dataset_file' => 'required|mimes:csv,txt,xlsx',
     			'select_operation' => 'required'
     	       ];
 

@@ -9,12 +9,10 @@ use Auth;
 use Session;
 use DB;
 use Illuminate\Support\Facades\Route;
-use Activity;
 class DepartmentController extends Controller
 {
     public function index(){
 
-   Activity::log('Some activity that you wish to log');
 
     	$plugins = [
         			'css' => ['datatables'],

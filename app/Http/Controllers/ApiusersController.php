@@ -203,111 +203,120 @@ class ApiusersController extends Controller
         public function userDetail($id)
         {
 
-           $userName =  User::select('id','name')->where('id',$id)->get();
-           $ud['name'] = $userName[0]->name;
-           $ud['user_id'] = $userName[0]->id;
-          $chkDetail = UM::where('user_id',$id)->count();
-          if($chkDetail==0){
-                Session::flash('error','User Detail not available!');
+          //  $userName =  User::select('id','name')->where('id',$id)->get();
+          //  $ud['name'] = $userName[0]->name;
+          //  $ud['user_id'] = $userName[0]->id;
+          // $chkDetail = UM::where('user_id',$id)->count();
+          // if($chkDetail==0){
+          //       Session::flash('error','User Detail not available!');
 
-                return redirect()->route('api.users');
+          //       return redirect()->route('api.users');
 
-          }
+          // }
 
-           $userDetail = UM::where('user_id',$id)->get();
+          //  $userDetail = UM::where('user_id',$id)->get();
 
 
-            foreach ($userDetail as $key => $value) {
-              // echo $value->key ."--->".$value->value."<br>";
-               if($value->key=="phone")
-                {
-                   $ud['phone'] = $value->value;
-                }
-                if($value->key=="address")
-                {
-                   $ud['address'] = $value->value;
-                }
-                if($value->key=="designation")
-                {
-                   $ud['designation'] = $value->value;
-                }
-                if($value->key=="profile_pic")
-                {
-                   $ud['profile_pic'] = $value->value;
-                }
-                if($value->key=="ministry")
-                {
-                   $minId = $value->value;
-                }
-                if($value->key=="department")
-                {
-                   $depId = $value->value;
-                }
-            }
+          //   foreach ($userDetail as $key => $value) {
+          //     // echo $value->key ."--->".$value->value."<br>";
+          //      if($value->key=="phone")
+          //       {
+          //          $ud['phone'] = $value->value;
+          //       }
+          //       if($value->key=="address")
+          //       {
+          //          $ud['address'] = $value->value;
+          //       }
+          //       if($value->key=="designation")
+          //       {
+          //          $ud['designation'] = $value->value;
+          //       }
+          //       if($value->key=="profile_pic")
+          //       {
+          //          $ud['profile_pic'] = $value->value;
+          //       }
+          //       if($value->key=="ministry")
+          //       {
+          //          $minId = $value->value;
+          //       }
+          //       if($value->key=="department")
+          //       {
+          //          $depId = $value->value;
+          //       }
+          //   }
 
-           $DepId =  json_decode(@$depId);
-           $MinId =   json_decode(@$minId);
+          //  $DepId =  json_decode(@$depId);
+          //  $MinId =   json_decode(@$minId);
 
-            $depDetail = DEP::select('id','dep_code','dep_name')->WhereIN('id',$DepId)->get();
-            $minDetail = MIN::select('id','ministry_id','ministry_title')->whereIn('id',$MinId)->get();
+          //   $depDetail = DEP::select('id','dep_code','dep_name')->WhereIN('id',$DepId)->get();
+          //   $minDetail = MIN::select('id','ministry_id','ministry_title')->whereIn('id',$MinId)->get();
 
-           return view('apiusers.user_detail', ['user_detail'=>$ud ,'depDetail'=>$depDetail ,'minDetail' =>$minDetail] );
+          //  return view('apiusers.user_detail', ['user_detail'=>$ud ,'depDetail'=>$depDetail ,'minDetail' =>$minDetail] );
 
             // return View::make('apiusers.user_detail')->with(['user_detail'=>$ud,'depDetail'=>$depDetail ,'minDetail' =>$minDetail ]);
         }
 
         public function edit($id) {
-            $userName =  User::select('id','name','email','password')->where('id',$id)->get();
-           $ud['name'] = $userName[0]->name;
-           $ud['user_id'] = $userName[0]->id;
-           $ud['user_email'] = $userName[0]->email;
-           $ud['user_password'] = $userName[0]->password;
-          $chkDetail = UM::where('user_id',$id)->count();
-          if($chkDetail==0){
-                Session::flash('error','User Detail not available!');
+            
+            $model = User::findOrfail($id);
 
-                return redirect()->route('api.users');
+          return view('apiusers.edit',['model'=>$model]);
 
-          }
+          // $userName =  User::select('id','name','email','password')->where('id',$id)->get();
+          // $ud['name'] = $userName[0]->name;
+          // $ud['user_id'] = $userName[0]->id;
+          // $ud['user_email'] = $userName[0]->email;
+          // $ud['user_password'] = $userName[0]->password;
+          // // $chkDetail = UM::where('user_id',$id)->count();
+          // // if($chkDetail==0){
+          // //       Session::flash('error','User Detail not available!');
 
-           $userDetail = UM::where('user_id',$id)->get();
+          // //       return redirect()->route('api.create_users');
+
+          // // }
+
+          //  $userDetail = UM::where('user_id',$id)->get();
 
 
-            foreach ($userDetail as $key => $value) {
-              // echo $value->key ."--->".$value->value."<br>";
-               if($value->key=="phone")
-                {
-                   $ud['phone'] = $value->value;
-                }
-                if($value->key=="address")
-                {
-                   $ud['address'] = $value->value;
-                }
-                if($value->key=="designation")
-                {
-                   $ud['designation'] = $value->value;
-                }
-                if($value->key=="profile_pic")
-                {
-                   $ud['profile_pic'] = $value->value;
-                }
-                if($value->key=="ministry")
-                {
-                   $minId = $value->value;
-                }
-                if($value->key=="department")
-                {
-                   $depId = $value->value;
-                }
-            }
+          //   foreach ($userDetail as $key => $value) {
+          //     // echo $value->key ."--->".$value->value."<br>";
+          //      if($value->key=="phone")
+          //       {
+          //          $ud['phone'] = $value->value;
+          //       }
+          //       if($value->key=="address")
+          //       {
+          //          $ud['address'] = $value->value;
+          //       }
+          //       if($value->key=="designation")
+          //       {
+          //          $ud['designation'] = $value->value;
+          //       }
+          //       if($value->key=="profile_pic")
+          //       {
+          //          $ud['profile_pic'] = $value->value;
+          //       }
+          //       if($value->key=="ministry")
+          //       {
+          //          $minId = $value->value;
+          //       }
+          //       if($value->key=="department")
+          //       {
+          //          $depId = $value->value;
+          //       }
+          //   }
 
-           $DepId =  json_decode(@$depId);
-           $MinId =   json_decode(@$minId);
+          //  $DepId =  json_decode(@$depId);
+          //  $MinId =   json_decode(@$minId);
 
-            $depDetail = DEP::select('id','dep_code','dep_name')->WhereIN('id',$DepId)->get();
-            $minDetail = MIN::select('id','ministry_id','ministry_title')->whereIn('id',$MinId)->get();
-            return view('apiusers.edit', ['user_detail'=>$ud ,'depDetail'=>$depDetail ,'minDetail' =>$minDetail] );
+          //   $depDetail = DEP::select('id','dep_code','dep_name')->WhereIN('id',$DepId)->get();
+          //   $minDetail = MIN::select('id','ministry_id','ministry_title')->whereIn('id',$MinId)->get();
+          //   return view('apiusers.edit', ['user_detail'=>$ud ,'depDetail'=>$depDetail ,'minDetail' =>$minDetail] );
 
+        }
+        public function update($id)
+        {
+            echo $id;
         }
 
 

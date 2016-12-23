@@ -25,13 +25,8 @@
             <div class="box-header with-border">
               <h3 class="box-title">Edit User</h3>
             </div>
-            <!-- /.box-header -->
-            <!-- form start -->
-               @include('apiusers._form')
-              @include('apiusers._form_user_meta')
-
-                 
-                
+            {!! Form::model($model, ['method'=>'POST', 'route'=>['apiuser.update', $model->id] , 'file'=>true])!!}
+                     @include('apiusers._form')
               <div class="box-footer">
                 {!! Form::submit('Update User', ['class' => 'btn btn-primary']) !!}
               </div>

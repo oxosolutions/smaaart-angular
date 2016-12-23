@@ -6,8 +6,8 @@ Route::group(['prefix' => 'v1'], function () {
 
 	Route::group(['middleware'=>['cors']], function(){
 		Route::post('/auth','Services\ApiauthController@Authenicates');
-		Route::post('/register',['as'=>'register','uses'=>'Services\ApiauthController@Register']);
-		Route::get('/dataset/download/{fileName}',['as'=>'dataset.download','uses'=>'Services\ExportDatasetController@downloadFile']);
+		Route::post('/register',					['as'=>'register','uses'=>'Services\ApiauthController@Register']);
+		Route::get('/dataset/download/{fileName}',  ['as'=>'dataset.download','uses'=>'Services\ExportDatasetController@downloadFile']);
 		Route::get('/goals/list',					['as'=>'goals.list','uses'=>'Services\GoalApiController@goalsList']);
 		Route::get('/goalData/{id}',			    'Services\GoalApiController@goalData');
 		Route::get('/pages',						['as'=>'pages.list','uses'=>'Services\PagesApiController@getAllPages']);

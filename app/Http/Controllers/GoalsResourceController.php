@@ -83,9 +83,10 @@ class GoalsResourceController extends Controller
     public function modelValidate($request){
 
     	$rules = [
-    				'resource_id' => 'required',
+    				'resource_id' => 'required|int',
     				'resource_title' => 'required',
-    				'resource_desc' => 'required'
+    				'resource_desc' => 'required',
+                    'resource_image'=>'required|mimes:jpeg,jpg,png',
     	         ];
 
     	$this->validate($request, $rules);
