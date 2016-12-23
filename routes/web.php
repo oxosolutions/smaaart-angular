@@ -1,7 +1,8 @@
 <?php
 
-	//Route::group(['middleware'=>['roles']], function(){
-	//dashboard
+	
+	Route::group(['middleware'=>'auth'], function(){
+		//dashboard
 		Route::get('/', ['as'=>'home', 'uses'=>'DashboardController@index']);
 	//Api user
 		Route::get('/api_users', ['as'=>'api.users', 'uses'=>'ApiusersController@index']);
@@ -15,7 +16,7 @@
 	//Designation
 		Route::get('/designations',['as'=>'designations.list', 'uses'=>'DesignationController@index']);
 		Route::get('/designations/create',['as'=>'designations.create', 'uses'=>'DesignationController@create']);
-		Route::get('/designations/delete/{id}',['middleware'=>'roles','as'=>'designations.delete', 'uses'=>'DesignationController@destroy']);
+		Route::get('/designations/delete/{id}',['as'=>'designations.delete', 'uses'=>'DesignationController@destroy']);
 	//Dataset
 		Route::get('/dataset',['as'=>'datasets.list','uses'=>'DataSetsController@index']);
 		Route::get('/dataset/create',['as'=>'dataset.create','uses'=>'DataSetsController@create']);
@@ -91,8 +92,7 @@
 		Route::get('/setting/edit/{id}',['as'=>'setting.edit', 'uses'=>'SettingController@edit']);
 		Route::post('/setting/update', ['as'=>'setting.update', 'uses'=>'SettingController@update']);
 
-	// ROLE SYSTEM
-	//Route::group(['middleware'=>['roles']], function(){
+	// ROLE SYSTES
 
 
 		/*Routes of Department Operations*/
@@ -100,7 +100,7 @@
 
 		Route::post('/department/store',['as'=>'department.store', 'uses'=>'DepartmentController@store']);
 		Route::get('/list_depart',['as'=>'department.ajax', 'uses'=>'DepartmentController@get_departments']);
-		Route::get('/department/edit/{id}',['middleware'=>'roles','as'=>'department.edit', 'uses'=>'DepartmentController@edit']);
+		Route::get('/department/edit/{id}',['as'=>'department.edit', 'uses'=>'DepartmentController@edit']);
 		Route::patch('/department/update/{id}',['as'=>'department.update', 'uses'=>'DepartmentController@update']);
 
 		/*Routes of Designations Operations*/
@@ -109,7 +109,7 @@
 
 		Route::get('/list_desig',['as'=>'designation.ajax', 'uses'=>'DesignationController@indexData']);
 		Route::post('/designations/store',['as'=>'designations.store', 'uses'=>'DesignationController@store']);
-		Route::get('/designations/edit/{id}',['middleware'=>'roles','as'=>'designations.edit', 'uses'=>'DesignationController@edit']);
+		Route::get('/designations/edit/{id}',['as'=>'designations.edit', 'uses'=>'DesignationController@edit']);
 		Route::patch('/designations/update/{id}',['as'=>'designations.update', 'uses'=>'DesignationController@update']);
 
 		/*Routes for ministries operations*/
@@ -185,8 +185,8 @@
 		Route::post('/intervention/store',['as'=>'intervention.store','uses'=>'GoalsInterventionController@store']);
 		Route::get('/intervention/edit/{id}',['as'=>'intervention.edit', 'uses'=>'GoalsInterventionController@edit']);
 		Route::patch('/intervention/update/{id}',['as'=>'intervention.update', 'uses'=>'GoalsInterventionController@update']);
+	});
 
-			//});
 
 Auth::routes();
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
