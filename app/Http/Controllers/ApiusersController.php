@@ -327,11 +327,25 @@ class ApiusersController extends Controller
 
         public function approved($id)
         {
-            $id = 1;
+            
             $approved = User::findOrfail($id);
             $approved->approved = 1;
             $approved->save();
+              return redirect()->route('api.users');
+        }
+        public function unapproved($id)
+        {
+            $approved = User::findOrfail($id);
+            $approved->approved = 0;
+            $approved->save();
 
+            return redirect()->route('api.users');
+
+        }
+        public function editmeta($id)
+        {
+          $meta = UM::where('user_id',$id)->get();//->where();
+        dd($meta);
         }
 
 

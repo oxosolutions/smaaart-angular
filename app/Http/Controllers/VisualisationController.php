@@ -28,7 +28,11 @@ class VisualisationController extends Controller
             ->addColumn('actions',function($model){
                 return view('visualisation._actions',['model' => $model])->render();
             })->editColumn('dataset_id',function($model){
-                return $model->dataset->dataset_name;
+                try{
+                    return $model->dataset->dataset_name;
+                }catch(\Exception $e){
+                    return '';
+                }
             })->editColumn('created_by',function($model){
                 return $model->createdBy->name;
             })->make(true);

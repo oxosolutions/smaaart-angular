@@ -13,13 +13,96 @@
      
       <ul class="sidebar-menu filtered" style="padding-bottom: 50px">
         <li class="header">MAIN NAVIGATION</li>
-        <li class="{{Request::is('/')?'active':''}}">
-          <a href="{{url('/')}}">
-            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-          </a>
-        </li> 
+    
+        <?php
+         $index = 0;
+        ?>
+    @if(Auth::user()->role_id ==null)
 
-        <li class="treeview {{in_array(Request::path(),array('api_users/create','api_users','api_users_meta/create'))?'active':''}}">
+        @foreach(App\Permisson::allRoute() as $route)
+          @if($route->name =='Dashboard')
+                <li class="{{{(Request::is('/')?'active':'')}}}">
+                  <a href="{{url('/')}}">
+                    <i class="fa {{$route->icon}}"></i> <span>Dashboard</span>
+                  </a>
+                </li> 
+                @elseif($route->name =='Api Config')
+                 <li class="{{{(Request::is('config')?'active':'')}}}">
+                  <a href="{{url('/config')}}">
+                    <i class="fa {{$route->icon}}"></i> <span>Api Config</span>
+                  </a>
+                </li> 
+              @else
+                  <li class="treeview {{ (Request::is(<?php echo $roots->route_name; ?>) ? 'active' : '') }}">
+                      <a href="#">
+                        <i class="fa {{$route->icon}}"></i>
+                        <span>  {{$route->name}}</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                      </a>
+                     <ul class="treeview-menu">
+                      @foreach($route->routeMapping as $roots)
+                        @if($roots->route_for!='delete')
+                          <li class="{{ (Request::is(<?php echo $roots->route_name; ?>) ? 'active' : '') }}">
+                           <a href="{{ url($roots->route) }}"><i class="fa fa-circle-o"></i>  {{$roots->route_name}}</a>
+                          </li>
+                        @endif
+                      @endForeach
+                    </ul>
+                  </li>
+              @endif    
+        @endforeach 
+       @else
+
+      @foreach(App\Role::rolePermisson()->permisson as $permissonRole)
+      
+         @if($permissonRole->read == 1 || $permissonRole->write ==1 || $permissonRole->other ==1)
+
+            @if($permissonRole->permissons->name =='Dashboard')
+                <li class="{{{(Request::is('/')?'active':'')}}}">
+                  <a href="{{url('/')}}">
+                    <i class="fa {{$permissonRole->permissons->icon}}"></i> <span>Dashboard</span>
+                  </a>
+                </li> 
+                @elseif($permissonRole->permissons->name =='Api Config')
+                 <li class="{{{(Request::is('config')?'active':'')}}}">
+                  <a href="{{url('/config')}}">
+                    <i class="fa {{$permissonRole->permissons->icon}}"></i> <span>Api Config</span>
+                  </a>
+                </li> 
+              @else  
+                <li class="treeview {{in_array(Request::path(),array('api_users/create','api_users'))?'active':''}}">
+                  <a href="#">
+                    <i class="fa {{$permissonRole->permissons->icon}}"></i>
+                    <span>  {{$permissonRole->permissons->name}}</span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                  <ul class="treeview-menu">
+                    @foreach($permissonRole->permissons->routeMapping as $routes)
+                          
+                        @if($routes->route_for !='delete')
+                          <?php  $route_for = $routes->route_for; ?>
+                          @if($permissonRole->$route_for ==true)
+                            <li class="{{ (Request::is(<?php echo $routes->route; ?>) ? 'active' : '') }}"><a href="{{ url($routes->route) }}"><i class="fa fa-circle-o"></i>  {{$routes->route_name}}</a></li>
+                          @endif
+                      @endif
+                    @endforeach
+                   
+                  </ul>
+                </li>
+              @endif
+          @endif 
+          <?php $index++; ?> 
+      @endforeach
+    
+      </ul> 
+@endif
+    
+
+        <!-- <li class="treeview {{in_array(Request::path(),array('api_users/create','api_users'))?'active':''}}">
           <a href="#">
             <i class="fa fa-users"></i>
             <span>Api Users</span>
@@ -30,7 +113,7 @@
           <ul class="treeview-menu">
             <li class="{{Request::is('api_users')?'active':''}}"><a href="{{ route('api.users') }}"><i class="fa fa-circle-o"></i> List Users</a></li>
             <li class="{{Request::is('api_users/create')?'active':''}}"><a href="{{route('api.create_users')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
-            <li class="{{Request::is('api_users_meta/create')?'active':''}}"><a href="{{route('api.create_users_meta')}}"><i class="fa fa-circle-o"></i>Add User Meta</a></li>
+            <li class="{{Request::is('api_users/create')?'active':''}}"><a href="{{route('api.create_users_meta')}}"><i class="fa fa-circle-o"></i>Add User Meta</a></li>
           </ul>
         </li>
         <li class="treeview {{in_array(Request::path(),array('pages/create','pages'))?'active':''}}">
@@ -173,7 +256,7 @@
         </li>
 
       <!-- role -->
-      <!-- <li class="treeview {{in_array(Request::path(),array('visualisation/create','visualisation'))?'active':''}}">
+        <!-- <li class="treeview {{in_array(Request::path(),array('visualisation/create','visualisation'))?'active':''}}">
           <a href="#">
             <i class="fa fa-wrench"></i>
             <span>Roles </span>
@@ -189,7 +272,7 @@
       <!-- role end -->
       <!-- permisson -->
 
-       <!-- <li class="treeview {{in_array(Request::path(),array('visualisation/create','visualisation'))?'active':''}}">
+      <!-- <li class="treeview {{in_array(Request::path(),array('visualisation/create','visualisation'))?'active':''}}">
           <a href="#">
             <i class="fa fa-wrench"></i>
             <span>Permissons</span>
@@ -202,9 +285,9 @@
             <li class="{{Request::is('visualisation')?'active':''}}"><a href="{{ route('permisson.list') }}"><i class="fa fa-circle-o"></i> List Permissons</a></li>
             <li class="{{Request::is('visualisation/create')?'active':''}}"><a href="{{route('permisson.create')}}"><i class="fa fa-circle-o"></i> Add Pernisson</a></li>
           </ul>
-             </li>   -->
+      </li>   -->
        <!-- permisson End-->
-       <!-- <li class="treeview {{in_array(Request::path(),array('visualisation/create','visualisation'))?'active':''}}">
+         <!-- <li class="treeview {{in_array(Request::path(),array('visualisation/create','visualisation'))?'active':''}}">
           <a href="#">
             <i class="fa fa-wrench"></i>
             <span>Settings </span>
@@ -213,10 +296,10 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="{{Request::is('visualisation')?'active':''}}"><a href="{{ route('setting.list') }}"><i class="fa fa-circle-o"></i> List Settings</a></li> 
-           <li class="{{Request::is('visualisation/create')?'active':''}}"><a href="{{route('setting.create')}}"><i class="fa fa-circle-o"></i> Add Setting</a></li>
-          </ul>
-        </li> -->
+            <li class="{{Request::is('visualisation')?'active':''}}"><a href="{{ route('setting.list') }}"><i class="fa fa-circle-o"></i> List Settings</a></li> -->
+           <!--  <li class="{{Request::is('visualisation/create')?'active':''}}"><a href="{{route('setting.create')}}"><i class="fa fa-circle-o"></i> Add Setting</a></li> -->
+         <!--  </ul>
+        </li>
 
         <li class="treeview {{in_array(Request::path(),array('visualisation/create','visualisation'))?'active':''}}">
           <a href="#">
@@ -250,7 +333,7 @@
           <a href="{{url('config')}}">
             <i class="fa fa-gears"></i> <span>API Config</span>
           </a>
-        </li> 
+        </li>  -->
       
     </section>
     <!-- /.sidebar -->
