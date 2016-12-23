@@ -135,7 +135,7 @@ class GoalsInterventionController extends Controller
     public function modelValidate($request){
 
     	$rules = [
-    				'intervent_id' => 'required',
+    				'intervent_id' => 'unique:goals_interventions,intervent_id',
     				'intervent_title' => 'required',
     				'intervent_desc' => 'required'
     	         ];

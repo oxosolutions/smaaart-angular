@@ -12,6 +12,7 @@
 		Route::get('/api_users/approved/{id}', ['as'=>'apiuser.approved', 'uses'=>'ApiusersController@approved']);
 		Route::get('/api_users/unapproved/{id}', ['as'=>'apiuser.unapproved', 'uses'=>'ApiusersController@unapproved']);
 		Route::get('/api_users/editmeta/{id}', ['as'=>'apiuser.editmeta', 'uses'=>'ApiusersController@editmeta']);
+		Route::get('/api_users/updatemeta/{id}', ['as'=>'apiuser.updatemeta', 'uses'=>'ApiusersController@updatemeta']);
 
 
 	//Pages

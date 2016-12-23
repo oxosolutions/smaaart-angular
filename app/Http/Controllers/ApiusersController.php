@@ -52,7 +52,7 @@ class ApiusersController extends Controller
                 User::create([
                     'name' => $request->name,
                     'email' => $request->email,
-                    'username' => $request->username,
+                    // 'username' => $request->username,
                     'password' => Hash::make($request->password),
                     'role_id' => $role_id,
                     'api_token' => $request->token
@@ -344,9 +344,35 @@ class ApiusersController extends Controller
         }
         public function editmeta($id)
         {
-          $meta = UM::where('user_id',$id)->get();//->where();
-        dd($meta);
-        }
+          $meta = UM::select('id','key','value')->where('user_id',$id)->get();//->where();
+             foreach ($meta as  $value) {
+                if($value->key == "ministry")
+                { 
+                  $minData =json_decode($value->value);
+                 // echo  $minCount = count($minData);
+                 //  for($i=0; $i<$minCount; $i++)
+                 //  {
+                 //    $min[] $minData[$i];
+                 //  }
+                }
+                //dump($value);
+             }
+             dd($minData);
 
+           $plugins = [
+
+                'css' => ['fileupload','select2'],
+                'js'  => ['fileupload','select2','custom'=>['api-user']],
+                'model'=> $meta,
+                'minData' =>$minData
+        ];
+          return view('apiusers.editmeta',$plugins);
+        }
+        public function updatemeta(Request $request , $id)
+        {
+
+          dd($request);
+
+        }
 
 }

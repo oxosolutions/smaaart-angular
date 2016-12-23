@@ -88,20 +88,23 @@ class ImportdatasetController extends Controller
     }
 
     public function getColumns($id){
-
         $model = DL::where('id',$id)->first();
-        $records = json_decode($model->dataset_records);
-        $datasetColumns = json_decode($model->dataset_columns);
-        $datasetValidate = $model->validated;
-        $headers = [];
-        foreach($records[0] as $key => $val){
+        if($model == "" || empty($model)){
+            return ['status'=>'error','data'=>'no data found'];
+        }else{
+            $records = json_decode($model->dataset_records);
+            $datasetColumns = json_decode($model->dataset_columns);
+            $datasetValidate = $model->validated;
+            $headers = [];
+            foreach($records[0] as $key => $val){
 
-            if(!in_array($key,$headers)){
-                $headers[] = $key;
+                if(!in_array($key,$headers)){
+                    $headers[] = $key;
+                }
             }
-        }
 
-        return ['status'=>'sucess','data'=>['columns'=>$headers,'dataset_id'=>$model->id,'validated'=>$datasetValidate,'raw_columns'=>$datasetColumns]];
+            return ['status'=>'sucess','data'=>['columns'=>$headers,'dataset_id'=>$model->id,'validated'=>$datasetValidate,'raw_columns'=>$datasetColumns]];
+        }
     }
 
     protected function storeInDatabase($filename, $origName){

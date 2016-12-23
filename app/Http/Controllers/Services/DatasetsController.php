@@ -42,6 +42,9 @@ class DatasetsController extends Controller
     public function getFormatedDataset($id){
 
         $model = DL::find($id);
+        if ($model == '' || empty($model)){
+            return ['status'=>'error','records'=>'no records found'];
+        }else{
         $records = json_decode($model->dataset_columns);
 
         $headers = [];
@@ -57,6 +60,7 @@ class DatasetsController extends Controller
         }
 
         return ['status'=>'success','data'=>['column'=>$headers,'records'=>json_decode($model->dataset_records)]];
+        }
     }
 
     protected function validateUpdateColumns($request){

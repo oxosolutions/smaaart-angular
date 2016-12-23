@@ -75,6 +75,7 @@ class GoalApiController extends Controller
                     $response["schema"][$schIndex]["schema_title"]      = $schemaData->schemas->schema_title;
                     $response["schema"][$schIndex]["schema_image"]      = asset('schema_file/'.$schemaData->schemas->schema_image);
                     $response["schema"][$schIndex]["schema_desc"]       = $schemaData->schemas->schema_desc;
+                    $response["schema"][$schIndex]["schema_content"]    = $schemaData->schemas->schema_content;
                     $response["schema"][$schIndex]["created_by"]        = $schemaData->schemas->created_by;
                 }catch(\Exception $e){
                     $response['schema'] = [];
@@ -222,6 +223,7 @@ class GoalApiController extends Controller
                     $responseArray[$index]['schema'][$inIndex]['schema_title'] = $vl->schemas->schema_title;
                     $responseArray[$index]['schema'][$inIndex]['schema_image'] = asset('schema_file/'.$vl->schemas->schema_image);
                     $responseArray[$index]['schema'][$inIndex]['schema_desc'] = $vl->schemas->schema_desc;
+                    $responseArray[$index]['schema'][$inIndex]['schema_content'] = $vl->schemas->schema_content;
                 }catch(\Exception $e){
 
                     //exception
@@ -374,6 +376,7 @@ class GoalApiController extends Controller
                 $responseArray[$index]['schema'][$inIndex]['schema_title'] = $vl->schemas->schema_title;
                 $responseArray[$index]['schema'][$inIndex]['schema_image'] = asset('schema_file/'.$vl->schemas->schema_image);
                 $responseArray[$index]['schema'][$inIndex]['schema_desc'] = $vl->schemas->schema_desc;
+                $responseArray[$index]['schema'][$inIndex]['schema_content'] = $vl->schemas->schema_content;
             }catch(\Exception $e){
 
                 //exception
