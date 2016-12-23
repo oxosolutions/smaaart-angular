@@ -9,7 +9,7 @@ class Goal extends Model
 {
 	use SoftDeletes;
 
-    protected $fillable = ['goal_number','goal_title','goal_tagline','goal_description','goal_url','goal_icon','goal_icon_url','goal_color_hex','goal_opacity','goal_nodal_ministry','goal_schemes','goal_interventions','created_by','goal_color_rgb','goal_color_rgb_a'];
+    protected $fillable = ['goal_number','goal_title','goal_tagline','goal_description','goal_url','goal_icon','goal_icon_url','goal_color_hex','goal_opacity','goal_nodal_ministry','goal_interventions','created_by','goal_color_rgb','goal_color_rgb_a'];
     protected $dates = ['deleted_at'];
     protected $softDelete = true;
 
