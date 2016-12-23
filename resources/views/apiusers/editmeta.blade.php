@@ -2,7 +2,7 @@
 
 @section('content')
 
-{{dd($plugins['minData'])}}
+
  <div class="content-wrapper">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -28,6 +28,8 @@
               <h3 class="box-title">Edit User</h3>
             </div>
             {!! Form::model($model, ['method'=>'POST', 'route'=>['apiuser.updatemeta', 1] , 'file'=>true])!!}
+
+            
                      @include('apiusers._form_user_meta')
               <div class="box-footer">
                 {!! Form::submit('Update User Meta', ['class' => 'btn btn-primary']) !!}

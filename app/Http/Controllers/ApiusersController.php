@@ -349,22 +349,25 @@ class ApiusersController extends Controller
                 if($value->key == "ministry")
                 { 
                   $minData =json_decode($value->value);
-                 // echo  $minCount = count($minData);
-                 //  for($i=0; $i<$minCount; $i++)
-                 //  {
-                 //    $min[] $minData[$i];
-                 //  }
+                 echo  $minCount = count($minData);
+                  for($i=0; $i<$minCount; $i++)
+                  {
+                    echo 'mid'. $minData[$i]; 
+
+                     $mins = MIN::select('id','ministry_title')->where('id',$minData[$i])->get();
+                     $ministrys[$mins[0]['id']] =$mins[0]['ministry_title'];
+                  }
                 }
                 //dump($value);
              }
-             dd($minData);
+            
 
            $plugins = [
 
                 'css' => ['fileupload','select2'],
                 'js'  => ['fileupload','select2','custom'=>['api-user']],
                 'model'=> $meta,
-                'minData' =>$minData
+                'minData' =>$ministrys,
         ];
           return view('apiusers.editmeta',$plugins);
         }

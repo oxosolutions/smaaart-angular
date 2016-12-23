@@ -87,6 +87,16 @@ class GoalsSchemaController extends Controller
 
     	$this->validate($request, $rules);
     }
+     public function editModelValidate($request){
+
+        $rules = [
+                    'schema_id' => 'required',
+                    'schema_title' => 'required',
+                    'schema_desc' => 'required'
+        ];
+
+        $this->validate($request, $rules);
+    }
 
     public function destroy($id){
 
@@ -115,7 +125,7 @@ class GoalsSchemaController extends Controller
 
         $model = GS::findOrFail($id);
 
-        $this->modelValidate($request);
+        $this->editModelValidate($request);
 
         DB::beginTransaction();
         try{

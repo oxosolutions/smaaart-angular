@@ -1,6 +1,5 @@
 <div class="box-body">
   
- 
     
 <div class="form-group {{ $errors->has('user_list') ? ' has-error' : '' }}">
     {!!Form::label('user_list','User List') !!}
@@ -12,7 +11,7 @@
     @endif
   </div>
 
-
+ {{dd($minData)}}
    
    
  
