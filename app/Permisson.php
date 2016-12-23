@@ -58,6 +58,10 @@ class Permisson extends Model
         $this->hasMany('App\PermissonRole','permisson_id','id');
     }
 
+    public static function allRoute()
+    {
+        return self::all();
+    }
     
 
 

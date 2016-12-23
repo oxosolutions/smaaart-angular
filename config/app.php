@@ -243,7 +243,8 @@ return [
 
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
 
-        'Excel' => Maatwebsite\Excel\Facades\Excel::class,
+        'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
+        'Activity'  => Spatie\Activitylog\ActivitylogFacade::class,
 
     ],
 

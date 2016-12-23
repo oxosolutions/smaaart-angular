@@ -112,13 +112,11 @@ class ProfileApiController extends Controller
         $model = User::find($userId);
         if($request->name != 'undefined'){
             $model->name = $request->name;
-            if($request->email != 'undefined'){
-                $model->email = $request->email;
-                $model->save();
-            }
-            $model->save();
         }
-
+        if($request->email != 'undefined'){
+            $model->email = $request->email;
+        }
+        $model->save();
         $ministries = explode(',',$request->ministry);
         $departments = explode(',',$request->department);
 

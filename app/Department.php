@@ -5,6 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Auth;
 use Illuminate\Database\Eloquent\SoftDeletes;
+
+use Spatie\Activitylog\LogsActivityInterface;
+use Spatie\Activitylog\LogsActivity;
+
+
+
 class Department extends Model
 {
 	use SoftDeletes;

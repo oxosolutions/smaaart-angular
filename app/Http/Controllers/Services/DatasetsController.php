@@ -168,4 +168,34 @@ class DatasetsController extends Controller
         }
     }
 
+    /**
+     * [filterIncorrectDataFromDataset for validate dataset data according to its type]
+     * @param  [integer] $datasetID [dataset id]
+     * @return [json] [will return json response]
+     * @link it will use in SDGINDIA dataset.controller.js
+     */
+    public function filterIncorrectDataFromDataset($datasetID){
+
+        $model = DL::find($datasetID);
+        if(empty($model)){
+            return ['status'=>'error','message'=>'No dataset found!','code'=>500];
+        }
+        if($model->validated == 0){
+            return ['status'=>'error','message'=>'Dataset not validated!','code'=>501];
+        }
+        $recordsList = [];
+        $datasetColumns = json_decode($model->dataset_columns);
+        $datasetRecords = json_decode($model->dataset_records);
+        foreach ($datasetRecords as $setKey => $setValue) {
+            $singleRow = [];
+            foreach ($datasetColumns as $Colkey => $ColValue) {
+                if(gettype($setValue[$Colkey]) == $ColValue){
+                    $singleRow[$Colkey] = $setValue[$Colkey];
+                }else{
+                    $singleRow[$Colkey] = "<>".$setValue[$Colkey]."<>";
+                }
+            }
+        }
+    }
+
 }

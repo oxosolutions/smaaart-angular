@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 Use App\Role;
 Use DB;
 Use Session;
+Use App\PermissonRole;
 
 class RoleController extends Controller
 {
@@ -17,8 +18,7 @@ class RoleController extends Controller
     		$plugins = [ 'css'=> ['datatables'],
     					 'js'=>['datatables', 'custom'=>['gen-datatables'] ]	];
 
-    			return view('role.index', $plugins);
-
+    		return view('role.index', $plugins);
     }
 
     public function list_role()
@@ -90,9 +90,7 @@ class RoleController extends Controller
 
  public function destroy($id)
  {
-
-
- 	$model  = Role::findOrFail($id);
+    $model  = Role::findOrFail($id);
  	try{
  	$model->delete();
 	 }catch(\Exception $e)

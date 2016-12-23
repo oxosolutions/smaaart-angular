@@ -8,20 +8,13 @@ use Yajra\Datatables\Datatables;
 use Auth;
 use Session;
 use DB;
-use Spatie\Activitylog\Models\Activity;
+use Illuminate\Support\Facades\Route;
+use Activity;
 class DepartmentController extends Controller
 {
     public function index(){
 
-        //activity()->log('Look, I logged something 12342');
-         //$ip =   \Request::ip();
-    activity()
-   ->withProperties(['ip' => \Request::ip()])
-   ->log('Look mum, I logged something');
-
-    $activity = Activity::all();
-
-    dd($activity);
+   Activity::log('Some activity that you wish to log');
 
     	$plugins = [
         			'css' => ['datatables'],

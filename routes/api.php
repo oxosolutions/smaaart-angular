@@ -12,6 +12,9 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/goalData/{id}',			    'Services\GoalApiController@goalData');
 		Route::get('/pages',						['as'=>'pages.list','uses'=>'Services\PagesApiController@getAllPages']);
 		Route::get('/pages/{page_slug}',			['as'=>'pages.by_slug','uses'=>'Services\PagesApiController@getPageBySlug']);
+		Route::get('/profile/ministries',			['as'=>'ministries','uses'=>'Services\MinistryApiController@Ministries']);
+		Route::get('/departments',					['as'=>'Designations','uses'=>'Services\DepartmentApiController@departments']);
+		Route::get('/designation/list',				['as'=>'Designation.list','uses'=>'Services\DesignationApiController@DesignitionList']);
 	});
 
 	Route::group(['middleware'=>['auth:api','cors']], function(){
@@ -26,11 +29,8 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/department/list',				['as'=>'department.list','uses'=>'Services\DepartmentApiController@departmentList']);
 		Route::get('/department/{id}',				['as'=>'department.single','uses'=>'Services\DepartmentApiController@singleDepartment']);
 		Route::get('/resources/list',				['as'=>'Resources.list','uses'=>'Services\ResourcesApiController@ResourcesList']);
-		Route::get('/designation/list',				['as'=>'Designation.list','uses'=>'Services\DesignationApiController@DesignitionList']);
-		Route::get('/departments',					['as'=>'Designations','uses'=>'Services\DepartmentApiController@departments']);
 
 		Route::get('/ministry/list',				['as'=>'ministry.list','uses'=>'Services\MinistryApiController@ministryList']);
-		Route::get('/profile/ministries',				['as'=>'ministries','uses'=>'Services\MinistryApiController@Ministries']);
 		Route::get('/ministry/{id}',				['as'=>'ministry.single','uses'=>'Services\MinistryApiController@singleMinistry']);
 		Route::get('/goals/{id}',					['as'=>'goal.single','uses'=>'Services\GoalApiController@singleGoal']);
 		Route::get('/dataset/export/{id}',			['as'=>'dataset.export','uses'=>'Services\ExportDatasetController@export']);

@@ -17,8 +17,7 @@
         <?php
          $index = 0;
         ?>
-      @foreach(App\Role::rolePermisson()->permisson as $permissonRole)
-      <?php
+        <?php
       //dd($permissonRole->permissons->name);
      // if($index == 15){
 
@@ -27,9 +26,47 @@
         // dd($permissonRole->permissons->name);
        //}
       ?>
-      
+    @if(Auth::user()->role_id ==null)
 
-          @if($permissonRole->read == 1 || $permissonRole->write ==1 || $permissonRole->other ==1)
+        @foreach(App\Permisson::allRoute() as $route)
+          @if($route->name =='Dashboard')
+                <li class="{{{(Request::is('/')?'active':'')}}}">
+                  <a href="{{url('/')}}">
+                    <i class="fa {{$route->icon}}"></i> <span>Dashboard</span>
+                  </a>
+                </li> 
+                @elseif($route->name =='Api Config')
+                 <li class="{{{(Request::is('config')?'active':'')}}}">
+                  <a href="{{url('/config')}}">
+                    <i class="fa {{$route->icon}}"></i> <span>Api Config</span>
+                  </a>
+                </li> 
+              @else
+                  <li class="treeview {{in_array(Request::path(),array('api_users/create','api_users'))?'active':''}}">
+                      <a href="#">
+                        <i class="fa {{$route->icon}}"></i>
+                        <span>  {{$route->name}}</span>
+                        <span class="pull-right-container">
+                          <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                      </a>
+                     <ul class="treeview-menu">
+                      @foreach($route->routeMapping as $roots)
+                        @if($roots->route_for!='delete')
+                          <li class="{{ (Request::is(<?php echo $roots->route_name; ?>) ? 'active' : '') }}">
+                           <a href="{{ url($roots->route) }}"><i class="fa fa-circle-o"></i>  {{$roots->route_name}}</a>
+                          </li>
+                        @endif
+                      @endForeach
+                    </ul>
+                  </li>
+              @endif    
+        @endforeach 
+       @else
+
+      @foreach(App\Role::rolePermisson()->permisson as $permissonRole)
+      
+         @if($permissonRole->read == 1 || $permissonRole->write ==1 || $permissonRole->other ==1)
 
             @if($permissonRole->permissons->name =='Dashboard')
                 <li class="{{{(Request::is('/')?'active':'')}}}">
@@ -65,13 +102,13 @@
                    
                   </ul>
                 </li>
-
-            @endif
+              @endif
           @endif 
           <?php $index++; ?> 
       @endforeach
+    
       </ul> 
-
+@endif
     
 
         <!-- <li class="treeview {{in_array(Request::path(),array('api_users/create','api_users'))?'active':''}}">

@@ -2,7 +2,7 @@
 
 
 
-Route::group(['middleware'=>['auth']], function(){
+Route::group(['middleware'=>['auth','activitylog']], function(){
 
 	//Route::group(['middleware'=>['roles']], function(){
 	//dashboard
