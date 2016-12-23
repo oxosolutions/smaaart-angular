@@ -88,10 +88,12 @@ class MinistriesController extends Controller
             'ministry_title' => 'required|min:5|max:100',
             'ministry_description' => 'required',
             'ministry_icon' => 'required',
-            'ministry_phone' => 'required|min:10|max:12', 
+            'ministry_phone' => 'required|min:10|max:12',
+            'ministry_phone' => 'int', 
             'ministry_ministers' => 'required',
             'ministry_order' => 'required|int',
-            'ministry_image' =>'required| mimes:jpeg,jpg,png | max:1000',
+            'ministry_image' =>'required | mimes:jpeg,jpg,png',
+            'ministry_image' =>'max:1000'
 
         ];
 

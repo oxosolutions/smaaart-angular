@@ -21,7 +21,7 @@
   
   <div class="form-group {{ $errors->has('settings') ? ' has-error' : '' }} " style="margin-top: 2%;">
     {!!Form::label('settings','Enter Settings JSON') !!}
-    {!!Form::textarea('settings',null,['class'=>'form-control','placeholder'=>'Eenter Settings JSON','id'=>'settings']) !!}
+    {!!Form::textarea('settings',null,['class'=>'form-control','placeholder'=>'Enter Settings JSON','id'=>'settings']) !!}
     @if($errors->has('settings'))
       <span class="help-block">
             {{ $errors->first('settings') }}
@@ -31,7 +31,7 @@
 
   <div class="form-group {{ $errors->has('options') ? ' has-error' : '' }} " style="margin-top: 2%;">
     {!!Form::label('options','Enter Options JSON') !!}
-    {!!Form::textarea('options',null,['class'=>'form-control','placeholder'=>'Eenter Options JSON','id'=>'options']) !!}
+    {!!Form::textarea('options',null,['class'=>'form-control','placeholder'=>'Enter Options JSON','id'=>'options']) !!}
     @if($errors->has('options'))
       <span class="help-block">
             {{ $errors->first('options') }}
