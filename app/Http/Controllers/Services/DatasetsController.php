@@ -10,7 +10,7 @@ use Auth;
 class DatasetsController extends Controller
 {
     function getDatasetsList(){
-    	$list = DL::orderBy('id', 'ASC')->get();
+    	$list = DL::orderBy('id', 'DESC')->get();
     	$responseArray = [];
     	$index = 0;
     	foreach($list as $key => $value){

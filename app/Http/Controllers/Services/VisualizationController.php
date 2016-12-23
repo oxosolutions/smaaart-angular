@@ -50,7 +50,7 @@ class VisualizationController extends Controller
 
     public function visualList(){
 
-        $model = VS::get();
+        $model = VS::orderBy('id', 'DESC')->get();
 
         $responseArray = [];
         $index = 0;

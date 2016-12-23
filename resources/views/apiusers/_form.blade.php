@@ -20,7 +20,7 @@
   </div>
 
 
-  <div class="form-group {{ $errors->has('username') ? ' has-error' : '' }}">
+  <!-- <div class="form-group {{ $errors->has('username') ? ' has-error' : '' }}">
     {!!Form::label('username','Username') !!}
     {!!Form::text('username',null, ['class'=>'form-control','placeholder'=>'Enter username']) !!}
     @if($errors->has('username'))
@@ -28,10 +28,10 @@
             {{ $errors->first('username') }}
       </span>
     @endif
-  </div>
+  </div> -->
 
   <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
-    {!!Form::label('userpassword','Password') !!}
+    {!!Form::label('password','Password') !!}
     {!!Form::password('password', ['class'=>'form-control','placeholder'=>'Enter Password','id'=>'userpassword']) !!}
     @if($errors->has('password'))
       <span class="help-block">

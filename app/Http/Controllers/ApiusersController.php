@@ -258,9 +258,7 @@ class ApiusersController extends Controller
 
         public function edit($id) {
             
-            $model = User::findOrfail($id);
-
-          return view('apiusers.edit',['model'=>$model]);
+         return view('apiusers.edit',['model'=>$model]);
 
           // $userName =  User::select('id','name','email','password')->where('id',$id)->get();
           // $ud['name'] = $userName[0]->name;
@@ -314,9 +312,19 @@ class ApiusersController extends Controller
           //   return view('apiusers.edit', ['user_detail'=>$ud ,'depDetail'=>$depDetail ,'minDetail' =>$minDetail] );
 
         }
-        public function update($id)
+        public function update(Request $request, $id)
         {
             echo $id;
+          //   $user = User::findOrfail($id);
+          // //  $user->fill();
+          //   $user->name = $request->name;
+          //   $user->email = $request->email;
+          //   $user->username = $request->username;
+          //   $user->password = Hash::make($request->password);
+          //   $user->role_id = $role_id;
+          //   $user->api_token = $request->token;
+            
+          //   $user->save();
         }
 
 
