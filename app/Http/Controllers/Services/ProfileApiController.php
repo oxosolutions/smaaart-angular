@@ -119,19 +119,20 @@ class ProfileApiController extends Controller
         $model->save();
         $ministries = explode(',',$request->ministry);
         $departments = explode(',',$request->department);
-
-        UserMeta::where(['key'=>'ministry', 'user_id' => $userId])->update(['value'=>json_encode($ministries)]);
-        if($request->phone != 'undefined'){
-            UserMeta::where(['key'=>'phone', 'user_id' => $userId])->update(['value'=>$request->phone]);
+        if($request->ministry != 'undefined' && $request->department != 'undefined'){
+            UserMeta::where(['key'=>'ministry', 'user_id' => $userId])->update(['value'=>json_encode($ministries)]);
+            if($request->phone != 'undefined'){
+                UserMeta::where(['key'=>'phone', 'user_id' => $userId])->update(['value'=>$request->phone]);
+            }
+            if($request->designation != 'undefined'){
+                UserMeta::where(['key'=>'designation', 'user_id' => $userId])->update(['value'=>$request->designation]);
+            }
+            UserMeta::where(['key'=>'address', 'user_id' => $userId])->update(['value'=>$request->address]);
+            UserMeta::where(['key'=>'department', 'user_id' => $userId])->update(['value'=>json_encode($departments)]);
+            return ['status'=>'success','message'=>'Profile updated successfully!'];
+        }else{
+            return ['status'=>'error','message'=>'Unable to update profile!!'];
         }
-        if($request->designation != 'undefined'){
-            UserMeta::where(['key'=>'designation', 'user_id' => $userId])->update(['value'=>$request->designation]);
-        }
-        UserMeta::where(['key'=>'address', 'user_id' => $userId])->update(['value'=>$request->address]);
-        UserMeta::where(['key'=>'department', 'user_id' => $userId])->update(['value'=>json_encode($departments)]);
-
-
-        return ['status'=>'success','message'=>'Profile updated successfully!'];
 
     }
 

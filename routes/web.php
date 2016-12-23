@@ -1,9 +1,5 @@
 <?php
 
-
-
-Route::group(['middleware'=>['auth','activitylog']], function(){
-
 	//Route::group(['middleware'=>['roles']], function(){
 	//dashboard
 		Route::get('/', ['as'=>'home', 'uses'=>'DashboardController@index']);
@@ -126,8 +122,6 @@ Route::group(['middleware'=>['auth','activitylog']], function(){
 		Route::patch('/ministries/update/{id}',['as'=>'ministries.update', 'uses'=>'MinistriesController@update']);
 
 		/*Routes for goals operations*/
-
-
 		Route::get('/list_goals',['as'=>'goals.list.ajax','uses'=>'GoalsController@goalsList']);
 		Route::post('/goals/store',['as'=>'goals.store','uses'=>'GoalsController@store']);
 		Route::get('/goals/edit/{id}',['as'=>'goals.edit', 'uses'=>'GoalsController@edit']);
@@ -142,17 +136,12 @@ Route::group(['middleware'=>['auth','activitylog']], function(){
 
 
 		/*Routes For API goal schema*/
-
-
 		Route::get('/schema_list',['as'=>'schema.list.ajax','uses'=>'GoalsSchemaController@indexData']);
 		Route::post('/schema/store',['as'=>'schema.store','uses'=>'GoalsSchemaController@store']);
 		Route::get('/schema/edit/{id}',['as'=>'schema.edit', 'uses'=>'GoalsSchemaController@edit']);
 		Route::patch('/schema/update/{id}',['as'=>'schema.update', 'uses'=>'GoalsSchemaController@update']);
 
 		/*Routes For goal Targets*/
-
-
-
 		Route::get('/target_list',['as'=>'target.list.ajax','uses'=>'GoalsTargetController@indexData']);
 		Route::post('/target/store',['as'=>'target.store','uses'=>'GoalsTargetController@store']);
 		Route::get('/target/edit/{id}',['as'=>'target.edit', 'uses'=>'GoalsTargetController@edit']);
@@ -168,54 +157,36 @@ Route::group(['middleware'=>['auth','activitylog']], function(){
 		Route::patch('/resource/update/{id}',['as'=>'resource.update', 'uses'=>'GoalsResourceController@update']);
 
 		/*Routes For indicators resources*/
-
-
-
 		Route::get('/indicators_list',['as'=>'indicators.list.ajax','uses'=>'IndicatorsController@indexData']);
 		Route::post('/indicators/store',['as'=>'indicators.store','uses'=>'IndicatorsController@store']);
 		Route::get('/indicators/edit/{id}',['as'=>'indicators.edit', 'uses'=>'IndicatorsController@edit']);
 		Route::patch('/indicators/update/{id}',['as'=>'indicators.update', 'uses'=>'IndicatorsController@update']);
 
 		/*Routes For indicators resources*/
-
-
 		Route::get('/pages_list',['as'=>'pages.list.ajax','uses'=>'PagesController@indexData']);
 		Route::post('/pages/store',['as'=>'pages.store','uses'=>'PagesController@store']);
 		Route::get('/pages/edit/{id}',['as'=>'pages.edit', 'uses'=>'PagesController@edit']);
 		Route::patch('/pages/update/{id}',['as'=>'pages.update', 'uses'=>'PagesController@update']);
 
 		/*Routes For indicators resources*/
-
-
-
 		Route::get('/visualisation_list',['as'=>'visualisation.list.ajax','uses'=>'VisualisationController@indexData']);
 		Route::post('/visualisation/store',['as'=>'visualisation.store','uses'=>'VisualisationController@store']);
 		Route::get('/visualisation/edit/{id}',['as'=>'visualisation.edit', 'uses'=>'VisualisationController@edit']);
 		Route::patch('/visualisation/update/{id}',['as'=>'visualisation.update', 'uses'=>'VisualisationController@update']);
 
 		/*Routes For datasets resources*/
-
-
-
 		Route::get('/dataset_list',['as'=>'datasets.list.ajax','uses'=>'DataSetsController@indexData']);
 		Route::post('/dataset/store',['as'=>'dataset.store','uses'=>'DataSetsController@store']);
 		Route::get('/dataset/edit/{id}',['as'=>'datasets.edit', 'uses'=>'DataSetsController@edit']);
 		Route::patch('/dataset/update/{id}',['as'=>'datasets.update', 'uses'=>'DataSetsController@update']);
 
 		/*Routes For API goal intervention*/
-
-
-
 		Route::get('/intervention_list',['as'=>'intervention.list.ajax','uses'=>'GoalsInterventionController@indexData']);
 		Route::post('/intervention/store',['as'=>'intervention.store','uses'=>'GoalsInterventionController@store']);
 		Route::get('/intervention/edit/{id}',['as'=>'intervention.edit', 'uses'=>'GoalsInterventionController@edit']);
 		Route::patch('/intervention/update/{id}',['as'=>'intervention.update', 'uses'=>'GoalsInterventionController@update']);
 
 			//});
-
-
-
-});
 
 Auth::routes();
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
