@@ -9,6 +9,7 @@
 		Route::get('/api_users/create', ['as'=>'api.create_users', 'uses'=>'ApiusersController@create']);
 		Route::get('/api_users/edit/{id}', ['as'=>'api.edit_users', 'uses'=>'ApiusersController@edit']);
 		Route::post('/api_users/update/{id}', ['as'=>'apiuser.update', 'uses'=>'ApiusersController@update']);
+		Route::get('/api_users/approved/{id}', ['as'=>'apiuser.approved', 'uses'=>'ApiusersController@approved']);
 
 	//Pages
 		Route::get('/pages',['as'=>'pages.list','uses'=>'PagesController@index']);

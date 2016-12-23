@@ -43,16 +43,11 @@ class ApiusersController extends Controller
     }
 
     public function store(Request $request){
-        // print_r($request->session()->get('key'));
-        // exit();
-   $role_id = (int) $request->role_id[0];
-   echo   gettype($role_id);
-
-
+       
+        $role_id = (int) $request->role_id[0];
         $this->modelValidate($request);
 
         DB::beginTransaction();
-
         try{
                 User::create([
                     'name' => $request->name,
@@ -257,6 +252,8 @@ class ApiusersController extends Controller
         }
 
         public function edit($id) {
+
+          $model = User::findOrfail($id);
             
          return view('apiusers.edit',['model'=>$model]);
 
@@ -314,17 +311,27 @@ class ApiusersController extends Controller
         }
         public function update(Request $request, $id)
         {
-            echo $id;
-          //   $user = User::findOrfail($id);
-          // //  $user->fill();
-          //   $user->name = $request->name;
-          //   $user->email = $request->email;
-          //   $user->username = $request->username;
-          //   $user->password = Hash::make($request->password);
-          //   $user->role_id = $role_id;
-          //   $user->api_token = $request->token;
             
-          //   $user->save();
+          
+            $role_id = (int) $request->role_id[0];
+            $user = User::findOrfail($id);
+            // $user->fill($request->except(['_token']));
+            $user->name = $request->name;
+            $user->email = $request->email;
+           
+            $user->password = Hash::make($request->password);
+            $user->role_id = $role_id;
+            $user->api_token = $request->token;
+            $user->save();
+        }
+
+        public function approved($id)
+        {
+            $id = 1;
+            $approved = User::findOrfail($id);
+            $approved->approved = 1;
+            $approved->save();
+
         }
 
 

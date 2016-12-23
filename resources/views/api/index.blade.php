@@ -528,7 +528,7 @@
                 Params:
                 <code>
                   <ul class="api_param well ">
-                    <li><spam class="col-md-2 col-sm-4 col-xs-6">dataset </spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">dataset (id) </spam> <span class="label label-danger">Required</span></li>
                     <li><spam class="col-md-2 col-sm-4 col-xs-6">visual_name </spam> <span class="label label-danger">Required</span></li>
                     <li><spam class="col-md-2 col-sm-4 col-xs-6">options </spam> <span class="label label-danger">Required</span></li>
                     <li><spam class="col-md-2 col-sm-4 col-xs-6">settings </spam> <span class="label label-danger">Required</span></li>

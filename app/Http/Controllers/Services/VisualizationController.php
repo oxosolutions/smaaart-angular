@@ -58,7 +58,11 @@ class VisualizationController extends Controller
 
             $responseArray[$index]['id'] = $value->id;
             $responseArray[$index]['dataset_id'] = $value->dataset_id;
-            $responseArray[$index]['dataset_name'] = $value->dataset->dataset_name;
+            try{
+                $responseArray[$index]['dataset_name'] = $value->dataset->dataset_name;
+            }catch(\Exception $e){
+                $responseArray[$index]['dataset_name'] = '';
+            }
             $responseArray[$index]['visual_name'] = $value->visual_name;
             $responseArray[$index]['settings'] = $value->settings;
             $responseArray[$index]['options'] = $value->options;
