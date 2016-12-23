@@ -13,7 +13,7 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/pages',						['as'=>'pages.list','uses'=>'Services\PagesApiController@getAllPages']);
 		Route::get('/pages/{page_slug}',			['as'=>'pages.by_slug','uses'=>'Services\PagesApiController@getPageBySlug']);
 		Route::get('/profile/ministries',			['as'=>'ministries','uses'=>'Services\MinistryApiController@Ministries']);
-		Route::get('/departments',					['as'=>'Designations','uses'=>'Services\DepartmentApiController@departments']);
+		Route::get('/departments',					['as'=>'departments','uses'=>'Services\DepartmentApiController@departments']);
 		Route::get('/designation/list',				['as'=>'Designation.list','uses'=>'Services\DesignationApiController@DesignitionList']);
 	});
 

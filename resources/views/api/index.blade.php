@@ -43,6 +43,9 @@
                     <li><spam class="col-md-2 col-sm-4 col-xs-6">name </spam> <span class="label label-danger">Required</span></li>
                     <li><spam class="col-md-2 col-sm-4 col-xs-6">email </spam> <span class="label label-danger">Required</span></li>
                     <li><spam class="col-md-2 col-sm-4 col-xs-6">password </spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">departments </spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">ministries </spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">designation </spam> <span class="label label-danger">Required</span></li>
                   </ul>
                 </code>
               </div>

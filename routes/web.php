@@ -11,7 +11,6 @@
 	//Pages
 		Route::get('/pages',['as'=>'pages.list','uses'=>'PagesController@index']);
 		Route::get('/pages/create',['as'=>'pages.create','uses'=>'PagesController@create']);
-
 		Route::get('/pages/delete/{id}',['as'=>'pages.delete', 'uses'=>'PagesController@destroy']);
 	//Designation
 		Route::get('/designations',['as'=>'designations.list', 'uses'=>'DesignationController@index']);
@@ -65,11 +64,7 @@
 		/*API Config Routes*/
 		Route::get('/config',['as'=>'api.config','uses'=>'ApiConfigController@index']);
 
-
-	//});
 	// permisson
-
-
 		Route::get('/permisson/delete_route/{id}', ['as'=>'permisson.delete_route', 'uses'=>'PermissionController@delete_permisson_route']);
 
 		Route::post('/permisson/store', ['as'=>'permisson.store', 'uses'=>'PermissionController@store']);
@@ -92,30 +87,20 @@
 		Route::get('/setting/edit/{id}',['as'=>'setting.edit', 'uses'=>'SettingController@edit']);
 		Route::post('/setting/update', ['as'=>'setting.update', 'uses'=>'SettingController@update']);
 
-	// ROLE SYSTES
-
 
 		/*Routes of Department Operations*/
-
-
 		Route::post('/department/store',['as'=>'department.store', 'uses'=>'DepartmentController@store']);
 		Route::get('/list_depart',['as'=>'department.ajax', 'uses'=>'DepartmentController@get_departments']);
 		Route::get('/department/edit/{id}',['as'=>'department.edit', 'uses'=>'DepartmentController@edit']);
 		Route::patch('/department/update/{id}',['as'=>'department.update', 'uses'=>'DepartmentController@update']);
 
 		/*Routes of Designations Operations*/
-
-
-
 		Route::get('/list_desig',['as'=>'designation.ajax', 'uses'=>'DesignationController@indexData']);
 		Route::post('/designations/store',['as'=>'designations.store', 'uses'=>'DesignationController@store']);
 		Route::get('/designations/edit/{id}',['as'=>'designations.edit', 'uses'=>'DesignationController@edit']);
 		Route::patch('/designations/update/{id}',['as'=>'designations.update', 'uses'=>'DesignationController@update']);
 
 		/*Routes for ministries operations*/
-
-
-
 		Route::get('/list_minist',['as'=>'ministries.ajax', 'uses'=>'MinistriesController@get_ministries']);
 		Route::post('/ministries/store',['as'=>'ministries.store', 'uses'=>'MinistriesController@store']);
 		Route::get('/ministries/edit/{id}',['as'=>'ministries.edit', 'uses'=>'MinistriesController@edit']);

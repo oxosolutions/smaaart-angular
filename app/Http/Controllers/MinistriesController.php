@@ -84,13 +84,15 @@ class MinistriesController extends Controller
 
         $rules = [
 
-            'ministry_id' => 'required',
+            'ministry_id' => 'required|int',
             'ministry_title' => 'required|min:5|max:100',
             'ministry_description' => 'required',
             'ministry_icon' => 'required',
-            'ministry_phone' => 'required|min:10|max:12',
+            'ministry_phone' => 'required|min:10|max:12', 
             'ministry_ministers' => 'required',
-            'ministry_order' => 'required'
+            'ministry_order' => 'required|int',
+            'ministry_image' =>'required| mimes:jpeg,jpg,png | max:1000',
+
         ];
 
         if($request->hasFile('ministry_image')){

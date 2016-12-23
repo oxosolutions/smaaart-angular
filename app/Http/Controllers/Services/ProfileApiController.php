@@ -113,9 +113,12 @@ class ProfileApiController extends Controller
         if($request->name != 'undefined'){
             $model->name = $request->name;
         }
-        if($request->email != 'undefined'){
+        /*if($request->email != 'undefined'){
+            if(!empty(User::where('email',$request->email)->first())){
+                return ['status'=>'error','message'=>'Email already in use!'];
+            }
             $model->email = $request->email;
-        }
+        }*/
         $model->save();
         $ministries = explode(',',$request->ministry);
         $departments = explode(',',$request->department);
@@ -133,11 +136,10 @@ class ProfileApiController extends Controller
         }else{
             return ['status'=>'error','message'=>'Unable to update profile!!'];
         }
-
     }
 
     protected function validateProfile($request){
-        if($request->has('name') && $request->has('phone') && $request->has('email') && $request->has('designation') && $request->has('address') && $request->has('department') && $request->has('ministry')){
+        if($request->has('name') && $request->has('phone') && $request->has('designation') && $request->has('address') && $request->has('department') && $request->has('ministry')){
             return true;
         }else{
             return false;
