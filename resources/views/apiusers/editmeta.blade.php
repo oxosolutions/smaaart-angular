@@ -27,10 +27,10 @@
             <div class="box-header with-border">
               <h3 class="box-title">Edit User</h3>
             </div>
-            {!! Form::model($model, ['method'=>'POST', 'route'=>['apiuser.updatemeta', 1] , 'file'=>true])!!}
+            {!! Form::model($model, ['method'=>'POST', 'route'=>['apiuser.updatemeta', $id] , 'files'=>true])!!}
 
-            
-                     @include('apiusers._form_user_meta')
+
+                     @include('apiusers._editmeta_form')
               <div class="box-footer">
                 {!! Form::submit('Update User Meta', ['class' => 'btn btn-primary']) !!}
               </div>

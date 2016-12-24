@@ -12,7 +12,8 @@
 		Route::get('/api_users/approved/{id}', ['as'=>'apiuser.approved', 'uses'=>'ApiusersController@approved']);
 		Route::get('/api_users/unapproved/{id}', ['as'=>'apiuser.unapproved', 'uses'=>'ApiusersController@unapproved']);
 		Route::get('/api_users/editmeta/{id}', ['as'=>'apiuser.editmeta', 'uses'=>'ApiusersController@editmeta']);
-		Route::get('/api_users/updatemeta/{id}', ['as'=>'apiuser.updatemeta', 'uses'=>'ApiusersController@updatemeta']);
+		Route::post('/api_users/updatemeta/{id}', ['as'=>'apiuser.updatemeta', 'uses'=>'ApiusersController@updatemeta']);
+		Route::get('/api_users/delete/{id}', ['as'=>'apiuser.delete', 'uses'=>'ApiusersController@delete']);
 
 
 	//Pages
@@ -122,7 +123,7 @@
 		/*Routes of API users*/
 		Route::get('/get_users', ['as'=>'api.get_users', 'uses'=>'ApiusersController@get_users']);
 		Route::post('/api_users/store', ['as'=>'api.store_users', 'uses'=>'ApiusersController@store']);
-		Route::get('/api_users_meta/create', ['as'=>'api.create_users_meta', 'uses'=>'ApiusersController@createUserMeta']);
+		Route::get('/api_users_meta/create/{id}', ['as'=>'api.create_users_meta', 'uses'=>'ApiusersController@createUserMeta']);
 		Route::post('/api_users_meta/store', ['as'=>'api.store_users_meta', 'uses'=>'ApiusersController@storeUserMeta']);
 		Route::get('user_detail/{id}',['as'=>'api.user_detail', 'uses'=>'ApiusersController@userDetail']);
 
@@ -177,6 +178,11 @@
 		Route::post('/intervention/store',['as'=>'intervention.store','uses'=>'GoalsInterventionController@store']);
 		Route::get('/intervention/edit/{id}',['as'=>'intervention.edit', 'uses'=>'GoalsInterventionController@edit']);
 		Route::patch('/intervention/update/{id}',['as'=>'intervention.update', 'uses'=>'GoalsInterventionController@update']);
+
+	//Global Settings
+		Route::get('/settings',['as'=>'global.settings','uses'=>'GlobalSettingsController@index']);
+		Route::patch('/settings/store/register',['as'=>'register.settings','uses'=>'GlobalSettingsController@saveNewUserRegisterSettings']);
+		Route::patch('/settings/store/forget',['as'=>'forget.settings','uses'=>'GlobalSettingsController@saveForgetEmailSettings']);
 	});
 
 

@@ -11,6 +11,9 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\UserMeta;
+use App\Mail\ForgetPassword;
+use Illuminate\Support\Facades\Mail;
+use App\GlobalSetting as GS;
 class ApiauthController extends Controller
 {
 
@@ -31,7 +34,7 @@ class ApiauthController extends Controller
 			$user = Auth::user();
 			return ['status'=>'successful', 'user_detail'=>$user];
 		}else{
-			return ['status'=>'error','message'=>'Email Password not exist!'];
+			return ['status'=>'error','message'=>'Invalid email or password!'];
 		}
 
     }
@@ -121,4 +124,46 @@ class ApiauthController extends Controller
            return false;
        }
    }
+
+   public function forgetPassword(Request $request){
+
+        if(!$request->has('email_id')){
+            return ['status'=>'error','message'=>'Required fields are missing!'];
+        }
+        $model = User::where('email',$request->email_id)->first();
+        if(empty($model)){
+            return ['status'=>'error','message'=>'Email id not found!'];
+        }
+        $userName = $model->name;
+        $token = str_random(60);
+        $model->reset_token = $token;
+        $model->save();
+        $userDetails['name'] = $userName;
+        $userDetails['token'] = $token;
+
+        $model = GS::where('meta_key','forget_settings')->first();
+        if(empty($model)){
+            return ['status'=>'success','message'=>'Password Changed, But email not configured yet!'];
+        }elseif(json_decode($model->meta_value)->activate != 'true'){
+            return ['status'=>'success','message'=>'Password Changed, But email not configured yet!'];
+        }else{
+            $userDetails['subject'] = json_decode($model->meta_value)->subject;
+            $userDetails['description'] = json_decode($model->meta_value)->description;
+            Mail::to($request->email_id)->send(new ForgetPassword($userDetails));
+        }
+        return ['status'=>'success','message'=>'New password sent on your email id!'];
+   }
+
+   public function validateForgetPassToken($token){
+        
+        $model = User::where('reset_token',$token)->first();
+
+        if(empty($model)){
+            return ['status'=>'error','message'=>'Invalid token!'];
+        }else{
+            return ['status'=>'success','message'=>'Valid token!'];
+        }
+   }
+
+
 }

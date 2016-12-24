@@ -30,7 +30,6 @@
           <ul class="treeview-menu">
             <li class="{{Request::is('api_users')?'active':''}}"><a href="{{ route('api.users') }}"><i class="fa fa-circle-o"></i> List Users</a></li>
             <li class="{{Request::is('api_users/create')?'active':''}}"><a href="{{route('api.create_users')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
-            <li class="{{Request::is('api_users_meta/create')?'active':''}}"><a href="{{route('api.create_users_meta')}}"><i class="fa fa-circle-o"></i>Add User Meta</a></li>
           </ul>
         </li>
         <li class="treeview {{in_array(Request::path(),array('pages/create','pages'))?'active':''}}">
@@ -249,6 +248,12 @@
         <li class="{{Request::is('config')?'active':''}}">
           <a href="{{url('config')}}">
             <i class="fa fa-gears"></i> <span>API Config</span>
+          </a>
+        </li> 
+
+        <li class="{{Request::is('settings')?'active':''}}">
+          <a href="{{url('settings')}}">
+            <i class="fa fa-gear"></i> <span>Settings</span>
           </a>
         </li> 
       

@@ -1,7 +1,7 @@
 <div class="box-body">
   
     
-<div class="form-group {{ $errors->has('user_list') ? ' has-error' : '' }}">
+<!-- <div class="form-group {{ $errors->has('user_list') ? ' has-error' : '' }}">
     {!!Form::label('user_list','User List') !!}
     {!!Form::select('user_list', App\User::userList(),'select', ['placeholder' => 'Select User','class'=>'form-control']) !!}
     @if($errors->has('department'))
@@ -9,10 +9,10 @@
             {{ $errors->first('user_list') }}
       </span>
     @endif
-  </div>
+  </div> -->
 
- {{dd($minData)}}
-   
+
+   <input type="hidden" name="user_list" value="{{$user_id}}">
    
  
 
@@ -26,9 +26,9 @@
     @endif
   </div>
 
-  <div class="form-group {{ $errors->has('ministry') ? ' has-error' : '' }}">
+  <div class="form-group {{ $errors->has('ministry') ? ' has-error' : '' }}"><!-- fOR MULTIPLE SELECT  select2-department -->
     {!!Form::label('ministry','Ministry') !!}
-    {!!Form::select('ministry[]',App\Ministrie::ministryList(),null, ['class'=>'form-control select2-department', 'multiple']) !!}
+    {!!Form::select('ministry[]',App\Ministrie::ministryList(),null, ['class'=>'form-control select2', 'multiple']) !!}
     @if($errors->has('ministry'))
       <span class="help-block">
             {{ $errors->first('ministry') }}
@@ -38,7 +38,7 @@
 
   <div class="form-group {{ $errors->has('department') ? ' has-error' : '' }}">
     {!!Form::label('department','Department') !!}
-    {!!Form::select('department[]',App\Department::departmentList(),null, ['class'=>'form-control select2-department','multiple']) !!}
+    {!!Form::select('department[]',App\Department::departmentList(),null, ['class'=>'form-control select2','multiple']) !!}
     @if($errors->has('department'))
       <span class="help-block">
             {{ $errors->first('department') }}

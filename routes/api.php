@@ -22,6 +22,8 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/goals/{id}',					['as'=>'goal.single','uses'=>'Services\GoalApiController@singleGoal']);
 		Route::get('/schema',						['as'=>'Services\SchemaApiController','uses'=>'Services\SchemaApiController@allSchema']);
 		Route::get('/indicators',					['as'=>'indicators','uses'=>'Services\IndicatorsController@indicators']);
+		Route::post('/forget',						['as'=>'forget.password','uses'=>'Services\ApiauthController@forgetPassword']);
+		Route::get('/validateForgetToken/{token}',	['as'=>'forget.token.validate','uses'=>'Services\ApiauthController@validateForgetPassToken']);
 	});
 
 	//No need to put in middleware['cors'], needs to access directly from browser
@@ -32,7 +34,7 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/users', function (Request $request) {
 		    return $request->user();
 		});
-		
+
 		Route::post('/dataset/import',				['as'=>'import','uses'=>'Services\ImportdatasetController@uploadDataset']);
 		Route::get('/dataset/list',					['as'=>'list','uses'=>'Services\DatasetsController@getDatasetsList']);
 		Route::get('/dataset/view/{id}',			['as'=>'list','uses'=>'Services\DatasetsController@getDatasets']);

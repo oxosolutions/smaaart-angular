@@ -18,7 +18,7 @@ class ImportdatasetController extends Controller
           if($request->file('file') == "" || $request->format == "" || $request->add_replace == "" || $request->with_dataset == ""){
                 return ['status'=>'error','message'=>'Please Provide Require Fields'];
             }
-               
+
             try {
                  if(!in_array($request->file('file')->getClientOriginalExtension(),['csv','xlsx','xls'])){
                     return ['status'=>'error','records'=>'File type not allowed!'];
@@ -39,14 +39,19 @@ class ImportdatasetController extends Controller
           		$filename = date('Y-m-d-H-i-s')."-".$request->file('file')->getClientOriginalName();
           		$uploadFile = $request->file('file')->move($path, $filename);
                 $filePath = $path.'/'.$filename;
-                if($request->add_replace == 'newtable'){
-                    $result = $this->storeInDatabase($filePath, $request->file('file')->getClientOriginalName());
-                }elseif($request->add_replace == 'append'){
-                    $result = $this->appendDataset($request, $filePath);
-                }elseif($request->add_replace == 'replace'){
-                    $result = $this->replaceDataset($request, $request->file('file')->getClientOriginalName(), $filePath);
+                if($request->add_replace != 'newtable' || $request->add_replace != 'append' || $request->add_replace != 'replace'){
+                    return ['status'=>'error' , 'message' => 'wrong add_replace'];
+                }else{
+                    if($request->add_replace == 'newtable'){
+                        $result = $this->storeInDatabase($filePath, $request->file('file')->getClientOriginalName());
+                    }elseif($request->add_replace == 'append'){
+                        $result = $this->appendDataset($request, $filePath);
+                    }elseif($request->add_replace == 'replace'){
+                        $result = $this->replaceDataset($request, $request->file('file')->getClientOriginalName(), $filePath);
+                    }
                 }
           	}
+
             if($result['status'] == 'true'){
                 if($uploadFile){
         			$response = ['status'=>'success','message'=>$result['message'],'id'=>@$result['id']];
@@ -59,7 +64,7 @@ class ImportdatasetController extends Controller
                 $response = ['status'=>'error','message'=>$result['message']];
                 return $response;
             }
-        
+
     }
     protected function validateRequst($request){
         $errors = [];

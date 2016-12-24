@@ -12,6 +12,11 @@
             <td>{{$user_detail['name']}}
             </td>
         </tr>
+         <tr>
+            <td>Email</td>
+            <td>{{$user_detail['email']}}
+            </td>
+        </tr>
         <tr>
             <td>Phone Number</td>
             <td>{{$user_detail['phone']}}

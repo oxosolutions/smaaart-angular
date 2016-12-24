@@ -13,4 +13,9 @@ class UserMeta extends Model
         return $this->belongsTo('App\User');
     }
 
+    public static function checkmeta($id)
+    {
+    	return self::where('user_id',$id)->count();
+    }
+
 }

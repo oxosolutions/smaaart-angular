@@ -30,15 +30,28 @@
     @endif
   </div> -->
 
-  <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
-    {!!Form::label('password','Password') !!}
-    {!!Form::password('password', ['class'=>'form-control','placeholder'=>'Enter Password','id'=>'userpassword']) !!}
-    @if($errors->has('password'))
-      <span class="help-block">
-            {{ $errors->first('password') }}
-      </span>
-    @endif
+   @if(@$model)
+    <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
+        {!!Form::label('password','Password') !!}
+        {!!Form::password('new_password', ['class'=>'form-control','placeholder'=>'Enter Password','id'=>'userpassword','autocomplete'=>"off"]) !!}
+        <span class="text-yellow">Note: leave "PASSWORD" blank if you don't want to change.</span>
+        @if($errors->has('password'))
+          <span class="help-block">
+                {{ $errors->first('password') }}
+          </span>
+        @endif
   </div>
+  @else
+      <div class="form-group {{ $errors->has('password') ? ' has-error' : '' }}">
+        {!!Form::label('password','Password') !!}
+        {!!Form::password('password', ['class'=>'form-control','placeholder'=>'Enter Password','id'=>'userpassword']) !!}
+        @if($errors->has('password'))
+          <span class="help-block">
+                {{ $errors->first('password') }}
+          </span>
+        @endif
+      </div>
+  @endif
 
   <div class="form-group {{ $errors->has('ministry') ? ' has-error' : '' }}">
     {!!Form::label('role','Role') !!}
