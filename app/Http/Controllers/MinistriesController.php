@@ -103,6 +103,28 @@ class MinistriesController extends Controller
         $this->validate($request, $rules);
     }
 
+    protected function editmodelValidate($request){
+
+        $rules = [
+
+            'ministry_id' => 'required|int',
+            'ministry_title' => 'required|min:5|max:100',
+            'ministry_description' => 'required',
+            'ministry_icon' => 'required',
+            'ministry_phone' => 'required|min:10|max:12',
+            'ministry_ministers' => 'required',
+            'ministry_order' => 'required|int',
+
+        ];
+
+        if($request->hasFile('ministry_image')){
+
+            $rules['image'] = 'image';
+        }
+
+        $this->validate($request, $rules);
+    }
+
     public function destroy($id){
 
         $model = MIN::findOrFail($id);
@@ -137,7 +159,7 @@ class MinistriesController extends Controller
 
     public function update(Request $request, $id){
 
-        $this->modelValidate($request);
+        $this->editmodelValidate($request);
         $model = MIN::find($id);
         DB::beginTransaction();
         try{
@@ -157,7 +179,10 @@ class MinistriesController extends Controller
                 $model->ministry_image = $filename;
             }
             $model->save();
+
+            MDM::where('ministry_id',$id)->delete();
             foreach($request->ministry_departments as $key => $department){
+
 
                 $depart = new MDM();
 
@@ -165,6 +190,7 @@ class MinistriesController extends Controller
 
                 $model->departments()->save($depart);
             }
+
 
             DB::commit();
             Session::flash('success','Successfully added!');

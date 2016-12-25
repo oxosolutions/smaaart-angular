@@ -94,8 +94,9 @@ class DataSetsController extends Controller
 
      protected function appendDataset($request, $filename){
         ini_set('memory_limit', '2048M');
-        $model = DL::find($request->with_dataset);
-        dd($model->dataset_records);
+
+
+        $model = DL::find($request->dataset_list);
         $sameColumnValidate = true;
         $FileData = [];
         $oldData = [];
@@ -138,7 +139,7 @@ class DataSetsController extends Controller
         $FileData = [];
         $data = Excel::load($filename, function($reader){ })->get();
 
-       
+
         foreach($data as $key => $value){
             $FileData[] = $value->all();
         }
@@ -163,10 +164,9 @@ protected function storeInDatabase($filename, $origName){
         $FileData = [];
         $data = Excel::load($filename, function($reader){ })->get();
 
-        /*foreach($data as $key => $value){
+        foreach($data as $key => $value){
             $FileData[] = $value->all();
-        }*/
-        dd($data);
+        }
         $model = new DL();
         $model->dataset_name = $origName;
         $model->dataset_records = json_encode($FileData);
@@ -178,6 +178,32 @@ protected function storeInDatabase($filename, $origName){
             return ['status'=>'true','id'=>$model->id,'message'=>'Dataset upload successfully!'];
         }else{
             return ['status'=>'false','id'=>'','message'=>'unable to upload datsaet!'];
+        }
+    }
+
+     protected function validateRequst($request){
+        $errors = [];
+        if($request->file('file') == '' || empty($request->file('file')) || $request->file('file') == null){
+            $errors['file'] = 'File field should not empty!';
+        }
+         if($request->format == 'undefined' || empty($request->format) || $request->format  == null){
+             $errors['format'] = 'Please select file format';
+         }
+
+        if($request->add_replace == 'undefined' || empty($request->add_replace) || $request->add_replace  == null){
+            $errors['add_replace'] = 'Please select file format!';
+        }
+        if($request->add_replace == 'replace' || $request->add_replace == 'append'){
+            if($request->with_dataset == '' || $request->with_dataset == 'undefined' || empty($request->with_dataset)){
+                $errors['dataset'] = 'Please select dataset to '.$request->add_replace;
+           }
+        }
+        if(count($errors) >= 1){
+            $return = ['status' => 'false','error'=>$errors];
+            return $return;
+        }else{
+            $return = ['status' => 'true','error'];
+            return $return;
         }
     }
 
@@ -210,41 +236,18 @@ protected function storeInDatabase($filename, $origName){
     protected function modelValidate($request){
 
 
-        $errors = [];
-        if($request->file('file') == '' || empty($request->file('file')) || $request->file('file') == null){
-            $errors['file'] = 'File field should not empty!';
-        }
-         if($request->format == 'undefined' || empty($request->format) || $request->format  == null){
-             $errors['format'] = 'Please select file format';
-         }
+        
+    	$rules = [
+    			'dataset_file' => 'required|mimes:csv,txt,xlsx',
+    			'select_operation' => 'required'
+    	       ];
 
-        if($request->add_replace == 'undefined' || empty($request->add_replace) || $request->add_replace  == null){
-            $errors['add_replace'] = 'Please select file format!';
-        }
-        if($request->add_replace == 'replace' || $request->add_replace == 'append'){
-            if($request->with_dataset == '' || $request->with_dataset == 'undefined' || empty($request->with_dataset)){
-                $errors['dataset'] = 'Please select dataset to '.$request->add_replace;
-           }
-        }
-        if(count($errors) >= 1){
-            $return = ['status' => 'false','error'=>$errors];
-            return $return;
-        }else{
-            $return = ['status' => 'true','error'];
-            return $return;
-        }
+    	if($request->select_operation == 'append' || $request->select_operation == 'replace'){
 
-    	// $rules = [
-    	// 		'dataset_file' => 'required|mimes:csv,txt,xlsx',
-    	// 		'select_operation' => 'required'
-    	//        ];
+    		$rules['dataset_list'] = 'required';
+    	}
 
-    	// if($request->select_operation == 'append' || $request->select_operation == 'replace'){
-
-    	// 	$rules['dataset_list'] = 'required';
-    	// }
-
-    	// $this->validate($request, $rules);
+    	$this->validate($request, $rules);
     }
 
 

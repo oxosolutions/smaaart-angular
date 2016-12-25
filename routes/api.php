@@ -24,6 +24,7 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/indicators',					['as'=>'indicators','uses'=>'Services\IndicatorsController@indicators']);
 		Route::post('/forget',						['as'=>'forget.password','uses'=>'Services\ApiauthController@forgetPassword']);
 		Route::get('/validateForgetToken/{token}',	['as'=>'forget.token.validate','uses'=>'Services\ApiauthController@validateForgetPassToken']);
+		Route::post('/resetpass',					['as'=>'forget.token.validate','uses'=>'Services\ApiauthController@resetUserPassword']);
 	});
 
 	//No need to put in middleware['cors'], needs to access directly from browser

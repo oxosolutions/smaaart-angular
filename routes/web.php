@@ -183,6 +183,10 @@
 		Route::get('/settings',['as'=>'global.settings','uses'=>'GlobalSettingsController@index']);
 		Route::patch('/settings/store/register',['as'=>'register.settings','uses'=>'GlobalSettingsController@saveNewUserRegisterSettings']);
 		Route::patch('/settings/store/forget',['as'=>'forget.settings','uses'=>'GlobalSettingsController@saveForgetEmailSettings']);
+
+		Route::get('/not-approved', function(){
+			return 'Your account not yet approved by admin! <a href="logout">Logout</a>';
+		});
 	});
 
 

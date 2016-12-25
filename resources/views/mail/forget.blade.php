@@ -35,7 +35,7 @@
 										<p>{{$desc}}</p>
 									</td>
 								</tr>
-								<tr>
+								<!-- <tr>
 									<td>
 										<table border="0" cellpadding="0" cellspacing="0" width="100%">
 											<tr>
@@ -43,7 +43,7 @@
 													<table border="0" cellpadding="0" cellspacing="0" width="100%">
 														<tr>
 															<td>
-																<img src="{{$message->embed('mail/images/left.gif')}}" alt="" width="100%" height="140" style="display: block;" />
+																<img src="{{--$message->embed('mail/images/left.gif')--}}" alt="" width="100%" height="140" style="display: block;" />
 															</td>
 														</tr>
 														<tr>
@@ -60,7 +60,7 @@
 													<table border="0" cellpadding="0" cellspacing="0" width="100%">
 														<tr>
 															<td>
-																<img src="{{$message->embed('mail/images/right.gif')}}" alt="" width="100%" height="140" style="display: block;" />
+																<img src="{{--$message->embed('mail/images/right.gif')--}}" alt="" width="100%" height="140" style="display: block;" />
 															</td>
 														</tr>
 														<tr>
@@ -73,7 +73,7 @@
 											</tr>
 										</table>
 									</td>
-								</tr>
+								</tr> -->
 							</table>
 						</td>
 					</tr>

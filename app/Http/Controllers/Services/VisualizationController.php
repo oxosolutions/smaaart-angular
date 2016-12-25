@@ -36,7 +36,7 @@ class VisualizationController extends Controller
                 return ['status'=>'error','message'=>'something went wrong!'];
             }
         }
-		return ['status'=>'success','message'=>'Successfully created!'];
+		return ['status'=>'success','message'=>'Successfully created!','visual_id'=>$model->id];
 	}
 
     protected function validateRequest($request){

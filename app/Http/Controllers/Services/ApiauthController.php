@@ -32,6 +32,9 @@ class ApiauthController extends Controller
 		}
 		else if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])){
 			$user = Auth::user();
+            if($user->approved == 0){
+                return ['status'=>'error','message'=>'Your account not yet approved!'];
+            }
 			return ['status'=>'successful', 'user_detail'=>$user];
 		}else{
 			return ['status'=>'error','message'=>'Invalid email or password!'];
@@ -155,13 +158,42 @@ class ApiauthController extends Controller
    }
 
    public function validateForgetPassToken($token){
-        
+
         $model = User::where('reset_token',$token)->first();
 
         if(empty($model)){
             return ['status'=>'error','message'=>'Invalid token!'];
         }else{
             return ['status'=>'success','message'=>'Valid token!'];
+        }
+   }
+
+   public function resetUserPassword(Request $request){
+
+        $validate = $this->validateChangePassword($request);
+        if(!$validate){
+            return ['status'=>'error','message'=>'Required fields are missing!'];
+        }
+
+        $model = User::where('reset_token',$request->reset_token)->first();
+        $model->password = Hash::make($request->newpassword);
+        $model->reset_token = '';
+        $model->save();
+        return ['status'=>'success','message'=>'Password chnaged successfully!'];
+   }
+
+   protected function validateChangePassword($request){
+
+        if($request->has('newpassword') && $request->has('confpassword') && $request->has('reset_token')){
+
+            if($request->newpassword == $request->confpassword){
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+
+            return false;
         }
    }
 
