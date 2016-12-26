@@ -8,9 +8,6 @@ use Illuminate\Support\Facades\Mail;
 use Auth;
 class DashboardController extends Controller
 {
-    function __construct(){
-
-    }
 
     public function index(){
 

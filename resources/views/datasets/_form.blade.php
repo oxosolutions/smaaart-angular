@@ -19,12 +19,12 @@
     @endif
   </div>
 
-  <div class="{{ $errors->has('dataset_list') ? ' has-error' : '' }} form-group dataset-view-hide">
-    {!!Form::label('dataset_list','Select Dataset') !!}
-    {!!Form::select('dataset_list',\App\DatasetsList::datasetList(),null, ['class'=>'form-control','placeholder'=>'Select dataset']) !!}
-    @if($errors->has('dataset_list'))
+  <div class="{{ $errors->has('with_dataset') ? ' has-error' : '' }} form-group dataset-view-hide">
+    {!!Form::label('with_dataset','Select Dataset') !!}
+    {!!Form::select('with_dataset',\App\DatasetsList::datasetList(),null, ['class'=>'form-control','placeholder'=>'Select dataset']) !!}
+    @if($errors->has('with_dataset'))
       <span class="help-block">
-            {{ $errors->first('dataset_list') }}
+            {{ $errors->first('with_dataset') }}
       </span>
     @endif
   </div>
@@ -32,7 +32,7 @@
 </div>
 <style type="text/css">
 .dataset-view-hide{
-	@if(!$errors->has('dataset_list'))
+	@if(!$errors->has('with_dataset'))
 		display: none;
 	@endif;
 }

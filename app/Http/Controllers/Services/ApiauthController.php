@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use App\UserMeta;
 use App\Mail\ForgetPassword;
+use App\Mail\AdminRegister;
 use Illuminate\Support\Facades\Mail;
 use App\GlobalSetting as GS;
 class ApiauthController extends Controller
@@ -104,11 +105,23 @@ class ApiauthController extends Controller
                     $MetaData[5]['value'] = $request->designation;
                     $MetaData[5]['user_id'] = $user->id;
                     UserMeta::insert($MetaData);
+
+                    $model = GS::where('meta_key','adminreg_settings')->first();
+                    if(!empty($model) && json_decode($model->meta_value)->activate == 'true' && json_decode($model->meta_value)->admin_email != ''){
+                        $userDetails['subject'] = json_decode($model->meta_value)->subject;
+                        $userDetails['description'] = json_decode($model->meta_value)->description;
+                        $userDetails['api_token'] = $api_token;
+                        $userDetails['name'] = $request->name;
+                        $userDetails['email'] = $request->email;
+                        $userDetails['phone'] = $request->phone;
+                        Mail::to(json_decode($model->meta_value)->admin_email)->send(new AdminRegister($userDetails));
+                    }
 					return ['status'=>'successful','message'=>'Successful register!', "token"=>$api_token];
 				}catch(\Exception $e){
 					if($e instanceOf \Illuminate\Database\QueryException){
 						return ['status'=>'error','message'=>'Email already in use!'];
 					}else{
+                        throw $e;
 						return ['status'=>'error','message'=>'Some thing go wrong!'];
 					}
 				}
@@ -196,6 +209,5 @@ class ApiauthController extends Controller
             return false;
         }
    }
-
 
 }

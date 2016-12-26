@@ -11,6 +11,7 @@ use Session;
 use App\Ministrie as MIN;
 use App\Department as DEP;
 use Hash;
+use Auth;
 class ApiusersController extends Controller
 {
     function __construct(){
@@ -51,7 +52,6 @@ class ApiusersController extends Controller
                 User::create([
                     'name' => $request->name,
                     'email' => $request->email,
-                    // 'username' => $request->username,
                     'password' => Hash::make($request->password),
                     'role_id' => $role_id,
                     'api_token' => $request->token
@@ -62,9 +62,9 @@ class ApiusersController extends Controller
                 return redirect()->route('api.users');
             }catch(\Exception $e){
 
-            DB::rollback();
-            throw $e;
-          }
+                DB::rollback();
+                throw $e;
+              }
     }
 
     public function delete($id)
@@ -209,8 +209,8 @@ class ApiusersController extends Controller
             }catch(\Exception $e){
 
                 DB::rollback();
+                throw $e;
             }
-
         }
 
         public function userDetail($id)
@@ -272,30 +272,57 @@ class ApiusersController extends Controller
         {
             $role_id = (int) $request->role_id[0];
             $user = User::findOrfail($id);
-            $user->name = $request->name;
-            $user->email = $request->email;
-             if(!empty($request->new_password))
-             {
-                 $user->password = Hash::make($request->new_password);
-             }            
-            $user->role_id = $role_id;
-            $user->api_token = $request->token;
-            $user->save();
+            DB::beginTransaction();
+            try{
+                  $user->name = $request->name;
+                  $user->email = $request->email;
+                   if(!empty($request->new_password))
+                   {
+                       $user->password = Hash::make($request->new_password);
+                   }            
+                  $user->role_id = $role_id;
+                  $user->api_token = $request->token;
+                  $user->save();
+                  DB::commit();
+                  Session::flash('success','User updated Successfully');
+                }catch(\Exception $e)
+                {
+                  DB::rollback();
+                  throw $e;
+                }
+
            return redirect()->route('api.users');
         }
 
         public function approved($id)
         {
             $approved = User::findOrfail($id);
-            $approved->approved = 1;
-            $approved->save();
-            return redirect()->route('api.users');
+            DB::beginTransaction();
+            try{
+                $approved->approved = 1;
+                $approved->save();
+                DB::commit();
+              }catch(\Exception $e)
+                {
+                  DB::rollback();
+                  throw $e;
+                }
+                return redirect()->route('api.users');
+                
         }
         public function unapproved($id)
         {
             $approved = User::findOrfail($id);
-            $approved->approved = 0;
-            $approved->save();
+            DB::beginTransaction();
+            try{
+                  $approved->approved = 0;
+                  $approved->save();
+                  DB::commit();
+                }catch(\Exception $e)
+                {
+                  DB::rollback();
+                  throw $e;
+                }
             return redirect()->route('api.users');
         }
         public function editmeta($id)
@@ -306,23 +333,28 @@ class ApiusersController extends Controller
                   return redirect()->route('api.users');
               }
               $meta = UM::select('id','key','value')->where('user_id',$id)->get();//->where();
+             $depChk = $minChk = $desChk = $picChk = $phChk = $adrsChk =0;
              foreach ($meta as  $value) {
                     if($value->key == "address")
                       { 
+                        $adrsChk =1;
                         $address = $value->value;
-                      }else{ $address ="";}
+                      }elseif($adrsChk ==0){ $address ="";}
                     if($value->key == "phone")
                       {
+                        $phChk = 1;
                         $phone = $value->value;
-                      }else{ $phone= "";}
+                      }elseif($phChk ==0){ $phone ="";}
                     if($value->key == "designation")
                       {
+                        $desChk =1;
                         $designation = $value->value;
-                      }else{ $designation =""; }
+                      }elseif($desChk ==0){ $designation =""; }
                    if($value->key == "profile_pic")
-                      {
+                      { 
+                        $picChk =1;
                         $profile_pic = $value->value;
-                      }else{ $profile_pic ="";}             
+                      }elseif($picChk ==0){ $profile_pic ="";}             
                     if($value->key == "ministry")
                       { 
                         $minData =json_decode($value->value);
@@ -330,112 +362,136 @@ class ApiusersController extends Controller
                         
                             for($i=0; $i<$minCount; $i++)
                             {
+                                $minChk  =1;
                                 $mdata[$minData[$i]]=$minData[$i]; 
                             }
                           
-                        }else{ $mdata['']=''; }
+                        }elseif($minChk==0){ $mdata['']=''; }
                       if($value->key == "department")
                       { 
                         $depData =json_decode($value->value);
                         $depCount = count($depData);
                         for($j=0; $j<$depCount; $j++)
-                        {
+                        { 
+                            $depChk =1;
                             $dep[$depData[$j]]=$depData[$j]; 
                         }
-                      }else{ $dep[''] ='';  }
+                      }elseif($depChk==0){ $dep[''] ='';  }
              }
                  $plugins = [
                               'css'     =>  ['fileupload','select2'],
                               'js'      =>  ['fileupload','select2','custom'=>['api-user']],
                               'model'   =>  @$meta,
-                              'id'      => $id,
+                              'id'      =>  $id,
                               'minData' =>  @$mdata,
                               'address' =>  @$address,
                               'department' => @$dep,
-                              'phone'   => @$phone,
+                              'phone'   =>    @$phone,
                               'designation' =>  @$designation,
-                              'profile_pic' => @$profile_pic
+                              'profile_pic' =>  @$profile_pic
                             ];
           return view('apiusers.editmeta',$plugins);
         }
         public function updatemeta(Request $request , $id)
         {
           $this->editmetaValidate($request);
-          UM::where('user_id',$id)->delete();
-          $request->user_list = $id;
-          if(!is_numeric($request->designation))
-               {
-                     $chkDes = DES::where(['designation'=>$request->designation])->get()->count();
-                     if($chkDes==0){
-                        $newDes =  new DES();
-                        $newDes->designation = $request->designation;
-                        $newDes->save();
-                        $request->designation = $newDes->id;
-                     }
-                }
+          DB::beginTransaction();
+          try{
+              UM::where('user_id',$id)->delete();
+              $request->user_list = $id;
+              if(!is_numeric($request->designation))
+                   {
+                         $chkDes = DES::where(['designation'=>$request->designation])->get()->count();
+                         if($chkDes==0){
+                            $newDes =  new DES();
+                            $newDes->designation = $request->designation;
+                            $newDes->save();
+                            $request->designation = $newDes->id;
+                         }
+                    }
 
-                foreach ($request->ministry as $key => $value){
+                    foreach ($request->ministry as $key => $value){
 
-                    $ministryMetaVal[] = $value;
-                }
+                        $ministryMetaVal[] = $value;
+                    }
 
-                $minMetaVal = json_encode($ministryMetaVal);
-                $ministryMeta = new UM();
-                $ministryMeta->key = "ministry";
-                $ministryMeta->user_id = $request->user_list;
-                $ministryMeta->value = $minMetaVal;
-                $ministryMeta->save();
+                    $minMetaVal = json_encode($ministryMetaVal);
+                    $ministryMeta = new UM();
+                    $ministryMeta->key = "ministry";
+                    $ministryMeta->user_id = $request->user_list;
+                    $ministryMeta->value = $minMetaVal;
+                    $ministryMeta->save();
 
-                $phoneMeta = new UM();
-                $phoneMeta->key = "phone";
-                $phoneMeta->user_id = $request->user_list;
-                $phoneMeta->value  =  $request->phone;
-                $phoneMeta->save();
+                    $phoneMeta = new UM();
+                    $phoneMeta->key = "phone";
+                    $phoneMeta->user_id = $request->user_list;
+                    $phoneMeta->value  =  $request->phone;
+                    $phoneMeta->save();
 
-                $adrsMeta = new UM();
-                $adrsMeta->key = "address";
-                $adrsMeta->user_id = $request->user_list;
-                $adrsMeta->value  =  $request->address;
-                $adrsMeta->save();
+                    $adrsMeta = new UM();
+                    $adrsMeta->key = "address";
+                    $adrsMeta->user_id = $request->user_list;
+                    $adrsMeta->value  =  $request->address;
+                    $adrsMeta->save();
 
-                foreach($request->department as $key => $value){
+                    foreach($request->department as $key => $value){
 
-                   $depValues[] =  $value;
-                }
+                       $depValues[] =  $value;
+                    }
 
-                $depJsonVal =     json_encode($depValues);
-                $departmentMeta  = new UM();
-                $departmentMeta->user_id = $request->user_list;
-                $departmentMeta->key = "department";
-                $departmentMeta->value   =  $depJsonVal;
-                $departmentMeta->save();
+                    $depJsonVal =     json_encode($depValues);
+                    $departmentMeta  = new UM();
+                    $departmentMeta->user_id = $request->user_list;
+                    $departmentMeta->key = "department";
+                    $departmentMeta->value   =  $depJsonVal;
+                    $departmentMeta->save();
 
-                $designationMeta  = new UM();
-                $designationMeta->user_id = $request->user_list;
-                $designationMeta->key =     "designation";
-                $designationMeta->value   =  $request->designation;
-                $designationMeta->save();
-                
-                $proPic  = new UM();
-                $path = 'profile_pic';
-                if($request->hasFile('profile_pic')){
+                    $designationMeta  = new UM();
+                    $designationMeta->user_id = $request->user_list;
+                    $designationMeta->key =     "designation";
+                    $designationMeta->value   =  $request->designation;
+                    $designationMeta->save();
+                    
+                    $proPic  = new UM();
+                    $path = 'profile_pic';
+                    if($request->hasFile('profile_pic')){
 
-                    $filename = date('Y-m-d-H-i-s')."-".$request->file('profile_pic')->getClientOriginalName();
-                    $request->file('profile_pic')->move($path, $filename);
-                    $proPic->key = "profile_pic";
-                    $proPic->user_id = $request->user_list;
-                    $proPic->value = $filename;
-                    $proPic->save();
-                }
-                else{
-                    $proPic->key = "profile_pic";
-                    $proPic->user_id  = $request->user_list;
-                    $proPic->value    = $request->current_pic;
-                    $proPic->save();
-                }
+                        $filename = date('Y-m-d-H-i-s')."-".$request->file('profile_pic')->getClientOriginalName();
+                        $request->file('profile_pic')->move($path, $filename);
+                        $proPic->key = "profile_pic";
+                        $proPic->user_id = $request->user_list;
+                        $proPic->value = $filename;
+                        $proPic->save();
+                    }
+                    else{
+                        $proPic->key = "profile_pic";
+                        $proPic->user_id  = $request->user_list;
+                        $proPic->value    = $request->current_pic;
+                        $proPic->save();
+                    }
+                    DB::commit();
+                    Session::flash('success','User Meta Updated Successfully.');
+                }catch(\Exception $e)
+                {
+                  DB::rollback();
 
+                }    
                 return redirect()->route('api.users');
 
+        }
+
+        public function approveUser($from = 0, $api_token = 0){
+            if($from == 'email' && $api_token != 0){
+                $model = User::where('api_token',$api_token)->update(['approved'=>1]);
+                if($model){
+                    return view('approvel.approved');
+                }else{
+                    return view('approvel.approved');
+                }
+            }else{
+                  
+                return view('approvel.not-approved');
+            }
         }
 
 }

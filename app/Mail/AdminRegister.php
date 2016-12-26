@@ -11,14 +11,15 @@ class AdminRegister extends Mailable
 {
     use Queueable, SerializesModels;
 
+    protected $userDetails;
     /**
      * Create a new message instance.
      *
      * @return void
      */
-    public function __construct()
+    public function __construct($userDet)
     {
-        //
+        $this->userDetails = $userDet;
     }
 
     /**
@@ -28,6 +29,14 @@ class AdminRegister extends Mailable
      */
     public function build()
     {
-        return $this->view('view.name');
+        return $this->view('mail.aregister',[
+                                                'user'=>$this->userDetails['name'],
+                                                'api_token'=>$this->userDetails['api_token'],
+                                                'desc'=>$this->userDetails['description'],
+                                                'userName'=>$this->userDetails['name'],
+                                                'userEmail'=>$this->userDetails['email'],
+                                                'userPhone'=>$this->userDetails['phone']
+                                            ])
+                    ->subject($this->userDetails['subject']);
     }
 }

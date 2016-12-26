@@ -19,6 +19,7 @@ class GlobalSettingsController extends Controller
     	
     	$plugins['Reg_model'] = $this->setRegStdObjectValues();
     	$plugins['Forget_model'] = $this->setForgetStdObjectValues();
+        $plugins['adminReg_model'] = $this->setAdminRegStdObjectValues();
     	return view('settings.index',$plugins);
     }
 
@@ -115,5 +116,48 @@ class GlobalSettingsController extends Controller
     		$Forget_modelData->forget_description = '';
     	}
     	return $Forget_modelData;
+    }
+
+    public function saveAdminRegEmailSettings(Request $request){
+
+        $this->checkMetaExist('adminreg_settings');
+        $adminRegSettings = [];
+        if(empty($request->send_adminReg_email)){
+            $adminRegSettings['activate'] = 'false';
+        }else{
+            $adminRegSettings['activate'] = $request->send_adminReg_email;
+        }
+        $adminRegSettings['subject']      = $request->adminreg_subject;
+        $adminRegSettings['description']  = $request->adminreg_description;
+        $adminRegSettings['admin_email']  = $request->adminreg_email;
+        GS::where('meta_key','adminreg_settings')->update(['meta_value'=>json_encode($adminRegSettings),'updated_by'=>Auth::user()->id]);
+        Session::flash('success','Settings Saved Successfuly!');
+        return redirect()->route('global.settings');
+    }
+
+    protected function setAdminRegStdObjectValues(){
+
+        $AdminReg_modelData = new stdClass;
+        $globalData = GS::where('meta_key','adminreg_settings')->first();
+        if(!empty($globalData)){
+            $AdminReg_modelData->id = $globalData->id;
+            if(json_decode($globalData->meta_value)->activate == 'false'){
+                $activate = null;
+            }else{
+                $activate = true;
+            }
+            $AdminReg_modelData->send_adminReg_email = $activate;
+            $AdminReg_modelData->adminreg_subject = json_decode($globalData->meta_value)->subject;
+            $AdminReg_modelData->adminreg_description = json_decode($globalData->meta_value)->description;
+            $AdminReg_modelData->adminreg_email = json_decode($globalData->meta_value)->admin_email;
+        }else{
+
+            $AdminReg_modelData->id = null;
+            $AdminReg_modelData->send_adminReg_email = '';
+            $AdminReg_modelData->adminreg_subject = '';
+            $AdminReg_modelData->adminreg_description = '';
+            $AdminReg_modelData->adminreg_email = '';
+        }
+        return $AdminReg_modelData;
     }
 }

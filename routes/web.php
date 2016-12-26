@@ -1,7 +1,7 @@
 <?php
 
 	
-	Route::group(['middleware'=>'auth'], function(){
+	Route::group(['middleware'=>['auth','approve']], function(){
 		//dashboard
 		Route::get('/', ['as'=>'home', 'uses'=>'DashboardController@index']);
 	//Api user
@@ -183,12 +183,11 @@
 		Route::get('/settings',['as'=>'global.settings','uses'=>'GlobalSettingsController@index']);
 		Route::patch('/settings/store/register',['as'=>'register.settings','uses'=>'GlobalSettingsController@saveNewUserRegisterSettings']);
 		Route::patch('/settings/store/forget',['as'=>'forget.settings','uses'=>'GlobalSettingsController@saveForgetEmailSettings']);
+		Route::patch('/settings/store/adminreg',['as'=>'adminreg.settings','uses'=>'GlobalSettingsController@saveAdminRegEmailSettings']);
 
-		Route::get('/not-approved', function(){
-			return 'Your account not yet approved by admin! <a href="logout">Logout</a>';
-		});
+		
 	});
 
-
+Route::get('/approve/{from?}/{api_token?}', ['as'=>'approve','uses'=>'ApiusersController@approveUser']);
 Auth::routes();
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');

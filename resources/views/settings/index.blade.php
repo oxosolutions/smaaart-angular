@@ -64,6 +64,25 @@
         </div>
       </div>
     <!-- User Forget Email Settings Form End-->
+
+    <!-- User Register Mail to Admin Email Settings Form -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Admin Register Config</h3>
+            </div>
+              {!! Form::model($adminReg_model, ['method' => 'PATCH','route'=>['adminreg.settings', $adminReg_model->id], 'files'=>true]) !!}
+              {{--{!! Form::open(['route' => 'designations.store', 'files'=>true]) !!}--}}
+                @include('settings._admin_userreg_email_form')
+              <div class="box-footer">
+                {!! Form::submit('Save Settings', ['class' => 'btn btn-primary']) !!}
+              </div>
+              {!! Form::close() !!}
+          </div>
+        </div>
+      </div>
+    <!-- User Register Mail to Admin Email Settings Form End-->
     </section>
   </div>
 @endsection

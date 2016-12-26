@@ -168,6 +168,7 @@ return [
         Laravel\Socialite\SocialiteServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         //Laravel\Passport\PassportServiceProvider::class,
+        PHPMySQLWrapper\MySQLWrapper\PHPMySQLWrapperProvider::class,
 
         /*
          * Package Service Providers...
@@ -244,6 +245,8 @@ return [
 
         'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
         'Activity'  => Spatie\Activitylog\ActivitylogFacade::class,
+
+        'MySQLWrapper' => PHPMySQLWrapper\MySQLWrapper\Wrapper::class,
 
     ],
 

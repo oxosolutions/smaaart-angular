@@ -5,6 +5,14 @@
   <div class="login-logo">
     <a href="javascript:;"><b>Smaart</b>&trade; API</a>
   </div>
+
+   @if ($message = Session::get('error'))
+        <div class="alert bg-red-active" style="padding:11px;" >
+          <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
+         <i class="icon fa  fa-ban"></i>
+          {{$message}}
+        </div>
+      @endif
   <!-- /.login-logo -->
   <div class="login-box-body">
     <p class="login-box-msg">Sign in to start your session</p>
