@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\DatasetsList as DL;
 use Carbon\Carbon;
 use Auth;
+use DB;
 class DatasetsController extends Controller
 {
     function getDatasetsList(){
@@ -26,6 +27,22 @@ class DatasetsController extends Controller
     }
 
     public function getDatasets($id){
+        $datasetDetails = DL::find($id);
+        $datasetTable = DB::table($datasetDetails->dataset_table)->skip(1)->take(1000)->get();
+        /*print_r(json_decode($datasetTable));
+        exit;*/
+        if(empty($datasetDetails)){
+            return ['status'=>'success','records'=>[]];
+        }
+
+        $responseArray = [];
+        $responseArray['dataset_id'] = $id;
+        $responseArray['records'] = json_decode($datasetDetails->dataset_records);
+
+        return ['status'=>'success','records'=>$responseArray];
+    }
+
+    /*public function getDatasetsById($id){
     	$datasetDetails = DL::find($id);
 
         if(empty($datasetDetails)){
@@ -37,7 +54,7 @@ class DatasetsController extends Controller
     	$responseArray['records'] = json_decode($datasetDetails->dataset_records);
 
     	return ['status'=>'success','records'=>$responseArray];
-    }
+    }*/
 
     public function getFormatedDataset($id){
 

@@ -38,8 +38,8 @@ class DataSetsController extends Controller
 
     public function create(){
         $plugin = [
-                    'css' => ['fileupload'],
-                    'js' => ['fileupload','custom'=>['dataset-create']],
+                   
+                    'js' => ['custom'=>['dataset-create']],
                   ];
         return view('datasets.create',$plugin);
     }
@@ -144,12 +144,22 @@ class DataSetsController extends Controller
 
 
     protected function storeInDatabase($filename, $origName){
+        DB::beginTransaction();
         $model = new MySQLWrapper();
-        $result = $model->wrapper->createTableFromCSV('datasets/19child_converted.csv','data_table_'.time(),',','"', '\\', 1, array(), 'generate','\r\n');
-
+        $tableName = 'data_table_'.time();
+        $result = $model->wrapper->createTableFromCSV($filename,$tableName,',','"', '\\', 0, array(), 'generate','\r\n');
         if($result){
+            $model = new DL;
+            $model->dataset_table = $tableName;
+            $model->dataset_name = $origName;
+            $model->user_id = Auth::user()->id;
+            $model->uploaded_by = Auth::user()->name;
+            $model->dataset_records = '{}';
+            $model->save();
+            DB::commit();
             return ['status'=>'true','id'=>$model->id,'message'=>'Dataset upload successfully!'];
         }else{
+            DB::rollback();
             return ['status'=>'false','id'=>'','message'=>'unable to upload datsaet!'];
         }
     }

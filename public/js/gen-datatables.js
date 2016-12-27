@@ -157,6 +157,7 @@
       columns: [
             { data: 'id', name: 'id' },
             { data: 'page_title', name: 'page_title' },
+            { data: 'page_subtitle', name: 'page_subtitle' },
             { data: 'page_slug', name: 'page_slug' },
             { data: 'status', name: 'status' },
             { data: 'created_by', name: 'created_by' },

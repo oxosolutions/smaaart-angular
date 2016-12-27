@@ -1,15 +1,16 @@
 <?php
 
-  namespace App\Http\Controllers\Services;
-  use App\Http\Controllers\Controller;
+namespace App\Http\Controllers\Services;
+use App\Http\Controllers\Controller;
 
-  use Illuminate\Http\Request;
-  use Validator;
-  use Illuminate\Support\Collection;
-  use Auth;
-  use Excel;
-  use App\DatasetsList as DL;
-
+use Illuminate\Http\Request;
+use Validator;
+use Illuminate\Support\Collection;
+use Auth;
+use Excel;
+use App\DatasetsList as DL;
+use MySQLWrapper;
+use DB;
 class ImportdatasetController extends Controller
 {
 
@@ -91,26 +92,25 @@ class ImportdatasetController extends Controller
 
     public function getColumns($id){
         $model = DL::where('id',$id)->first();
-        if($model == "" || empty($model)){
-            return ['status'=>'error','data'=>'no data found'];
-        }else{
-            $records = json_decode($model->dataset_records);
-            $datasetColumns = json_decode($model->dataset_columns);
-            $datasetValidate = $model->validated;
-            $headers = [];
-            foreach($records[0] as $key => $val){
-
-                if(!in_array($key,$headers)){
-                    $headers[] = $key;
-                }
-            }
-
-            return ['status'=>'sucess','data'=>['columns'=>$headers,'dataset_id'=>$model->id,'validated'=>$datasetValidate,'raw_columns'=>$datasetColumns]];
+        $datasetTable  = DB::table($model->dataset_table)->limit(1)->first();
+        if(empty($datasetTable)){
+            return ['status'=>'error','message'=>'no data found!'];
         }
+        // dd($datasetTable);
+        $columnsArray = [];
+        $index = 0;
+        foreach($datasetTable as $key => $value){
+            if($index != 0){
+                $columnsArray[$key] = $value;
+            }
+            $index++;
+        }
+
+        return ['status'=>'sucess','data'=>['columns'=>$columnsArray,'dataset_id'=>$model->id,'validated'=>$model->validated]];
     }
 
     protected function storeInDatabase($filename, $origName){
-        ini_set('memory_limit', '2048M');
+        /*ini_set('memory_limit', -1);
     	$FileData = [];
     	$data = Excel::load($filename, function($reader){ })->get();
 
@@ -128,7 +128,25 @@ class ImportdatasetController extends Controller
   			return ['status'=>'true','id'=>$model->id,'message'=>'Dataset upload successfully!'];
   		}else{
   			return ['status'=>'false','id'=>'','message'=>'unable to upload datsaet!'];
-  		}
+  		}*/
+        DB::beginTransaction();
+        $model = new MySQLWrapper();
+        $tableName = 'data_table_'.time();
+        $result = $model->wrapper->createTableFromCSV($filename,$tableName,',','"', '\\', 0, array(), 'generate','\r\n');
+        if($result){
+            $model = new DL;
+            $model->dataset_table = $tableName;
+            $model->dataset_name = $origName;
+            $model->user_id = Auth::user()->id;
+            $model->uploaded_by = Auth::user()->name;
+            $model->dataset_records = '{}';
+            $model->save();
+            DB::commit();
+            return ['status'=>'true','id'=>$model->id,'message'=>'Dataset upload successfully!'];
+        }else{
+            DB::rollback();
+            return ['status'=>'false','id'=>'','message'=>'unable to upload datsaet!'];
+        }
     }
 
     protected function replaceDataset($request, $origName, $filename){

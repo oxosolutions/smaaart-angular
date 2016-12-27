@@ -35,6 +35,7 @@
                 <tr>
                   <th>ID</th>
                   <th>Page Title</th>
+                  <th>Page Sub Title</th>
                   <th>Page Slug</th>
                   <th>Status</th>
                   <th>Created By</th>
@@ -42,13 +43,14 @@
                   <th>Action</th>
                 </tr>
                 </thead>
-                <tbody>
-
-                </tbody>
+                    <tbody>
+                        
+                    </tbody>
                 <tfoot>
                 <tr>
                   <th>ID</th>
                   <th>Page Title</th>
+                  <th>Page Sub Title</th>
                   <th>Page Slug</th>
                   <th>Status</th>
                   <th>Created By</th>

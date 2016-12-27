@@ -17,7 +17,7 @@ class ProfileApiController extends Controller
         $model = $request->user();
 
         $responseArray = [];
-        $responseArray['name'] = $model->name;
+        $responseArray['name']  = $model->name;
         $responseArray['email'] = $model->email;
         $responseArray['token'] = $model->api_token;
         if($model->meta != null){
@@ -47,10 +47,19 @@ class ProfileApiController extends Controller
                     break;
                     case'designation':
                         $DesgModel = DS::find($metaValue->value);
-                        $responseArray['designation'] = $DesgModel->designation;
+                        try{
+                            $responseArray['designation'] = $DesgModel->designation;
+                        }catch(\Exception $e){
+                            $responseArray['designation'] = '';
+                        }
+                       
                     break;
-                    case'profile_pic':
-                        $responseArray[$metaValue->key] = asset('profile_pic/'.$metaValue->value);
+                    case'profile_pic': 
+                        if($metaValue->value == '' || $metaValue->value == null){
+                            $responseArray[$metaValue->key] = asset('profile_pic/profile.jpg');
+                        }else{
+                            $responseArray[$metaValue->key] = asset('profile_pic/'.$metaValue->value);
+                        }
                     break;
                     default:
                     $responseArray[$metaValue->key] = $metaValue->value;
@@ -113,12 +122,6 @@ class ProfileApiController extends Controller
         if($request->name != 'undefined'){
             $model->name = $request->name;
         }
-        /*if($request->email != 'undefined'){
-            if(!empty(User::where('email',$request->email)->first())){
-                return ['status'=>'error','message'=>'Email already in use!'];
-            }
-            $model->email = $request->email;
-        }*/
         $model->save();
         $ministries = explode(',',$request->ministry);
         $departments = explode(',',$request->department);

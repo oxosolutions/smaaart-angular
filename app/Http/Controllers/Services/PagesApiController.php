@@ -16,6 +16,7 @@ class PagesApiController extends Controller
         foreach($model as $key => $value){
 
             $responseArray['pages'][$index]['page_title'] = $value->page_title;
+            $responseArray['pages']['page_subtitle'] = $model->page_subtitle;
             $responseArray['pages'][$index]['page_slug'] = $value->page_slug;
             $responseArray['pages'][$index]['page_content'] = $value->content;
             $responseArray['pages'][$index]['page_image'] = asset('page_data').'/'.$value->page_image;
@@ -33,6 +34,7 @@ class PagesApiController extends Controller
         try{
             $responseArray = [];
             $responseArray['pages']['page_title'] = $model->page_title;
+            $responseArray['pages']['page_subtitle'] = $model->page_subtitle;
             $responseArray['pages']['page_slug'] = $model->page_slug;
             $responseArray['pages']['page_content'] = $model->content;
             $responseArray['pages']['page_image'] = asset('page_data').'/'.$model->page_image;

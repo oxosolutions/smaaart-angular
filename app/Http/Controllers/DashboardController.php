@@ -17,7 +17,6 @@ class DashboardController extends Controller
     	$plugins = [
 
     	];
-    	//Mail::to('rahulsharma841990@gmail.com')->send(new RegisterNewUser('Rahul'));
     	return view('dashboard.index', $plugins);
     }
 }
