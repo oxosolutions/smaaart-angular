@@ -26,35 +26,20 @@ class DatasetsController extends Controller
     	return ['data'=>$responseArray];
     }
 
-    public function getDatasets($id){
+    public function getDatasets($id,$skip = 0){
         $datasetDetails = DL::find($id);
-        $datasetTable = DB::table($datasetDetails->dataset_table)->skip(1)->take(1000)->get();
-        /*print_r(json_decode($datasetTable));
-        exit;*/
-        if(empty($datasetDetails)){
+        $datasetTable = DB::table($datasetDetails->dataset_table)->skip($skip)->take(1000)->get();
+        if(empty($datasetTable)){
             return ['status'=>'success','records'=>[]];
         }
 
         $responseArray = [];
         $responseArray['dataset_id'] = $id;
-        $responseArray['records'] = json_decode($datasetDetails->dataset_records);
-
-        return ['status'=>'success','records'=>$responseArray];
+        $responseArray['dataset_name'] = $datasetDetails->dataset_name;
+        $responseArray['records'] = json_decode($datasetTable);
+        $totalRecords = DB::table($datasetDetails->dataset_table)->count();    
+        return ['status'=>'success','records'=>$responseArray, 'total'=>$totalRecords,'skip'=>$skip];
     }
-
-    /*public function getDatasetsById($id){
-    	$datasetDetails = DL::find($id);
-
-        if(empty($datasetDetails)){
-            return ['status'=>'success','records'=>[]];
-        }
-
-    	$responseArray = [];
-    	$responseArray['dataset_id'] = $id;
-    	$responseArray['records'] = json_decode($datasetDetails->dataset_records);
-
-    	return ['status'=>'success','records'=>$responseArray];
-    }*/
 
     public function getFormatedDataset($id){
 
@@ -133,9 +118,20 @@ class DatasetsController extends Controller
             return ['status'=>'error','message'=>'Required fields are missing!'];
         }
         $model = DL::find($request->dataset_id);
-        $model->dataset_records = $request->records;
-        $model->save();
+        $table = $model->dataset_table;
 
+        foreach(json_decode($request->records) as $key => $data){
+            $columns = [];
+            $id = '';
+            foreach($data as $colKey => $colValue){
+                if($colKey != 'id'){
+                    $columns[$colKey] = $colValue;
+                }else{
+                    $id = $colValue;
+                }
+            }
+            DB::table($table)->where('id',$id)->update($columns);
+        }
         return ['status'=>'success','message'=>'Dataset updated successfully!','dataset_id'=>$request->dataset_id];
     }
 

@@ -48,9 +48,11 @@ class ProfileApiController extends Controller
                     case'designation':
                         $DesgModel = DS::find($metaValue->value);
                         try{
-                            $responseArray['designation'] = $DesgModel->designation;
+                            $responseArray['designation_name'] = $DesgModel->designation;
+                            $responseArray['designation_id'] = $DesgModel->id;
                         }catch(\Exception $e){
-                            $responseArray['designation'] = '';
+                            $responseArray['designation_name'] = '';
+                            $responseArray['designation_id'] = '';
                         }
                        
                     break;

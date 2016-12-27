@@ -38,7 +38,7 @@ Route::group(['prefix' => 'v1'], function () {
 
 		Route::post('/dataset/import',				['as'=>'import','uses'=>'Services\ImportdatasetController@uploadDataset']);
 		Route::get('/dataset/list',					['as'=>'list','uses'=>'Services\DatasetsController@getDatasetsList']);
-		Route::get('/dataset/view/{id}',			['as'=>'list','uses'=>'Services\DatasetsController@getDatasets']);
+		Route::get('/dataset/view/{id}/{skip}',			['as'=>'list','uses'=>'Services\DatasetsController@getDatasets']);
 		Route::get('/dataset/export/{id}',			['as'=>'dataset.export','uses'=>'Services\ExportDatasetController@export']);
 		Route::post('/store/visual',				['as'=>'visualization.store','uses'=>'Services\VisualizationController@store']);
 		Route::get('/visual/list',					['as'=>'visualization.list','uses'=>'Services\VisualizationController@visualList']);

@@ -35,7 +35,8 @@ class ApiauthController extends Controller
             if($user->approved == 0){
                 return ['status'=>'error','message'=>'Your account not yet approved!'];
             }
-			return ['status'=>'successful', 'user_detail'=>$user];
+            $model = UserMeta::select('value')->where(['user_id'=>$user->id,'key'=>'profile_pic'])->get();
+			return ['status'=>'successful', 'user_detail'=>$user, 'profile_pic'=>asset('profile_pic/'.$model[0]->value)];
 		}else{
 			return ['status'=>'error','message'=>'Invalid email or password!'];
 		}
