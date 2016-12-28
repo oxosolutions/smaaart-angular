@@ -88,7 +88,7 @@ class MinistriesController extends Controller
             'ministry_title' => 'required|min:5|max:100',
             'ministry_description' => 'required',
             'ministry_icon' => 'required',
-            'ministry_phone' => 'required|min:10|max:12',
+            'ministry_phone' => 'required|numeric',
             'ministry_ministers' => 'required',
             'ministry_order' => 'required|int',
             'ministry_image' =>'required | mimes:jpeg,jpg,png',
@@ -114,7 +114,7 @@ class MinistriesController extends Controller
             'ministry_phone' => 'required|numeric',
             'ministry_ministers' => 'required',
             'ministry_order' => 'required|int',
-
+            'ministry_image' =>'required | mimes:jpeg,jpg,png',
         ];
 
         if($request->hasFile('ministry_image')){
@@ -142,19 +142,25 @@ class MinistriesController extends Controller
     }
 
     public function edit($id){
-
-        $model = MIN::find($id);
-        $departments = [];
-        foreach($model->departments as $key => $value){
-            $departments[] = $value->department_id;
-        }
-        $plugins = [
-                    'departments' => $departments,
-                    'model'=>$model,
-                    'css' => ['fileupload','select2'],
-                    'js'  => ['fileupload','select2','custom'=>['ministry-create']]
-                  ];
-        return view('ministries.edit',$plugins);
+        try{
+                $model = MIN::findOrFail($id);
+                $departments = [];
+                foreach($model->departments as $key => $value){
+                    $departments[] = $value->department_id;
+                }
+                $plugins = [
+                            'departments' => $departments,
+                            'model'=>$model,
+                            'css' => ['fileupload','select2'],
+                            'js'  => ['fileupload','select2','custom'=>['ministry-create']]
+                          ];
+                return view('ministries.edit',$plugins);
+            }
+            catch(\Exception $e)
+            {
+                Session::flash('error','No data found for this.');
+                 return redirect()->route('ministries.list');
+            }
     }
 
     public function update(Request $request, $id){

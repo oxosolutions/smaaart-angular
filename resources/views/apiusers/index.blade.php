@@ -28,7 +28,7 @@
 
       @if ($message = Session::get('error'))
 
-        <div class="alert alert-danger alert-dismissible">
+        <div class="alert alert-danger bg-red-active alert-dismissible">
                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
                 <i class="icon fa fa-ban"></i> {{$message}}
               </div>

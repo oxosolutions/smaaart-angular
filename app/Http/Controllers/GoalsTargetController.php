@@ -81,10 +81,10 @@ class GoalsTargetController extends Controller
     public function modelValidate($request){
 
     	$rules = [
-    				'target_id' => 'required',
-    				'target_title' => 'required',
-    				'target_desc' => 'required',
-                    'target_image'=>'required|mimes:jpeg,jpg,png',
+    				'target_id'     =>  'required|numeric',
+    				'target_title'  =>  'required',
+    				'target_desc'   =>  'required',
+                    'target_image'  =>  'required|mimes:jpeg,jpg,png',
     	       ];
 
     	$this->validate($request, $rules);

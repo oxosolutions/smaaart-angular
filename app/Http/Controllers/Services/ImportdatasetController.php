@@ -11,81 +11,105 @@ use Excel;
 use App\DatasetsList as DL;
 use MySQLWrapper;
 use DB;
+use File;
 class ImportdatasetController extends Controller
 {
 
     function uploadDataset(Request $request){
-    	$validate = $this->validateRequst($request);
-          if($request->file('file') == "" || $request->format == "" || $request->add_replace == "" || $request->with_dataset == ""){
-                return ['status'=>'error','message'=>'Please Provide Require Fields'];
-            }
+	   $validate = $this->validateRequst($request);
+        
+    	if($validate['status'] == 'false'){
+    		$response = ['status'=>'error','errors'=>$validate['errors']];
+    		return $response;
+    	}
 
+        if($request->source == 'file'){
+            $path = 'datasets';
             try {
-                 if(!in_array($request->file('file')->getClientOriginalExtension(),['csv','xlsx','xls'])){
+                 if(!in_array($request->file('file')->getClientOriginalExtension(),['csv'])){
                     return ['status'=>'error','records'=>'File type not allowed!'];
                 }
             } catch (Exception $e) {
                 return ['status'=>'error','records'=>'Please Select a File to Upload'];
             }
-        	if($validate['status'] == 'false'){
-        		$response = ['status'=>'error','error'=>$validate['error']];
-        		return $response;
-        	}
+            $file = $request->file('file');
+            if($file->isValid()){
 
-        	$path = 'datasets';
-        	$file = $request->file('file');
-
-          	if($file->isValid()){
-
-          		$filename = date('Y-m-d-H-i-s')."-".$request->file('file')->getClientOriginalName();
-          		$uploadFile = $request->file('file')->move($path, $filename);
+                $filename = date('Y-m-d-H-i-s')."-".$request->file('file')->getClientOriginalName();
+                $uploadFile = $request->file('file')->move($path, $filename);
                 $filePath = $path.'/'.$filename;
-                
-                if($request->add_replace == 'newtable'){
-                    $result = $this->storeInDatabase($filePath, $request->file('file')->getClientOriginalName());
-                }elseif($request->add_replace == 'append'){
-                    $result = $this->appendDataset($request, $filePath);
-                }elseif($request->add_replace == 'replace'){
-                    $result = $this->replaceDataset($request, $request->file('file')->getClientOriginalName(), $filePath);
-                }
-          	}
-
-            if($result['status'] == 'true'){
-                if($uploadFile){
-        			$response = ['status'=>'success','message'=>$result['message'],'id'=>@$result['id']];
-        			return $response;
-        		}else{
-        			$response = ['status'=>'error','message'=>'unable to upload file!'];
-        			return $response;
-        		}
-            }else{
-                $response = ['status'=>'error','message'=>$result['message']];
-                return $response;
             }
+        }
+        
+        if($request->source == 'file_server'){
+            $filePath = $request->filepath;
+        }
+
+        if($request->source == 'url'){
+            $filePath = $request->fileurl;
+        }
+
+        if($request->add_replace == 'newtable'){
+            $result = $this->storeInDatabase($filePath, $request->dataset_name, $request->source);
+        }elseif($request->add_replace == 'append'){
+            //$result = $this->appendDataset($request, $filePath);
+        }elseif($request->add_replace == 'replace'){
+            //$result = $this->replaceDataset($request, $request->dataset_name, $filePath);
+        }
+
+        if($result['status'] == 'true'){
+            
+			$response = ['status'=>'success','message'=>$result['message']];
+			return $response;
+    		
+        }else{
+            $response = ['status'=>'error','message'=>$result['message']];
+            return $response;
+        }
 
     }
     protected function validateRequst($request){
         $errors = [];
-    	if($request->file('file') == '' || empty($request->file('file')) || $request->file('file') == null){
-    		$errors['file'] = 'File field should not empty!';
-    	}
-         if($request->format == 'undefined' || empty($request->format) || $request->format  == null){
-             $errors['format'] = 'Please select file format';
-         }
+        if($request->has('source') && $request->source != ''){
+            switch($request->source){
+                case'file':
+                    if($request->file('file') == '' || empty($request->file('file')) || $request->file('file') == null){
+                        $errors['message'] = 'File field should not empty!';
+                    }
+                break;
+                case'file_server':
+                    if(!$request->has('filepath') || $request->filepath == ''){
+                        $errors['message'] = 'File path should not empty!';
+                    }
+                break;
+                case'url':
+                    if(!$request->has('fileurl') || $request->fileurl == ''){
+                        $errors['message'] = 'File url should not empty!';
+                    }
+                break;
+            }
+        }else{
+            $errors['message'] = 'Required fields are missing!';
+        }
+        
+        /*if($request->format == 'undefined' || empty($request->format) || $request->format  == null){
+            $errors['format'] = 'Please select file format';
+        }*/
 
     	if($request->add_replace == 'undefined' || empty($request->add_replace) || $request->add_replace  == null){
-    		$errors['add_replace'] = 'Please select file format!';
+    		$errors[] = 'Please select file format!';
     	}
     	if($request->add_replace == 'replace' || $request->add_replace == 'append'){
     		if($request->with_dataset == '' || $request->with_dataset == 'undefined' || empty($request->with_dataset)){
-    			$errors['dataset'] = 'Please select dataset to '.$request->add_replace;
+    			$errors['message'] = 'Please select dataset to '.$request->add_replace;
     	   }
     	}
+        
     	if(count($errors) >= 1){
-    		$return = ['status' => 'false','error'=>$errors];
+    		$return = ['status' => 'false','errors'=>$errors];
     		return $return;
     	}else{
-    		$return = ['status' => 'true','error'];
+    		$return = ['status' => 'true','errors'=>[]];
     		return $return;
     	}
     }
@@ -109,30 +133,24 @@ class ImportdatasetController extends Controller
         return ['status'=>'sucess','data'=>['columns'=>$columnsArray,'dataset_id'=>$model->id,'validated'=>$model->validated]];
     }
 
-    protected function storeInDatabase($filename, $origName){
-        /*ini_set('memory_limit', -1);
-    	$FileData = [];
-    	$data = Excel::load($filename, function($reader){ })->get();
-
-    	foreach($data as $key => $value){
-            $FileData[] = $value->all();
-    	}
-		$model = new DL();
-		$model->dataset_name = $origName;
-        $model->dataset_records = json_encode($FileData);
-		$model->user_id = Auth::user()->id;
-		$model->uploaded_by = Auth::user()->name;
-		$model->save();
-
-  		if($model){
-  			return ['status'=>'true','id'=>$model->id,'message'=>'Dataset upload successfully!'];
-  		}else{
-  			return ['status'=>'false','id'=>'','message'=>'unable to upload datsaet!'];
-  		}*/
+    protected function storeInDatabase($filename, $origName, $source){
+        
+        $filePath = $filename;
+        if($source == 'url'){
+            $randName = 'downloaded_dataset_'.time().'.csv';
+            $path = 'datasets/';
+            copy($filename, $path.$randName);
+            $filePath = 'datasets/'.$randName;
+        }
+        if(!File::exists($filePath)){
+            return ['status'=>'false','id'=>'','message'=>'File not found on given path!'];
+        }
         DB::beginTransaction();
         $model = new MySQLWrapper();
         $tableName = 'data_table_'.time();
-        $result = $model->wrapper->createTableFromCSV($filename,$tableName,',','"', '\\', 0, array(), 'generate','\r\n');
+        
+        $result = $model->wrapper->createTableFromCSV($filePath,$tableName,',','"', '\\', 0, array(), 'generate','\r\n');
+        dd($result);
         if($result){
             $model = new DL;
             $model->dataset_table = $tableName;

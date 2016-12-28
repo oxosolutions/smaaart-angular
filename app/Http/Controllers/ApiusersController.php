@@ -15,6 +15,7 @@ use Auth;
 use App\GlobalSetting as GS;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AfterApproveUser;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 class ApiusersController extends Controller
 {
     function __construct(){
@@ -72,9 +73,9 @@ class ApiusersController extends Controller
 
     public function delete($id)
     { 
-       $model  = User::findOrFail($id);
             try{
-                    UM::where('user_id',$id)->delete();
+                   $model  = User::findOrFail($id);
+                   UM::where('user_id',$id)->delete();
                     $model->delete();
               }catch(\Exception $e)
              {
@@ -127,13 +128,21 @@ class ApiusersController extends Controller
 
     public function  createUserMeta($user_id)
     {
-         $plugins = [
-                    'css' => ['fileupload','select2'],
-                    'js'  => ['fileupload','select2','custom'=>['api-user']],
-                    'user_id' => $user_id,
-                    ];
+        try{
+            User::findOrFail($user_id);
+             $plugins = [
+                        'css' => ['fileupload','select2'],
+                        'js'  => ['fileupload','select2','custom'=>['api-user']],
+                        'user_id' => $user_id,
+                        ];
+            return view('apiusers.fill_user_meta',$plugins);
+          }catch(ModelNotFoundException $e)
+            {
+                Session::flash('error','No data found for this.');
+                return redirect()->route('api.users');
 
-        return view('apiusers.fill_user_meta',$plugins);
+            }
+
     }
 
 
@@ -222,7 +231,7 @@ class ApiusersController extends Controller
 
                     $filename = date('Y-m-d-H-i-s')."-".$request->file('profile_pic')->getClientOriginalName();
                     $request->file('profile_pic')->move($path, $filename);
-                    $proPic->key = "profile_pic";
+                    $proPic->key = "profile_picture";
                     $proPic->user_id = $request->user_list;
                     $proPic->value = $filename;
                     $proPic->save();
@@ -239,59 +248,79 @@ class ApiusersController extends Controller
         }
 
         public function userDetail($id)
-        {
-              $userName =  User::select('id','name','email')->where('id',$id)->get();
-              $ud['name'] = $userName[0]->name;
-              $ud['email'] = $userName[0]->email;
-              $ud['user_id'] = $userName[0]->id;
-              $chkDetail = UM::where('user_id',$id)->count();
-          if($chkDetail==0){
-                Session::flash('error','User Detail not available!');
-                return redirect()->route('api.users');
-              }
+        {   
+          try{
+              $userDetail =  User::findOrfail($id);
+              return view('apiusers.user_detail', ['user_detail'=>$userDetail]); 
+            }catch(\Exception $e)
+            {
 
-           $userDetail = UM::where('user_id',$id)->get();
-            foreach ($userDetail as $key => $value) {
-               if($value->key=="phone")
-                {
-                   $ud['phone'] = $value->value;
-                }
-                if($value->key=="address")
-                {
-                   $ud['address'] = $value->value;
-                }
-                if($value->key=="designation")
-                {
-                   $ud['designation'] = $value->value;
-                }
-                if($value->key=="profile_pic")
-                {
-                   $ud['profile_pic'] = $value->value;
-                }
-                if($value->key=="ministry")
-                {
-                   $minId = $value->value;
-                }
-                if($value->key=="department")
-                {
-                   $depId = $value->value;
-                }
+              Session::flash('error','No data found for this.');
+              return redirect()->route('api.users');
+              
             }
+                  // foreach ($userName->meta() as  $value) {
+                  //   dump($value);
+                  //   # code...
+                  // }
+          //     $ud['name'] = $userName[0]->name;
+          //     $ud['email'] = $userName[0]->email;
+          //     $ud['user_id'] = $userName[0]->id;
+          //     $chkDetail = UM::where('user_id',$id)->count();
+          // if($chkDetail==0){
+          //       Session::flash('error','User Detail not available!');
+          //       return redirect()->route('api.users');
+          //     }
 
-          $DepId =    json_decode(@$depId);
-          $MinId =    json_decode(@$minId);
+          //  $userDetail = UM::where('user_id',$id)->get();
+          //   foreach ($userDetail as $key => $value) {
+          //      if($value->key=="phone")
+          //       {
+          //          $ud['phone'] = $value->value;
+          //       }
+          //       if($value->key=="address")
+          //       {
+          //          $ud['address'] = $value->value;
+          //       }
+          //       if($value->key=="designation")
+          //       {
+          //          $ud['designation'] = $value->value;
+          //       }
+          //       if($value->key=="profile_pic")
+          //       {
+          //          $ud['profile_pic'] = $value->value;
+          //       }
+          //       if($value->key=="ministry")
+          //       {
+          //          $minId = $value->value;
+          //       }
+          //       if($value->key=="department")
+          //       {
+          //          $depId = $value->value;
+          //       }
+          //   }
 
-          $depDetail = DEP::select('id','dep_code','dep_name')->WhereIN('id',$DepId)->get();
-          $minDetail = MIN::select('id','ministry_id','ministry_title')->whereIn('id',$MinId)->get();
+          // $DepId =    json_decode(@$depId);
+          // $MinId =    json_decode(@$minId);
 
-            return view('apiusers.user_detail', ['user_detail'=>$ud ,'depDetail'=>$depDetail ,'minDetail' =>$minDetail] );
-            return View::make('apiusers.user_detail')->with(['user_detail'=>$ud,'depDetail'=>$depDetail ,'minDetail' =>$minDetail ]);
+          // $depDetail = DEP::select('id','dep_code','dep_name')->WhereIN('id',$DepId)->get();
+          // $minDetail = MIN::select('id','ministry_id','ministry_title')->whereIn('id',$MinId)->get();
+
+          //   return view('apiusers.user_detail', ['user_detail'=>$ud ,'depDetail'=>$depDetail ,'minDetail' =>$minDetail] );
+          //   return View::make('apiusers.user_detail')->with(['user_detail'=>$ud,'depDetail'=>$depDetail ,'minDetail' =>$minDetail ]);
         }
 
         public function edit($id) {
+          try{
+                $model = User::findOrfail($id);
+                return view('apiusers.edit',['model'=>$model]);
+              }catch(\Exception $e)
+              {
+                 Session::flash('error','No data found for this.');              
+                 return redirect()->route('api.users');
 
-          $model = User::findOrfail($id);
-          return view('apiusers.edit',['model'=>$model]);
+                throw $e;
+              }
         }
         public function update(Request $request, $id)
         {
@@ -351,7 +380,8 @@ class ApiusersController extends Controller
             return redirect()->route('api.users');
         }
         public function editmeta($id)
-        {      
+        { 
+          try{     
               $chkmeta =  UM::where('user_id',$id)->count(); 
               if($chkmeta ==0)
               {
@@ -415,7 +445,13 @@ class ApiusersController extends Controller
                               'designation' =>  @$designation,
                               'profile_pic' =>  @$profile_pic
                             ];
-          return view('apiusers.editmeta',$plugins);
+                return view('apiusers.editmeta',$plugins);
+            }catch(\Exception $e)
+            {
+                Session::flash('error','No data found for this.');
+                return redirect()->route('api.users');
+
+            }
         }
         public function updatemeta(Request $request , $id)
         {

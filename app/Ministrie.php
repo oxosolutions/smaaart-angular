@@ -33,4 +33,9 @@ class Ministrie extends Model
         return self::count();
     }
 
+    static function ministryName($id)
+    {
+        return self::where('id',$id)->first()->ministry_title;
+    }
+
 }

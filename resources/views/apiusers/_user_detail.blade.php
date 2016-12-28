@@ -5,52 +5,46 @@
 }
 </style>
 <div class="box-body">
+
   <table id="example2" class="table table-bordered table-hover">
     <tbody>
-        <tr>
+     <tr>
             <td>User name</td>
-            <td>{{$user_detail['name']}}
+            <td>{{$user_detail->name}}
             </td>
         </tr>
          <tr>
             <td>Email</td>
-            <td>{{$user_detail['email']}}
+            <td>{{$user_detail->email}}
             </td>
         </tr>
+       @foreach($user_detail->meta as  $value )
         <tr>
-            <td>Phone Number</td>
-            <td>{{$user_detail['phone']}}
-            </td>
+             @if($value->key == 'profile_pic')
+                    <td>{{ucfirst(str_replace("_" ," ", $value->key))}}</td>
+                    <td>
+                            <img src="{{asset('profile_pic/').'/'.$value->value}}" width="100px" />
+                    </td>
+                    @elseif($value->key == 'designation')
+                        <td>{{$value->key}}</td>
+                        <td>{{App\Designation::getDesignation($value->value)}}</td>                   
+                    @elseif($value->key == 'ministry')
+                         <td>{{$value->key}}</td>
+                         <td><?php $json = json_decode($value->value);?>
+                               {{App\Ministrie::ministryName($json[0])}}
+                         </td>
+                    @elseif($value->key == 'department')
+                            <td>{{$value->key}}</td>
+                            <td><?php $dep = json_decode($value->value);  ?>
+                                {{App\Department::getDepName($dep[0])}}
+                            </td>
+                            @else
+                             <td>{{$value->key}}</td>
+                             <td>{{$value->value}}</td>
+                   @endif        
+                    
         </tr>
-        <tr>
-            <td>Address</td>
-            <td>{{$user_detail['address']}}
-            </td>
-        </tr>
-        <tr>
-            <td>Designation</td>
-            <td>{{App\Designation::getDesignation($user_detail['designation'])}}</td>
-        </tr>
-        <tr>
-            <td>Profile Picture</td>
-            <td>
-              <img src="{{asset('profile_pic/').'/'.$user_detail['profile_pic']}}" width="100px" />
-            </td>
-        </tr>
-        <tr>
-            <td>Ministries</td>
-            <td>@foreach ($minDetail as $min)
-                <span class="label label-info"> {{ $min->ministry_title }}</span>
-              @endforeach
-            </td>
-        </tr>
-        <tr>
-            <td>Department</td>
-            <td> @foreach ($depDetail as $dep)
-                    <span class="label label-success"> {{ $dep->dep_name }}</span>
-                @endforeach
-            </td>
-        </tr>
+        @endforeach
     </tbody>
   </table>
 </div>

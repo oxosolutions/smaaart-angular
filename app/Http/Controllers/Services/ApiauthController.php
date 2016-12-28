@@ -36,7 +36,9 @@ class ApiauthController extends Controller
                 return ['status'=>'error','message'=>'Your account not yet approved!'];
             }
             $model = UserMeta::select('value')->where(['user_id'=>$user->id,'key'=>'profile_pic'])->get();
-			return ['status'=>'successful', 'user_detail'=>$user, 'profile_pic'=>asset('profile_pic/'.$model[0]->value)];
+            //dd($model);
+            $image = (!empty($model))?$model[0]->value:'';
+			return ['status'=>'successful', 'user_detail'=>$user, 'profile_pic'=>asset('profile_pic/'.$image)];
 		}else{
 			return ['status'=>'error','message'=>'Invalid email or password!'];
 		}

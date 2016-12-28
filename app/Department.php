@@ -33,5 +33,9 @@ class Department extends Model
     {
         return self::count();
     }
+    static function getDepName($id)
+    {
+        return self::where('id',$id)->first()->dep_name;
+    }
     
 }

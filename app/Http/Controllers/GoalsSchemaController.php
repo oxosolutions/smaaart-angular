@@ -80,9 +80,10 @@ class GoalsSchemaController extends Controller
     public function modelValidate($request){
 
     	$rules = [
-    				'schema_id' => 'required',
-    				'schema_title' => 'required',
-    				'schema_desc' => 'required'
+    				'schema_id'     =>  'required|numeric',
+    				'schema_title'  =>  'required',
+    				'schema_desc'   =>  'required',
+                    'schema_image'  =>  'image|mimes:jpg,png.jpeg'
     	];
 
     	$this->validate($request, $rules);
@@ -90,10 +91,11 @@ class GoalsSchemaController extends Controller
      public function editModelValidate($request){
 
         $rules = [
-                    'schema_id' => 'required',
-                    'schema_title' => 'required',
-                    'schema_desc' => 'required'
-        ];
+                    'schema_id'     =>  'required|numeric',
+                    'schema_title'  =>  'required',
+                    'schema_desc'   =>  'required',
+                    'schema_image'  =>  'image|mimes:jpg,png.jpeg'
+                ];
 
         $this->validate($request, $rules);
     }

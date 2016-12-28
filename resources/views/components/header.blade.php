@@ -19,13 +19,13 @@
               <li class="user-header">
                 <img src="{{asset('/bower_components/admin-lte/dist/img/user2-160x160.jpg')}}" class="img-circle" alt="User Image">
                 <p>
-                  {{ucfirst($name)}} - Web Developer
-                  <small>Member since Nov. 2012</small>
+                  {{ucfirst($name)}} 
+                  <small> Member since {{ date('F d, Y', strtotime(Auth::user()->created_at))}}</small>
                 </p>
               </li>
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <a href="{{url('/user_detail/'.Auth::user()->id)}}" class="btn btn-default btn-flat">Profile</a>
                 </div>
                 <div class="pull-right">
                   <a href="{{ url('/logout') }}" class="btn btn-default btn-flat">Sign out</a>
