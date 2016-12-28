@@ -24,7 +24,7 @@ class DataSetsController extends Controller
 
     public function indexData(){
         ini_set('memory_limit', '-1');
-        $model = DL::get();
+        $model = DL::orderBy('id','desc')->get();
         return Datatables::of($model)
             ->addColumn('actions',function($model){
                 return view('datasets._actions',['model' => $model])->render();
@@ -193,7 +193,7 @@ class DataSetsController extends Controller
     protected function modelValidate($request){
         
         $rules = [
-                'dataset_file' => 'required|mimes:csv,txt,xlsx',
+                'dataset_file' => 'required|mimes:csv,txt',
                 'select_operation' => 'required'
                ];
         if($request->select_operation == 'append' || $request->select_operation == 'replace'){

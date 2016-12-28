@@ -20,6 +20,7 @@ class GlobalSettingsController extends Controller
     	$plugins['Reg_model'] = $this->setRegStdObjectValues();
     	$plugins['Forget_model'] = $this->setForgetStdObjectValues();
         $plugins['adminReg_model'] = $this->setAdminRegStdObjectValues();
+        $plugins['userApprov_model'] = $this->setUserApprovalStdObjectValues();
     	return view('settings.index',$plugins);
     }
 
@@ -94,6 +95,10 @@ class GlobalSettingsController extends Controller
     	return $Reg_modelData;
     }
 
+
+    /**
+     * [setForgetStdObjectValues to set or prefill forget email settings defaul values]
+     */
     protected function setForgetStdObjectValues(){
 
     	$Forget_modelData = new stdClass;
@@ -118,6 +123,11 @@ class GlobalSettingsController extends Controller
     	return $Forget_modelData;
     }
 
+    /**
+     * [saveAdminRegEmailSettings description]
+     * @param  Request $request [description]
+     * @return [type]           [will redirect to global settings page]
+     */
     public function saveAdminRegEmailSettings(Request $request){
 
         $this->checkMetaExist('adminreg_settings');
@@ -135,6 +145,11 @@ class GlobalSettingsController extends Controller
         return redirect()->route('global.settings');
     }
 
+    /**
+     * [setAdminRegStdObjectValues To set the prefilled detials of register user email
+     *  settings
+     * ]
+     */
     protected function setAdminRegStdObjectValues(){
 
         $AdminReg_modelData = new stdClass;
@@ -159,5 +174,52 @@ class GlobalSettingsController extends Controller
             $AdminReg_modelData->adminreg_email = '';
         }
         return $AdminReg_modelData;
+    }
+
+
+    /**
+     * [saveApproveUserSettings description]
+     * @param  Request $request [description]
+     * @return [type]           [redirecting global setting page]
+     */
+    public function saveApproveUserSettings(Request $request){
+
+        $this->checkMetaExist('user_approvel_settings');
+        $forgetSettings = [];
+        if(empty($request->send_approveuser_email)){
+            $forgetSettings['activate'] = 'false';
+        }else{
+            $forgetSettings['activate'] = $request->send_approveuser_email;
+        }
+        $forgetSettings['subject']      = $request->approvel_subject;
+        $forgetSettings['description']  = $request->aprroved_description;
+        GS::where('meta_key','user_approvel_settings')->update(['meta_value'=>json_encode($forgetSettings),'updated_by'=>Auth::user()->id]);
+        Session::flash('success','Settings Saved Successfuly!');
+        return redirect()->route('global.settings');
+    }
+
+
+    protected function setUserApprovalStdObjectValues(){
+
+        $Forget_modelData = new stdClass;
+        $globalData = GS::where('meta_key','user_approvel_settings')->first();
+        if(!empty($globalData)){
+            $Forget_modelData->id = $globalData->id;
+            if(json_decode($globalData->meta_value)->activate == 'false'){
+                $activate = null;
+            }else{
+                $activate = true;
+            }
+            $Forget_modelData->send_approveuser_email = $activate;
+            $Forget_modelData->approvel_subject = json_decode($globalData->meta_value)->subject;
+            $Forget_modelData->aprroved_description = json_decode($globalData->meta_value)->description;
+        }else{
+
+            $Forget_modelData->id = null;
+            $Forget_modelData->send_approveuser_email = '';
+            $Forget_modelData->approvel_subject = '';
+            $Forget_modelData->aprroved_description = '';
+        }
+        return $Forget_modelData;
     }
 }

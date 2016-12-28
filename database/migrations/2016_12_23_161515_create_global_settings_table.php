@@ -17,7 +17,7 @@ class CreateGlobalSettingsTable extends Migration
 
             $table->increments('id');
             $table->string('meta_key')->nullable();
-            $table->string('meta_value')->nullable();
+            $table->longText('meta_value')->nullable();
             $table->unsignedInteger('updated_by')->index();
             $table->timestamps();
             $table->foreign('updated_by')->references('id')->on('users')->onUpdate('cascade');

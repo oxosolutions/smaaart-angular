@@ -22,7 +22,7 @@ class VisualisationController extends Controller
 
     public function indexData(){
 
-    	$model = VS::get();
+    	$model = VS::orderBy('id','desc')->get();
 
     	return Datatables::of($model)
             ->addColumn('actions',function($model){

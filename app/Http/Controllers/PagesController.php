@@ -76,8 +76,9 @@
       $rules = [
 
             'page_title'  => 'required',
-            'status'       =>  'required',
-            'page_slug'   => 'required'
+            'status'      => 'required',
+            'page_slug'   => 'required',
+            'page_image'  => 'image|mimes:jpeg,png,jpg' 
       ];
 
       $this->validate($request, $rules);

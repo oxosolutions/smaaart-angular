@@ -5,26 +5,22 @@
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
 			<tr>
 				<td style="color: #153643; font-family: Arial, sans-serif; font-size: 24px;">
-					<b>Hello Admin!</b>
+					<b>Welcome {{$user}}!</b>
 				</td>
 			</tr>
 			<tr>
 				<td style="padding: 20px 0 30px 0; color: #153643; font-family: Arial, sans-serif; font-size: 16px; line-height: 20px;">
-					New user registered on SDGINDIA with following details:
+					Your accoutn has been successfully approved by Admin. Login your account by click here: <a href="http://192.168.0.101:3000/login">Login Now</a>
 					<ul>
-						<li>Name: {{$userName}}</li>
 						<li>Email: {{$userEmail}}</li>
-						<li>Phone: {{$userPhone}}</li>
+						<li>Password: <i>Your Password</i></li>
 					</ul>
-					<p>This is user not yet activated/approved click that link to approve this user:</p>
-					<a href="http://192.168.0.101/smaart-angular/public/approve/email/{{$api_token}}">Click to Approve</a>
-					<br/>
 					<p>{{$desc}}</p>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<!-- <table border="0" cellpadding="0" cellspacing="0" width="100%">
+					<table border="0" cellpadding="0" cellspacing="0" width="100%">
 						<tr>
 							<td width="260" valign="top">
 								<table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -58,7 +54,7 @@
 								</table>
 							</td>
 						</tr>
-					</table> -->
+					</table>
 				</td>
 			</tr>
 		</table>

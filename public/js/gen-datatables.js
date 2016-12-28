@@ -4,6 +4,7 @@
       processing: true,
       serverSide: true,
       ajax: route()+'/get_users',
+      order: [[0,"desc"]],
       columns: [
             { data: 'id', name: 'id' },
             { data: 'name', name: 'name' },
@@ -170,6 +171,7 @@
       processing: true,
       serverSide: true,
       ajax: route()+'/visualisation_list',
+      order:[[0,'desc']],
       columns: [
             { data: 'id', name: 'id' },
             { data: 'dataset_id', name: 'dataset_id' },
@@ -186,6 +188,7 @@
       processing: true,
       serverSide: true,
       ajax: route()+'/dataset_list',
+      order: [[0,"desc"]],
       columns: [
             { data: 'id', name: 'id' },
             { data: 'dataset_name', name: 'dataset_name' },

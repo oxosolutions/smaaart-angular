@@ -37,7 +37,7 @@ class DatasetsController extends Controller
         $responseArray['dataset_id'] = $id;
         $responseArray['dataset_name'] = $datasetDetails->dataset_name;
         $responseArray['records'] = json_decode($datasetTable);
-        $totalRecords = DB::table($datasetDetails->dataset_table)->count();    
+        $totalRecords = DB::table($datasetDetails->dataset_table)->count();
         return ['status'=>'success','records'=>$responseArray, 'total'=>$totalRecords,'skip'=>$skip];
     }
 

@@ -12,6 +12,9 @@ use App\Ministrie as MIN;
 use App\Department as DEP;
 use Hash;
 use Auth;
+use App\GlobalSetting as GS;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\AfterApproveUser;
 class ApiusersController extends Controller
 {
     function __construct(){
@@ -26,7 +29,7 @@ class ApiusersController extends Controller
     }
 
     public function get_users(){
-          $model = User::get();
+          $model = User::orderBy('id','desc')->get();
     	         return Datatables::of($model)
                   ->addColumn('actions',function($model){
                 return view('apiusers._actions',['model'=>$model])->render();
@@ -95,14 +98,16 @@ class ApiusersController extends Controller
 
      protected function metaValidate($request){
 
-        $rules = [               
-                  'address'=> 'required',
-                  'ministry'=>'required',
-                  'department'=>'required',
-                  'designation'=>'required',
-                  'phone'=>'required|min:10|max:12',
-                  'profile_pic'=>'required'
-              ];
+             $rules = ['phone'=>'min:10|max:12'];
+
+        // $rules = [               
+        //           'address'=> 'required',
+        //           'ministry'=>'required',
+        //           'department'=>'required',
+        //           'designation'=>'required',
+        //           'phone'=>'required|min:10|max:12',
+        //           'profile_pic'=>'required'
+        //       ];
 
         $this->validate($request, $rules);
     }
@@ -133,9 +138,19 @@ class ApiusersController extends Controller
 
 
     public function storeUserMeta( Request $request){
-              $this->metaValidate($request);
+
+            $this->metaValidate($request);
+            if(!$request->ministry && !$request->hasFile('profile_pic') && !$request->designation && !$request->department && $request->phone =="" &&  $request->address =="" )
+            {
+                    return redirect()->route('api.create_users_meta',$request->user_list);
+            }
+
+            
           DB::beginTransaction();
-            try{
+            try{//create new designation if not exist
+
+              if($request->designation)
+              {
                  if(!is_numeric($request->designation))
                  {
                        $chkDes = DES::where(['designation'=>$request->designation])->get()->count();
@@ -146,13 +161,19 @@ class ApiusersController extends Controller
                           $request->designation = $newDes->id;
                        }
                   }
+                $designationMeta  = new UM();
+                $designationMeta->user_id = $request->user_list;
+                $designationMeta->key =     "designation";
+                $designationMeta->value   =  $request->designation;
+                $designationMeta->save();
+              }
 
-
+              if($request->ministry)
+              {
                 foreach ($request->ministry as $key => $value){
 
                       $ministryMetaVal[] = $value;
-
-                }
+                  }
 
                 $minMetaVal = json_encode($ministryMetaVal);
                 $ministryMeta = new UM();
@@ -160,19 +181,27 @@ class ApiusersController extends Controller
                 $ministryMeta->user_id = $request->user_list;
                 $ministryMeta->value = $minMetaVal;
                 $ministryMeta->save();
+              }
 
+              if($request->phone!="")
+              {
                 $phoneMeta = new UM();
                 $phoneMeta->key = "phone";
                 $phoneMeta->user_id = $request->user_list;
                 $phoneMeta->value  =  $request->phone;
                 $phoneMeta->save();
-
+              }
+              if($request->address)
+              {
                 $adrsMeta = new UM();
                 $adrsMeta->key = "address";
                 $adrsMeta->user_id = $request->user_list;
                 $adrsMeta->value  =  $request->address;
                 $adrsMeta->save();
+              }
 
+              if($request->department)
+              {
                 foreach($request->department as $key => $value){
 
                    $depValues[] =  $value;
@@ -184,12 +213,8 @@ class ApiusersController extends Controller
                 $departmentMeta->key = "department";
                 $departmentMeta->value   =  $depJsonVal;
                 $departmentMeta->save();
-
-                $designationMeta  = new UM();
-                $designationMeta->user_id = $request->user_list;
-                $designationMeta->key =     "designation";
-                $designationMeta->value   =  $request->designation;
-                $designationMeta->save();
+              }
+                
 
                 $proPic  = new UM();
                 $path = 'profile_pic';
@@ -253,8 +278,8 @@ class ApiusersController extends Controller
                 }
             }
 
-          $DepId =  json_decode(@$depId);
-          $MinId =   json_decode(@$minId);
+          $DepId =    json_decode(@$depId);
+          $MinId =    json_decode(@$minId);
 
           $depDetail = DEP::select('id','dep_code','dep_name')->WhereIN('id',$DepId)->get();
           $minDetail = MIN::select('id','ministry_id','ministry_title')->whereIn('id',$MinId)->get();
@@ -394,11 +419,18 @@ class ApiusersController extends Controller
         }
         public function updatemeta(Request $request , $id)
         {
-          $this->editmetaValidate($request);
+         $this->metaValidate($request);
+            if(!$request->ministry && !$request->hasFile('profile_pic') && !$request->designation && !$request->department && $request->phone =="" &&  $request->address =="" )
+            {
+                    UM::where('user_id',$id)->delete(); 
+                  return redirect()->route('api.create_users_meta',$id);
+            }
           DB::beginTransaction();
           try{
               UM::where('user_id',$id)->delete();
               $request->user_list = $id;
+            if($request->designation)
+            {
               if(!is_numeric($request->designation))
                    {
                          $chkDes = DES::where(['designation'=>$request->designation])->get()->count();
@@ -409,8 +441,15 @@ class ApiusersController extends Controller
                             $request->designation = $newDes->id;
                          }
                     }
-
-                    foreach ($request->ministry as $key => $value){
+                    $designationMeta  = new UM();
+                    $designationMeta->user_id = $request->user_list;
+                    $designationMeta->key =     "designation";
+                    $designationMeta->value   =  $request->designation;
+                    $designationMeta->save();
+            }
+            if($request->ministry)   
+            {
+                   foreach ($request->ministry as $key => $value){
 
                         $ministryMetaVal[] = $value;
                     }
@@ -421,7 +460,9 @@ class ApiusersController extends Controller
                     $ministryMeta->user_id = $request->user_list;
                     $ministryMeta->value = $minMetaVal;
                     $ministryMeta->save();
-
+            }
+            if($request->phone !="")
+            {
                     $phoneMeta = new UM();
                     $phoneMeta->key = "phone";
                     $phoneMeta->user_id = $request->user_list;
@@ -433,7 +474,10 @@ class ApiusersController extends Controller
                     $adrsMeta->user_id = $request->user_list;
                     $adrsMeta->value  =  $request->address;
                     $adrsMeta->save();
+            }
 
+            if($request->department)
+            {
                     foreach($request->department as $key => $value){
 
                        $depValues[] =  $value;
@@ -445,13 +489,8 @@ class ApiusersController extends Controller
                     $departmentMeta->key = "department";
                     $departmentMeta->value   =  $depJsonVal;
                     $departmentMeta->save();
-
-                    $designationMeta  = new UM();
-                    $designationMeta->user_id = $request->user_list;
-                    $designationMeta->key =     "designation";
-                    $designationMeta->value   =  $request->designation;
-                    $designationMeta->save();
-                    
+            }
+                
                     $proPic  = new UM();
                     $path = 'profile_pic';
                     if($request->hasFile('profile_pic')){
@@ -482,6 +521,18 @@ class ApiusersController extends Controller
 
         public function approveUser($from = 0, $api_token = 0){
             if($from == 'email' && $api_token != 0){
+               
+                $gs_model = GS::where('meta_key','user_approvel_settings')->first();
+                $settings = json_decode($gs_model->meta_value);
+                if($settings->activate == 'true'){
+                    $userModel = User::where('api_token',$api_token)->first();
+                    $userDetails = [];
+                    $userDetails['email'] = $userModel->email;
+                    $userDetails['name'] = $userModel->name;
+                    $userDetails['subject'] = $settings->subject;
+                    $userDetails['desc'] = $settings->description;
+                    Mail::to($userModel->email)->send(new AfterApproveUser($userDetails));
+                }
                 $model = User::where('api_token',$api_token)->update(['approved'=>1]);
                 if($model){
                     return view('approvel.approved');
