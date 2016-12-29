@@ -121,7 +121,6 @@ class ImportdatasetController extends Controller
             if(empty($datasetTable)){
                 return ['status'=>'error','message'=>'no data found!'];
             }
-            // dd($datasetTable);
             $columnsArray = [];
             $index = 0;
             foreach($datasetTable as $key => $value){

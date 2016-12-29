@@ -1,5 +1,4 @@
 <div class="box-body">
-  
    <div class="form-group {{ $errors->has('send_register_email') ? ' has-error' : '' }}">
       {!!Form::checkbox('dataset_status','true',null,['class'=>'minimal','id'=>'send_register_email'])!!}
       @if($errors->has('send_register_email'))

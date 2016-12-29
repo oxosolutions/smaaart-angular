@@ -191,6 +191,8 @@
 		Route::patch('/settings/store/adminreg',['as'=>'adminreg.settings','uses'=>'GlobalSettingsController@saveAdminRegEmailSettings']);
 		Route::patch('/settings/store/userapprove',['as'=>'aprroveuser.settings','uses'=>'GlobalSettingsController@saveApproveUserSettings']);
 		Route::patch('/settings/store/datasetNumRow',['as'=>'dataset.settings','uses'=>'GlobalSettingsController@datasetNumRowSetting']);
+		Route::patch('/settings/store/sitevalue',['as'=>'sitevalue.settings','uses'=>'GlobalSettingsController@siteValue']);
+
 
 		
 	});

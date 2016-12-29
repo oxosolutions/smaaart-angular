@@ -20,8 +20,18 @@ class GlobalSettingsController extends Controller
     	$plugins['Reg_model']          = $this->setRegStdObjectValues();
     	$plugins['Forget_model']       = $this->setForgetStdObjectValues();
         $plugins['adminReg_model']     = $this->setAdminRegStdObjectValues();
-        $plugins['userApprov_model']    = $this->setUserApprovalStdObjectValues();
+        $plugins['userApprov_model']   = $this->setUserApprovalStdObjectValues();
+        $plugins['dataset_model']      = $this->setDataStdObjectValues();
+        $plugins['siteTitle_model']    = $this->getSiteSetting('site_title');
+        $plugins['siteTagline_model']  = $this->getSiteSetting('site_tagline'); 
+        $plugins['siteUrl_model']      = $this->getSiteSetting('site_url'); 
+
     	return view('settings.index',$plugins);
+    }
+
+    protected function getSiteSetting($key)
+    {
+        return GS::select('id','meta_value as value')->where('meta_key',$key)->first();
     }
 
     public function saveNewUserRegisterSettings(Request $request){
@@ -101,27 +111,55 @@ class GlobalSettingsController extends Controller
      */
     protected function setForgetStdObjectValues(){
 
-    	$Forget_modelData = new stdClass;
-    	$globalData = GS::where('meta_key','forget_settings')->first();
+        $Forget_modelData = new stdClass;
+        $globalData = GS::where('meta_key','forget_settings')->first();
+        if(!empty($globalData)){
+            $Forget_modelData->id = $globalData->id;
+            if(json_decode($globalData->meta_value)->activate == 'false'){
+                $activate = null;
+            }else{
+                $activate = true;
+            }
+            $Forget_modelData->send_forget_email = $activate;
+            $Forget_modelData->forget_subject = json_decode($globalData->meta_value)->subject;
+            $Forget_modelData->forget_description = json_decode($globalData->meta_value)->description;
+        }else{
+
+            $Forget_modelData->id = null;
+            $Forget_modelData->send_forget_email = '';
+            $Forget_modelData->forget_subject = '';
+            $Forget_modelData->forget_description = '';
+        }
+        return $Forget_modelData;
+    }
+
+    protected function setDataStdObjectValues(){
+    try{
+    	$Dataset_modelData = new stdClass;
+    	$globalData = GS::where('meta_key','dataset_setting')->first();
     	if(!empty($globalData)){
-    		$Forget_modelData->id = $globalData->id;
-	    	if(json_decode($globalData->meta_value)->activate == 'false'){
+    		$Dataset_modelData->id = $globalData->id;
+	    	if(json_decode($globalData->meta_value)->activate == "false"){
 	    		$activate = null;
 	    	}else{
 	    		$activate = true;
 	    	}
-	    	$Forget_modelData->send_forget_email = $activate;
-	    	$Forget_modelData->forget_subject = json_decode($globalData->meta_value)->subject;
-	    	$Forget_modelData->forget_description = json_decode($globalData->meta_value)->description;
+	    	$Dataset_modelData->dataset_status = $activate;
+	    	$Dataset_modelData->dataset_num_row = json_decode($globalData->meta_value)->num_row;
     	}else{
 
-    		$Forget_modelData->id = null;
-    		$Forget_modelData->send_forget_email = '';
-    		$Forget_modelData->forget_subject = '';
-    		$Forget_modelData->forget_description = '';
+    		$Dataset_modelData->id = null;
+    		$Dataset_modelData->dataset_status = '';
+    		$Dataset_modelData->dataset_num_row = '';
     	}
-    	return $Forget_modelData;
+    }catch(\Exception $e)
+        {
+        	 $Dataset_modelData="";
+        }
+     return $Dataset_modelData;
     }
+
+
 
     /**
      * [saveAdminRegEmailSettings description]
@@ -228,18 +266,31 @@ class GlobalSettingsController extends Controller
         try{
             if($request->dataset_status==true)
             {
-                $num_row['activate'] =true;
+                $num_row['activate'] ="true";
             }else{
-                $num_row['activate'] =false;
+                $num_row['activate'] ="false";
             }
                
             $num_row['num_row'] = $request->dataset_num_row;
+
             GS::where('meta_key','dataset_setting')->update(['meta_value'=>json_encode($num_row)]);
             Session::flash('success','Dataset setings Saved Successfuly!');
 
            }catch(\Exception $e)
            { throw $e;} 
+
         return redirect()->route('global.settings');
+
+    }
+    public function siteValue(Request $request)
+    {
+        try{
+             GS::where('meta_key',$request->meta_type)->update(['meta_value'=>$request->value]);
+            }catch(\Exception $e)
+            {
+                throw $e;
+            }
+            return redirect()->route('global.settings');
 
     }
 }

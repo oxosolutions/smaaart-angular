@@ -102,14 +102,14 @@
         </div>
       </div>
     <!-- User Register Mail to Admin Email Settings Form End-->
-     <!-- On User Approve Email Settings Form -->
+     <!-- On Data set Settings Form -->
       <div class="row">
         <div class="col-md-12">
           <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Dataset Number Row Setting</h3>
             </div>
-              {!! Form::model($userApprov_model, ['method' => 'PATCH','route'=>['dataset.settings', $userApprov_model->id], 'files'=>true]) !!}
+              {!! Form::model($dataset_model, ['method' => 'PATCH','route'=>['dataset.settings', $dataset_model->id], 'files'=>true]) !!}
               {{--{!! Form::open(['route' => 'designations.store', 'files'=>true]) !!}--}}
                 @include('settings._dataset_setting')
               <div class="box-footer">
@@ -119,7 +119,62 @@
           </div>
         </div>
       </div>
-    <!-- User Register Mail to Admin Email Settings Form End-->
+    <!-- User Data set  Settings Form End-->
+     <!-- On Data set Settings Form -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Site Title Setting</h3>
+            </div>
+              {!! Form::model($siteTitle_model, ['method' => 'PATCH','route'=>['sitevalue.settings', $siteTitle_model->id], 'files'=>true]) !!}
+              {{--{!! Form::open(['route' => 'designations.store', 'files'=>true]) !!}--}}
+                @include('settings._site_title')
+              <div class="box-footer">
+                {!! Form::submit('Save Settings', ['class' => 'btn btn-primary']) !!}
+              </div>
+              {!! Form::close() !!}
+          </div>
+        </div>
+      </div>
+    <!-- User Data set  Settings Form End-->
+     <!-- On Data set Settings Form -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Site Tagline Setting</h3>
+            </div>
+              {!! Form::model($siteTagline_model, ['method' => 'PATCH','route'=>['sitevalue.settings', $siteTagline_model->id], 'files'=>true]) !!}
+              {{--{!! Form::open(['route' => 'designations.store', 'files'=>true]) !!}--}}
+                @include('settings._site_tagline')
+              <div class="box-footer">
+                {!! Form::submit('Save Settings', ['class' => 'btn btn-primary']) !!}
+              </div>
+              {!! Form::close() !!}
+          </div>
+        </div>
+      </div>
+    <!-- User Data set  Settings Form End-->
+     <!-- On Data set Settings Form -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Site Url Setting</h3>
+            </div>
+              {!! Form::model($siteUrl_model, ['method' => 'PATCH','route'=>['sitevalue.settings', $siteUrl_model->id], 'files'=>true]) !!}
+              {{--{!! Form::open(['route' => 'designations.store', 'files'=>true]) !!}--}}
+                @include('settings._site_url')
+              <div class="box-footer">
+                {!! Form::submit('Save Settings', ['class' => 'btn btn-primary']) !!}
+              </div>
+              {!! Form::close() !!}
+          </div>
+        </div>
+      </div>
+    <!-- User Data set  Settings Form End-->
+
     </section>
   </div>
 @endsection

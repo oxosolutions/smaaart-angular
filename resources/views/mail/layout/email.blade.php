@@ -1,85 +1,149 @@
-<div itemscope itemtype="http://schema.org/EmailMessage">
-  <div itemprop="potentialAction" itemscope itemtype="http://schema.org/ConfirmAction">
-    <meta itemprop="name" content="Approve User"/>
-    <div itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler">
-      <link itemprop="url" href="https://myexpenses.com/approve?expenseId=abc123"/>
-    </div>
-  </div>
-  <meta itemprop="description" content="Click to Approve {{$user_name}}"/>
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<title>Register New User</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-</head>
-<body style="margin: 0; padding: 0;">
-	<table border="0" cellpadding="0" cellspacing="0" width="100%">	
-		<tr>
-			<td style="padding: 10px 0 30px 0;">
-				<table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border: 1px solid #cccccc; border-collapse: collapse;">
-					<tr>
-						<td align="center" bgcolor="#70bbd9" style="padding: 40px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
-							<img src="{{asset('mail/images/logo_smaart.png')}}" alt="Creating Email Magic"  style="display: block;" />
-							<img src="{{asset('mail/images/logo_sdg_title.png')}}" alt="Creating Email Magic" width="300" style="display: block;" />
-						</td>
-					</tr>
-					{{$username}}
-					
-				
-					@yield('content')
-					kjlj <br/>
-					kjlj <br/>
-					kjlj <br/>
-					kjlj <br/>
-					kjlj <br/>
-					kjlj <br/>
-					kjlj <br/>
-					<tr>
-						<td bgcolor="#ee4c50" style="padding: 30px 30px 30px 30px;">
-							<table border="0" cellpadding="0" cellspacing="0" width="100%">
-								<tr>
-									<td style="color: #ffffff; font-family: Arial, sans-serif; font-size: 14px;" width="75%">
-										&reg; Someone, somewhere 2013<br/>
-										<a href="#" style="color: #ffffff;"><font color="#ffffff">Unsubscribe</font></a> to this newsletter instantly
-									</td>
-									<td align="right" width="25%">
-										<table border="0" cellpadding="0" cellspacing="0">
-											<tr>
-												<td style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;">
-													<a href="http://www.twitter.com/" style="color: #ffffff;">
-														<img src="{{asset('mail/images/tw.gif')}}" alt="Twitter" width="38" height="38" style="display: block;" border="0" />
-													</a>
-												</td>
-												<td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
-												<td style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;">
-													<a href="http://www.twitter.com/" style="color: #ffffff;">
-														<img src="{{asset('mail/images/fb.gif')}}" alt="Facebook" width="38" height="38" style="display: block;" border="0" />
-													</a>
-												</td>
-											</tr>
-										</table>
-									</td>
-								</tr>
-							</table>
-						</td>
-					</tr>
-				</table>
-			</td>
-		</tr>
-	</table>
-</body>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>SMAART Framework</title>
+    <style type="text/css">
+    /* -------------------------------------
+        INLINED WITH https://putsmail.com/inliner
+    ------------------------------------- */
+    /* -------------------------------------
+        RESPONSIVE AND MOBILE FRIENDLY STYLES
+    ------------------------------------- */
+    @media only screen and (max-width: 620px) {
+      table[class=body] h1 {
+        font-size: 28px !important;
+        margin-bottom: 10px !important; }
+      table[class=body] p,
+      table[class=body] ul,
+      table[class=body] ol,
+      table[class=body] td,
+      table[class=body] span,
+      table[class=body] a {
+        font-size: 16px !important; }
+      table[class=body] .wrapper,
+      table[class=body] .article {
+        padding: 10px !important; }
+      table[class=body] .content {
+        padding: 0 !important; }
+      table[class=body] .container {
+        padding: 0 !important;
+        width: 100% !important; }
+      table[class=body] .main {
+        border-left-width: 0 !important;
+        border-radius: 0 !important;
+        border-right-width: 0 !important; }
+      table[class=body] .btn table {
+        width: 100% !important; }
+      table[class=body] .btn a {
+        width: 100% !important; }
+      table[class=body] .img-responsive {
+        height: auto !important;
+        max-width: 100% !important;
+        width: auto !important; }}
+    /* -------------------------------------
+        PRESERVE THESE STYLES IN THE HEAD
+    ------------------------------------- */
+    @media all {
+      .ExternalClass {
+        width: 100%; }
+      .ExternalClass,
+      .ExternalClass p,
+      .ExternalClass span,
+      .ExternalClass font,
+      .ExternalClass td,
+      .ExternalClass div {
+        line-height: 100%; }
+      .apple-link a {
+        color: inherit !important;
+        font-family: inherit !important;
+        font-size: inherit !important;
+        font-weight: inherit !important;
+        line-height: inherit !important;
+        text-decoration: none !important; }
+      .btn-primary table td:hover {
+        background-color: #34495e !important; }
+      .btn-primary a:hover {
+        background-color: #34495e !important;
+        border-color: #34495e !important; } }
+    </style>
+  </head>
+  <body class="" style="background-color:#f6f6f6;font-family:sans-serif;-webkit-font-smoothing:antialiased;font-size:14px;line-height:1.4;margin:0;padding:0;-ms-text-size-adjust:100%;-webkit-text-size-adjust:100%;">
+    <div itemscope itemtype="http://schema.org/EmailMessage">
+	  <div itemprop="potentialAction" itemscope itemtype="http://schema.org/ConfirmAction">
+		<meta itemprop="name" content="Approve User"/>
+		<div itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler">
+		  <link itemprop="url" href="https://myexpenses.com/approve?expenseId=abc123"/>
+		</div>
+	  </div>
+	  <meta itemprop="description" content="Click to Approve {{$user_name}}"/>
+	</div>
+	
+	
+	<table border="0" cellpadding="0" cellspacing="0" class="body" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;background-color:#f6f6f6;width:100%;">
+      <tr>
+        <td style="font-family:sans-serif;font-size:14px;vertical-align:top;">&nbsp;</td>
+        <td class="container" style="font-family:sans-serif;font-size:14px;vertical-align:top;display:block;max-width:580px;padding:10px;width:580px;Margin:0 auto !important;">
+          <div class="content" style="box-sizing:border-box;display:block;Margin:0 auto;max-width:580px;padding:10px;">
+            <!-- START CENTERED WHITE CONTAINER -->
+            <span class="preheader" style="color:transparent;display:none;height:0;max-height:0;max-width:0;opacity:0;overflow:hidden;mso-hide:all;visibility:hidden;width:0;">This is preheader text. Some clients will show this text as a preview.</span>
+            
+			
+			<table class="main" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;border-radius:3px;width:100%;">
+              <!-- START MAIN CONTENT AREA -->
+              <tr>
+                <td class="wrapper" style="font-family:sans-serif;font-size:14px;vertical-align:top;box-sizing:border-box;padding-bottom:20px;">
+                  <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;">
+                    <tr>
+                      <td style="font-family:sans-serif;font-size:14px;vertical-align:top;">
+                        <p style="font-family:sans-serif;font-size: 42px;font-weight: 700;color: #168dc5;margin:0;text-align: center;">SMAART Framework</p>
+                        <p style="font-family:sans-serif;font-size: 23px;font-weight: normal;color: #999;margin:0;text-align: center;">Track Sustainable Development Goals</p>
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <!-- END MAIN CONTENT AREA -->
+            </table>		
+			<table class="main" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;background:#fff;border-radius:3px;width:100%;">
+              <!-- START MAIN CONTENT AREA -->
+              <tr>
+                <td class="wrapper" style="font-family:sans-serif;font-size:14px;vertical-align:top;box-sizing:border-box;padding:20px;">
+                  <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;">
+                    <tr>
+                      <td style="font-family:sans-serif;font-size:14px;vertical-align:top;">
+						@yield('content')
+                      </td>
+                    </tr>
+                  </table>
+                </td>
+              </tr>
+              <!-- END MAIN CONTENT AREA -->
+            </table>
+            <!-- START FOOTER -->
+            <div class="footer" style="clear:both;padding-top:10px;text-align:center;width:100%;">
+              <table border="0" cellpadding="0" cellspacing="0" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;width:100%;">
+                <tr>
+                  <td class="content-block" style="font-family:sans-serif;font-size:14px;vertical-align:top;color:#999999;font-size:12px;text-align:center;">
+                    <span class="apple-link" style="color:#999999;font-size:12px;text-align:center;">&nbsp;&copy 2016, All rights reserved.</span>
+                    <br>
+                     Don't like these emails? <a href="#" style="color:#3498db;text-decoration:underline;color:#999999;font-size:12px;text-align:center;">Unsubscribe</a>.
+                  </td>
+                </tr>
+                <tr>
+                  <td class="content-block powered-by" style="font-family:sans-serif;font-size:14px;vertical-align:top;color:#999999;font-size:12px;text-align:center;">
+                    <a href="#" style="color:#3498db;text-decoration:underline;color:#999999;font-size:12px;text-align:center;text-decoration:none;">&nbsp;</a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+            <!-- END FOOTER -->
+            <!-- END CENTERED WHITE CONTAINER -->
+          </div>
+        </td>
+        <td style="font-family:sans-serif;font-size:14px;vertical-align:top;">&nbsp;</td>
+      </tr>
+    </table>
+  </body>
 </html>

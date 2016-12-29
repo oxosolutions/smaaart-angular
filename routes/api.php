@@ -41,13 +41,13 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::post('/dataset/import',				['as'=>'import','uses'=>'Services\ImportdatasetController@uploadDataset']);
 		Route::get('/dataset/list',					['as'=>'list','uses'=>'Services\DatasetsController@getDatasetsList']);
 		Route::get('/dataset/view/{id}/{skip}',			['as'=>'list','uses'=>'Services\DatasetsController@getDatasets']);
-		Route::get('/dataset/columns/{id}',			['as'=>'list','uses'=>'Services\DatasetsController@getDatasetsColumns']);
+		Route::get('/dataset/columns/{id}',			['as'=>'list','uses'=>'Services\DatasetsController@getDatasetsColumnsForSubset']);
 		Route::get('/dataset/export/{id}',			['as'=>'dataset.export','uses'=>'Services\ExportDatasetController@export']);
 		Route::post('/store/visual',				['as'=>'visualization.store','uses'=>'Services\VisualizationController@store']);
 		Route::get('/visual/list',					['as'=>'visualization.list','uses'=>'Services\VisualizationController@visualList']);
 		Route::get('/visual/{id}',					['as'=>'visualization.single','uses'=>'Services\VisualizationController@visualByID']);
 		Route::get('/dataset/chartdata/{id}',		['as'=>'list','uses'=>'Services\DatasetsController@getFormatedDataset']);
-		Route::get('/dataset/validate/columns/{id}',['as'=>'validate.columns','uses'=>'Services\ImportdatasetController@getColumns']);
+		Route::get('/dataset/define/columns/{id}',['as'=>'validate.columns','uses'=>'Services\ImportdatasetController@getColumns']);
 		Route::post('/visual/settings',				['as'=>'store.visual.settings','uses'=>'Services\VisualizationController@storeVisualOptionsAndSettings']);
 		Route::post('/dataset/savevalidatecolumns',	['as'=>'validate.columns','uses'=>'Services\DatasetsController@SavevalidateColumns']);
 		Route::get('/dataset/delete/{id}',			['as'=>'validate.columns','uses'=>'Services\DatasetsController@deleteDataset']);

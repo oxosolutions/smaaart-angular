@@ -41,7 +41,7 @@ class DatasetsController extends Controller
         return ['status'=>'success','records'=>$responseArray, 'total'=>$totalRecords,'skip'=>$skip];
     }
 
-    public function getDatasetsColumns($id){
+    public function getDatasetsColumnsForSubset($id){
         $datasetDetails = DL::find($id);
         $datasetTable = DB::table($datasetDetails->dataset_table)->take(100)->get();
         if(empty($datasetTable)){
@@ -91,14 +91,21 @@ class DatasetsController extends Controller
     }
 
     public function SavevalidateColumns(Request $request){
-
+        $columns = $this->checkIfColumnExistinTable();
         $result = $this->validateUpdateColumns($request);
         if($result['status'] == 'false'){
 
             return ['status'=>'error','message'=>$result['message']];
         }
         $model = DL::find($request->id);
-    
+        
+        $requestColumns = json_decode($request->columns);
+        foreach($columns as $key => $column){
+            if(!array_key_exists($column, $requestColumns)){
+                //$this->createNewColumn($request);
+            }
+        }
+
         if(!empty($model)){
 
             $model->dataset_columns = $request->columns;
@@ -108,6 +115,17 @@ class DatasetsController extends Controller
 
             return ['status'=>'error','message'=>'No record found with given id!'];
         }
+    }
+
+    protected function checkIfColumnExistinTable(){
+
+        $result = DB::select('SHOW COLUMNS FROM `data_table_1482944931`');
+        $columns = [];
+        foreach($result as $key => $value){
+            $columns[] = $value->Field;
+        }
+
+        return $columns;
     }
 
 
