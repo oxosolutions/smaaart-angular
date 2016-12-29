@@ -218,7 +218,11 @@ class GoalsController extends Controller
 
         $model = Goal::findOrFail($id);
 
-        
+        //  if($request->goal_number =="" && $request->goal_title =="" &&  $request->goal_tagline =="" &&  $request->goal_description=="" && $request->goal_url  =="" && $request->goal_icon =="" && $request->goal_icon_url=="" && $request->goal_color_hex =="" &&  $request->goal_color_rgb =="" && $request->goal_color_rgb_a =="" && $request->goal_opacity=="" && $request->goal_nodal_ministry =="" && !$request->goal_other_ministries && !$request->goal_schemes && !$request->goal_interventions  && !$request->goal_targets && !$request->goal_resources )
+        // {
+        //     return redirect()->route('goals.create');
+        // }
+      
 
         DB::beginTransaction();
         try{
@@ -226,13 +230,16 @@ class GoalsController extends Controller
 
             $model->save();
             $model->ministry()->delete();
-            foreach($request->goal_other_ministries as $key => $value){
+            if(!empty($request->goal_other_ministries))
+            {    
+                foreach($request->goal_other_ministries as $key => $value){
 
-                $minis = new GMM();
+                    $minis = new GMM();
 
-                $minis->ministry_id = $value;
+                    $minis->ministry_id = $value;
 
-                $model->ministry()->save($minis);
+                    $model->ministry()->save($minis);
+                }
             }
             $model->schema()->delete();
             if(!empty($request->goal_schemes)){
@@ -259,15 +266,17 @@ class GoalsController extends Controller
             }
 
             $model->target()->delete();
-            foreach ($request->goal_targets as $key => $value) {
+            if(!empty($request->goal_targets))
+            {
+                foreach ($request->goal_targets as $key => $value) {
 
-               $targetObj = new GTM();
+                   $targetObj = new GTM();
 
-               $targetObj->targets_id = $value;
+                   $targetObj->targets_id = $value;
 
-               $model->target()->save($targetObj);
+                   $model->target()->save($targetObj);
+                }
             }
-
             $model->resources()->delete();
             if(!empty($request->goal_resources)){
                 foreach ($request->goal_resources as $key => $value) {

@@ -2,7 +2,7 @@
 @section('content')
 
 <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;"><b>Hello {{$user}}!</b></p>
-<p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">You have request to change you password.</p>
+<p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">You have request to reset your password.</p>
 <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">Please click on the following link to change your password.</p>
 <table border="0" cellpadding="0" cellspacing="0" class="btn btn-primary" style="border-collapse:separate;mso-table-lspace:0pt;mso-table-rspace:0pt;box-sizing:border-box;width:100%;">
   <tbody>
@@ -25,9 +25,6 @@
 <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">or copy and paste the following link to your browser's address bar.
 </p>
 <p style="font-family:sans-serif;font-size:14px;font-weight:900;margin:0;Margin-bottom:15px;"><b>http://projects.fhts.ac.in/sdgindia/{{$token}}</b></p>
+<p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">If you do not understand this email. Do not do anything. You will be able to log in to your account with your existing password.</p>
 <p style="font-family:sans-serif;font-size:14px;font-weight:900;margin:0;Margin-bottom:15px;">Thank you!</p>
-
-
-
-
 @endsection
