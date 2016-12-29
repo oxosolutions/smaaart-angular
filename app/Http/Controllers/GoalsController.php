@@ -47,7 +47,13 @@ class GoalsController extends Controller
 
     public function store(Request $request){
 
-        $this->modelValidate($request);
+        //$this->modelValidate($request);
+        if($request->goal_number =="" && $request->goal_title =="" &&  $request->goal_tagline =="" &&  $request->goal_description=="" && $request->goal_url  =="" && $request->goal_icon =="" && $request->goal_icon_url=="" && $request->goal_color_hex =="" &&  $request->goal_color_rgb =="" && $request->goal_color_rgb_a =="" && $request->goal_opacity=="" && $request->goal_nodal_ministry =="" && !$request->goal_other_ministries && !$request->goal_schemes && !$request->goal_interventions  && !$request->goal_targets && !$request->goal_resources )
+        {
+            return redirect()->route('goals.create');
+        }
+      
+       
 
         DB::beginTransaction();
 
@@ -58,14 +64,14 @@ class GoalsController extends Controller
             $model->created_by = Auth::user()->id;
 
             $model->save();
+            if(!empty($request->goal_other_ministries))
+            {    foreach($request->goal_other_ministries as $key => $value){
 
-            foreach($request->goal_other_ministries as $key => $value){
-
-                $minis = new GMM();
-                $minis->ministry_id = $value;
-                $model->ministry()->save($minis);
+                    $minis = new GMM();
+                    $minis->ministry_id = $value;
+                    $model->ministry()->save($minis);
+                }
             }
-
             if(!empty($request->goal_schemes)){
 
                 foreach ($request->goal_schemes as $key => $value) {
@@ -88,14 +94,16 @@ class GoalsController extends Controller
                    $model->intervention()->save($intervObj);
                 }
             }
+            if(!empty($request->goal_targets))
+            {        
+                foreach ($request->goal_targets as $key => $value) {
 
-            foreach ($request->goal_targets as $key => $value) {
+                   $targetObj = new GTM();
 
-               $targetObj = new GTM();
+                   $targetObj->targets_id = $value;
 
-               $targetObj->targets_id = $value;
-
-               $model->target()->save($targetObj);
+                   $model->target()->save($targetObj);
+                }
             }
 
             if(!empty($request->goal_resources)){

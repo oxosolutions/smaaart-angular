@@ -99,11 +99,9 @@ class DatasetsController extends Controller
         }
         $model = DL::find($request->id);
         
-        $requestColumns = json_decode($request->columns);
-        foreach($columns as $key => $column){
-            if(!array_key_exists($column, $requestColumns)){
-                //$this->createNewColumn($request);
-            }
+        $newColumns = json_decode($request->create_columns);
+        if(!empty($newColumns)){
+            $this->createNewColumns($request->create_columns);
         }
 
         if(!empty($model)){
