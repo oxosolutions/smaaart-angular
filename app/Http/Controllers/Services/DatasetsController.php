@@ -100,19 +100,32 @@ class DatasetsController extends Controller
         $model = DL::find($request->id);
         
         $newColumns = json_decode($request->create_columns);
+        $orgColumns = (array)json_decode($request->columns);
         if(!empty($newColumns)){
-            $this->createNewColumns($request->create_columns);
+            $orgColumns = $this->createNewColumns($request->create_columns, $model->dataset_table, $orgColumns);
+            
         }
-
+        $orgColumns = json_encode($orgColumns);
         if(!empty($model)){
 
-            $model->dataset_columns = $request->columns;
+            $model->dataset_columns = $orgColumns;
             $model->save();
             return ['status'=>'sucess','message'=>'Columns updated successfully!','updated_id'=>$model->id];
         }else{
 
             return ['status'=>'error','message'=>'No record found with given id!'];
         }
+    }
+
+    protected function createNewColumns($columns, $table, $orgColumns){
+        foreach(json_decode($columns) as $key => $value){
+            $columnsList = DB::select('SHOW COLUMNS FROM `'.$table.'`');
+            $colCount = rand(1000,2000);//count($columnsList)-1;
+            DB::select('ALTER TABLE `'.$table.'` ADD COLUMN column_'.$colCount.' TEXT NULL AFTER '.$value->col_after.';');
+            DB::table($table)->where(['id'=>1])->update(['column_'.$colCount => $value->col_name]);
+             $orgColumns['column_'.$colCount] = $value->col_type;
+        }
+        return $orgColumns;
     }
 
     protected function checkIfColumnExistinTable(){
