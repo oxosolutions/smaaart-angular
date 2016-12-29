@@ -107,10 +107,14 @@ class GoalsTargetController extends Controller
     }
 
     public function edit($id){
-
-        $model = GT::findOrFail($id);
-
-        return view('target.edit', ['model'=>$model, 'css'=>['fileupload'],'js'=>['fileupload','custom'=>['target-create']]]);
+        try{
+            $model = GT::findOrFail($id);
+            return view('target.edit', ['model'=>$model, 'css'=>['fileupload'],'js'=>['fileupload','custom'=>['target-create']]]);
+        }catch(\Exception $e)
+        {
+            Session::flash('error','No data found for this');
+            return redirect()->route('target.list');
+        }
     }
 
     public function update(Request $request, $id){

@@ -102,6 +102,24 @@
         </div>
       </div>
     <!-- User Register Mail to Admin Email Settings Form End-->
+     <!-- On User Approve Email Settings Form -->
+      <div class="row">
+        <div class="col-md-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Dataset Number Row Setting</h3>
+            </div>
+              {!! Form::model($userApprov_model, ['method' => 'PATCH','route'=>['dataset.settings', $userApprov_model->id], 'files'=>true]) !!}
+              {{--{!! Form::open(['route' => 'designations.store', 'files'=>true]) !!}--}}
+                @include('settings._dataset_setting')
+              <div class="box-footer">
+                {!! Form::submit('Save Settings', ['class' => 'btn btn-primary']) !!}
+              </div>
+              {!! Form::close() !!}
+          </div>
+        </div>
+      </div>
+    <!-- User Register Mail to Admin Email Settings Form End-->
     </section>
   </div>
 @endsection

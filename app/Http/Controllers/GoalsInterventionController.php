@@ -93,10 +93,15 @@ class GoalsInterventionController extends Controller
 
 
     public function edit($id){
+        try{
+            $model = GI::findOrFail($id);
+            return view('intervention.edit', ['model'=>$model, 'js'=>['fileupload','custom'=>['invt-create']],'css'=>['fileupload']]);
+            }catch(\Exception $e)
+            {
+                Session::flash('error','No data found for this.');
+                return redirect()->route('intervention.list');
 
-        $model = GI::findOrFail($id);
-
-        return view('intervention.edit', ['model'=>$model, 'js'=>['fileupload','custom'=>['invt-create']],'css'=>['fileupload']]);
+            }
     }
 
 

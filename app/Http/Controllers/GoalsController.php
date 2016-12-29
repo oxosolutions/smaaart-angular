@@ -159,47 +159,53 @@ class GoalsController extends Controller
     }
 
     public function edit($id){
+        try{
+            $model = Goal::findOrFail($id);
+            $minis = [];
+            $schema = [];
+            $target = [];
+            $resources = [];
+            $intervention = [];
+            foreach($model->ministry as $key => $value){
 
-        $model = Goal::findOrFail($id);
-        $minis = [];
-        $schema = [];
-        $target = [];
-        $resources = [];
-        $intervention = [];
-        foreach($model->ministry as $key => $value){
+                $minis[] = $value->ministry_id;
+            }
 
-            $minis[] = $value->ministry_id;
-        }
+            foreach($model->schema as $key => $value){
 
-        foreach($model->schema as $key => $value){
+                $schema[] = $value->schemas_id;
+            }
 
-            $schema[] = $value->schemas_id;
-        }
+            foreach($model->target as $key => $value){
 
-        foreach($model->target as $key => $value){
+                $target[] = $value->targets_id;
+            }
 
-            $target[] = $value->targets_id;
-        }
+            foreach($model->resources as $key => $value){
 
-        foreach($model->resources as $key => $value){
+                $resources[] = $value->resources_id;
+            }
 
-            $resources[] = $value->resources_id;
-        }
+            foreach($model->intervention as $key => $value){
 
-        foreach($model->intervention as $key => $value){
+                $intervention[] = $value->interventions_id;
+            }
+            return view('goals.edit',[
+                    'model' => $model,
+                    'minis' => $minis,
+                    'schema'=> $schema,
+                    'target'=> $target,
+                    'resources' => $resources,
+                    'intervention' => $intervention,
+                    'css' => ['select2'],
+                    'js' => ['select2','custom'=>['goals-create']]
+                ]);
+            }catch(\Exception $e)
+            {
+                Session::flash('error','No data found for this');
+                return redirect()->route('goals.list');
 
-            $intervention[] = $value->interventions_id;
-        }
-        return view('goals.edit',[
-                'model' => $model,
-                'minis' => $minis,
-                'schema'=> $schema,
-                'target'=> $target,
-                'resources' => $resources,
-                'intervention' => $intervention,
-                'css' => ['select2'],
-                'js' => ['select2','custom'=>['goals-create']]
-            ]);
+            }
     }
 
     public function update(Request $request, $id){

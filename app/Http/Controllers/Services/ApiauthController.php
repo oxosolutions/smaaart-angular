@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Services;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+// use App\ApiUsers ;
 use Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -131,6 +132,10 @@ class ApiauthController extends Controller
 	   else{
 			return ['status'=>'error','message'=>'fill all required fields!'];
 		}
+   }
+   public function UserList()
+   {
+        return User::all();   
    }
 
    protected function validateUserMeta($request){

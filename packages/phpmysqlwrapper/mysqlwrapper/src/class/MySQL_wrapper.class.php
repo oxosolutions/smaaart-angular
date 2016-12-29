@@ -350,6 +350,7 @@ class MySQL_wrapper {
 		}
 		$this->prevQuery = $sql;
 		$this->query = $this->call('query', $sql) or $this->error("Query fail: " . $sql);
+		
 		$this->affected = $this->call('affected_rows');
 		if ($this->query && $this->logQueries) {
 			$this->log('QUERY', "EXEC -> " . number_format($this->getMicrotime() - $start, 8) . " -> " . $sql);
@@ -890,7 +891,9 @@ class MySQL_wrapper {
 	 * @return 	number of inserted rows or false
 	 */
 	public function createTableFromCSV($file, $table, $delimiter = ',', $enclosure = '"', $escape = '\\', $ignore = 1, $update = array(), $getColumnsFrom = 'file', $newLine = FALSE) {
+
 		$file = file_exists($file) ? realpath($file) : NULL;
+
 		if ($file === NULL) {
 			$this->error('ERROR', "Create Table form CSV - File: {$file} doesn't exist.");
 			return FALSE;
@@ -899,6 +902,7 @@ class MySQL_wrapper {
 			$line = fgets($f);
 			fclose($f);
 			$data = explode($delimiter, str_replace($enclosure, NULL, trim($line)));
+
 			$columns = array();
 			$i = 1;
 			
@@ -913,8 +917,8 @@ class MySQL_wrapper {
 					return FALSE;
 				}
 			}
-			
 			$this->query("CREATE TABLE `{$table}` ( " . implode(', ', $columns) . " ) ENGINE=InnoDB DEFAULT CHARSET={$this->charset};");
+
 			$this->importCSV2Table($file, $table, $delimiter, $enclosure, $escape, $ignore, $update, ($getColumnsFrom == 'generate') ? 'table' : 'file', $newLine);
 			$this->query("ALTER TABLE `{$table}` ADD `id` INT(100) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Row ID' FIRST");
 			return true;

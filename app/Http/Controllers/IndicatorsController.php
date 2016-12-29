@@ -71,20 +71,21 @@ class IndicatorsController extends Controller
     }
 
     public function edit($id){
-
-    	$model = IC::findOrFail($id);
-
-    	return view('indicators.edit',['model'=>$model]);
+        try{
+    	   $model = IC::findOrFail($id);
+    	   return view('indicators.edit',['model'=>$model]);
+        }catch(\Exception $e)
+        {
+            Session::flash('error','No data found for this');
+            return redirect()->route('indicators.list');
+        }
     }
 
     public function update(Request $request, $id){
 
     	$model = IC::findOrFail($id);
-
     	$this->modelValidate($request);
-
     	DB::beginTransaction();
-
     	try{
     		$model->fill($request->except(['_token']));
     		$model->save();
@@ -102,9 +103,7 @@ class IndicatorsController extends Controller
     public function destroy($id){
 
     	$model = IC::findOrFail($id);
-
     	try{
-
     		$model->delete();
     		Session::flash('success','Successfully deleted!');
     		return redirect()->route('indicators.list');

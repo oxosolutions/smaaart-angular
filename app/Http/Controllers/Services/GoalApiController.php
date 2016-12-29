@@ -16,20 +16,19 @@ class GoalApiController extends Controller
         $goal = Goal::where('goal_number',$id)->get();
         $response =[];
         foreach($goal as $key => $value){
-            //dd($value->goalNodalMinistry);
-            $response['goal']['goal_id'] = $value->id;
-            $response['goal']['goal_number'] = $value->goal_number;
-            $response['goal']['goal_title'] = $value->goal_title;
-            $response['goal']['goal_tagline'] = $value->goal_tagline;
-            $response['goal']['goal_description'] = $value->goal_description;
-            $response['goal']['goal_url'] = $value->goal_url;
-            $response['goal']['goal_icon'] = $value->goal_icon;
-            $response['goal']['goal_icon_url'] = $value->goal_icon_url;
-            $response['goal']['goal_color_hax'] = $value->goal_color_hex;
-            $response['goal']['goal_color_rgb'] = $value->goal_color_rgb;
-            $response['goal']['goal_color_rgba'] = $value->goal_color_rgb_a;
-            $response['goal']['goal_opacity'] = $value->goal_opacity;
-            $response['goal']['goal_nodal_ministry'] = [
+            $response['goal']['goal_id']                = $value->id;
+            $response['goal']['goal_number']            = $value->goal_number;
+            $response['goal']['goal_title']             = $value->goal_title;
+            $response['goal']['goal_tagline']           = $value->goal_tagline;
+            $response['goal']['goal_description']       = $value->goal_description;
+            $response['goal']['goal_url']               = $value->goal_url;
+            $response['goal']['goal_icon']              = $value->goal_icon;
+            $response['goal']['goal_icon_url']          = $value->goal_icon_url;
+            $response['goal']['goal_color_hax']         = $value->goal_color_hex;
+            $response['goal']['goal_color_rgb']         = $value->goal_color_rgb;
+            $response['goal']['goal_color_rgba']        = $value->goal_color_rgb_a;
+            $response['goal']['goal_opacity']           = $value->goal_opacity;
+            $response['goal']['goal_nodal_ministry']    = [
                                                             'ministry_id' => $value->goalNodalMinistry->ministry_id,
                                                             'ministry_title' => $value->goalNodalMinistry->ministry_title,
                                                             'ministry_description' => $value->goalNodalMinistry->ministry_description,
@@ -209,7 +208,6 @@ class GoalApiController extends Controller
 
     				if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
 
-    					//echo "Test";
     				}
 			    }
 
@@ -338,19 +336,20 @@ class GoalApiController extends Controller
         $responseArray = [];
         $index = 0;
 
-        $responseArray[$index]['goal_id'] = $model->id;
-        $responseArray[$index]['goal_number'] = $model->goal_number;
-		$responseArray[$index]['goal_title'] = $model->goal_title;
-		$responseArray[$index]['goal_tagline'] = $model->goal_tagline;
-		$responseArray[$index]['goal_description'] = $model->goal_description;
-		$responseArray[$index]['goal_url'] = $model->goal_url;
-		$responseArray[$index]['goal_icon'] = $model->goal_icon;
-		$responseArray[$index]['goal_icon_url'] = $model->goal_icon_url;
-		$responseArray[$index]['goal_color_hax'] = $model->goal_color_hex;
-        $responseArray[$index]['goal_color_rgb'] = $model->goal_color_rgb;
-        $responseArray[$index]['goal_color_rgba'] = $model->goal_color_rgb_a;
-		$responseArray[$index]['goal_opacity'] = $model->goal_opacity;
-		$responseArray[$index]['goal_nodal_ministry'] = [
+        $responseArray[$index]['goal_id']                   = $model->id;
+        $responseArray[$index]['goal_number']               = $model->goal_number;
+		$responseArray[$index]['goal_title']                = $model->goal_title;
+		$responseArray[$index]['goal_tagline']              = $model->goal_tagline;
+		$responseArray[$index]['goal_description']          = $model->goal_description;
+		$responseArray[$index]['goal_url']                  = $model->goal_url;
+		$responseArray[$index]['goal_icon']                 = $model->goal_icon;
+		$responseArray[$index]['goal_icon_url']             = $model->goal_icon_url;
+		$responseArray[$index]['goal_color_hax']            = $model->goal_color_hex;
+        $responseArray[$index]['goal_color_rgb']            = $model->goal_color_rgb;
+        $responseArray[$index]['goal_color_rgba']           = $model->goal_color_rgb_a;
+		$responseArray[$index]['goal_opacity']              = $model->goal_opacity;
+        try{
+    		  $responseArray[$index]['goal_nodal_ministry'] = [
                                                             'ministry_id' => $model->goalNodalMinistry->ministry_id,
                                                             'ministry_title' => $model->goalNodalMinistry->ministry_title,
                                                             'ministry_description' => $model->goalNodalMinistry->ministry_description,
@@ -361,22 +360,37 @@ class GoalApiController extends Controller
                                                             'ministry_order' => $model->goalNodalMinistry->ministry_order,
                                                             'created_by' => $model->goalNodalMinistry->created_by
                                                        ];
-		$inIndex = 0;
-		foreach($model->ministry as $ky => $vl){
+            }catch(\Exception $e){
+                    if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
 
-			$responseArray[$index]['ministry'][$inIndex]['ministry_id'] = $vl->ministry->ministry_id;
-			$responseArray[$index]['ministry'][$inIndex]['ministry_title'] = $vl->ministry->ministry_title;
-            $responseArray[$index]['ministry'][$inIndex]['ministry_desc'] = $vl->ministry->ministry_description;
-			$inIndex++;
-		}
+                }
+            }                                               
+		$inIndex = 0;
+          foreach($model->ministry as $ky => $vl){
+           try
+             {   
+    			$responseArray[$index]['ministry'][$inIndex]['ministry_id']      = $vl->ministry->ministry_id;
+    			$responseArray[$index]['ministry'][$inIndex]['ministry_title']   = $vl->ministry->ministry_title;
+                $responseArray[$index]['ministry'][$inIndex]['ministry_desc']    = $vl->ministry->ministry_description;
+    			$inIndex++;
+            }
+            catch(\Exception $e){
+
+                //exception
+                if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
+
+                }
+            }
+		  }
+        
         $inIndex = 0;
         foreach($model->schema as $ky => $vl){
             try{
-                $responseArray[$index]['schema'][$inIndex]['schema_id'] = $vl->schemas->schema_id;
-                $responseArray[$index]['schema'][$inIndex]['schema_title'] = $vl->schemas->schema_title;
-                $responseArray[$index]['schema'][$inIndex]['schema_image'] = asset('schema_file/'.$vl->schemas->schema_image);
-                $responseArray[$index]['schema'][$inIndex]['schema_desc'] = $vl->schemas->schema_desc;
-                $responseArray[$index]['schema'][$inIndex]['schema_content'] = $vl->schemas->schema_content;
+                $responseArray[$index]['schema'][$inIndex]['schema_id']         = $vl->schemas->schema_id;
+                $responseArray[$index]['schema'][$inIndex]['schema_title']      = $vl->schemas->schema_title;
+                $responseArray[$index]['schema'][$inIndex]['schema_image']      = asset('schema_file/'.$vl->schemas->schema_image);
+                $responseArray[$index]['schema'][$inIndex]['schema_desc']       = $vl->schemas->schema_desc;
+                $responseArray[$index]['schema'][$inIndex]['schema_content']    = $vl->schemas->schema_content;
             }catch(\Exception $e){
 
                 //exception
@@ -391,9 +405,9 @@ class GoalApiController extends Controller
         $inIndex = 0;
         foreach($model->target as $ky => $vl){
             try{
-                $responseArray[$index]['target'][$inIndex]['target_id'] = $vl->targets->target_id;
-                $responseArray[$index]['target'][$inIndex]['target_title'] = $vl->targets->target_title;
-                $responseArray[$index]['target'][$inIndex]['target_image'] = asset('target_file/'.$vl->targets->target_image);
+                $responseArray[$index]['target'][$inIndex]['target_id']     = $vl->targets->target_id;
+                $responseArray[$index]['target'][$inIndex]['target_title']  = $vl->targets->target_title;
+                $responseArray[$index]['target'][$inIndex]['target_image']  = asset('target_file/'.$vl->targets->target_image);
                 $indicatorsIndex = 0;
                 foreach($vl->targets->indicators as $k => $v){
                         $responseArray[$index]['target'][$inIndex]['indicators'][$indicatorsIndex]['id'] = $v->id;

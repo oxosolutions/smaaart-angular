@@ -18,8 +18,8 @@
 | loading any of our classes later on. It feels nice to relax.
 |
 */
-ini_set('memory_limit', -1);
-//header("Access-Control-Allow-Origin: *");
+
+// header("Access-Control-Allow-Origin: *");
 
 require __DIR__.'/../bootstrap/autoload.php';
 

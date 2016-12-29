@@ -1,6 +1,11 @@
 <?php
 
-	
+	Route::get('/viewemail',function(){
+		return view('mail.layout.email',
+		['username' => 'sgssandhu'],
+		['user_name' => 'SGS Sandhu']
+		); 
+	});
 	Route::group(['middleware'=>['auth','approve']], function(){
 		//dashboard
 		Route::get('/', ['as'=>'home', 'uses'=>'DashboardController@index']);
@@ -185,6 +190,7 @@
 		Route::patch('/settings/store/forget',['as'=>'forget.settings','uses'=>'GlobalSettingsController@saveForgetEmailSettings']);
 		Route::patch('/settings/store/adminreg',['as'=>'adminreg.settings','uses'=>'GlobalSettingsController@saveAdminRegEmailSettings']);
 		Route::patch('/settings/store/userapprove',['as'=>'aprroveuser.settings','uses'=>'GlobalSettingsController@saveApproveUserSettings']);
+		Route::patch('/settings/store/datasetNumRow',['as'=>'dataset.settings','uses'=>'GlobalSettingsController@datasetNumRowSetting']);
 
 		
 	});

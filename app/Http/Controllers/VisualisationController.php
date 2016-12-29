@@ -79,10 +79,14 @@ class VisualisationController extends Controller
 
 
     public function edit($id){
-
-    	$model = VS::findOrFail($id);
-
-    	return view('visualisation.edit',['model'=>$model]);
+        try{
+    	   $model = VS::findOrFail($id);
+    	   return view('visualisation.edit',['model'=>$model]);
+        }catch(\Exception $e)
+        {
+            Session::flash('error','No data found for this.');
+            return redirect()->route('visualisation.list');
+        }
     }
 
     public function update(Request $request, $id){

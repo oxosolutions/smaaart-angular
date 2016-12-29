@@ -109,10 +109,14 @@ class GoalsResourceController extends Controller
     }
 
     public function edit($id){
-
-        $model = GR::findOrFail($id);
-
-        return view('resources.edit', ['model'=>$model, 'css'=>['fileupload'],'js'=>['fileupload','custom'=>['resource-create']]]);
+        try{
+            $model = GR::findOrFail($id);
+            return view('resources.edit', ['model'=>$model, 'css'=>['fileupload'],'js'=>['fileupload','custom'=>['resource-create']]]);
+        }catch(\Exception $e)
+        {
+            Session::flash('error','No data found for this.');
+            return redirect()->route('resource.list');
+        }
     }
 
     public function update(Request $request, $id){

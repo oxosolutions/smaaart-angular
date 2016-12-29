@@ -384,7 +384,8 @@ class ApiusersController extends Controller
           try{     
               $chkmeta =  UM::where('user_id',$id)->count(); 
               if($chkmeta ==0)
-              {
+              {   
+                  Session::flash('error','No data found for this.');
                   return redirect()->route('api.users');
               }
               $meta = UM::select('id','key','value')->where('user_id',$id)->get();//->where();

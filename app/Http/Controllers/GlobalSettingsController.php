@@ -17,10 +17,10 @@ class GlobalSettingsController extends Controller
     			'js'  => ['icheck','custom'=>['settings']]
     	];
     	
-    	$plugins['Reg_model'] = $this->setRegStdObjectValues();
-    	$plugins['Forget_model'] = $this->setForgetStdObjectValues();
-        $plugins['adminReg_model'] = $this->setAdminRegStdObjectValues();
-        $plugins['userApprov_model'] = $this->setUserApprovalStdObjectValues();
+    	$plugins['Reg_model']          = $this->setRegStdObjectValues();
+    	$plugins['Forget_model']       = $this->setForgetStdObjectValues();
+        $plugins['adminReg_model']     = $this->setAdminRegStdObjectValues();
+        $plugins['userApprov_model']    = $this->setUserApprovalStdObjectValues();
     	return view('settings.index',$plugins);
     }
 
@@ -221,5 +221,25 @@ class GlobalSettingsController extends Controller
             $Forget_modelData->aprroved_description = '';
         }
         return $Forget_modelData;
+    }
+
+    public function datasetNumRowSetting(Request $request)
+    {
+        try{
+            if($request->dataset_status==true)
+            {
+                $num_row['activate'] =true;
+            }else{
+                $num_row['activate'] =false;
+            }
+               
+            $num_row['num_row'] = $request->dataset_num_row;
+            GS::where('meta_key','dataset_setting')->update(['meta_value'=>json_encode($num_row)]);
+            Session::flash('success','Dataset setings Saved Successfuly!');
+
+           }catch(\Exception $e)
+           { throw $e;} 
+        return redirect()->route('global.settings');
+
     }
 }

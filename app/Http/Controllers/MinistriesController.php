@@ -84,13 +84,13 @@ class MinistriesController extends Controller
 
         $rules = [
 
-            'ministry_id' => 'required|int',
+            'ministry_id' => 'required|numeric',
             'ministry_title' => 'required|min:5|max:100',
             'ministry_description' => 'required',
             'ministry_icon' => 'required',
             'ministry_phone' => 'required|numeric',
             'ministry_ministers' => 'required',
-            'ministry_order' => 'required|int',
+            'ministry_order' => 'required|numeric',
             'ministry_image' =>'required | mimes:jpeg,jpg,png',
 
         ];
@@ -106,15 +106,14 @@ class MinistriesController extends Controller
     protected function editmodelValidate($request){
 
         $rules = [
-
-            'ministry_id' => 'required|int',
+            'ministry_id' => 'required|numeric',
             'ministry_title' => 'required|min:5|max:100',
             'ministry_description' => 'required',
             'ministry_icon' => 'required',
             'ministry_phone' => 'required|numeric',
             'ministry_ministers' => 'required',
-            'ministry_order' => 'required|int',
-            'ministry_image' =>'required | mimes:jpeg,jpg,png',
+            'ministry_order' => 'required|numeric',
+            'ministry_image' =>'required|mimes:jpeg,jpg,png',
         ];
 
         if($request->hasFile('ministry_image')){

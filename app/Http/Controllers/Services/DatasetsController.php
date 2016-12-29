@@ -41,6 +41,21 @@ class DatasetsController extends Controller
         return ['status'=>'success','records'=>$responseArray, 'total'=>$totalRecords,'skip'=>$skip];
     }
 
+    public function getDatasetsColumns($id){
+        $datasetDetails = DL::find($id);
+        $datasetTable = DB::table($datasetDetails->dataset_table)->take(100)->get();
+        if(empty($datasetTable)){
+            return ['status'=>'success','records'=>[]];
+        }
+
+        $responseArray = [];
+        $responseArray['dataset_id'] = $id;
+        $responseArray['dataset_name'] = $datasetDetails->dataset_name;
+        $responseArray['records'] = json_decode($datasetTable);
+        $totalRecords = DB::table($datasetDetails->dataset_table)->count();
+        return ['status'=>'success','records'=>$responseArray];
+    }
+
     public function getFormatedDataset($id){
 
         $model = DL::find($id);
@@ -82,13 +97,11 @@ class DatasetsController extends Controller
 
             return ['status'=>'error','message'=>$result['message']];
         }
-
         $model = DL::find($request->id);
+    
         if(!empty($model)){
 
             $model->dataset_columns = $request->columns;
-            $model->validated       = 1;
-
             $model->save();
             return ['status'=>'sucess','message'=>'Columns updated successfully!','updated_id'=>$model->id];
         }else{
@@ -152,22 +165,16 @@ class DatasetsController extends Controller
         if(!$validate){
             return ['status'=>'error','message'=>'Required fields are missing!!'];
         }
-        $old_dataset = DL::find($request->dataset_id);
-        $dataset_records = json_decode($old_dataset->dataset_records);
-        $newColumns = json_decode($request->subset_columns);
-        $newSubset = [];
-        $index = 0;
-        foreach($dataset_records as $key => $value){
-            foreach($value as $colKey => $colVal){
-                if(in_array($colKey,$newColumns)){
-                    $newSubset[$index][$colKey] = $colVal;
-                }
-            }
-            $index++;
-        }
+        $model = DL::find($request->dataset_id);
+        $tableName = 'data_table_'.time();
+        $columns = json_decode($request->subset_columns);
+        DB::select("CREATE TABLE `{$tableName}` as SELECT  ".implode(',', $columns)." FROM ".$model->dataset_table.";");
+        DB::select("ALTER TABLE `{$tableName}` ADD  `id` INT(100) PRIMARY KEY AUTO_INCREMENT FIRST;");
+
         $model = new DL();
         $model->dataset_name = $request->subset_name;
-        $model->dataset_records = json_encode($newSubset);
+        $model->dataset_records = '{}';
+        $model->dataset_table = $tableName;
         $model->user_id = Auth::user()->id;
 		$model->uploaded_by = Auth::user()->name;
         $model->save();
@@ -212,6 +219,54 @@ class DatasetsController extends Controller
                     $singleRow[$Colkey] = "<>".$setValue[$Colkey]."<>";
                 }
             }
+        }
+    }
+
+    public function validateColums($id){
+
+        $model = DL::find($id);
+        if(!empty($model)){
+            $wrongDataRows = [];
+            $datasetTable = DB::table($model->dataset_table)->get()->toArray();
+            $columnsTypeArray = (array)json_decode($model->dataset_columns);
+            foreach($datasetTable as $key => $row){
+                //$columnsArray = [];
+                foreach($row as $colKey => $colVal){
+                    $error = false;
+                    // dd((bool)strtotime('2016-12-32'));
+                    // dump($colKey);
+                    // dd(gettype($colVal));
+                    if(array_key_exists($colKey,$columnsTypeArray)){
+                        $type = $columnsTypeArray[$colKey];
+                        if($type == 'areacode'){
+                            $type = 'string';
+                        }
+                        if($type != 'date'){
+                            if($type == 'integer'){
+                                if(!is_numeric($colVal)){
+                                    $wrongDataRows[] = $row;
+                                    break;
+                                }
+                            }
+                            if($type == 'string'){
+                               if(is_numeric($colVal)){
+                                    $wrongDataRows[] = $row;
+                                    break;
+                               }
+                            }
+                        }else{
+                            $dataType = (bool)strtotime($colVal);
+                            if($dataType != true){
+                                $wrongDataRows[] = $row;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return ['status'=>'success','message'=>'Columns valudated successfully!','wrong_rows'=>$wrongDataRows];
+        }else{
+            return ['stauts'=>'error','message'=>'No dataset found!'];
         }
     }
 

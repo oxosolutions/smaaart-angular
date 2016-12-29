@@ -65,10 +65,15 @@ class DesignationController extends Controller
     }
 
     public function edit($id){
+        try{
+            $model = DG::findOrFail($id);
+            return view('designations.edit', ['model'=>$model]);
+        }catch(\Exception $e)
+        {
+            Session::flash('error','Data Not found');
+            return redirect()->route('designations.list');
 
-        $model = DG::findOrFail($id);
-
-        return view('designations.edit', ['model'=>$model]);
+        }
     }
 
     public function update(Request $request, $id){

@@ -59,7 +59,7 @@ class ImportdatasetController extends Controller
 
         if($result['status'] == 'true'){
             
-			$response = ['status'=>'success','message'=>$result['message']];
+			$response = ['status'=>'success','message'=>$result['message'],'id'=>$result['id']];
 			return $response;
     		
         }else{
@@ -115,22 +115,29 @@ class ImportdatasetController extends Controller
     }
 
     public function getColumns($id){
-        $model = DL::where('id',$id)->first();
-        $datasetTable  = DB::table($model->dataset_table)->limit(1)->first();
-        if(empty($datasetTable)){
-            return ['status'=>'error','message'=>'no data found!'];
-        }
-        // dd($datasetTable);
-        $columnsArray = [];
-        $index = 0;
-        foreach($datasetTable as $key => $value){
-            if($index != 0){
-                $columnsArray[$key] = $value;
+        try{
+            $model = DL::where('id',$id)->first();
+             $datasetTable  = DB::table($model->dataset_table)->limit(1)->first();
+            if(empty($datasetTable)){
+                return ['status'=>'error','message'=>'no data found!'];
             }
-            $index++;
+            // dd($datasetTable);
+            $columnsArray = [];
+            $index = 0;
+            foreach($datasetTable as $key => $value){
+                if($index != 0){
+                    $columnsArray[$key] = $value;
+                }
+                $index++;
+            }
+
+            return ['status'=>'sucess','data'=>['columns'=>$columnsArray,'dataset_id'=>$model->id,'validated'=>$model->validated, 'dataset_columns'=>  json_decode($model->dataset_columns)]];
+        }catch(\Exception $e)
+        {
+            return ['status'=>'error','message'=>'no data found!'];
+
         }
 
-        return ['status'=>'sucess','data'=>['columns'=>$columnsArray,'dataset_id'=>$model->id,'validated'=>$model->validated]];
     }
 
     protected function storeInDatabase($filename, $origName, $source){
@@ -150,7 +157,7 @@ class ImportdatasetController extends Controller
         $tableName = 'data_table_'.time();
         
         $result = $model->wrapper->createTableFromCSV($filePath,$tableName,',','"', '\\', 0, array(), 'generate','\r\n');
-        dd($result);
+        
         if($result){
             $model = new DL;
             $model->dataset_table = $tableName;

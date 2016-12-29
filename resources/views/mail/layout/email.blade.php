@@ -1,3 +1,24 @@
+<div itemscope itemtype="http://schema.org/EmailMessage">
+  <div itemprop="potentialAction" itemscope itemtype="http://schema.org/ConfirmAction">
+    <meta itemprop="name" content="Approve User"/>
+    <div itemprop="handler" itemscope itemtype="http://schema.org/HttpActionHandler">
+      <link itemprop="url" href="https://myexpenses.com/approve?expenseId=abc123"/>
+    </div>
+  </div>
+  <meta itemprop="description" content="Click to Approve {{$user_name}}"/>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -12,11 +33,21 @@
 				<table align="center" border="0" cellpadding="0" cellspacing="0" width="600" style="border: 1px solid #cccccc; border-collapse: collapse;">
 					<tr>
 						<td align="center" bgcolor="#70bbd9" style="padding: 40px 0 30px 0; color: #153643; font-size: 28px; font-weight: bold; font-family: Arial, sans-serif;">
-							<img src="{{$message->embed('mail/images/logo_smaart.png')}}" alt="Creating Email Magic"  style="display: block;" />
-							<img src="{{$message->embed('mail/images/logo_sdg_title.png')}}" alt="Creating Email Magic" width="300" style="display: block;" />
+							<img src="{{asset('mail/images/logo_smaart.png')}}" alt="Creating Email Magic"  style="display: block;" />
+							<img src="{{asset('mail/images/logo_sdg_title.png')}}" alt="Creating Email Magic" width="300" style="display: block;" />
 						</td>
 					</tr>
+					{{$username}}
+					
+				
 					@yield('content')
+					kjlj <br/>
+					kjlj <br/>
+					kjlj <br/>
+					kjlj <br/>
+					kjlj <br/>
+					kjlj <br/>
+					kjlj <br/>
 					<tr>
 						<td bgcolor="#ee4c50" style="padding: 30px 30px 30px 30px;">
 							<table border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -30,13 +61,13 @@
 											<tr>
 												<td style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;">
 													<a href="http://www.twitter.com/" style="color: #ffffff;">
-														<img src="{{$message->embed('mail/images/tw.gif')}}" alt="Twitter" width="38" height="38" style="display: block;" border="0" />
+														<img src="{{asset('mail/images/tw.gif')}}" alt="Twitter" width="38" height="38" style="display: block;" border="0" />
 													</a>
 												</td>
 												<td style="font-size: 0; line-height: 0;" width="20">&nbsp;</td>
 												<td style="font-family: Arial, sans-serif; font-size: 12px; font-weight: bold;">
 													<a href="http://www.twitter.com/" style="color: #ffffff;">
-														<img src="{{$message->embed('mail/images/fb.gif')}}" alt="Facebook" width="38" height="38" style="display: block;" border="0" />
+														<img src="{{asset('mail/images/fb.gif')}}" alt="Facebook" width="38" height="38" style="display: block;" border="0" />
 													</a>
 												</td>
 											</tr>

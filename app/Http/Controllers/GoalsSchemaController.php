@@ -83,7 +83,7 @@ class GoalsSchemaController extends Controller
     				'schema_id'     =>  'required|numeric',
     				'schema_title'  =>  'required',
     				'schema_desc'   =>  'required',
-                    'schema_image'  =>  'image|mimes:jpg,png.jpeg'
+                    'schema_image'  =>  'image|mimes:jpg,png,jpeg'
     	];
 
     	$this->validate($request, $rules);
@@ -94,7 +94,7 @@ class GoalsSchemaController extends Controller
                     'schema_id'     =>  'required|numeric',
                     'schema_title'  =>  'required',
                     'schema_desc'   =>  'required',
-                    'schema_image'  =>  'image|mimes:jpg,png.jpeg'
+                    'schema_image'  =>  'image|mimes:jpg,png,jpeg'
                 ];
 
         $this->validate($request, $rules);
@@ -118,9 +118,15 @@ class GoalsSchemaController extends Controller
 
     public function edit($id){
 
-        $model = GS::findOrFail($id);
+        try{
+            $model = GS::findOrFail($id);
+            return view('schemas.edit', ['model'=>$model, 'css'=>['fileupload'],'js'=>['fileupload','custom'=>['schema-create']]]);
+        }catch(\Exception $e)
+        {
+            Session::flash('error','No data found for this.');
+            return redirect()->route('schema.list');
 
-        return view('schemas.edit', ['model'=>$model, 'css'=>['fileupload'],'js'=>['fileupload','custom'=>['schema-create']]]);
+        }
     }
 
     public function update(Request $request, $id){

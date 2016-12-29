@@ -91,10 +91,15 @@ class DepartmentController extends Controller
     }
     
     public function edit($id){
+        try{
+                $model = DP::findOrFail($id);
+                return view('departments.edit', ['model'=>$model]);
+            }catch(\Exception $e)
+            {
+                Session::flash('error','No data found for this.');
+                return redirect()->route('department.list');
 
-        $model = DP::findOrFail($id);
-
-        return view('departments.edit', ['model'=>$model]);
+            }
     }
 
     public function update(Request $request, $id){

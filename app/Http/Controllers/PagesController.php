@@ -85,15 +85,20 @@
     }
 
     public function edit($id){
+      try{
+          $model = Page::findOrFail($id);
 
-      $model = Page::findOrFail($id);
-
-      $plugins = [
-            'css' => ['wysihtml5','fileupload'],
-            'js'  => ['wysihtml5','fileupload','ckeditor','custom'=>['page-create']],
-            'model' => $model
-      ];
-      return view('pages.edit',$plugins);
+          $plugins = [
+                'css' => ['wysihtml5','fileupload'],
+                'js'  => ['wysihtml5','fileupload','ckeditor','custom'=>['page-create']],
+                'model' => $model
+          ];
+          return view('pages.edit',$plugins);
+        }catch(\Exception $e)
+        {
+          Session::flash('error','Data not found.');
+          return redirect()->route('pages.list');          
+        }
     }
 
     public function update(Request $request, $id){
