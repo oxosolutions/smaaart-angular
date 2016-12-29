@@ -53,9 +53,7 @@ class GoalsController extends Controller
             return redirect()->route('goals.create');
         }
       
-       
-
-        DB::beginTransaction();
+       DB::beginTransaction();
 
         try{
 
@@ -220,7 +218,7 @@ class GoalsController extends Controller
 
         $model = Goal::findOrFail($id);
 
-        $this->modelValidate($request);
+        
 
         DB::beginTransaction();
         try{

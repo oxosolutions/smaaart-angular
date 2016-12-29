@@ -438,8 +438,8 @@ class GoalApiController extends Controller
         $inIndex = 0;
         foreach($model->resources as $ky => $vl){
             try{
-                $responseArray[$index]['resources'][$inIndex]['resources_id'] = $vl->resources->resources_id;
-                $responseArray[$index]['resources'][$inIndex]['resources_title'] = $vl->resources->resources_title;
+                $responseArray[$index]['resources'][$inIndex]['resources_id'] = $vl->resources->resource_id;
+                $responseArray[$index]['resources'][$inIndex]['resources_title'] = $vl->resources->resource_title;
                 $responseArray[$index]['resources'][$inIndex]['resources_image'] = asset('resource_file/'.$vl->resources->resources_image);
             }catch(\Exception $e){
 
