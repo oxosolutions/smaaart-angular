@@ -11,12 +11,18 @@ class Designation extends Model
     protected $softDelete = true;
 
     public static function designationList(){
-    	return self::orderBy('id')->pluck('designation','id');
+    	
+        return self::orderBy('id')->pluck('designation','id');
     }
 
     public static function getDesignation($id)
-    {
-    	return self::where('id',$id)->first()->designation;
+    {   
+        try{
+    	       return self::where('id',$id)->first()->designation;
+            }catch(\Exception $e)
+            {
+                return false;
+            }
     }
 
     static function designationCount()

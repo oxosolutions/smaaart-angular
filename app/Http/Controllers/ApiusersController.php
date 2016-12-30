@@ -231,7 +231,7 @@ class ApiusersController extends Controller
 
                     $filename = date('Y-m-d-H-i-s')."-".$request->file('profile_pic')->getClientOriginalName();
                     $request->file('profile_pic')->move($path, $filename);
-                    $proPic->key = "profile_picture";
+                    $proPic->key = "profile_pic";
                     $proPic->user_id = $request->user_list;
                     $proPic->value = $filename;
                     $proPic->save();

@@ -8,7 +8,6 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::post('/auth','Services\ApiauthController@Authenicates');
 		Route::post('/register',					['as'=>'register','uses'=>'Services\ApiauthController@Register']);
 		Route::get('/goals/list',					['as'=>'goals.list','uses'=>'Services\GoalApiController@goalsList']);
-		
 		Route::get('/goalData/{id}',			    'Services\GoalApiController@goalData');
 		Route::get('/pages',						['as'=>'pages.list','uses'=>'Services\PagesApiController@getAllPages']);
 		Route::get('/pages/{page_slug}',			['as'=>'pages.by_slug','uses'=>'Services\PagesApiController@getPageBySlug']);
@@ -37,7 +36,6 @@ Route::group(['prefix' => 'v1'], function () {
 		    return $request->user();
 		});
 		Route::get('users/list',					['as' => 'users' , 'uses' => 'Services\ApiauthController@UserList']);
-
 		Route::post('/dataset/import',				['as'=>'import','uses'=>'Services\ImportdatasetController@uploadDataset']);
 		Route::get('/dataset/list',					['as'=>'list','uses'=>'Services\DatasetsController@getDatasetsList']);
 		Route::get('/dataset/view/{id}/{skip}',			['as'=>'list','uses'=>'Services\DatasetsController@getDatasets']);
@@ -58,6 +56,7 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::post('dataset/saveEditedDatset',		['as'=>'dataset.save_edited','uses'=>'Services\DatasetsController@saveEditedDatset']);
 		Route::post('dataset/saveSubset',			['as'=>'dataset.save_subset','uses'=>'Services\DatasetsController@saveNewSubset']);
 		Route::post('update/profile',				['as'=>'profile.update','uses'=>'Services\ProfileApiController@saveProfile']);
+		Route::post('update/profilePic',			['as'=>'profilePic.update','uses'=>'Services\ProfileApiController@profilePicUpdate']);
 		Route::get('dataset/validate/columns/{id}', ['as'=>'dataset.column.validate', 'uses'=>'Services\DatasetsController@validateColums']);
 
 	});

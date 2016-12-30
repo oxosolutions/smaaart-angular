@@ -1,5 +1,6 @@
 <?php
 
+
 	Route::get('/viewemail',function(){
 		return view('mail.layout.email',
 		['username' => 'sgssandhu'],

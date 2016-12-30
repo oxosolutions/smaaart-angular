@@ -18,6 +18,7 @@ class Department extends Model
     protected $fillable = ['dep_code','dep_name','created_by'];
     protected $dates = ['deleted_at'];
     protected $softDelete = true;
+    protected $table = 'departments';
 
     public function scopeWithUsers($query){
     	$query->select('departments.*')
@@ -34,8 +35,14 @@ class Department extends Model
         return self::count();
     }
     static function getDepName($id)
-    {
-        return self::where('id',$id)->first()->dep_name;
+    {   
+        $count = self::where('id',$id)->count();
+        if($count !=0)
+        {
+            return self::where('id',$id)->first()->dep_name;
+         }
+         else{ return false; }
     }
+    
     
 }

@@ -14,15 +14,20 @@ class PagesApiController extends Controller
         $index = 0;
         $responseArray = [];
         foreach($model as $key => $value){
-
+        try{    
             $responseArray['pages'][$index]['page_title'] = $value->page_title;
-            $responseArray['pages']['page_subtitle'] = $model->page_subtitle;
+            $responseArray['pages']['page_subtitle'] = $value->page_subtitle;
             $responseArray['pages'][$index]['page_slug'] = $value->page_slug;
             $responseArray['pages'][$index]['page_content'] = $value->content;
             $responseArray['pages'][$index]['page_image'] = asset('page_data').'/'.$value->page_image;
             $responseArray['pages'][$index]['page_status'] = $value->status;
             $responseArray['pages'][$index]['page_status'] = $value->createdBy->name;
             $index++;
+            }catch(\Exception $e)
+            {
+                return ['status'=>'error','message'=>$responseArray];
+        
+            }
         }
 
         return ['status'=>'success','records'=>$responseArray];

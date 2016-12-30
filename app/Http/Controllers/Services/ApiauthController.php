@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Hash;
 use App\UserMeta;
 use App\Mail\ForgetPassword;
 use App\Mail\AdminRegister;
+USE App\Mail\RegisterNewUser;
 use Illuminate\Support\Facades\Mail;
 use App\GlobalSetting as GS;
 class ApiauthController extends Controller
@@ -36,9 +37,8 @@ class ApiauthController extends Controller
             if($user->approved == 0){
                 return ['status'=>'error','message'=>'Your account not yet approved!'];
             }
-            $model = UserMeta::select('value')->where(['user_id'=>$user->id,'key'=>'profile_pic'])->get();
-            //dd($model);
-            $image = (!empty($model))?$model[0]->value:'';
+            $model = UserMeta::select('value')->where(['user_id'=>$user->id,'key'=>'profile_pic'])->first();
+            $image = (!empty($model))?$model->value:'';
 			return ['status'=>'successful', 'user_detail'=>$user, 'profile_pic'=>asset('profile_pic/'.$image)];
 		}else{
 			return ['status'=>'error','message'=>'Invalid email or password!'];
@@ -118,6 +118,8 @@ class ApiauthController extends Controller
                         $userDetails['email'] = $request->email;
                         $userDetails['phone'] = $request->phone;
                         Mail::to(json_decode($model->meta_value)->admin_email)->send(new AdminRegister($userDetails));
+                        Mail::to($request->email)->send(new RegisterNewUser($request->name));
+
                     }
 					return ['status'=>'successful','message'=>'Successful register!', "token"=>$api_token];
 				}catch(\Exception $e){

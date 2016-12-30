@@ -50,7 +50,7 @@ class ImportdatasetController extends Controller
         }
 
         if($request->add_replace == 'newtable'){
-            $result = $this->storeInDatabase($filePath, $request->dataset_name, $request->source);
+            $result = $this->storeInDatabase($filePath, $request->dataset_name, $request->source, $filename);
         }elseif($request->add_replace == 'append'){
             //$result = $this->appendDataset($request, $filePath);
         }elseif($request->add_replace == 'replace'){
@@ -139,7 +139,7 @@ class ImportdatasetController extends Controller
 
     }
 
-    protected function storeInDatabase($filename, $origName, $source){
+    protected function storeInDatabase($filename, $origName, $source, $orName){
         
         $filePath = $filename;
         if($source == 'url'){
@@ -161,6 +161,8 @@ class ImportdatasetController extends Controller
             $model = new DL;
             $model->dataset_table = $tableName;
             $model->dataset_name = $origName;
+            $model->dataset_file = $filePath;
+            $model->dataset_file_name = $orName;
             $model->user_id = Auth::user()->id;
             $model->uploaded_by = Auth::user()->name;
             $model->dataset_records = '{}';

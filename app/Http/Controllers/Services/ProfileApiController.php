@@ -9,14 +9,17 @@ use App\Ministrie as MIN;
 use App\Department as DP;
 use App\Designation as DS;
 use Hash;
+use Auth;
 use App\UserMeta;
 class ProfileApiController extends Controller
 {
     public function getUserProfile(Request $request){
 
         $model = $request->user();
-
+        
         $responseArray = [];
+        $responseArray['departments'] = [];
+        $responseArray['ministries'] = [];
         $responseArray['name']  = $model->name;
         $responseArray['email'] = $model->email;
         $responseArray['token'] = $model->api_token;
@@ -40,9 +43,14 @@ class ProfileApiController extends Controller
                         $index = 0;
                         foreach($departments as $depKey => $depVal){
                             $DepModel = DP::find($depVal);
-                            $responseArray['departments'][$index]['id'] = $DepModel->id;
-                            $responseArray['departments'][$index]['department_name'] = $DepModel->dep_name;
-                            $index++;
+                            try{
+                                $responseArray['departments'][$index]['id'] = $DepModel->id;
+                                $responseArray['departments'][$index]['department_name'] = $DepModel->dep_name;
+                                $index++;
+                            }catch(\Exception $e){
+                                $responseArray['departments'][$index]['id'] = '';
+                                $responseArray['departments'][$index]['department_name'] = '';
+                            }
                         }
                     break;
                     case'designation':
@@ -127,20 +135,66 @@ class ProfileApiController extends Controller
         $model->save();
         $ministries = explode(',',$request->ministry);
         $departments = explode(',',$request->department);
-        if($request->ministry != 'undefined' && $request->department != 'undefined'){
-            UserMeta::where(['key'=>'ministry', 'user_id' => $userId])->update(['value'=>json_encode($ministries)]);
-            if($request->phone != 'undefined'){
-                UserMeta::where(['key'=>'phone', 'user_id' => $userId])->update(['value'=>$request->phone]);
+
+        if($request->ministry != 'undefined' && $request->department != 'undefined' || $request->phone != 'undefined' || $request->designation != 'undefined' || $request->designation == 'address'){
+
+            $UserMetaMinistry = UserMeta::where(['key'=>'ministry', 'user_id' => $userId])->get();
+            if(count($UserMetaMinistry) < 1){
+                $sendData = 'ministry';
+                $this->checkUserDetails( $request ,$sendData);
+            }else{
+                UserMeta::where(['key'=>'ministry', 'user_id' => $userId])->update(['value'=>json_encode($ministries)]);
             }
-            if($request->designation != 'undefined'){
+
+            $UserMetaPhone = UserMeta::where(['key'=>'phone', 'user_id' => $userId])->get();
+            if(count($UserMetaPhone) < 1){
+                $sendData = 'phone';
+                $this->checkUserDetails( $request ,$sendData);
+            }else{
+                UserMeta::where(['key'=>'phone', 'user_id' => $userId])->update(['value' => $request->phone]);
+            }
+
+
+            $UserMetaDesignation = UserMeta::where(['key'=>'designation', 'user_id' => $userId])->get();
+            if(count($UserMetaDesignation) < 1){
+                $sendData = 'designation';
+                $this->checkUserDetails( $request ,$sendData);
+            }else{
                 UserMeta::where(['key'=>'designation', 'user_id' => $userId])->update(['value'=>$request->designation]);
             }
-            UserMeta::where(['key'=>'address', 'user_id' => $userId])->update(['value'=>$request->address]);
-            UserMeta::where(['key'=>'department', 'user_id' => $userId])->update(['value'=>json_encode($departments)]);
+
+
+            $UserMetaAddress =  UserMeta::where(['key'=>'address', 'user_id' => $userId])->get();
+            if (count($UserMetaAddress) < 1){
+                $sendData = 'address';
+                $this->checkUserDetails( $request ,$sendData);
+            }else{
+                UserMeta::where(['key'=>'address', 'user_id' => $userId])->update(['value'=>$request->address]);
+            }
+
+            $UserMetaDepartment = UserMeta::where(['key'=>'department', 'user_id' => $userId])->get();
+            if (count($UserMetaDepartment) < 1){
+                $sendData = 'department';
+                $this->checkUserDetails( $request ,$sendData);
+            }else{
+                UserMeta::where(['key'=>'department', 'user_id' => $userId])->update(['value'=>json_encode($departments)]);
+            }
+
+
             return ['status'=>'success','message'=>'Profile updated successfully!'];
         }else{
             return ['status'=>'error','message'=>'Unable to update profile!!'];
         }
+    }
+    protected function checkUserDetails($request, $sendData)
+    {
+        $userId = $request->user()->id;
+
+            $data = new UserMeta;
+            $data->key = $sendData;
+            $data->value = $request->$sendData;
+            $data->user_id = $userId;
+            $data->save();
     }
 
     protected function validateProfile($request){
@@ -148,6 +202,25 @@ class ProfileApiController extends Controller
             return true;
         }else{
             return false;
+        }
+    }
+    public function profilePicUpdate(Request $request)
+    {
+        $userId = $request->user()->id;
+        if ($request->profile_pic == "" || empty($request->profile_pic)){
+            return ['status'=>'error','message'=>'Required fields are missing!'];
+        }else{
+            $path = 'profile_pic';
+            if($request->hasFile('profile_pic')){
+                $filename = date('Y-m-d-H-i-s')."-".$request->file('profile_pic')->getClientOriginalName();
+                $move = $request->file('profile_pic')->move($path, $filename);
+                if ($move ){
+                    dd("moved");
+                }else{
+                    dd("not moved");
+                    
+                }
+            }
         }
     }
 }

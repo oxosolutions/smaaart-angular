@@ -91,7 +91,7 @@ class DatasetsController extends Controller
     }
 
     public function SavevalidateColumns(Request $request){
-        $columns = $this->checkIfColumnExistinTable();
+        
         $result = $this->validateUpdateColumns($request);
         if($result['status'] == 'false'){
 
@@ -124,6 +124,9 @@ class DatasetsController extends Controller
             DB::select('ALTER TABLE `'.$table.'` ADD COLUMN column_'.$colCount.' TEXT NULL AFTER '.$value->col_after.';');
             DB::table($table)->where(['id'=>1])->update(['column_'.$colCount => $value->col_name]);
              $orgColumns['column_'.$colCount] = $value->col_type;
+            if($value->formula == true){
+                DB::select('UPDATE `'.$table.'` set column_'.$colCount.' = DATEDIFF(STR_TO_DATE(`'.$value->col_one.'`,"%m/%d/%Y"),STR_TO_DATE(`'.$value->col_two.'`,"%m/%d/%Y"))');
+            }
         }
         return $orgColumns;
     }
@@ -277,12 +280,12 @@ class DatasetsController extends Controller
                                     break;
                                 }
                             }
-                            if($type == 'string'){
+                            /*if($type == 'string'){
                                if(is_numeric($colVal)){
                                     $wrongDataRows[] = $row;
                                     break;
                                }
-                            }
+                            }*/
                         }else{
                             $dataType = (bool)strtotime($colVal);
                             if($dataType != true){
