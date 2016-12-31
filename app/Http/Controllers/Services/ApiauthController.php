@@ -16,6 +16,7 @@ use App\Mail\AdminRegister;
 USE App\Mail\RegisterNewUser;
 use Illuminate\Support\Facades\Mail;
 use App\GlobalSetting as GS;
+use App\Designation as DES;
 class ApiauthController extends Controller
 {
 
@@ -45,7 +46,271 @@ class ApiauthController extends Controller
 		}
 
     }
+    public function listUser()
+    {   
+        $i =0;
+        foreach(User::all() as  $val)
+        {
+            $arr[$i]['id']=  $val->id;
+            $arr[$i]['name']=$val->name;
+            $arr[$i]['email']=$val->email;
+            $arr[$i]['api_token']=$val->api_token;
+            $arr[$i]['role_id']=$val->role_id;
+            $arr[$i]['approved']=$val->approved;
+            if($val->meta)
+            {
+               foreach ($val->meta as  $metaValue) {
+                    if($metaValue->key == "designation")
+                       {
+                        $arr[$i]["designation"] = "App\Designation"::getDesignation($metaValue->value); 
+                       }
+                    if($metaValue->key == "ministry")
+                       {
+                            $json = json_decode($metaValue->value);
+                            if("App\Ministrie"::ministryName($json[0])!=false)
+                               {         
+                                 $arr[$i]["ministry"] = "App\Ministrie"::ministryName($json[0]);
+                                }
+                       }
+                       if($metaValue->key == "phone")
+                       {
+                        $arr[$i]["phone"] = $metaValue->value;
+                       }
+                       if($metaValue->key == "address")
+                       {
+                        $arr[$i]["address"] = $metaValue->value;
+                       }
+                       if($metaValue->key == "department")
+                       {
+                        $dep = json_decode($metaValue->value);  
+                            if("App\Department"::getDepName($dep[0])!=false)
+                            {
+                                $arr[$i]["department"] = "App\Department"::getDepName($dep[0]);
+                            }
+                       }
+                       if($metaValue->key == "profile_pic")
+                       {
+                        $arr[$i]["profile_pic"] = $metaValue->value;
+                       }
+                }//end meta loop
+                $arr[$i]['created_at']=$val->created_at;
+            }
+        $i++;
+        }//end main loop
+        return ['status'=>'successful','user_list'=>$arr];
+    }
 
+    public function editUser($id)
+    {
+        try{
+            $user =  User::findOrfail($id);
+            $arr['id']=  $user->id;
+            $arr['name']=$user->name;
+            $arr['email']=$user->email;
+            $arr['api_token']=$user->api_token;
+            $arr['role_id']=$user->role_id;
+            $arr['approved']=$user->approved;
+                if($user->meta)
+                {
+                    foreach ($user->meta as  $metaValue) {
+                            if($metaValue->key == "designation")
+                               {
+                                $arr["designation"] = "App\Designation"::getDesignation($metaValue->value); 
+                               }
+                            if($metaValue->key == "ministry")
+                               {
+                                    $json = json_decode($metaValue->value);
+                                    if("App\Ministrie"::ministryName($json[0])!=false)
+                                       {         
+                                         $arr["ministry"] = "App\Ministrie"::ministryName($json[0]);
+                                        }
+                               }
+                               if($metaValue->key == "phone")
+                               {
+                                $arr["phone"] = $metaValue->value;
+                               }
+                               if($metaValue->key == "address")
+                               {
+                                $arr["address"] = $metaValue->value;
+                               }
+                               if($metaValue->key == "department")
+                               {
+                                $dep = json_decode($metaValue->value);  
+                                    if("App\Department"::getDepName($dep[0])!=false)
+                                    {
+                                        $arr["department"] = "App\Department"::getDepName($dep[0]);
+                                    }
+                               }
+                               if($metaValue->key == "profile_pic")
+                               {
+                                $arr["profile_pic"] = $metaValue->value;
+                               }
+                        }
+                    }
+                return ['status'=>'successful','user_data'=>$arr]; 
+            }catch(\Exception $e){
+             return ['status'=>'error','message'=>'No data found for this']; 
+            }
+    }
+    public function approveUser($id)
+    {
+        try{
+                $approved = User::findOrfail($id);
+                DB::beginTransaction();
+                $approved->approved = 1;
+                $approved->save();
+                DB::commit();
+                return ['status'=>'successful','message'=>'User Approved.']; 
+
+              }catch(\Exception $e)
+                {
+                  DB::rollback();
+                 return ['error'=>'error','message'=>'Some thing goes wrong. Try Again']; 
+
+                  throw $e;
+                }
+
+    } 
+    public function unApproveUser($id)
+    {
+        
+            try{
+                  $approved = User::findOrfail($id);
+                  DB::beginTransaction();
+                  $approved->approved = 0;
+                  $approved->save();
+                  DB::commit();
+                return ['status'=>'successful','message'=>'User Un-Approve.']; 
+
+                }catch(\Exception $e)
+                {
+                  DB::rollback();
+                  return ['error'=>'error','message'=>'Some thing goes wrong.Try Again']; 
+                  throw $e;
+
+                }
+    }
+
+
+    public function updateUser(Request $request)
+    {
+        if($request->name && $request->email)
+        {
+            if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
+
+                return ['status'=>'error','message'=>'Invalid email format!'];
+             }
+             try{
+                  $id   = $request->id;
+                  $user = User::findOrfail($id);
+                  DB::beginTransaction();
+                  $user->name = $request->name;
+                  $user->email = $request->email;         
+                  $user->role_id = $request->role_id;
+                  $user->save();
+        //meta update script
+
+                $uMeta = UserMeta::where('user_id',$id);
+                if($uMeta->count()>0){
+                    $old_profile_pic_val = UserMeta::where(['user_id'=>$id,'key'=>'profile_pic'])->first()->value;
+                    $uMeta->delete(); 
+                }
+
+                      $request->user_list = $id;
+                    if($request->designation)
+                    {
+                      if(!is_numeric($request->designation))
+                           {
+                                 $chkDes = DES::where(['designation'=>$request->designation])->get()->count();
+                                 if($chkDes==0){
+                                    $newDes =  new DES();
+                                    $newDes->designation = $request->designation;
+                                    $newDes->save();
+                                    $request->designation = $newDes->id;
+                                 }
+                            }
+                            $designationMeta  = new UserMeta();
+                            $designationMeta->user_id = $request->user_list;
+                            $designationMeta->key =     "designation";
+                            $designationMeta->value   =  $request->designation;
+                            $designationMeta->save();
+                    }
+
+                    
+                    if($request->ministry)   
+                        {
+                               foreach ($request->ministry as $key => $value){
+
+                                    $ministryMetaVal[] = $value;
+                                }
+
+                                $minMetaVal = json_encode($ministryMetaVal);
+                                $ministryMeta = new UserMeta();
+                                $ministryMeta->key = "ministry";
+                                $ministryMeta->user_id = $request->user_list;
+                                $ministryMeta->value = $minMetaVal;
+                                $ministryMeta->save();
+                        }  
+                     if($request->phone !="")
+                        {
+                                $phoneMeta = new UserMeta();
+                                $phoneMeta->key = "phone";
+                                $phoneMeta->user_id = $request->user_list;
+                                $phoneMeta->value  =  $request->phone;
+                                $phoneMeta->save();
+                        }
+                        if($request->address !="")
+                        {
+                                $adrsMeta = new UserMeta();
+                                $adrsMeta->key = "address";
+                                $adrsMeta->user_id = $request->user_list;
+                                $adrsMeta->value  =  $request->address;
+                                $adrsMeta->save();
+                        }
+                    if($request->department)
+                        {
+                                foreach($request->department as $key => $value){
+                                  $depValues[] =  $value;
+                                }
+
+                                $depJsonVal =     json_encode($depValues);
+                                $departmentMeta  = new UserMeta();
+                                $departmentMeta->user_id = $request->user_list;
+                                $departmentMeta->key = "department";
+                                $departmentMeta->value   =  $depJsonVal;
+                                $departmentMeta->save();
+                        }  
+
+                         $proPic  = new UserMeta();
+                         $path = 'profile_pic';
+                    if($request->hasFile('profile_pic')){
+                        $filename = date('Y-m-d-H-i-s')."-".$request->file('profile_pic')->getClientOriginalName();
+                        $request->file('profile_pic')->move($path, $filename);
+                        $proPic->key = "profile_pic";
+                        $proPic->user_id = $request->user_list;
+                        $proPic->value = $filename;
+                        $proPic->save();
+                    }
+                    else{
+                        $proPic->key = "profile_pic";
+                        $proPic->user_id  = $request->user_list;
+                        $proPic->value    = $old_profile_pic_val;
+                        $proPic->save();
+                    }    
+                  DB::commit();
+                return ['status'=>'successful','message'=>'Update User detail.']; 
+
+                }catch(\Exception $e)
+                {
+                  DB::rollback();
+                  return ['status'=>'error','message'=>'Not Update .Try Again']; 
+                  throw $e;
+                }                
+        }
+       else{
+            return ['status'=>'error','message'=>'fill all required fields!'];
+        }   
+    }
 
      protected function modelValidate($request){
 
@@ -96,10 +361,10 @@ class ApiauthController extends Controller
                     $MetaData[2]['key'] = 'address';
                     $MetaData[2]['value'] = $request->address;
                     $MetaData[2]['user_id'] = $user->id;
-                    $Departments = explode(',',$request->departments);
-                    $Ministries = explode(',',$request->ministries);
-                    $MetaData[3]['key'] = 'department';
-                    $MetaData[3]['value'] = json_encode($Departments);
+                    $Departments    = explode(',',$request->departments);
+                    $Ministries     = explode(',',$request->ministries);
+                    $MetaData[3]['key']     = 'department';
+                    $MetaData[3]['value']   = json_encode($Departments);
                     $MetaData[3]['user_id'] = $user->id;
                     $MetaData[4]['key'] = 'ministry';
                     $MetaData[4]['value'] = json_encode($Ministries);

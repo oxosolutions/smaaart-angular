@@ -933,6 +933,162 @@
           </div>
       </div>
 
+      <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i> User List </h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>
+                    API: {{url('/')}}/api/v1/userlists?api_token=YOUR_UNIQUE_USER_TOKEN
+                  </code>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
+                </p>
+                <p>
+                  <code>
+                    Method: GET
+                  </code>
+                </p>
+                Params:
+                <code>
+                  <ul class="api_param well ">
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">none</spam></li>
+                    
+                  </ul>
+                </code>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i> Edit </h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>
+                    API: {{url('/')}}/api/v1//editUser/{id}?api_token=YOUR_UNIQUE_USER_TOKEN
+                  </code>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
+                </p>
+                <p>
+                  <code>
+                    Method: GET
+                  </code>
+                </p>
+                Params:
+                <code>
+                  <ul class="api_param well ">
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">id</spam><span class="label label-danger">Required</span></li>
+                    
+                  </ul>
+                </code>
+              </div>
+            </div>
+          </div>
+      </div>
+
+       <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i> Update User </h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>'or "1 = 1"'
+                    API: {{url('/')}}/api/v1//user/update?api_token=YOUR_UNIQUE_USER_TOKEN
+                  </code>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
+                </p>
+                <p>
+                  <code>
+                    Method: POST
+                  </code>
+                </p>
+                Params:
+                <code>
+                  <ul class="api_param well ">
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">id</spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">name</spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">phone</spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">email</spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">designation</spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">address</spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">department</spam> <span class="label label-danger">Required</span></li>
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">ministry</spam> <span class="label label-danger">Required</span></li>
+                  </ul>
+                </code>
+              </div>
+            </div>
+          </div>
+      </div>
+
+       <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i> Un Approve User </h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>
+                    API: {{url('/')}}/api/v1/user/unapprove/{id}?api_token=YOUR_UNIQUE_USER_TOKEN
+                  </code>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
+                </p>
+                <p>
+                  <code>
+                    Method: GET
+                  </code>
+                </p>
+                Params:
+                <code>
+                  <ul class="api_param well ">
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">id</spam><span class="label label-danger">Required</span></li>
+                    
+                  </ul>
+                </code>
+              </div>
+            </div>
+          </div>
+      </div>
+
+      <div class="row" style="margin-top: 10px;">
+          <div class="col-md-12">
+            <div class="box box-primary">
+              <div class="box-header">
+                <h3 class="box-title"><i class="fa fa-code"></i>  Approve User </h3>
+              </div>
+              <div class="box-body">
+                <p>
+                  <code>
+                    API: {{url('/')}}/api/v1/user/approve/{id}?api_token=YOUR_UNIQUE_USER_TOKEN
+                  </code>
+                  &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
+                </p>
+                <p>
+                  <code>
+                    Method: GET
+                  </code>
+                </p>
+                Params:
+                <code>
+                  <ul class="api_param well ">
+                    <li><spam class="col-md-2 col-sm-4 col-xs-6">id</spam><span class="label label-danger">Required</span></li>
+                    
+                  </ul>
+                </code>
+              </div>
+            </div>
+          </div>
+      </div>
+
       
     </section>
   </div>

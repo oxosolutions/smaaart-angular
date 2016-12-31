@@ -103,7 +103,9 @@ class DatasetsController extends Controller
         $orgColumns = (array)json_decode($request->columns);
         if(!empty($newColumns)){
             $orgColumns = $this->createNewColumns($request->create_columns, $model->dataset_table, $orgColumns);
-            
+            if($orgColumns == false){
+                return ['status'=>'error','message'=>'Some error occurs during query execution!'];
+            }
         }
         $orgColumns = json_encode($orgColumns);
         if(!empty($model)){
@@ -125,7 +127,12 @@ class DatasetsController extends Controller
             DB::table($table)->where(['id'=>1])->update(['column_'.$colCount => $value->col_name]);
              $orgColumns['column_'.$colCount] = $value->col_type;
             if($value->formula == true){
-                DB::select('UPDATE `'.$table.'` set column_'.$colCount.' = DATEDIFF(STR_TO_DATE(`'.$value->col_one.'`,"%m/%d/%Y"),STR_TO_DATE(`'.$value->col_two.'`,"%m/%d/%Y"))');
+                try{
+                    DB::select('UPDATE `'.$table.'` set column_'.$colCount.' = DATEDIFF(STR_TO_DATE(`'.$value->col_one.'`,"%m/%d/%Y"),STR_TO_DATE(`'.$value->col_two.'`,"%m/%d/%Y")) where id > 1 and '.$value->col_two.' REGEXP "[0-9]" and '.$value->col_one.' REGEXP "[0-9]"');
+                }catch(\Exception $e){
+                    return false;
+                }
+                
             }
         }
         return $orgColumns;

@@ -65,7 +65,9 @@
       processing: true,
       serverSide: true,
       ajax: route()+'/list_goals',
+      order: [[1,"asc"]],
       columns: [
+            { data: 'selector', name: 'selector',orderable: false, searchable: false},
             { data: 'goal_number', name: 'goal_number' },
             { data: 'goal_title', name: 'goal_title' },
             { data: 'goal_tagline', name: 'goal_tagline' },
@@ -247,4 +249,15 @@
             return true;
         }
     });
+  });
+
+  $(document).ready(function() {
+    $(".selectall").change(function(){
+      if($(".selectall").prop("checked")){
+        $(".item-selector").prop("checked", true);
+      }else if($(".selectall").prop("checked",false)){
+        $(".item-selector").prop('checked',false);
+      }
+     
+    }); 
   });

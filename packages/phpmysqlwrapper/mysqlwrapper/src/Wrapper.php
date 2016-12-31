@@ -33,4 +33,8 @@ class Wrapper extends Facade {
 		$this->wrapper  = MSW::getInstance($this->host, $this->username, $this->password, $this->database);
 		$this->wrapper->connect();
 	}
+
+	function __destruct(){
+		$this->wrapper->close();
+	}
 }

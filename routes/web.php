@@ -201,3 +201,4 @@
 Route::get('/approve/{from?}/{api_token?}', ['as'=>'approve','uses'=>'ApiusersController@approveUser']);
 Auth::routes();
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+Route::get('delMulGoals',['as' => 'delMulGoals' , 'uses' => 'GoalsController@delMulGoals']);

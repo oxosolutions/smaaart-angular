@@ -259,55 +259,7 @@ class ApiusersController extends Controller
               return redirect()->route('api.users');
               
             }
-                  // foreach ($userName->meta() as  $value) {
-                  //   dump($value);
-                  //   # code...
-                  // }
-          //     $ud['name'] = $userName[0]->name;
-          //     $ud['email'] = $userName[0]->email;
-          //     $ud['user_id'] = $userName[0]->id;
-          //     $chkDetail = UM::where('user_id',$id)->count();
-          // if($chkDetail==0){
-          //       Session::flash('error','User Detail not available!');
-          //       return redirect()->route('api.users');
-          //     }
-
-          //  $userDetail = UM::where('user_id',$id)->get();
-          //   foreach ($userDetail as $key => $value) {
-          //      if($value->key=="phone")
-          //       {
-          //          $ud['phone'] = $value->value;
-          //       }
-          //       if($value->key=="address")
-          //       {
-          //          $ud['address'] = $value->value;
-          //       }
-          //       if($value->key=="designation")
-          //       {
-          //          $ud['designation'] = $value->value;
-          //       }
-          //       if($value->key=="profile_pic")
-          //       {
-          //          $ud['profile_pic'] = $value->value;
-          //       }
-          //       if($value->key=="ministry")
-          //       {
-          //          $minId = $value->value;
-          //       }
-          //       if($value->key=="department")
-          //       {
-          //          $depId = $value->value;
-          //       }
-          //   }
-
-          // $DepId =    json_decode(@$depId);
-          // $MinId =    json_decode(@$minId);
-
-          // $depDetail = DEP::select('id','dep_code','dep_name')->WhereIN('id',$DepId)->get();
-          // $minDetail = MIN::select('id','ministry_id','ministry_title')->whereIn('id',$MinId)->get();
-
-          //   return view('apiusers.user_detail', ['user_detail'=>$ud ,'depDetail'=>$depDetail ,'minDetail' =>$minDetail] );
-          //   return View::make('apiusers.user_detail')->with(['user_detail'=>$ud,'depDetail'=>$depDetail ,'minDetail' =>$minDetail ]);
+                  
         }
 
         public function edit($id) {
@@ -325,9 +277,10 @@ class ApiusersController extends Controller
         public function update(Request $request, $id)
         {
             $role_id = (int) $request->role_id[0];
-            $user = User::findOrfail($id);
-            DB::beginTransaction();
+            
             try{
+                  $user = User::findOrfail($id);
+                  DB::beginTransaction();
                   $user->name = $request->name;
                   $user->email = $request->email;
                    if(!empty($request->new_password))
@@ -350,9 +303,10 @@ class ApiusersController extends Controller
 
         public function approved($id)
         {
-            $approved = User::findOrfail($id);
-            DB::beginTransaction();
+            
             try{
+                $approved = User::findOrfail($id);
+                DB::beginTransaction();
                 $approved->approved = 1;
                 $approved->save();
                 DB::commit();
@@ -366,9 +320,10 @@ class ApiusersController extends Controller
         }
         public function unapproved($id)
         {
-            $approved = User::findOrfail($id);
-            DB::beginTransaction();
+            
             try{
+                  $approved = User::findOrfail($id);
+                  DB::beginTransaction();
                   $approved->approved = 0;
                   $approved->save();
                   DB::commit();
@@ -505,7 +460,9 @@ class ApiusersController extends Controller
                     $phoneMeta->user_id = $request->user_list;
                     $phoneMeta->value  =  $request->phone;
                     $phoneMeta->save();
-
+            }
+            if($request->address !="")
+            {
                     $adrsMeta = new UM();
                     $adrsMeta->key = "address";
                     $adrsMeta->user_id = $request->user_list;

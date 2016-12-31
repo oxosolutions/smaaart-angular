@@ -43,16 +43,20 @@ class ImportdatasetController extends Controller
         
         if($request->source == 'file_server'){
             $filePath = $request->filepath;
+            $filep = explode('/',$filePath);
+            $filename = $filep[count($filep)-1];
         }
 
         if($request->source == 'url'){
             $filePath = $request->fileurl;
+            $filep = explode('/',$filePath);
+            $filename = $filep[count($filep)-1];
         }
 
         if($request->add_replace == 'newtable'){
             $result = $this->storeInDatabase($filePath, $request->dataset_name, $request->source, $filename);
         }elseif($request->add_replace == 'append'){
-            //$result = $this->appendDataset($request, $filePath);
+            $result = $this->appendDataset($request->dataset_name, $request->source, $filename, $filePath, $request);
         }elseif($request->add_replace == 'replace'){
             //$result = $this->replaceDataset($request, $request->dataset_name, $filePath);
         }
@@ -199,42 +203,42 @@ class ImportdatasetController extends Controller
   			return ['status'=>'false','message'=>'unable to replace dataset!'];
   		}
     }
+    
+    protected function appendDataset($datasetName, $source, $filename, $filePath, $request){
+       
+        if($source == 'url'){
+            $randName = 'downloaded_dataset_'.time().'.csv';
+            $path = 'datasets/';
+            copy($filename, $path.$randName);
+            $filePath = 'datasets/'.$randName;
+        }
 
-    protected function appendDataset($request, $filename){
-        ini_set('memory_limit', '2048M');
-        $model = DL::find($request->with_dataset);
-        $sameColumnValidate = true;
-        $FileData = [];
-        $oldData = [];
-        foreach(json_decode($model->dataset_records) as $key => $value){
-            $FileData[] = $value;
-            $oldData[] = $value;
+        if(!File::exists($filePath)){
+            return ['status'=>'false','id'=>'','message'=>'File not found on given path!'];
         }
-        $oldColumnsCounts = $FileData[0];
-        $data = Excel::load($filename, function($reader){ })->get();
-        $newData = [];
-    	foreach($data as $key => $value){
-            $FileData[] = $value->all();
-            $newData[] = $value->all();
-    	}
-        $index = 0;
-        foreach($newData[0] as $key => $value){
 
-            if(!array_key_exists($key, $oldData[0])){
-                $sameColumnValidate = false;
-            }
+        $tableName = 'table_temp_'.rand(5,1000);
+        $model = new MySQLWrapper;
+        $result = $model->wrapper->createTableFromCSV($filePath,$tableName,',','"', '\\', 0, array(), 'generate','\r\n');
+        $tempTableData = DB::table($tableName)->get();
+
+        $model_DL = DL::find($request->with_dataset);
+        $oldTable = DB::table($model_DL->dataset_table)->get();
+        
+        $oldColumns = [];
+        $new = (array)$tempTableData[0];
+        $old = (array)$oldTable[0];
+        
+        if($new != $old){
+            DB::select('DROP TABLE '.$tableName);
+            return ['status'=>'false','message'=>'File columns are note same!'];
         }
-        $newColumnsCount = $FileData[0];
-        if($newColumnsCount != $oldColumnsCounts){
-            return ['status'=>'false','message'=>'Number of columns are not match with current dataset!'];
-        }
-        if($sameColumnValidate != true){
-            return ['status'=>'false','message'=>'Column names not match with current dataset!'];
-        }
-        $model->dataset_records = json_encode($FileData);
-        $model->dataset_columns = null;
-        $model->validated = 0;
-        $model->save();
-        return ['status'=>'true','message'=>'Dataset updated successfully!!', 'id'=>$model->id];
+        unset($new['id']);
+
+        $appendColumns = implode(',', array_keys($new));
+        DB::select('INSERT INTO `'.$model_DL->dataset_table.'` ('.$appendColumns.') SELECT '.$appendColumns.' FROM '.$tableName.' WHERE id != 1;');
+        DB::select('DROP TABLE '.$tableName);
+        
+        return ['status'=>'true','message'=>'Dataset updated successfully!!', 'id'=>$model_DL->id];
     }
 }

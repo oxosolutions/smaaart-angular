@@ -19,8 +19,8 @@ class GoalsController extends Controller
     public function index(){
 
     	$plugins = [
-        			'css' => ['datatables'],
-        			'js'  => ['datatables', 'custom' => ['gen-datatables']]
+        			'css' => ['datatables','icheck'],
+        			'js'  => ['datatables','icheck', 'custom' => ['gen-datatables']]
     	           ];
 
     	return view('goals.index', $plugins);
@@ -31,9 +31,10 @@ class GoalsController extends Controller
     	$model = Goal::WithUsers()->get();
 
     	return Datatables::of($model)
+                ->addColumn('selector', '<input type="checkbox" name="items[]" class="icheckbox_minimal-blue item-selector" value="{{$id}}" >')
     		   ->addColumn('actions', function($model){
-    		   		return view('goals._actions', ['model'=>$model])->render();
-    		   })->make(true);
+                    return view('goals._actions', ['model'=>$model])->render();
+               })->make(true);
     }
 
     public function create(){
@@ -297,6 +298,10 @@ class GoalsController extends Controller
             DB::rollback();
             throw $e;
         }
+    }
+    public function delMulGoals(Request $request)
+    {
+
     }
 
 }

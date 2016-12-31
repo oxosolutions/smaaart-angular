@@ -29,8 +29,7 @@ class GlobalSettingsController extends Controller
     	return view('settings.index',$plugins);
     }
 
-    protected function getSiteSetting($key)
-    {
+    protected function getSiteSetting($key){
         return GS::select('id','meta_value as value')->where('meta_key',$key)->first();
     }
 
