@@ -303,7 +303,7 @@ class DatasetsController extends Controller
                     }
                 }
             }
-            return ['status'=>'success','message'=>'Columns valudated successfully!','wrong_rows'=>$wrongDataRows];
+            return ['status'=>'success','message'=>'Columns valudated successfully!','wrong_rows'=>$wrongDataRows,'dataset_name'=>$model->dataset_name];
         }else{
             return ['stauts'=>'error','message'=>'No dataset found!'];
         }

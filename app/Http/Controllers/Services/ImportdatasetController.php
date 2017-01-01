@@ -134,9 +134,8 @@ class ImportdatasetController extends Controller
                 $index++;
             }
 
-            return ['status'=>'sucess','data'=>['columns'=>$columnsArray,'dataset_id'=>$model->id,'validated'=>$model->validated, 'dataset_columns'=>  json_decode($model->dataset_columns)]];
-        }catch(\Exception $e)
-        {
+            return ['status'=>'sucess','data'=>['columns'=>$columnsArray,'dataset_id'=>$model->id,'validated'=>$model->validated, 'dataset_columns'=>  json_decode($model->dataset_columns)], 'dataset_name' => $model->dataset_name];
+        }catch(\Exception $e){
             return ['status'=>'error','message'=>'no data found!'];
 
         }
