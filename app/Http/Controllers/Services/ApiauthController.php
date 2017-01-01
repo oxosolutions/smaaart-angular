@@ -46,7 +46,7 @@ class ApiauthController extends Controller
 		}
 
     }
-    public function listUser()
+    /*public function listUser()
     {   
         $i =0;
         foreach(User::all() as  $val)
@@ -98,9 +98,9 @@ class ApiauthController extends Controller
         $i++;
         }//end main loop
         return ['status'=>'successful','user_list'=>$arr];
-    }
+    }*/
 
-    public function editUser($id)
+    /*public function editUser($id)
     {
         try{
             $user =  User::findOrfail($id);
@@ -151,7 +151,7 @@ class ApiauthController extends Controller
             }catch(\Exception $e){
              return ['status'=>'error','message'=>'No data found for this']; 
             }
-    }
+    }*/
     public function approveUser($id)
     {
         try{
