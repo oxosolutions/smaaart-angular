@@ -18,7 +18,8 @@ class DatasetsController extends Controller
 
     		$responseArray[$index]['dataset_id'] = $value->id;
     		$responseArray[$index]['dataset_name'] = $value->dataset_name;
-    		$responseArray[$index]['validated'] = $value->validated;
+            $responseArray[$index]['validated'] = $value->validated;
+    		$responseArray[$index]['dataset_columns'] = $value->dataset_columns;
     		$responseArray[$index]['created_date'] = $value->created_at->format('Y-m-d H:i:s');
     		$index++;
     	}
@@ -63,7 +64,9 @@ class DatasetsController extends Controller
             return ['status'=>'error','records'=>'no records found'];
         }else{
         $records = json_decode($model->dataset_columns);
-
+        if(empty($records)){
+            return ['status'=>'error','message'=>'Dataset columns not defined yet!'];
+        }
         $headers = [];
         $index = 0;
         foreach($records as $key =>  $value){
