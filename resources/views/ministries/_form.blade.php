@@ -19,6 +19,16 @@
     @endif
   </div>
 
+  <div class="form-group {{ $errors->has('ministry_website') ? ' has-error' : '' }}">
+    {!!Form::label('ministry_website','Ministry Website') !!}
+    {!!Form::text('ministry_website',null, ['class'=>'form-control','placeholder'=>'Enter Ministry Website']) !!}
+    @if($errors->has('ministry_website'))
+      <span class="help-block">
+            {{ $errors->first('ministry_website') }}
+      </span>
+    @endif
+  </div>
+
   <div class="form-group {{ $errors->has('ministry_description') ? ' has-error' : '' }}">
     {!!Form::label('ministry_description','Description') !!}
     {!!Form::textarea('ministry_description',null,['class'=>'form-control','placeholder'=>'Eenter Description','id'=>'ministry_description']) !!}

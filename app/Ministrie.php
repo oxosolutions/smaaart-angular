@@ -9,7 +9,7 @@ class Ministrie extends Model
 {
 	use SoftDeletes;
 
-    protected $fillable = ['ministry_id','ministry_title','ministry_description','ministry_icon','ministry_image','ministry_phone','ministry_ministers','ministry_order','created_by'];
+    protected $fillable = ['ministry_id','ministry_title','ministry_description','ministry_icon','ministry_image','ministry_phone','ministry_ministers','ministry_order','created_by','ministry_website'];
 
     protected $dates = ['deleted_at'];
     protected $softDelete = true;

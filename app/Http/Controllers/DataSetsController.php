@@ -55,7 +55,7 @@ class DataSetsController extends Controller
 
     public function store(Request $request){
       
-      //$this->modelValidate($request);
+      $this->modelValidate($request);
         if($request->source == 'file'){
             $path = 'datasets';
             try {
@@ -243,7 +243,8 @@ class DataSetsController extends Controller
         $rules = [
                 'file' => 'required|mimes:csv,txt',
                 'select_operation' => 'required',
-                'dataset_name'      =>     'required'
+                'dataset_name'     => 'required',
+                'source'           =>'required'
                ];
         if($request->select_operation == 'append' || $request->select_operation == 'replace'){
             $rules['dataset_list'] = 'required';

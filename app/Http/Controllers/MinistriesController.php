@@ -112,14 +112,14 @@ class MinistriesController extends Controller
             'ministry_icon' => 'required',
             'ministry_phone' => 'required|numeric',
             'ministry_ministers' => 'required',
-            'ministry_order' => 'required|numeric',
-            'ministry_image' =>'required|mimes:jpeg,jpg,png',
+            'ministry_order' => 'required|numeric'
+            //'ministry_image' =>'required|mimes:jpeg,jpg,png',
         ];
 
-        if($request->hasFile('ministry_image')){
+        /*if($request->hasFile('ministry_image')){
 
             $rules['image'] = 'image';
-        }
+        }*/
 
         $this->validate($request, $rules);
     }
