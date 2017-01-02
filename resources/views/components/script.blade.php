@@ -35,8 +35,25 @@
  <script type="text/javascript">
   	$(document).ready(function(){
       $("#file, #urlTxt, #file_serverTxt").slideUp();
+
+
+      var sVal =  $("#source").val();
+            if(sVal== 'file')
+            {         
+                    $("#urlTxt ,#file_serverTxt").slideUp();
+                    $("#file").slideDown();
+            }
+            else if(sVal =="url")
+            {
+                    $("#urlTxt").slideDown();
+                    $("#file ,#file_serverTxt").slideUp();
+            }else if(sVal =="file_server")
+            {
+                    $("#file, #urlTxt").slideUp();
+                    $("#file_serverTxt").slideDown();
+            }
       $("#source").on('change',function(){
-          var sVal =  $("#source").val()
+          var sVal =  $("#source").val();
             if(sVal== 'file')
             {         
                     $("#urlTxt ,#file_serverTxt").slideUp();

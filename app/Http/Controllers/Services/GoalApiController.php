@@ -57,6 +57,7 @@ class GoalApiController extends Controller
                     $response['ministry'][$minIndex]['id']                  = $ministryData->ministry->id;
                     $response['ministry'][$minIndex]['ministry_id']         = $ministryData->ministry->ministry_id;
                     $response['ministry'][$minIndex]['ministry_title']      = $ministryData->ministry->ministry_title;
+                    $response['ministry'][$minIndex]['ministry_website']      = $ministryData->ministry->ministry_website;
                     $response['ministry'][$minIndex]['ministry_description']= $ministryData->ministry->ministry_description;
                     $response['ministry'][$minIndex]['ministry_icon']       = $ministryData->ministry->ministry_icon;
                     $response['ministry'][$minIndex]['ministry_image']      = asset('min_images/'.$ministryData->ministry->ministry_image);
@@ -215,6 +216,7 @@ class GoalApiController extends Controller
                     $responseArray[$index]['ministry'][$inIndex]['id'] = $vl->ministry->id;
                     $responseArray[$index]['ministry'][$inIndex]['ministry_id'] = $vl->ministry->ministry_id;
                     $responseArray[$index]['ministry'][$inIndex]['ministry_title'] = $vl->ministry->ministry_title;
+                    $responseArray[$index]['ministry'][$inIndex]['ministry_website'] = $vl->ministry->ministry_website;
                     $responseArray[$index]['ministry'][$inIndex]['ministry_desc'] = $vl->ministry->ministry_description;
                 }catch(\Exception $e){
 
@@ -364,6 +366,7 @@ class GoalApiController extends Controller
               $responseArray[$index]['goal_nodal_ministry'] = [
                                                             'ministry_id' => $model->goalNodalMinistry->ministry_id,
                                                             'ministry_title' => $model->goalNodalMinistry->ministry_title,
+                                                            'ministry_website' => $model->goalNodalMinistry->ministry_website,
                                                             'ministry_description' => $model->goalNodalMinistry->ministry_description,
                                                             'ministry_icon' => $model->goalNodalMinistry->ministry_icon,
                                                             'ministry_image' => $model->goalNodalMinistry->ministry_image,
@@ -383,6 +386,7 @@ class GoalApiController extends Controller
              {   
                 $responseArray[$index]['ministry'][$inIndex]['ministry_id']      = $vl->ministry->ministry_id;
                 $responseArray[$index]['ministry'][$inIndex]['ministry_title']   = $vl->ministry->ministry_title;
+                $responseArray[$index]['ministry'][$inIndex]['ministry_website']   = $vl->ministry->ministry_website;
                 $responseArray[$index]['ministry'][$inIndex]['ministry_desc']    = $vl->ministry->ministry_description;
                 $inIndex++;
             }

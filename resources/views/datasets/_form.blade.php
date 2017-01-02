@@ -3,13 +3,14 @@
         $sourceData['file'] ="File"; 
         $sourceData['url'] ="Import From Url Link"; 
         $sourceData['file_server'] ="File Server";
+         $sourceData['null'] ="Select source to import";
  ?>
 
 
 
   <div class="{{ $errors->has('source') ? ' has-error' : '' }} form-group">
     {!!Form::label('source','Select Source to import') !!}
-    {!!Form::select('source',$sourceData,null, ['class'=>'form-control dataset-operation','placeholder'=>'Select source to import']) !!}
+    {!!Form::select('source',$sourceData,null, ['class'=>'form-control dataset-operation','placeholder'=>'Select source to import',]) !!}
     @if($errors->has('source'))
       <span class="help-block">
             {{ $errors->first('source') }}
