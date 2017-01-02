@@ -60,10 +60,10 @@ class DataSetsController extends Controller
             $path = 'datasets';
             try {
                  if(!in_array($request->file('file')->getClientOriginalExtension(),['csv'])){
-                    return ['status'=>'error','records'=>'File type not allowed!'];
+                   Session::flash('error','Some thing goes wrong Try again!');
                 }
             } catch (Exception $e) {
-                return ['status'=>'error','records'=>'Please Select a File to Upload'];
+                return ['status'=>'error', 'Please Select a File to Upload'];
             }
             $file = $request->file('file');
             if($file->isValid()){
@@ -178,6 +178,7 @@ class DataSetsController extends Controller
         
         $filePath = $filename;
         if($source == 'url'){
+          
             $randName = 'downloaded_dataset_'.time().'.csv';
             $path = 'datasets/';
             copy($filename, $path.$randName);
@@ -241,7 +242,7 @@ class DataSetsController extends Controller
     protected function modelValidate($request){
         
         $rules = [
-                'file' => 'required|mimes:csv,txt',
+                
                 'select_operation' => 'required',
                 'dataset_name'     => 'required',
                 'source'           =>'required'

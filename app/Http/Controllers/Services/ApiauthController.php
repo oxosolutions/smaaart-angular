@@ -38,7 +38,7 @@ class ApiauthController extends Controller
 		else if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])){
 			$user = Auth::user();
             if($user->approved == 0){
-                return ['status'=>'error','message'=>'Your account not yet approved!'];
+                return ['status'=>'error','message'=>'Your account is yet not approved!'];
             }
             $model = UserMeta::select('value')->where(['user_id'=>$user->id,'key'=>'profile_pic'])->first();
             $image = (!empty($model))?$model->value:'';

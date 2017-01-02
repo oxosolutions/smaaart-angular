@@ -1,22 +1,24 @@
 <div class="box-body">
  <?php 
+        $sourceData[''] ="Select source to import";
         $sourceData['file'] ="File"; 
         $sourceData['url'] ="Import From Url Link"; 
         $sourceData['file_server'] ="File Server";
-         $sourceData['null'] ="Select source to import";
  ?>
 
 
 
   <div class="{{ $errors->has('source') ? ' has-error' : '' }} form-group">
     {!!Form::label('source','Select Source to import') !!}
-    {!!Form::select('source',$sourceData,null, ['class'=>'form-control dataset-operation','placeholder'=>'Select source to import',]) !!}
+    {!!Form::select('source',$sourceData,'', ['class'=>'form-control dataset-operation']) !!}
     @if($errors->has('source'))
       <span class="help-block">
             {{ $errors->first('source') }}
       </span>
     @endif
   </div>
+
+   
 
   <div id="file" class="{{ $errors->has('dataset_file') ? ' has-error' : '' }} input-group input-group-sm">
     {!!Form::label('dataset_file','Select Dataset File') !!}
@@ -42,7 +44,7 @@
 
 <div id="file_serverTxt" class="{{ $errors->has('url') ? ' has-error' : '' }} input-group input-group-sm">
     {!!Form::label('file_server','File Server') !!}
-    {!!Form::text('filepath','',['class'=>'form-control']) !!} <!-- <span style="font-size: 12px;color: red;">Only CSV and Excel</span> -->
+    {!!Form::text('filepath','',['class'=>'form-control']) !!} 
     @if($errors->has('url'))
       <span class="help-block">
             {{ $errors->first('url') }}

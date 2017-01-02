@@ -32,6 +32,7 @@ class GoalApiController extends Controller
                 $response['goal']['goal_nodal_ministry']    = [
                                                             'ministry_id' => $value->goalNodalMinistry->ministry_id,
                                                             'ministry_title' => $value->goalNodalMinistry->ministry_title,
+                                                            'ministry_website' => $value->goalNodalMinistry->ministry_website,
                                                             'ministry_description' => $value->goalNodalMinistry->ministry_description,
                                                             'ministry_icon' => $value->goalNodalMinistry->ministry_icon,
                                                             'ministry_image' => $value->goalNodalMinistry->ministry_image,
