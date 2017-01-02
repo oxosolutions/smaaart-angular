@@ -34,6 +34,24 @@
 
  <script type="text/javascript">
   	$(document).ready(function(){
+      $("#file, #urlTxt, #file_serverTxt").slideUp();
+      $("#source").on('change',function(){
+          var sVal =  $("#source").val()
+            if(sVal== 'file')
+            {         
+                    $("#urlTxt ,#file_serverTxt").slideUp();
+                    $("#file").slideDown();
+            }
+            else if(sVal =="url")
+            {
+                    $("#urlTxt").slideDown();
+                    $("#file ,#file_serverTxt").slideUp();
+            }else if(sVal =="file_server")
+            {
+                    $("#file, #urlTxt").slideUp();
+                    $("#file_serverTxt").slideDown();
+            }
+      });
 
     var max_fields      = 5; //maximum input boxes allowed
     var wrapper         = $(".input_fields_wrap"); //Fields wrapper

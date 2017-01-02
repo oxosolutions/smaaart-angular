@@ -2,6 +2,9 @@
 
 use Illuminate\Http\Request;
 
+
+	// Route::get('/userlists',['as'=>"user.list", 'uses'=>'Services\ApiauthController@listUser']);
+
 Route::group(['prefix' => 'v1'], function () {
 
 	Route::group(['middleware'=>['cors']], function(){
@@ -40,7 +43,6 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/user/approve/{id}',['as'=>"user.approve", 'uses'=>'Services\ApiauthController@approveUser']);
 		Route::get('/user/unapprove/{id}',['as'=>"user.unapprove", 'uses'=>'Services\ApiauthController@unApproveUser']);
 		Route::post('/user/update',['as'=>"user.update", 'uses'=>'Services\ApiauthController@updateUser']);
-
 
 		Route::get('users/list',					['as' => 'users' , 'uses' => 'Services\ApiauthController@UserList']);
 		Route::post('/dataset/import',				['as'=>'import','uses'=>'Services\ImportdatasetController@uploadDataset']);

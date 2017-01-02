@@ -1,7 +1,25 @@
 <div class="box-body">
-  <div class="{{ $errors->has('dataset_file') ? ' has-error' : '' }} input-group input-group-sm">
+ <?php 
+        $sourceData['file'] ="File"; 
+        $sourceData['url'] ="Import From Url Link"; 
+        $sourceData['file_server'] ="File Server";
+ ?>
+
+
+
+  <div class="{{ $errors->has('source') ? ' has-error' : '' }} form-group">
+    {!!Form::label('source','Select Source to import') !!}
+    {!!Form::select('source',$sourceData,null, ['class'=>'form-control dataset-operation','placeholder'=>'Select source to import']) !!}
+    @if($errors->has('source'))
+      <span class="help-block">
+            {{ $errors->first('source') }}
+      </span>
+    @endif
+  </div>
+
+  <div id="file" class="{{ $errors->has('dataset_file') ? ' has-error' : '' }} input-group input-group-sm">
     {!!Form::label('dataset_file','Select Dataset File') !!}
-    {!!Form::file('dataset_file',['class'=>'form-control','id'=>'file-3']) !!} <!-- <span style="font-size: 12px;color: red;">Only CSV and Excel</span> -->
+    {!!Form::file('file',['class'=>'form-control','id'=>'file-3']) !!} <!-- <span style="font-size: 12px;color: red;">Only CSV and Excel</span> -->
     @if($errors->has('dataset_file'))
       <span class="help-block">
             {{ $errors->first('dataset_file') }}
@@ -9,6 +27,43 @@
     @endif
   </div>
   <br/>
+
+  <div id="urlTxt" class="{{ $errors->has('url') ? ' has-error' : '' }} input-group input-group-sm">
+    {!!Form::label('url','Url') !!}
+    {!!Form::text('fileurl','',['class'=>'form-control']) !!} <!-- <span style="font-size: 12px;color: red;">Only CSV and Excel</span> -->
+    @if($errors->has('url'))
+      <span class="help-block">
+            {{ $errors->first('url') }}
+      </span>
+    @endif
+  </div>
+  <br/> 
+
+<div id="file_serverTxt" class="{{ $errors->has('url') ? ' has-error' : '' }} input-group input-group-sm">
+    {!!Form::label('file_server','File Server') !!}
+    {!!Form::text('filepath','',['class'=>'form-control']) !!} <!-- <span style="font-size: 12px;color: red;">Only CSV and Excel</span> -->
+    @if($errors->has('url'))
+      <span class="help-block">
+            {{ $errors->first('url') }}
+      </span>
+    @endif
+  </div>
+  <br/>
+  <div class="{{ $errors->has('dataset_name') ? ' has-error' : '' }} input-group input-group-sm">
+    {!!Form::label('dataset_name','Dataset Name') !!}
+    {!!Form::text('dataset_name','',['class'=>'form-control']) !!} <!-- <span style="font-size: 12px;color: red;">Only CSV and Excel</span> -->
+    @if($errors->has('dataset_name'))
+      <span class="help-block">
+            {{ $errors->first('dataset_name') }}
+      </span>
+    @endif
+  </div>
+  <br/> 
+
+  
+
+  
+
   <div class="{{ $errors->has('select_operation') ? ' has-error' : '' }} form-group">
     {!!Form::label('select_operation','Select Oprtation') !!}
     {!!Form::select('select_operation',\App\DatasetsList::datasetOperations(),null, ['class'=>'form-control dataset-operation','placeholder'=>'Select dataset operation']) !!}
@@ -18,6 +73,10 @@
       </span>
     @endif
   </div>
+
+
+
+   
 
   <div class="{{ $errors->has('with_dataset') ? ' has-error' : '' }} form-group dataset-view-hide">
     {!!Form::label('with_dataset','Select Dataset') !!}

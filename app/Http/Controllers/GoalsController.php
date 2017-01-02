@@ -299,9 +299,9 @@ class GoalsController extends Controller
             throw $e;
         }
     }
-    public function delMulGoals(Request $request)
-    {
+    public function delMulGoals(Request $request){
 
+        
     }
 
 }

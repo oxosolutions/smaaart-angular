@@ -46,6 +46,7 @@
 		Route::get('/goals',['as'=>'goals.list','uses'=>'GoalsController@index']);
 		Route::get('/goals/create',['as'=>'goals.create','uses'=>'GoalsController@create']);
 		Route::get('/goals/delete/{id}',['as'=>'goals.delete', 'uses'=>'GoalsController@destroy']);
+		Route::post('goals/delete',['as' => 'delMulGoals' , 'uses' => 'GoalsController@delMulGoals']);
 	//Scheme
 		Route::get('/schema',['as'=>'schema.list','uses'=>'GoalsSchemaController@index']);
 		Route::get('/schema/create',['as'=>'schema.create','uses'=>'GoalsSchemaController@create']);
@@ -194,11 +195,9 @@
 		Route::patch('/settings/store/datasetNumRow',['as'=>'dataset.settings','uses'=>'GlobalSettingsController@datasetNumRowSetting']);
 		Route::patch('/settings/store/sitevalue',['as'=>'sitevalue.settings','uses'=>'GlobalSettingsController@siteValue']);
 
-
 		
 	});
 
 Route::get('/approve/{from?}/{api_token?}', ['as'=>'approve','uses'=>'ApiusersController@approveUser']);
 Auth::routes();
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
-Route::get('delMulGoals',['as' => 'delMulGoals' , 'uses' => 'GoalsController@delMulGoals']);

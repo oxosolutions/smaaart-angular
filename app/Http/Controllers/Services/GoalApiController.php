@@ -112,6 +112,7 @@ class GoalApiController extends Controller
                     $response['target'][$tarIndex]["target_image"]       =   asset('target_file/'.$targetData->targets->target_image);
                     $response['target'][$tarIndex]["target_desc"]        =   $targetData->targets->target_desc;
                     $response['target'][$tarIndex]["created_by"]         =   $targetData->targets->created_by;
+                    
                 }catch(\Exception $e){
                     $response['target'] = [];
                 }
@@ -153,6 +154,7 @@ class GoalApiController extends Controller
                     try{
                         $response['indicators'][$inIndex]['id'] = $inV->id;
                         $response['indicators'][$inIndex]['indicator_title'] = $inV->indicator_title;
+                        //dd($inV->targets);
                     }catch(\Exception $e){
                         $response['indicators'] = [];
                     }

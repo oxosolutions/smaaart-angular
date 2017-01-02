@@ -268,6 +268,8 @@ class DatasetsController extends Controller
             $wrongDataRows = [];
             $datasetTable = DB::table($model->dataset_table)->get()->toArray();
             $columnsTypeArray = (array)json_decode($model->dataset_columns);
+            // dd($columnsTypeArray);
+            // dump($columnsTypeArray);
             foreach($datasetTable as $key => $row){
                 //$columnsArray = [];
                 foreach($row as $colKey => $colVal){

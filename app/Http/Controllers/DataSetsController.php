@@ -1,5 +1,7 @@
 <?php
 namespace App\Http\Controllers;
+use App\Http\Controllers\Controller;
+
 use Illuminate\Http\Request;
 use App\DatasetsList as DL;
 use Yajra\Datatables\Datatables;
@@ -8,6 +10,8 @@ use Session;
 use DB;
 use Excel;
 use MySQLWrapper;
+use File;
+
 class DataSetsController extends Controller
 {
 
@@ -31,7 +35,11 @@ class DataSetsController extends Controller
             })->editColumn('user_id',function($model){
                 return ucfirst($model->userId->name);
             })->editColumn('dataset_records',function($model){
-                return count(json_decode($model->dataset_records));
+                try{
+                    return DB::table($model->dataset_table)->count();
+                }catch(\Exception $e){
+                    return "0";
+                }
             })->make(true);
     }
 
@@ -46,31 +54,52 @@ class DataSetsController extends Controller
 
 
     public function store(Request $request){
-        ini_set('memory_limit', '-1');
-        ini_set('max_execution_time', 3600);
-        $this->modelValidate($request);
+      
+      //$this->modelValidate($request);
+        if($request->source == 'file'){
+            $path = 'datasets';
+            try {
+                 if(!in_array($request->file('file')->getClientOriginalExtension(),['csv'])){
+                    return ['status'=>'error','records'=>'File type not allowed!'];
+                }
+            } catch (Exception $e) {
+                return ['status'=>'error','records'=>'Please Select a File to Upload'];
+            }
+            $file = $request->file('file');
+            if($file->isValid()){
+
+                $filename = date('Y-m-d-H-i-s')."-".$request->file('file')->getClientOriginalName();
+                $uploadFile = $request->file('file')->move($path, $filename);
+                 $filePath = $path.'/'.$filename;               
+            }
+        }
+        
+        if($request->source == 'file_server'){
+            $filePath = $request->filepath;
+            $filep = explode('/',$filePath);
+            $filename = $filep[count($filep)-1];
+        }
+
+        if($request->source == 'url'){
+            $filePath = $request->fileurl;
+            $filep = explode('/',$filePath);
+            $filename = $filep[count($filep)-1];
+        }
+
         DB::beginTransaction();
         try{
-            $path = 'datasets';
-            $file = $request->file('dataset_file');
-            if($file->isValid()){
-                $filename = date('Y-m-d-H-i-s')."-".$request->file('dataset_file')->getClientOriginalName();
-                $uploadFile = $request->file('dataset_file')->move($path, $filename);
-                $filePath = $path.'/'.$filename;
-                if($request->select_operation == 'new'){
-                    $this->storeInDatabase($path.'/'.$filename, $request->file('dataset_file')->getClientOriginalName());
+             if($request->select_operation == 'new'){
+
+                $result = $this->storeInDatabase($filePath, $request->dataset_name, $request->source, $filename);
+
                 }elseif($request->select_operation == 'replace'){
                     
-                    
-                $result = $this->replaceDataset($request, $request->file('dataset_file')->getClientOriginalName(), $filePath);
-                    // Session::flash('error','Not Yet Setup this');
-                    // return redirect()->route('datasets.list');
+               $result = $this->replaceDataset($request, $request->file('dataset_file')->getClientOriginalName(), $filePath);
                 }elseif($request->select_operation == 'append'){
-                        $result = $this->appendDataset($request, $filePath);
-                    // Session::flash('error','Not Yet Setup this');
-                    // return redirect()->route('datasets.list');
-                }
+
+                $result = $this->appendDataset($request->dataset_name, $request->source, $filename, $filePath, $request);
             }
+           
             DB::commit();
             Session::flash('success','Successfully upload!');
             return redirect()->route('datasets.list');
@@ -83,42 +112,45 @@ class DataSetsController extends Controller
         return redirect()->route('datasets.list');
     }
 
-    protected function appendDataset($request, $filename){
-        ini_set('memory_limit', '2048M');
-        $model = DL::find($request->dataset_list);
-        $sameColumnValidate = true;
-        $FileData = [];
-        $oldData = [];
-        foreach(json_decode($model->dataset_records) as $key => $value){
-            $FileData[] = $value;
-            $oldData[] = $value;
+    protected function appendDataset($datasetName, $source, $filename, $filePath, $request){
+       
+        if($source == 'url'){
+            $randName = 'downloaded_dataset_'.time().'.csv';
+            $path = 'datasets/';
+            copy($filename, $path.$randName);
+            $filePath = 'datasets/'.$randName;
         }
-        $oldColumnsCounts = $FileData[0];
-        $data = Excel::load($filename, function($reader){ })->get();
-        $newData = [];
-        foreach($data as $key => $value){
-            $FileData[] = $value->all();
-            $newData[] = $value->all();
+
+        if(!File::exists($filePath)){
+            return ['status'=>'false','id'=>'','message'=>'File not found on given path!'];
         }
-        $index = 0;
-        foreach($newData[0] as $key => $value){
-            if(!array_key_exists($key, $oldData[0])){
-                $sameColumnValidate = false;
-            }
+
+        $tableName = 'table_temp_'.rand(5,1000);
+        $model = new MySQLWrapper;
+        $result = $model->wrapper->createTableFromCSV($filePath,$tableName,',','"', '\\', 0, array(), 'generate','\r\n');
+        $tempTableData = DB::table($tableName)->get();
+
+        $model_DL = DL::find($request->with_dataset);
+        $oldTable = DB::table($model_DL->dataset_table)->get();
+        
+        $oldColumns = [];
+        $new = (array)$tempTableData[0];
+        $old = (array)$oldTable[0];
+        
+        if($new != $old){
+            DB::select('DROP TABLE '.$tableName);
+            return ['status'=>'false','message'=>'File columns are note same!'];
         }
-        $newColumnsCount = $FileData[0];
-        if($newColumnsCount != $oldColumnsCounts){
-            return ['status'=>'false','message'=>'Number of columns are not match with current dataset!'];
-        }
-        if($sameColumnValidate != true){
-            return ['status'=>'false','message'=>'Column names not match with current dataset!'];
-        }
-        $model->dataset_records = json_encode($FileData);
-        $model->dataset_columns = null;
-        $model->validated = 0;
-        $model->save();
-        return ['status'=>'true','message'=>'Dataset updated successfully!!', 'id'=>$model->id];
+        unset($new['id']);
+
+        $appendColumns = implode(',', array_keys($new));
+        DB::select('INSERT INTO `'.$model_DL->dataset_table.'` ('.$appendColumns.') SELECT '.$appendColumns.' FROM '.$tableName.' WHERE id != 1;');
+        DB::select('DROP TABLE '.$tableName);
+        
+        return ['status'=>'true','message'=>'Dataset updated successfully!!', 'id'=>$model_DL->id];
     }
+
+   
 
     protected function replaceDataset($request, $origName, $filename){
         ini_set('memory_limit', '2048M');
@@ -142,16 +174,30 @@ class DataSetsController extends Controller
         }
     }
 
-
-    protected function storeInDatabase($filename, $origName){
+ protected function storeInDatabase($filename, $origName, $source, $orName){
+        
+        $filePath = $filename;
+        if($source == 'url'){
+            $randName = 'downloaded_dataset_'.time().'.csv';
+            $path = 'datasets/';
+            copy($filename, $path.$randName);
+            $filePath = 'datasets/'.$randName;
+        }
+        if(!File::exists($filePath)){
+            return ['status'=>'false','id'=>'','message'=>'File not found on given path!'];
+        }
         DB::beginTransaction();
         $model = new MySQLWrapper();
         $tableName = 'data_table_'.time();
-        $result = $model->wrapper->createTableFromCSV($filename,$tableName,',','"', '\\', 0, array(), 'generate','\r\n');
+        
+        $result = $model->wrapper->createTableFromCSV($filePath,$tableName,',','"', '\\', 0, array(), 'generate','\r\n');
+        
         if($result){
             $model = new DL;
             $model->dataset_table = $tableName;
             $model->dataset_name = $origName;
+            $model->dataset_file = $filePath;
+            $model->dataset_file_name = $orName;
             $model->user_id = Auth::user()->id;
             $model->uploaded_by = Auth::user()->name;
             $model->dataset_records = '{}';
@@ -163,6 +209,8 @@ class DataSetsController extends Controller
             return ['status'=>'false','id'=>'','message'=>'unable to upload datsaet!'];
         }
     }
+
+ 
 
 
     protected function validateRequst($request){
@@ -193,8 +241,9 @@ class DataSetsController extends Controller
     protected function modelValidate($request){
         
         $rules = [
-                'dataset_file' => 'required|mimes:csv,txt',
-                'select_operation' => 'required'
+                'file' => 'required|mimes:csv,txt',
+                'select_operation' => 'required',
+                'dataset_name'      =>     'required'
                ];
         if($request->select_operation == 'append' || $request->select_operation == 'replace'){
             $rules['dataset_list'] = 'required';

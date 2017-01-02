@@ -17,8 +17,6 @@ USE App\Mail\RegisterNewUser;
 use Illuminate\Support\Facades\Mail;
 use App\GlobalSetting as GS;
 use App\Designation as DES;
-use App\Ministrie as min;
-use App\Department as DEP;
 class ApiauthController extends Controller
 {
 
@@ -48,10 +46,9 @@ class ApiauthController extends Controller
 		}
 
     }
-    public function listUser()
+    /*public function listUser()
     {   
-         $i =0;
-
+        $i =0;
         foreach(User::all() as  $val)
         {
             $arr[$i]['id']=  $val->id;
@@ -65,14 +62,14 @@ class ApiauthController extends Controller
                foreach ($val->meta as  $metaValue) {
                     if($metaValue->key == "designation")
                        {
-                        $arr[$i]["designation"] = DES::getDesignation($metaValue->value); 
+                        $arr[$i]["designation"] = "App\Designation"::getDesignation($metaValue->value); 
                        }
                     if($metaValue->key == "ministry")
                        {
                             $json = json_decode($metaValue->value);
-                            if(min::ministryName($json[0])!=false)
+                            if("App\Ministrie"::ministryName($json[0])!=false)
                                {         
-                                 $arr[$i]["ministry"] = min::ministryName($json[0]);
+                                 $arr[$i]["ministry"] = "App\Ministrie"::ministryName($json[0]);
                                 }
                        }
                        if($metaValue->key == "phone")
@@ -86,9 +83,9 @@ class ApiauthController extends Controller
                        if($metaValue->key == "department")
                        {
                         $dep = json_decode($metaValue->value);  
-                            if(DEP::getDepName($dep[0])!=false)
+                            if("App\Department"::getDepName($dep[0])!=false)
                             {
-                                $arr[$i]["department"] = DEP::getDepName($dep[0]);
+                                $arr[$i]["department"] = "App\Department"::getDepName($dep[0]);
                             }
                        }
                        if($metaValue->key == "profile_pic")
@@ -101,9 +98,9 @@ class ApiauthController extends Controller
         $i++;
         }//end main loop
         return ['status'=>'successful','user_list'=>$arr];
-    }
+    }*/
 
-    public function editUser($id)
+    /*public function editUser($id)
     {
         try{
             $user =  User::findOrfail($id);
@@ -118,14 +115,14 @@ class ApiauthController extends Controller
                     foreach ($user->meta as  $metaValue) {
                             if($metaValue->key == "designation")
                                {
-                                $arr["designation"] = DES::getDesignation($metaValue->value); 
+                                $arr["designation"] = "App\Designation"::getDesignation($metaValue->value); 
                                }
                             if($metaValue->key == "ministry")
                                {
                                     $json = json_decode($metaValue->value);
-                                    if(min::ministryName($json[0])!=false)
+                                    if("App\Ministrie"::ministryName($json[0])!=false)
                                        {         
-                                         $arr["ministry"] = min::ministryName($json[0]);
+                                         $arr["ministry"] = "App\Ministrie"::ministryName($json[0]);
                                         }
                                }
                                if($metaValue->key == "phone")
@@ -139,9 +136,9 @@ class ApiauthController extends Controller
                                if($metaValue->key == "department")
                                {
                                 $dep = json_decode($metaValue->value);  
-                                    if(DEP::getDepName($dep[0])!=false)
+                                    if("App\Department"::getDepName($dep[0])!=false)
                                     {
-                                        $arr["department"] = DEP::getDepName($dep[0]);
+                                        $arr["department"] = "App\Department"::getDepName($dep[0]);
                                     }
                                }
                                if($metaValue->key == "profile_pic")
@@ -154,7 +151,7 @@ class ApiauthController extends Controller
             }catch(\Exception $e){
              return ['status'=>'error','message'=>'No data found for this']; 
             }
-    }
+    }*/
     public function approveUser($id)
     {
         try{
@@ -172,7 +169,6 @@ class ApiauthController extends Controller
 
                   throw $e;
                 }
-
     } 
     public function unApproveUser($id)
     {
@@ -190,7 +186,6 @@ class ApiauthController extends Controller
                   DB::rollback();
                   return ['error'=>'error','message'=>'Some thing goes wrong.Try Again']; 
                   throw $e;
-
                 }
     }
 
@@ -212,7 +207,6 @@ class ApiauthController extends Controller
                   $user->role_id = $request->role_id;
                   $user->save();
         //meta update script
-
                 $uMeta = UserMeta::where('user_id',$id);
                 if($uMeta->count()>0){
                     $old_profile_pic_val = UserMeta::where(['user_id'=>$id,'key'=>'profile_pic'])->first()->value;
@@ -318,12 +312,11 @@ class ApiauthController extends Controller
      protected function modelValidate($request){
 
         $rules = [
-				'name'  => 'min:5|regex:/^[A-Z a-z]+$/',
-                'email' => 'required|email|unique:users,email',
-                'password' => 'min:6|required',
-                'token' => 'required'
-        ];
-
+                    'name'  => 'min:5|regex:/^[A-Z a-z]+$/',
+                    'email' => 'required|email|unique:users,email',
+                    'password' => 'min:6|required',
+                    'token' => 'required'
+                ];
         $this->validate($request, $rules);;
     }
 
