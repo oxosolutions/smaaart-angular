@@ -25,7 +25,7 @@ class GoalsTargetController extends Controller
 
     public function indexData(){
 
-    	$model = GT::withUsers()->get();
+    	$model = GT::orderBy('id','desc')->withUsers()->get();
 
     	return Datatables::of($model)
             ->addColumn('actions',function($model){

@@ -972,7 +972,7 @@
               <div class="box-body">
                 <p>
                   <code>
-                    API: {{url('/')}}/api/v1//editUser/{id}?api_token=YOUR_UNIQUE_USER_TOKEN
+                    API: {{url('/')}}/api/v1/editUser/{id}?api_token=YOUR_UNIQUE_USER_TOKEN
                   </code>
                   &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
                 </p>
@@ -1001,8 +1001,8 @@
               </div>
               <div class="box-body">
                 <p>
-                  <code>'or "1 = 1"'
-                    API: {{url('/')}}/api/v1//user/update?api_token=YOUR_UNIQUE_USER_TOKEN
+                  <code>
+                    API: {{url('/')}}/api/v1/user/update?api_token=YOUR_UNIQUE_USER_TOKEN
                   </code>
                   &nbsp;<a href="javascript:;" style="font-size: 11px;" class="put-token">Put Token</a>
                 </p>

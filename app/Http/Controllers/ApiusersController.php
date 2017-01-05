@@ -30,12 +30,13 @@ class ApiusersController extends Controller
     }
 
     public function get_users(){
-          $model = User::orderBy('id','desc')->get();
-    	         return Datatables::of($model)
-                  ->addColumn('actions',function($model){
-                return view('apiusers._actions',['model'=>$model])->render();
-            })
-            ->make(true);
+        $model = Auth::user()->id;
+        $model = User::where('id','!=',$model)->orderBy('id','desc')->get();
+             return Datatables::of($model)
+              ->addColumn('actions',function($model){
+            return view('apiusers._actions',['model'=>$model])->render();
+        })
+        ->make(true);
     }
 
     public function create(){
@@ -310,6 +311,8 @@ class ApiusersController extends Controller
                 $approved->approved = 1;
                 $approved->save();
                 DB::commit();
+              Mail::to($approved->email)->send(new AfterApproveUser($approved));
+
               }catch(\Exception $e)
                 {
                   DB::rollback();

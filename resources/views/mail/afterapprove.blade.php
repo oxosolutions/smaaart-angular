@@ -7,8 +7,7 @@
 
 <ul>
 	<li>URL: http://projects.fhts.ac.in/sdgindia/</li>
-	<li>Name: {{$userEmail}}</li>
-	<li>Password: <b>YOUR-PASSWORD</b></li>
+	
 </ul>
 <p style="font-family:sans-serif;font-size:14px;font-weight:normal;margin:0;Margin-bottom:15px;">you can now log in to you account.</p>
 

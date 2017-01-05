@@ -23,7 +23,6 @@ class VisualisationController extends Controller
     public function indexData(){
 
     	$model = VS::orderBy('id','desc')->get();
-
     	return Datatables::of($model)
             ->addColumn('actions',function($model){
                 return view('visualisation._actions',['model' => $model])->render();
@@ -34,12 +33,17 @@ class VisualisationController extends Controller
                     return '';
                 }
             })->editColumn('created_by',function($model){
-                return $model->createdBy->name;
+                try{
+                        return $model->createdBy->name;
+                    }catch(\Exception $e)
+                    {
+                        return '';
+                    }
+
             })->make(true);
     }
 
     public function create(){
-
     	return view('visualisation.create');
     }
 

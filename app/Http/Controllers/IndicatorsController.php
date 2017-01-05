@@ -24,7 +24,7 @@ class IndicatorsController extends Controller
 
     public function indexData(){
 
-    	$model = IC::get();
+    	$model = IC::orderBy('id','desc')->get();
     	return Datatables::of($model)
             ->addColumn('actions',function($model){
                 return view('indicators._actions',['model' => $model])->render();

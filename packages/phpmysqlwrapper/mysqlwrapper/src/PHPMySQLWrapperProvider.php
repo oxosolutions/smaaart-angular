@@ -15,7 +15,7 @@ class PHPMySQLWrapperProvider extends ServiceProvider
      */
     public function boot()
     {
-        include __DIR__.'/routes/routes.php';
+       
     }
 
     /**
@@ -25,9 +25,9 @@ class PHPMySQLWrapperProvider extends ServiceProvider
      */
     public function register()
     {
-        App::bind('wrapper', function(){
+        /*App::bind('wrapper', function(){
 
             return new \PHPMySQLWrapper\MySQLWrapper\Wrapper;
-        });
+        });*/
     }
 }

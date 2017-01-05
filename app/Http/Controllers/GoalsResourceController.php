@@ -26,7 +26,7 @@ class GoalsResourceController extends Controller
 
     public function indexData(){
 
-    	$model = GR::withUsers()->get();
+    	$model = GR::orderBy('id','desc')->withUsers()->get();
 
     	return Datatables::of($model)
             ->addColumn('actions',function($model){

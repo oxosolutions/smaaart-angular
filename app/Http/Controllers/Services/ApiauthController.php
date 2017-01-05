@@ -14,45 +14,52 @@ use App\UserMeta;
 use App\Mail\ForgetPassword;
 use App\Mail\AdminRegister;
 USE App\Mail\RegisterNewUser;
+USE App\Mail\AfterApproveUser;
+
 use Illuminate\Support\Facades\Mail;
 use App\GlobalSetting as GS;
 use App\Designation as DES;
-use App\Ministrie as min;
-use App\Department as DEP;
+use App\Ministrie   as min;
+use App\Department  as DEP;
 class ApiauthController extends Controller
 {
 
    public  function Authenicates(Request $request)
     {
 
-     	if(empty ( $request->email )){
-    			return ['status'=>'error','message'=>'We need to know your e-mail address!'];
-		}
-		else if(!filter_var($request->email, FILTER_VALIDATE_EMAIL)){
-				return ['status'=>'error','message'=>'Invalid email format!'];
-		}
-		else if($request->password==""){
-			return ['status'=>'error','message'=>'We need to know your Password!'];
+        if(empty ( $request->email )){
+                return ['status'=>'error','message'=>'We need to know your e-mail address!'];
+        }
+        else if(!filter_var($request->email, FILTER_VALIDATE_EMAIL)){
+                return ['status'=>'error','message'=>'Invalid email format!'];
+        }
+        else if($request->password==""){
+            return ['status'=>'error','message'=>'We need to know your Password!'];
 
-		}
-		else if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])){
-			$user = Auth::user();
+        }
+        else if (Auth::guard('web')->attempt(['email' => $request->email, 'password' => $request->password])){
+            $user = Auth::user();
             if($user->approved == 0){
                 return ['status'=>'error','message'=>'Your account is yet not approved!'];
             }
             $model = UserMeta::select('value')->where(['user_id'=>$user->id,'key'=>'profile_pic'])->first();
             $image = (!empty($model))?$model->value:'';
-			return ['status'=>'successful', 'user_detail'=>$user, 'profile_pic'=>asset('profile_pic/'.$image)];
-		}else{
-			return ['status'=>'error','message'=>'Invalid email or password!'];
-		}
+           
+            /*$api_token    =   str_random(20);
+            $updateToken  =   User::findOrfail($user->id);
+            $updateToken->api_token = $api_token;
+            $updateToken->save(); */
+            //$user->api_token = $api_token;
+            return ['status'=>'success', 'user_detail'=>$user, 'profile_pic'=>asset('profile_pic/'.$image)];
+        }else{
+            return ['status'=>'error','message'=>'Invalid email or password!'];
+        }
 
     }
     public function listUser()
     {   
          $i =0;
-
-        foreach(User::all() as  $val)
+        foreach(User::where('api_token','!=',Auth::user()->api_token)->get() as  $val)
         {
             $arr[$i]['id']=  $val->id;
             $arr[$i]['name']=$val->name;
@@ -100,79 +107,86 @@ class ApiauthController extends Controller
             }
         $i++;
         }//end main loop
-        return ['status'=>'successful','user_list'=>$arr];
+        return ['status'=>'success','user_list'=>$arr];
     }
 
     public function editUser($id)
     {
-        try{
-            $user =  User::findOrfail($id);
-            $arr['id']=  $user->id;
-            $arr['name']=$user->name;
-            $arr['email']=$user->email;
-            $arr['api_token']=$user->api_token;
-            $arr['role_id']=$user->role_id;
-            $arr['approved']=$user->approved;
-                if($user->meta)
-                {
-                    foreach ($user->meta as  $metaValue) {
-                            if($metaValue->key == "designation")
-                               {
-                                $arr["designation"] = DES::getDesignation($metaValue->value); 
-                               }
-                            if($metaValue->key == "ministry")
-                               {
-                                    $json = json_decode($metaValue->value);
-                                    if(min::ministryName($json[0])!=false)
-                                       {         
-                                         $arr["ministry"] = min::ministryName($json[0]);
-                                        }
-                               }
-                               if($metaValue->key == "phone")
-                               {
-                                $arr["phone"] = $metaValue->value;
-                               }
-                               if($metaValue->key == "address")
-                               {
-                                $arr["address"] = $metaValue->value;
-                               }
-                               if($metaValue->key == "department")
-                               {
-                                $dep = json_decode($metaValue->value);  
-                                    if(DEP::getDepName($dep[0])!=false)
-                                    {
-                                        $arr["department"] = DEP::getDepName($dep[0]);
-                                    }
-                               }
-                               if($metaValue->key == "profile_pic")
-                               {
-                                $arr["profile_pic"] = $metaValue->value;
-                               }
-                        }
+        $user =  User::findOrfail($id);
+        $arr['id']=  $user->id;
+        $arr['name']=$user->name;
+        $arr['email']=$user->email;
+        $arr['api_token']=$user->api_token;
+        $arr['role_id']=$user->role_id;
+        $arr['approved']=$user->approved;
+        
+        if(count($user->meta) != 0){
+            
+            foreach ($user->meta as  $metaValue) {
+
+                if($metaValue->key == "designation"){
+
+                    $arr["designation"] = DES::getDesignation($metaValue->value); 
+                }
+                if($metaValue->key == "ministry"){
+                    $json = json_decode($metaValue->value);
+                    if(min::ministryName($json[0])!=false){    
+
+                        $arr["ministry"] = min::ministryName($json[0]);
                     }
-                return ['status'=>'successful','user_data'=>$arr]; 
-            }catch(\Exception $e){
-             return ['status'=>'error','message'=>'No data found for this']; 
+                }
+                if($metaValue->key == "phone"){
+
+                    $arr["phone"] = $metaValue->value;
+                }
+                if($metaValue->key == "address"){
+
+                    $arr["address"] = $metaValue->value;
+                }
+                if($metaValue->key == "department"){
+
+                    $dep = json_decode($metaValue->value);  
+                    if(DEP::getDepName($dep[0])!=false){
+
+                        $arr["department"] = DEP::getDepName($dep[0]);
+                    }
+                }
+                if($metaValue->key == "profile_pic"){
+
+                    $arr["profile_pic"] = $metaValue->value;
+                }
+                foreach (DES::all() as $key => $value) {
+                   $arr['designationList'] = array('id' => $value->id, 'title' => $value->designation);
+                }
+
             }
+
+        }
+
+        $arr_list['des_list'] = DES::all();
+        $arr_list['mi_list'] = min::all();
+        $arr_list['de_list'] = DEP::all();
+        
+        return ['status'=>'success','user_data' => $arr,'data_list' => $arr_list]; 
     }
     public function approveUser($id)
-    {
+    {      
         try{
-                $approved = User::findOrfail($id);
+                $approved =User::findOrFail($id);
                 DB::beginTransaction();
                 $approved->approved = 1;
                 $approved->save();
                 DB::commit();
-                return ['status'=>'successful','message'=>'User Approved.']; 
+              Mail::to($approved->email)->send(new AfterApproveUser($approved));
+
+                return ['status'=>'success','message'=>'User Approved.']; 
 
               }catch(\Exception $e)
                 {
                   DB::rollback();
                  return ['error'=>'error','message'=>'Some thing goes wrong. Try Again']; 
-
-                  throw $e;
+                 throw $e;
                 }
-
     } 
     public function unApproveUser($id)
     {
@@ -183,7 +197,7 @@ class ApiauthController extends Controller
                   $approved->approved = 0;
                   $approved->save();
                   DB::commit();
-                return ['status'=>'successful','message'=>'User Un-Approve.']; 
+                return ['status'=>'success','message'=>'User Un-Approve.']; 
 
                 }catch(\Exception $e)
                 {
@@ -197,6 +211,7 @@ class ApiauthController extends Controller
 
     public function updateUser(Request $request)
     {
+
         if($request->name && $request->email)
         {
             if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
@@ -205,18 +220,32 @@ class ApiauthController extends Controller
              }
              try{
                   $id   = $request->id;
-                  $user = User::findOrfail($id);
                   DB::beginTransaction();
+                  $user = User::find($id);
+
                   $user->name = $request->name;
-                  $user->email = $request->email;         
-                  $user->role_id = $request->role_id;
+                  $user->email = $request->email;
+                   if($request->role_id)
+                   {         
+                     $user->role_id = $request->role_id;
+                    }
                   $user->save();
-        //meta update script
+                //meta update script
+
+
 
                 $uMeta = UserMeta::where('user_id',$id);
+                 $old_profile_pic_val ="";
                 if($uMeta->count()>0){
-                    $old_profile_pic_val = UserMeta::where(['user_id'=>$id,'key'=>'profile_pic'])->first()->value;
-                    $uMeta->delete(); 
+                   
+                     foreach ($uMeta->get() as $key => $value) {
+                        if($value->key=="profile_pic")
+                        {
+                            $old_profile_pic_val = $value->value;
+                        }
+                     } 
+
+                     $uMeta->delete();             
                 }
 
                       $request->user_list = $id;
@@ -242,7 +271,7 @@ class ApiauthController extends Controller
                     
                     if($request->ministry)   
                         {
-                               foreach ($request->ministry as $key => $value){
+                               foreach (json_decode($request->ministry) as $key => $value){
 
                                     $ministryMetaVal[] = $value;
                                 }
@@ -272,7 +301,8 @@ class ApiauthController extends Controller
                         }
                     if($request->department)
                         {
-                                foreach($request->department as $key => $value){
+                                foreach(json_decode($request->department) as $key => $value){
+
                                   $depValues[] =  $value;
                                 }
 
@@ -294,19 +324,20 @@ class ApiauthController extends Controller
                         $proPic->value = $filename;
                         $proPic->save();
                     }
-                    else{
+                    elseif($old_profile_pic_val!=""){
                         $proPic->key = "profile_pic";
                         $proPic->user_id  = $request->user_list;
                         $proPic->value    = $old_profile_pic_val;
                         $proPic->save();
                     }    
                   DB::commit();
-                return ['status'=>'successful','message'=>'Update User detail.']; 
+                return ['status'=>'success','message'=>'Update User detail.']; 
 
                 }catch(\Exception $e)
                 {
+
                   DB::rollback();
-                  return ['status'=>'error','message'=>'Not Update .Try Again']; 
+                  // return ['status'=>'error','message'=>'Not Update .Try Again']; 
                   throw $e;
                 }                
         }
@@ -318,7 +349,7 @@ class ApiauthController extends Controller
      protected function modelValidate($request){
 
         $rules = [
-				'name'  => 'min:5|regex:/^[A-Z a-z]+$/',
+                'name'  => 'min:5|regex:/^[A-Z a-z]+$/',
                 'email' => 'required|email|unique:users,email',
                 'password' => 'min:6|required',
                 'token' => 'required'
@@ -330,24 +361,24 @@ class ApiauthController extends Controller
 
     public function Register(Request $request)
     {
-    	$api_token = uniqid('',30);
-        $validate = $this->validateUserMeta($request);
+           $api_token    = str_random(20);
+          $validate   = $this->validateUserMeta($request);
         if(!$validate){
             return ['status'=>'error','message'=>'Required fields are missing!'];
         }
-    	if($request->name && $request->email && $request->password )
-		{
-			if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
+        if($request->name && $request->email && $request->password )
+        {
+            if (!filter_var($request->email, FILTER_VALIDATE_EMAIL)) {
 
-     			return ['status'=>'error','message'=>'Invalid email format!'];
-			 }
-				try{
-					$user = User::create([
-        					'name' => $request->name,
-        					'email' => $request->email,
-        					'password' => Hash::make($request->password),
-        					'api_token' => $api_token
-        					]);
+                return ['status'=>'error','message'=>'Invalid email format!'];
+             }
+                try{
+                    $user = User::create([
+                            'name' => $request->name,
+                            'email' => $request->email,
+                            'password' => Hash::make($request->password),
+                            'api_token' => $api_token
+                            ]);
 
                     $MetaData = [];
                     $path = 'profile_pic';
@@ -389,19 +420,19 @@ class ApiauthController extends Controller
                         Mail::to($request->email)->send(new RegisterNewUser($request->name));
 
                     }
-					return ['status'=>'successful','message'=>'Successful register!', "token"=>$api_token];
-				}catch(\Exception $e){
-					if($e instanceOf \Illuminate\Database\QueryException){
-						return ['status'=>'error','message'=>'Email already in use!'];
-					}else{
+                    return ['status'=>'success','message'=>'successfully registered!', "token"=>$api_token];
+                }catch(\Exception $e){
+                    if($e instanceOf \Illuminate\Database\QueryException){
+                        return ['status'=>'error','message'=>'Email already in use!'];
+                    }else{
                         throw $e;
-						return ['status'=>'error','message'=>'Some thing go wrong!'];
-					}
-				}
-		}
-	   else{
-			return ['status'=>'error','message'=>'fill all required fields!'];
-		}
+                        return ['status'=>'error','message'=>'Some thing go wrong!'];
+                    }
+                }
+        }
+       else{
+            return ['status'=>'error','message'=>'fill all required fields!'];
+        }
    }
    public function UserList()
    {
@@ -469,7 +500,7 @@ class ApiauthController extends Controller
         $model->password = Hash::make($request->newpassword);
         $model->reset_token = '';
         $model->save();
-        return ['status'=>'success','message'=>'Password chnaged successfully!'];
+        return ['status'=>'success','message'=>'Password chnaged successly!'];
    }
 
    protected function validateChangePassword($request){
@@ -482,9 +513,17 @@ class ApiauthController extends Controller
                 return false;
             }
         }else{
-
             return false;
         }
    }
-
+   public function deleteUser($id){
+        if(empty($id) || $id == '' ){
+            return ['status'=>'error','message'=>'Id not found'];
+        } else{
+            $deluser = User::where('id',$id)->delete();
+            if ($deluser){
+                return ['status' => 'success' , 'message' => 'User Delete successfully'];
+            }
+        }
+   }
 }

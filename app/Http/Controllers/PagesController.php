@@ -8,21 +8,30 @@
   use Session;
   use DB;
   use Auth;
+  use App\LogSystem as LOG;
+
+   
   class PagesController extends Controller
   {
+    protected $ipAdress;
+    public function __construct(Request $request)
+    { 
+        $this->ipAdress =  $request->ip();
+        DB::enableQueryLog();     
+    }
     public function index(){
 
-      $plugins = [
+        $plugins = [
                   'css'  => ['datatables'],
                   'js'   => ['datatables','custom'=>['gen-datatables']],
               ];
 
-      return view('pages.index',$plugins);
+        return view('pages.index',$plugins);
     }
 
     public function indexData(){
 
-      $model = Page::get();
+      $model = Page::orderBy('id','desc')->get();
       return Datatables::of($model)
             ->addColumn('actions',function($model){
                 return view('pages._actions',['model' => $model])->render();
@@ -34,116 +43,158 @@
     }
 
     public function create(){
-
-      $plugins = [
-            'css' => ['wysihtml5','fileupload'],
-            'js'  => ['wysihtml5','fileupload','ckeditor','custom'=>['page-create']]
-      ];
+     
+        $plugins = [
+                        'css' => ['wysihtml5','fileupload'],
+                        'js'  => ['wysihtml5','fileupload','ckeditor','custom'=>['page-create']]
+                    ];
       return view('pages.create',$plugins);
     }
 
     public function store(Request $request){
 
-      $this->modelValidate($request);
+        $this->modelValidate($request);
 
-      DB::beginTransaction();
-      try{
+        DB::beginTransaction();
+        try{
+            $model = new Page($request->except(['_token']));
+            $model->created_by = Auth::user()->id;
+            $path = 'pages_data';
+            if($request->hasFile('page_image')){
 
-        $model = new Page($request->except(['_token']));
-        $model->created_by = Auth::user()->id;
-        $path = 'pages_data';
-        if($request->hasFile('page_image')){
+                $filename = date('Y-m-d-H-i-s')."-".$request->file('page_image')->getClientOriginalName();
 
-            $filename = date('Y-m-d-H-i-s')."-".$request->file('page_image')->getClientOriginalName();
+                $request->file('page_image')->move($path, $filename);
 
-            $request->file('page_image')->move($path, $filename);
+                $model->page_image = $filename;
+            }
+            $model->save();
+            DB::commit();
+            Session::flash('success','Successfully created!');
+            return redirect()->route('pages.list');
+        }catch(\Exception $e){
 
-            $model->page_image = $filename;
-        }
-        $model->save();
-        DB::commit();
-        Session::flash('success','Successfully created!');
-        return redirect()->route('pages.list');
-      }catch(\Exception $e){
-
-        DB::rollback();
-        throw $e;
+            DB::rollback();
+            throw $e;
       }
     }
 
     public function modelValidate($request){
 
-      $rules = [
+          $rules = [
+                    'page_title'  => 'required',
+                    'status'      => 'required',
+                    'page_slug'   => 'required',
+                    'page_image'  => 'image|mimes:jpeg,png,jpg' 
+                  ];
 
-            'page_title'  => 'required',
-            'status'      => 'required',
-            'page_slug'   => 'required',
-            'page_image'  => 'image|mimes:jpeg,png,jpg' 
-      ];
-
-      $this->validate($request, $rules);
+          $this->validate($request, $rules);
     }
 
     public function edit($id){
-      try{
-          $model = Page::findOrFail($id);
+          try{
+              $model = Page::findOrFail($id);
+              $plugins = [
+                          'css' => ['wysihtml5','fileupload'],
+                          'js'  => ['wysihtml5','fileupload','ckeditor','custom'=>['page-create']],
+                          'model' => $model
+                        ];
 
-          $plugins = [
-                'css' => ['wysihtml5','fileupload'],
-                'js'  => ['wysihtml5','fileupload','ckeditor','custom'=>['page-create']],
-                'model' => $model
-          ];
           return view('pages.edit',$plugins);
         }catch(\Exception $e)
         {
-          Session::flash('error','Data not found.');
-          return redirect()->route('pages.list');          
+              Session::flash('error','Data not found.');
+              return redirect()->route('pages.list');          
         }
     }
 
     public function update(Request $request, $id){
 
-      $model = Page::findOrFail($id);
+        $model = Page::findOrFail($id);
+        $this->modelValidate($request);
+        DB::beginTransaction();
+        try{
+            $model->fill($request->except(['_token']));
+            $model->created_by = Auth::user()->id;
+            $path = 'pages_data';
+          if($request->hasFile('page_image')){
 
-      $this->modelValidate($request);
-
-      DB::beginTransaction();
-
-      try{
-        $model->fill($request->except(['_token']));
-        $model->created_by = Auth::user()->id;
-        $path = 'pages_data';
-        if($request->hasFile('page_image')){
-
-            $filename = date('Y-m-d-H-i-s')."-".$request->file('page_image')->getClientOriginalName();
-
-            $request->file('page_image')->move($path, $filename);
-
-            $model->page_image = $filename;
-        }
-        $model->save();
-        DB::commit();
-        Session::flash('success','Successfully updated!');
-        return redirect()->route('pages.list');
-      }catch(\Exception $e){
-
-        DB::rollback();
-
-        throw $e;
+              $filename = date('Y-m-d-H-i-s')."-".$request->file('page_image')->getClientOriginalName();
+              $request->file('page_image')->move($path, $filename);
+              $model->page_image = $filename;
+            }
+            $model->save();
+            DB::commit();
+            Session::flash('success','Successfully updated!');
+            return redirect()->route('pages.list');
+          }catch(\Exception $e){
+            DB::rollback(); 
+            throw $e;
       }
     }
 
     public function destroy($id){
 
-      $model = Page::findOrFail($id);
-
+        $model = Page::findOrFail($id);
       try{
-        $model->delete();
-        Session::flash('success','Successfully deleted!');
-        return redirect()->route('pages.list');
-      }catch(\Exception $e){
-
-        throw $e;
-      }
+          $model->delete();
+          Session::flash('success','Successfully deleted!');
+          return redirect()->route('pages.list');
+        }catch(\Exception $e){
+            throw $e;
+        }
     }
+
+    public function __destruct() {
+          $uid = Auth::user()->id;          
+
+          foreach (DB::getQueryLog() as $key => $value){ 
+                  
+                      $log    = LOG::orderBy('id','desc')->where('user_id',$uid)->first();
+                      $logAr  = json_decode($log->text,true);
+                      // $insertTime = $log->created_at;
+                      // $mytime = TM::now();
+                      //  $addSecond = $insertTime->addSeconds(10);
+
+                      //  dump( $insertTime.'--'.$mytime.'-add sec '.$addSecond);
+                    if(array_key_exists('query', $logAr))
+                      {
+                        if($value['query']=="insert into `log_systems` (`user_id`, `type`, `text`, `ip_address`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?)" || $value['query']=="select * from `log_systems` where `user_id` = ? order by `id` desc limit 1" || $value['query']=="select * from `users` where `users`.`id` = ? limit 1")
+                        {
+                           //   INSERT  && SELECT FOR lOG && SELECT USER NOT PUT IN LOG SYSTEM
+
+                        }
+                          else if( $logAr['query'] == $value['query'])
+                          {
+                              // dump('not insert log forthis');
+
+
+                          }else{
+
+                           
+                                $Lg             =   new LOG;
+                                $Lg->user_id    =   $uid;
+                                $Lg->type       =   "model";            
+                                $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time']]);
+                                $Lg->ip_address =   $this->ipAdress;
+                                $Lg->save(); 
+                          }
+                      }else{
+                     
+                        $Lg             =   new LOG;
+                        $Lg->user_id    =   $uid;
+                        $Lg->type       =   "model";            
+                        $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time']]);
+                        $Lg->ip_address =   $this->ipAdress;
+                        $Lg->save(); 
+                      }
+                      
+                    
+          }    
+
+    }
+
+
+
+
   }

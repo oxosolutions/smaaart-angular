@@ -25,7 +25,7 @@ class DepartmentController extends Controller
 
     public function get_departments(){
 
-    	$model = DP::withUsers()->get();
+    	$model = DP::orderBy('id','desc')->withUsers()->get();
 
     	return Datatables::of($model)
             ->addColumn('actions',function($model){

@@ -36,7 +36,7 @@ class Ministrie extends Model
     static function ministryName($id)
     { 
         try{
-                return self::where('id',$id)->first()->ministry_title;
+                return self::where('id',$id)->first()->id;
             }
             catch(\Exception $e)
             {

@@ -18,7 +18,7 @@ class Designation extends Model
     public static function getDesignation($id)
     {   
         try{
-    	       return self::where('id',$id)->first()->designation;
+    	       return self::where('id',$id)->first()->id;
             }catch(\Exception $e)
             {
                 return false;

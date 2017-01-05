@@ -22,7 +22,7 @@ class MinistriesController extends Controller
 
     public function get_ministries(){
 
-    	$model = MIN::withUsers()->get();
+    	$model = MIN::orderBy('id','desc')->withUsers()->get();
 
     	return Datatables::of($model)
     		   ->addColumn('actions', function($model){

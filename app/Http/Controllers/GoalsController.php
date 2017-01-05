@@ -28,7 +28,7 @@ class GoalsController extends Controller
 
     public function goalsList(){
 
-    	$model = Goal::WithUsers()->get();
+    	$model = Goal::orderBy('id','desc')->WithUsers()->get();
 
     	return Datatables::of($model)
                 ->addColumn('selector', '<input type="checkbox" name="items[]" class="icheckbox_minimal-blue item-selector" value="{{$id}}" >')

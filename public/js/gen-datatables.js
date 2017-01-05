@@ -21,6 +21,7 @@
       processing: true,
       serverSide: true,
       ajax: route()+'/list_depart',
+      order:[[0,"desc"]],
       columns: [
             { data: 'id', name: 'id' },
             { data: 'dep_code', name: 'dep_code' },
@@ -36,6 +37,7 @@
       processing: true,
       serverSide: true,
       ajax: route()+'/list_desig',
+      order:[[0,"desc"]],
       columns: [
             { data: 'id', name: 'id' },
             { data: 'designation', name: 'designation' },
@@ -49,6 +51,7 @@
       processing: true,
       serverSide: true,
       ajax: route()+'/list_minist',
+      order:[[0,"desc"]],
       columns: [
             { data: 'ministry_id', name: 'ministry_id' },
             { data: 'ministry_title', name: 'ministry_title' },
@@ -66,6 +69,7 @@
       serverSide: true,
       ajax: route()+'/list_goals',
       order: [[1,"asc"]],
+      order:[[0,'desc']],
       columns: [
             { data: 'selector', name: 'selector',orderable: false, searchable: false},
             { data: 'goal_number', name: 'goal_number' },
@@ -83,6 +87,7 @@
       processing: true,
       serverSide: true,
       ajax: route()+'/schema_list',
+      order:[[0,'desc']],
       columns: [
             { data: 'id', name: 'id' },
             { data: 'schema_id', name: 'schema_id' },
@@ -98,6 +103,7 @@
       processing: true,
       serverSide: true,
       ajax: route()+'/intervention_list',
+      order:[[0,'desc']],
       columns: [
             { data: 'id', name: 'id' },
             { data: 'intervent_id', name: 'intervent_id' },
@@ -114,6 +120,7 @@
       processing: true,
       serverSide: true,
       ajax: route()+'/target_list',
+      order:[[0,'desc']],
       columns: [
             { data: 'id', name: 'id' },
             { data: 'target_id', name: 'target_id' },
@@ -129,6 +136,7 @@
       processing: true,
       serverSide: true,
       ajax: route()+'/resource_list',
+      order:[[0,'desc']],
       columns: [
             { data: 'id', name: 'id' },
             { data: 'resource_id', name: 'resource_id' },
@@ -144,6 +152,7 @@
       processing: true,
       serverSide: true,
       ajax: route()+'/indicators_list',
+      order:[[0,'desc']],
       columns: [
             { data: 'id', name: 'id' },
             { data: 'indicator_title', name: 'indicator_title' },
@@ -157,6 +166,7 @@
       processing: true,
       serverSide: true,
       ajax: route()+'/pages_list',
+      order:[[0,"desc"]],
       columns: [
             { data: 'id', name: 'id' },
             { data: 'page_title', name: 'page_title' },

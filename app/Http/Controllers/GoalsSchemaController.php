@@ -26,7 +26,7 @@ class GoalsSchemaController extends Controller
 
     public function indexData(){
 
-    	$model = GS::withUsers()->get();
+    	$model = GS::orderBy('id','desc')->withUsers()->get();
 
     	return Datatables::of($model)
             ->addColumn('actions',function($model){

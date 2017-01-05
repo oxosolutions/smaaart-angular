@@ -63,23 +63,24 @@ class DatasetsController extends Controller
         if ($model == '' || empty($model)){
             return ['status'=>'error','records'=>'no records found'];
         }else{
-        $records = json_decode($model->dataset_columns);
-        if(empty($records)){
-            return ['status'=>'error','message'=>'Dataset columns not defined yet!'];
-        }
-        $headers = [];
-        $index = 0;
-        foreach($records as $key =>  $value){
-            if(!in_array($key, $headers)){
-
-                $headers[$index]['id'] = $key;
-                $headers[$index]['label'] = $key;
-                $headers[$index]['type'] = $value;
+            $records = DB::table($model->dataset_table)->get();
+            if(empty($records)){
+                return ['status'=>'error','message'=>'Dataset columns not defined yet!'];
             }
-            $index++;
-        }
-
-        return ['status'=>'success','data'=>['column'=>$headers,'records'=>json_decode($model->dataset_records)]];
+            $headers = [];
+            $index = 0;
+            $recordsCol = (array)$records[0];
+            $columnsArray = json_decode($model->dataset_columns); //value will be string, numeric, date
+            foreach($columnsArray as $colKey => $colVal){
+                
+                $headers[$index]['id'] = $colKey;
+                $headers[$index]['label'] = $recordsCol[$colKey];
+                $headers[$index]['type'] = $colVal;
+                
+                $index++;
+            }
+            //unset($records[0]);
+            return ['status'=>'success','data'=>['column'=>$headers,'records'=>$records]];
         }
     }
 
@@ -209,7 +210,7 @@ class DatasetsController extends Controller
         }
         $model = DL::find($request->dataset_id);
         $tableName = 'data_table_'.time();
-        $columns = json_decode($request->subset_columns);
+        $columns = array_keys((array)json_decode($request->subset_columns));
         DB::select("CREATE TABLE `{$tableName}` as SELECT  ".implode(',', $columns)." FROM ".$model->dataset_table.";");
         DB::select("ALTER TABLE `{$tableName}` ADD  `id` INT(100) PRIMARY KEY AUTO_INCREMENT FIRST;");
 
@@ -312,6 +313,26 @@ class DatasetsController extends Controller
         }else{
             return ['stauts'=>'error','message'=>'No dataset found!'];
         }
+    }
+
+    public function staticDatsetFunction(){
+
+        $columns = DB::table('data_table_1483033420')->take(1)->get();
+        return ['status'=>'success','columns'=>$columns[0]];
+    }
+
+    public function dataForGenerateVisual(Request $request){
+
+        $columsArray = [];
+        $value = str_replace('"', '', $request->columns);
+        $model = DB::table('data_table_1483033420')->select($value)->where('id','!=',1)->groupBy($value)->get();
+        $columnsArray[] = $value;
+        foreach($model as $iKey => $ivalue){
+            $newModel = DB::table('data_table_1483033420')->where($value,$ivalue->{$value})->count();
+            $columnsArray[$value][$ivalue->{$value}] = $newModel;
+        }
+        
+        return ['status'=>'success','columns'=>$columnsArray];
     }
 
 }

@@ -39,7 +39,7 @@ class Department extends Model
         $count = self::where('id',$id)->count();
         if($count !=0)
         {
-            return self::where('id',$id)->first()->dep_name;
+            return self::where('id',$id)->first()->id;
          }
          else{ return false; }
     }

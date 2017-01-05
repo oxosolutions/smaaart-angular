@@ -2,7 +2,6 @@
 
 use Illuminate\Http\Request;
 
-
 	// Route::get('/userlists',['as'=>"user.list", 'uses'=>'Services\ApiauthController@listUser']);
 
 Route::group(['prefix' => 'v1'], function () {
@@ -38,23 +37,24 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/users', function (Request $request) {
 		    return $request->user();
 		});
-		Route::get('/userlists',['as'=>"user.list", 'uses'=>'Services\ApiauthController@listUser']);
-		Route::get('/editUser/{id}',['as'=>"user.edit", 'uses'=>'Services\ApiauthController@editUser']);
-		Route::get('/user/approve/{id}',['as'=>"user.approve", 'uses'=>'Services\ApiauthController@approveUser']);
-		Route::get('/user/unapprove/{id}',['as'=>"user.unapprove", 'uses'=>'Services\ApiauthController@unApproveUser']);
-		Route::post('/user/update',['as'=>"user.update", 'uses'=>'Services\ApiauthController@updateUser']);
+		Route::get('/userlists',					['as'=>"user.list", 'uses'=>'Services\ApiauthController@listUser']);
+		Route::get('/editUser/{id}',				['as'=>"user.edit", 'uses'=>'Services\ApiauthController@editUser']);
+		Route::get('/deleteUser/{id}',				['as'=>"user.delete", 'uses'=>'Services\ApiauthController@deleteUser']);
+		Route::get('/user/approve/{id}',			['as'=>"user.approve", 'uses'=>'Services\ApiauthController@approveUser']);
+		Route::get('/user/unapprove/{id}',			['as'=>"user.unapprove", 'uses'=>'Services\ApiauthController@unApproveUser']);
+		Route::post('/user/update',					['as'=>"user.update", 'uses'=>'Services\ApiauthController@updateUser']);
 
 		Route::get('users/list',					['as' => 'users' , 'uses' => 'Services\ApiauthController@UserList']);
 		Route::post('/dataset/import',				['as'=>'import','uses'=>'Services\ImportdatasetController@uploadDataset']);
 		Route::get('/dataset/list',					['as'=>'list','uses'=>'Services\DatasetsController@getDatasetsList']);
-		Route::get('/dataset/view/{id}/{skip}',			['as'=>'list','uses'=>'Services\DatasetsController@getDatasets']);
+		Route::get('/dataset/view/{id}/{skip}',		['as'=>'list','uses'=>'Services\DatasetsController@getDatasets']);
 		Route::get('/dataset/columns/{id}',			['as'=>'list','uses'=>'Services\DatasetsController@getDatasetsColumnsForSubset']);
 		Route::get('/dataset/export/{id}',			['as'=>'dataset.export','uses'=>'Services\ExportDatasetController@export']);
 		Route::post('/store/visual',				['as'=>'visualization.store','uses'=>'Services\VisualizationController@store']);
 		Route::get('/visual/list',					['as'=>'visualization.list','uses'=>'Services\VisualizationController@visualList']);
 		Route::get('/visual/{id}',					['as'=>'visualization.single','uses'=>'Services\VisualizationController@visualByID']);
 		Route::get('/dataset/chartdata/{id}',		['as'=>'list','uses'=>'Services\DatasetsController@getFormatedDataset']);
-		Route::get('/dataset/define/columns/{id}',['as'=>'validate.columns','uses'=>'Services\ImportdatasetController@getColumns']);
+		Route::get('/dataset/define/columns/{id}',	['as'=>'validate.columns','uses'=>'Services\ImportdatasetController@getColumns']);
 		Route::post('/visual/settings',				['as'=>'store.visual.settings','uses'=>'Services\VisualizationController@storeVisualOptionsAndSettings']);
 		Route::post('/dataset/savevalidatecolumns',	['as'=>'validate.columns','uses'=>'Services\DatasetsController@SavevalidateColumns']);
 		Route::get('/dataset/delete/{id}',			['as'=>'validate.columns','uses'=>'Services\DatasetsController@deleteDataset']);
@@ -67,6 +67,7 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::post('update/profile',				['as'=>'profile.update','uses'=>'Services\ProfileApiController@saveProfile']);
 		Route::post('update/profilePic',			['as'=>'profilePic.update','uses'=>'Services\ProfileApiController@profilePicUpdate']);
 		Route::get('dataset/validate/columns/{id}', ['as'=>'dataset.column.validate', 'uses'=>'Services\DatasetsController@validateColums']);
+		Route::get('dataset/static/dataset', 		['as'=>'dataset.column.validate', 'uses'=>'Services\DatasetsController@staticDatsetFunction']);
 
 	});
 });
