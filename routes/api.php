@@ -66,8 +66,10 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::post('dataset/saveSubset',			['as'=>'dataset.save_subset','uses'=>'Services\DatasetsController@saveNewSubset']);
 		Route::post('update/profile',				['as'=>'profile.update','uses'=>'Services\ProfileApiController@saveProfile']);
 		Route::post('update/profilePic',			['as'=>'profilePic.update','uses'=>'Services\ProfileApiController@profilePicUpdate']);
+		Route::post('editProfile',			['as'=>'profile.edit','uses'=>'Services\ProfileApiController@editProfile']);
 		Route::get('dataset/validate/columns/{id}', ['as'=>'dataset.column.validate', 'uses'=>'Services\DatasetsController@validateColums']);
 		Route::get('dataset/static/dataset', 		['as'=>'dataset.column.validate', 'uses'=>'Services\DatasetsController@staticDatsetFunction']);
-
+		Route::get('/generatedVisual/list',			['as'=>'visual.list','uses'=>'Services\VisualApiController@visualList']);
+		Route::get('singlevisual/{id}',				['as'=>'single.visual','uses'=>'Services\VisualApiController@visualById']);
 	});
 });

@@ -223,4 +223,8 @@ class ProfileApiController extends Controller
             }
         }
     }
+    public function editProfile()
+       {
+          return View::make('apiusers.editProfile');
+       }
 }

@@ -16,9 +16,15 @@ use App\GlobalSetting as GS;
 use Illuminate\Support\Facades\Mail;
 use App\Mail\AfterApproveUser;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use App\LogSystem as LOG;
+use Carbon\Carbon AS TM;
 class ApiusersController extends Controller
 {
-    function __construct(){
+  protected $ipAdress;
+   public function __construct(Request $request)
+    { 
+      $this->ipAdress =  $request->ip();
+      DB::enableQueryLog();  
     }
 
     public function index(){
@@ -252,7 +258,8 @@ class ApiusersController extends Controller
         {   
           try{
               $userDetail =  User::findOrfail($id);
-              return view('apiusers.user_detail', ['user_detail'=>$userDetail]); 
+              $userMeta =  UM::where('user_id' , $id)->get();
+              return view('apiusers.user_detail', ['user_detail'=>$userDetail, 'user_meta' => $userMeta]); 
             }catch(\Exception $e)
             {
 
@@ -541,5 +548,44 @@ class ApiusersController extends Controller
                 return view('approvel.not-approved');
             }
         }
+
+ public function __destruct() {
+        $uid = Auth::user()->id;          
+
+        foreach (DB::getQueryLog() as $key => $value){ 
+
+          if($value['query'] =="insert into `log_systems` (`user_id`, `type`, `text`, `ip_address`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?)" || $value['query'] =="select * from `log_systems` where `user_id` = ? order by `id` desc limit 1" || $value['query']=="select * from `users` where `users`.`id` = ? limit 1")
+          {  //Not put in log
+          }else{
+                $log    = LOG::orderBy('id','desc')->where('user_id',$uid)->first();
+                $logAr  = json_decode($log->text,true);
+                $insertTime = $log->created_at;
+                $currentTime = TM::now();
+                $addSecond = $insertTime->addSeconds(10);
+                if(array_key_exists('query', $logAr))
+                {
+                  if($addSecond > $currentTime  && $logAr['query'] == $value['query'])
+                  {
+                  // dump('not insert log forthis');
+                  }else{
+                    $Lg             =   new LOG;
+                    $Lg->user_id    =   $uid;
+                    $Lg->type       =   "model";            
+                    $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time']]);
+                    $Lg->ip_address =   $this->ipAdress;
+                    $Lg->save(); 
+                  }
+                }else{
+                    $Lg             =   new LOG;
+                    $Lg->user_id    =   $uid;
+                    $Lg->type       =   "model";            
+                    $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time']]);
+                    $Lg->ip_address =   $this->ipAdress;
+                    $Lg->save(); 
+                }
+          }
+
+        }
+    }   
 
 }

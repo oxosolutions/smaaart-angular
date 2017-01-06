@@ -231,17 +231,17 @@
           </ul>
         </li>
 
-        <li class="treeview {{in_array(Request::path(),array('visualisation/create','visualisation'))?'active':''}}">
+        <li class="treeview {{in_array(Request::path(),array('visual/create','visual'))?'active':''}}">
           <a href="#">
-            <i class="fa fa-arrows-h"></i>
-            <span>Manage Visualisations</span>
+            <i class="fa fa-line-chart"></i>
+            <span>Create Visual Charts</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="{{Request::is('visualisation')?'active':''}}"><a href="{{ route('visualisation.list') }}"><i class="fa fa-circle-o"></i> List Visualisations</a></li>
-            <li class="{{Request::is('visualisation/create')?'active':''}}"><a href="{{route('visualisation.create')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
+            <li class="{{Request::is('visual')?'active':''}}"><a href="{{ route('list.visual') }}"><i class="fa fa-circle-o"></i> List Charts</a></li>
+            <li class="{{Request::is('visual/create')?'active':''}}"><a href="{{route('create.visual')}}"><i class="fa fa-circle-o"></i> Create New</a></li>
           </ul>
         </li>
 

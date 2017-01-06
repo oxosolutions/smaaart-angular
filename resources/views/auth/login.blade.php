@@ -23,11 +23,11 @@
         <input type="email" name="email" class="form-control" placeholder="Email">
         <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
 
-        @if ($errors->has('email'))
+        {{-- @if ($errors->has('email'))
             <span class="help-block">
                 <strong>{{ $errors->first('email') }}</strong>
             </span>
-        @endif
+        @endif --}}
       </div>
       <div class="form-group has-feedback{{ $errors->has('email') ? ' has-error' : '' }}">
         <input type="password" name="password" class="form-control" placeholder="Password">

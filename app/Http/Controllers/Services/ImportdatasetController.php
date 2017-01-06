@@ -174,7 +174,7 @@ class ImportdatasetController extends Controller
             return ['status'=>'true','id'=>$model->id,'message'=>'Dataset upload successfully!'];
         }else{
             DB::rollback();
-            return ['status'=>'false','id'=>'','message'=>'unable to upload datsaet!'];
+            return ['status'=>'false','id'=>'','message'=>$result['error']];
         }
     }
 

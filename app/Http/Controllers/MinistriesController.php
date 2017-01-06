@@ -9,8 +9,16 @@ use DB;
 use Auth;
 use App\MinistriesDepartmentMapping as MDM;
 use Yajra\Datatables\Datatables;
+  use App\LogSystem as LOG;
+  use Carbon\Carbon AS TM;
 class MinistriesController extends Controller
 {
+    protected $ipAdress;
+    public function __construct(Request $request)
+    { 
+      $this->ipAdress =  $request->ip();
+      DB::enableQueryLog();  
+    }
     public function index(){
 
     	$plugins = [
@@ -205,4 +213,43 @@ class MinistriesController extends Controller
             throw $e;
         }
     }
+     public function __destruct() {
+        $uid = Auth::user()->id;          
+
+        foreach (DB::getQueryLog() as $key => $value){ 
+
+          if($value['query'] =="insert into `log_systems` (`user_id`, `type`, `text`, `ip_address`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?)" || $value['query'] =="select * from `log_systems` where `user_id` = ? order by `id` desc limit 1" || $value['query']=="select * from `users` where `users`.`id` = ? limit 1")
+          {  //Not put in log
+          }else{
+                $log    = LOG::orderBy('id','desc')->where('user_id',$uid)->first();
+                $logAr  = json_decode($log->text,true);
+                $insertTime = $log->created_at;
+                $currentTime = TM::now();
+                $addSecond = $insertTime->addSeconds(10);
+                if(array_key_exists('query', $logAr))
+                {
+                  if($addSecond < $currentTime  && $logAr['query'] == $value['query'])
+                  {
+                  // dump('not insert log forthis');
+                  }else{
+                    $Lg             =   new LOG;
+                    $Lg->user_id    =   $uid;
+                    $Lg->type       =   "model";            
+                    $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time']]);
+                    $Lg->ip_address =   $this->ipAdress;
+                    $Lg->save(); 
+                  }
+                }else{
+                    $Lg             =   new LOG;
+                    $Lg->user_id    =   $uid;
+                    $Lg->type       =   "model";            
+                    $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time']]);
+                    $Lg->ip_address =   $this->ipAdress;
+                    $Lg->save(); 
+                }
+          }
+
+        }    
+
+      }
 }

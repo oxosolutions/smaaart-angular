@@ -9,12 +9,14 @@
 		['user_name' => 'SGS Sandhu']
 		); 
 	});
-	Route::group(['middleware'=>['auth','approve']], function(){
 
-		Event::listen('illuminate.query', function($query)
-{
-    var_dump($query);
-});
+			// Route::get('goals/deleteall',['as' => 'delMulGoals' , 'uses' => 'GoalsController@delMulGoals']);
+
+	Route::group(['middleware'=>['auth','approve','log']], function(){
+
+	Route::get('/view_log/{id}',['as'=>'log.view','uses'=>'LogsystemController@viewLog']);	
+	Route::post('/search_log',['as'=>'log.search','uses'=>'LogsystemController@search_log']);	
+
 		//dashboard
 		Route::get('/', ['as'=>'home', 'uses'=>'DashboardController@index']);
 	//Api user
@@ -53,7 +55,7 @@
 		Route::get('/goals',['as'=>'goals.list','uses'=>'GoalsController@index']);
 		Route::get('/goals/create',['as'=>'goals.create','uses'=>'GoalsController@create']);
 		Route::get('/goals/delete/{id}',['as'=>'goals.delete', 'uses'=>'GoalsController@destroy']);
-		Route::post('goals/delete',['as' => 'delMulGoals' , 'uses' => 'GoalsController@delMulGoals']);
+		Route::get('goals/deleteall',['as' => 'delMulGoals' , 'uses' => 'GoalsController@delMulGoals']);
 	//Scheme
 		Route::get('/schema',['as'=>'schema.list','uses'=>'GoalsSchemaController@index']);
 		Route::get('/schema/create',['as'=>'schema.create','uses'=>'GoalsSchemaController@create']);
@@ -170,10 +172,10 @@
 		Route::patch('/indicators/update/{id}',['as'=>'indicators.update', 'uses'=>'IndicatorsController@update']);
 
 	/*Routes For indicators resources*/
-		Route::get('/pages_list',['as'=>'pages.list.ajax','uses'=>'PagesController@indexData']);
-		Route::post('/pages/store',['as'=>'pages.store','uses'=>'PagesController@store']);
-		Route::get('/pages/edit/{id}',['as'=>'pages.edit', 'uses'=>'PagesController@edit']);
-		Route::patch('/pages/update/{id}',['as'=>'pages.update', 'uses'=>'PagesController@update']);
+		Route::get('/pages_list',['middleware'=>'log','as'=>'pages.list.ajax','uses'=>'PagesController@indexData']);
+		Route::post('/pages/store',['middleware'=>'log','as'=>'pages.store','uses'=>'PagesController@store']);
+		Route::get('/pages/edit/{id}',['middleware'=>'log','as'=>'pages.edit', 'uses'=>'PagesController@edit']);
+		Route::patch('/pages/update/{id}',['middleware'=>'log','as'=>'pages.update', 'uses'=>'PagesController@update']);
 
 	/*Routes For indicators resources*/
 		Route::get('/visualisation_list',['as'=>'visualisation.list.ajax','uses'=>'VisualisationController@indexData']);
@@ -203,11 +205,18 @@
 		Route::patch('/settings/store/sitevalue',['as'=>'sitevalue.settings','uses'=>'GlobalSettingsController@siteValue']);
 
 	//Create Visual
-		Route::get('/visual/create', ['as'=>'create.visual','uses'=>'VisualController@index']);
-
-		
+		Route::get('/visual', ['as'=>'list.visual','uses'=>'VisualController@index']);
+		Route::get('/visual/create', ['as'=>'create.visual','uses'=>'VisualController@create']);
+		Route::get('/dataset/columns/{id}', ['as'=>'dataset.columns','uses'=>'VisualController@getDatasetColumns']);
+		Route::post('/visual/savecolumns',['as'=>'save.dataset.columns','uses'=>'VisualController@saveVisualColumns']);
+		Route::get('/getVisual',['as'=>'visual.ajax','uses'=>'VisualController@getData']);
+		Route::get('/delete/visual/{id}',['as'=>'visual.delete','uses'=>'VisualController@deleteVisual']);
+		Route::get('/visual/edit/{id}',['as'=>'visual.edit','uses'=>'VisualController@edit']);
+		Route::patch('/visual/update/{id}',['as'=>'visual.update','uses'=>'VisualController@update']);
 	});
 
 Route::get('/approve/{from?}/{api_token?}', ['as'=>'approve','uses'=>'ApiusersController@approveUser']);
 Auth::routes();
-Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+	Route::group(['middleware'=>['log']], function(){
+		Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+	});

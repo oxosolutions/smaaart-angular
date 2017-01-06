@@ -361,8 +361,8 @@ class ApiauthController extends Controller
 
     public function Register(Request $request)
     {
-           $api_token    = str_random(20);
-          $validate   = $this->validateUserMeta($request);
+        $api_token    = str_random(20);
+        $validate   = $this->validateUserMeta($request);
         if(!$validate){
             return ['status'=>'error','message'=>'Required fields are missing!'];
         }
@@ -387,6 +387,10 @@ class ApiauthController extends Controller
                         $request->file('profile_pic')->move($path, $filename);
                         $MetaData[0]['key'] = 'profile_pic';
                         $MetaData[0]['value'] = $filename;
+                        $MetaData[0]['user_id'] = $user->id;
+                    }else{
+                        $MetaData[0]['key'] = 'profile_pic';
+                        $MetaData[0]['value'] = 'user5.ico';
                         $MetaData[0]['user_id'] = $user->id;
                     }
                     $MetaData[1]['key'] = 'phone';
@@ -416,11 +420,14 @@ class ApiauthController extends Controller
                         $userDetails['name'] = $request->name;
                         $userDetails['email'] = $request->email;
                         $userDetails['phone'] = $request->phone;
+                        $userDetails['ministries'] = $request->ministries;
+                        $userDetails['designation'] = $request->designation;
+                        $userDetails['department'] = $request->departments;
                         Mail::to(json_decode($model->meta_value)->admin_email)->send(new AdminRegister($userDetails));
                         Mail::to($request->email)->send(new RegisterNewUser($request->name));
 
                     }
-                    return ['status'=>'success','message'=>'successfully registered!', "token"=>$api_token];
+                    return ['status'=>'successful','message'=>'successfully registered!', "token"=>$api_token];
                 }catch(\Exception $e){
                     if($e instanceOf \Illuminate\Database\QueryException){
                         return ['status'=>'error','message'=>'Email already in use!'];
@@ -526,4 +533,5 @@ class ApiauthController extends Controller
             }
         }
    }
+
 }

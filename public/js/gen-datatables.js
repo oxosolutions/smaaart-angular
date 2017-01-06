@@ -196,6 +196,22 @@
       ]
     });
 
+    $('#visual').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: route()+'/getVisual',
+      order:[[0,'desc']],
+      columns: [
+            { data: 'id', name: 'id' },
+            { data: 'visual_name', name: 'visual_name' },
+            { data: 'dataset_id', name: 'dataset_id' },
+            { data: 'columns', name: 'columns' },
+            { data: 'created_by', name: 'created_by' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },
+      ]
+    });
+
     $('#datasets').DataTable({
       processing: true,
       serverSide: true,
@@ -262,6 +278,7 @@
   });
 
   $(document).ready(function() {
+
     $(".selectall").change(function(){
       if($(".selectall").prop("checked")){
         $(".item-selector").prop("checked", true);
@@ -271,3 +288,23 @@
      
     }); 
   });
+
+  function delAll()
+  {
+    var inputs = $(".item-selector:checkbox:checked");
+    var data = new Array();
+    for(var i = 0; i < inputs.length; i++){
+            data[i] =  $(inputs[i]).val();
+        }
+        $.ajax({
+          url:route()+"/goals/deleteall",
+          type:'GET',
+          data:{'check':data},
+          success:function(res)
+          {
+            window.location.reload();
+          }
+
+
+        });
+  }

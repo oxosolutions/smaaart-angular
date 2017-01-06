@@ -7,9 +7,16 @@ use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\Request;
+use DB;
 
 
 class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
+    protected $ipAdress;
+    public function __construct(Request $request)
+    {
+    	$this->ipAdress =  $request->ip();
+        DB::enableQueryLog();     
+    }
 }

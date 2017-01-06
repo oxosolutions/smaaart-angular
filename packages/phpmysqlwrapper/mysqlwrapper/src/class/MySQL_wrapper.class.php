@@ -349,6 +349,8 @@ class MySQL_wrapper {
 			$start = $this->getMicrotime();
 		}
 		$this->prevQuery = $sql;
+		//$this->query = $this->call('query', $sql) or false;
+		
 		$this->query = $this->call('query', $sql) or $this->error("Query fail: " . $sql);
 		
 		$this->affected = $this->call('affected_rows');
@@ -570,6 +572,8 @@ class MySQL_wrapper {
 		}
 		$sql .= ";";
 		$this->query($sql);
+
+		
 	}
 	
 	/** Imports (ON DUPLICATE KEY UPDATE) CSV data in Table with possibility to update rows while import.
@@ -919,8 +923,9 @@ class MySQL_wrapper {
 			}
 			$this->query("CREATE TABLE `{$table}` ( " . implode(', ', $columns) . " ) ENGINE=InnoDB DEFAULT CHARSET={$this->charset};");
 
-			$this->importCSV2Table($file, $table, $delimiter, $enclosure, $escape, $ignore, $update, ($getColumnsFrom == 'generate') ? 'table' : 'file', $newLine);
+			$result = $this->importCSV2Table($file, $table, $delimiter, $enclosure, $escape, $ignore, $update, ($getColumnsFrom == 'generate') ? 'table' : 'file', $newLine);
 			$this->query("ALTER TABLE `{$table}` ADD `id` INT(100) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Row ID' FIRST");
+
 			return true;
 			/*if ($this->importCSV2Table($file, $table, $delimiter, $enclosure, $escape, $ignore, $update, ($getColumnsFrom == 'generate') ? 'table' : 'file', $newLine) > 0) {
 				$columns = $this->fetchQueryToArray("SELECT * FROM `{$table}` PROCEDURE ANALYSE ( 10, 30 );", FALSE);
@@ -1317,6 +1322,8 @@ class MySQL_wrapper {
 	 * @param 	boolean 	$web 	- HTML (TRUE) or Plaint text
 	 */
 	private function error($msg, $web = FALSE) {
+		echo json_encode(array('status'=>'error','message'=>$this->call('error')));
+		die;
 		if ($this->displayError || $this->logErrors || $this->emailErrors) {
 			if ($this->link) {
 				$this->error = $this->call('error');

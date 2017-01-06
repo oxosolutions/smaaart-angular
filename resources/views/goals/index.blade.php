@@ -39,7 +39,7 @@
                 <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Action
                 <span class="caret"></span></button>
                 <ul class="dropdown-menu">
-                  <li><a href="{{route('delMulGoals')}}" class="delGoals">Delete Goals</a></li>
+                  <li><a href="javascript:void(0)" onclick="delAll()" class="delGoals">Delete Goals</a></li>
                 </ul>
               </div>
           </div>
