@@ -12,10 +12,15 @@
 
 			// Route::get('goals/deleteall',['as' => 'delMulGoals' , 'uses' => 'GoalsController@delMulGoals']);
 
+	Route::group(['middleware'=>['auth','approve']], function(){
+		Route::get('/view_log',['as'=>'log.view','uses'=>'LogsystemController@viewLog']);	
+		Route::post('/search_log',['as'=>'log.search','uses'=>'LogsystemController@search_log']);	
+
+	});
+
 	Route::group(['middleware'=>['auth','approve','log']], function(){
 
-	Route::get('/view_log/{id}',['as'=>'log.view','uses'=>'LogsystemController@viewLog']);	
-	Route::post('/search_log',['as'=>'log.search','uses'=>'LogsystemController@search_log']);	
+
 
 		//dashboard
 		Route::get('/', ['as'=>'home', 'uses'=>'DashboardController@index']);
@@ -142,6 +147,8 @@
 		Route::get('/api_users_meta/create/{id}', ['as'=>'api.create_users_meta', 'uses'=>'ApiusersController@createUserMeta']);
 		Route::post('/api_users_meta/store', ['as'=>'api.store_users_meta', 'uses'=>'ApiusersController@storeUserMeta']);
 		Route::get('user_detail/{id}',['as'=>'api.user_detail', 'uses'=>'ApiusersController@userDetail']);
+		Route::get('editUserDetails/{id}',['as'=>'api.editUserDetails', 'uses'=>'ApiusersController@editUserDetails']);
+		Route::POST('/updateProfile', ['as' => 'updateProfile' , 'uses' => 'ApiusersController@updateProfile']);
 
 
 	/*Routes For API goal schema*/
@@ -213,7 +220,15 @@
 		Route::get('/delete/visual/{id}',['as'=>'visual.delete','uses'=>'VisualController@deleteVisual']);
 		Route::get('/visual/edit/{id}',['as'=>'visual.edit','uses'=>'VisualController@edit']);
 		Route::patch('/visual/update/{id}',['as'=>'visual.update','uses'=>'VisualController@update']);
+
+	//Generated Visuals Queries
+		Route::get('/visual/queries',['as'=>'visual.queries','uses'=>'VisualQueryController@index']);
+		Route::get('/getQueries',['as'=>'query.ajax','uses'=>'VisualQueryController@getQueryList']);
+		Route::get('/visual/query/create/{id?}',['as'=>'visual.query.create','uses'=>'VisualQueryController@create']);
+		Route::post('/visual/query/getColValue',['as'=>'visual.query.ajax','uses'=>'VisualQueryController@getColData']);
+		Route::post('/visual/query/store',['as'=>'store.visual.query','uses'=>'VisualQueryController@store']);
 	});
+
 
 Route::get('/approve/{from?}/{api_token?}', ['as'=>'approve','uses'=>'ApiusersController@approveUser']);
 Auth::routes();

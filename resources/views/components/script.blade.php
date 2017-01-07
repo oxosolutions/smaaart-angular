@@ -23,6 +23,7 @@
     @endif
 	@endforeach
 @endif
+  
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.11.2/moment.min.js"></script>
 
@@ -31,9 +32,20 @@
 <script src="{{asset('/bower_components/admin-lte/dist/js/app.min.js')}}"></script>
 
 <script src="{{asset('/bower_components/admin-lte/dist/js/demo.js')}}"></script>
+<script src="{{asset('/bower_components/admin-lte/plugins/datepicker/bootstrap-datepicker.js')}}"></script>
 
+<script src="{{asset('/bower_components/admin-lte/plugins/daterangepicker/daterangepicker.js')}}"></script>
+<!-- bootstrap datepicker -->
  <script type="text/javascript">
   	$(document).ready(function(){
+
+      $('#datepickerFrom').datepicker({
+          dateFormat: 'yy-mm-dd',
+          autoclose: true,
+    });
+       $('#datepickerTo').datepicker({
+      autoclose: true
+    });
 
 
       var sVal =  $("#source").val();

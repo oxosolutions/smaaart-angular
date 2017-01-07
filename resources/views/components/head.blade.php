@@ -10,6 +10,12 @@
   <link rel="stylesheet" href="{{asset('/bower_components/admin-lte/dist/css/skins/_all-skins.min.css')}}">
   <link rel="stylesheet" href="{{asset('/bower_components/admin-lte/plugins/iCheck/flat/blue.css')}}">
 
+  <link rel="stylesheet" href="{{asset('/bower_components/admin-lte/plugins/timepicker/bootstrap-timepicker.min.css')}}">
+  <link rel="stylesheet" href="{{asset('/bower_components/admin-lte/plugins/daterangepicker/daterangepicker.css')}}">
+    <link rel="stylesheet" href="{{asset('/bower_components/admin-lte/plugins/datepicker/datepicker3.css')}}">
+
+
+
   @if(@$css)
     @foreach(@$css as $key => $file)
       @include('components.plugins.css.'.$file)

@@ -269,6 +269,21 @@ class ApiusersController extends Controller
             }
                   
         }
+        public function editUserDetails($id)
+        { 
+          try{
+              $userDetail =  User::where('id' , $id)->get();
+              $userMeta =  UM::where('user_id' , $id)->get();
+              return view('apiusers.editProfile', ['user_detail'=>$userDetail, 'user_meta' => $userMeta]); 
+            }catch(\Exception $e)
+            {
+
+              Session::flash('error','No data found for this.');
+              return redirect()->route('api.users');
+              
+            }
+                  
+        }
 
         public function edit($id) {
           try{
@@ -587,5 +602,44 @@ class ApiusersController extends Controller
 
         }
     }   
-
+    public function updateProfile(Request $request)
+    {
+      User::where('id',Auth::user()->id)->update(["name"=>$request->name]);
+      $user_meta = UM::where('user_id',Auth::user()->id)->get();
+      $data[] = "";
+      foreach ($user_meta as $key => $value) {
+        $data[] = $value->key;
+      }
+       if (in_array('phone',$data)){
+          UM::where(['key'=> 'phone','user_id'=>Auth::user()->id])->update(["value"=>$request->phone]);
+       }else{
+          UM::create(['key'=> 'phone','user_id'=>Auth::user()->id,"value"=>$request->phone]);
+       }
+       
+       if (in_array('address',$data)){
+          UM::where(['key'=> 'address','user_id'=>Auth::user()->id])->update(["value"=>$request->address]);
+       }else{
+          UM::create(['key'=> 'address','user_id'=>Auth::user()->id,"value"=>$request->address]);
+       }
+       
+       if (in_array('ministry',$data)){
+          UM::where(['key'=> 'ministry','user_id'=>Auth::user()->id])->update(["value"=>$request->ministry]);
+       }else{
+          UM::create(['key'=> 'ministry','user_id'=>Auth::user()->id,"value"=>$request->ministry]);
+       }
+       
+       if (in_array('department',$data)){
+          UM::where(['key'=> 'department','user_id'=>Auth::user()->id])->update(["value"=>$request->department]);
+       }else{
+          UM::create(['key'=> 'department','user_id'=>Auth::user()->id,"value"=>$request->department]);
+       }
+       
+       if (in_array('designation',$data)){
+          UM::where(['key'=> 'designation','user_id'=>Auth::user()->id])->update(["value"=>$request->designation]);
+       }else{
+          UM::create(['key'=> 'designation','user_id'=>Auth::user()->id,"value"=>$request->designation]);
+       }
+       
+      return redirect()->route('home');
+  }
 }

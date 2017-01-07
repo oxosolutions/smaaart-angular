@@ -231,7 +231,7 @@
           </ul>
         </li>
 
-        <li class="treeview {{in_array(Request::path(),array('visual/create','visual'))?'active':''}}">
+        <li class="treeview {{in_array(Request::path(),array('visual/create','visual','visual/queries'))?'active':''}}">
           <a href="#">
             <i class="fa fa-line-chart"></i>
             <span>Create Visual Charts</span>
@@ -242,6 +242,8 @@
           <ul class="treeview-menu">
             <li class="{{Request::is('visual')?'active':''}}"><a href="{{ route('list.visual') }}"><i class="fa fa-circle-o"></i> List Charts</a></li>
             <li class="{{Request::is('visual/create')?'active':''}}"><a href="{{route('create.visual')}}"><i class="fa fa-circle-o"></i> Create New</a></li>
+            <li class="{{Request::is('visual/queries')?'active':''}}"><a href="{{route('create.visual')}}"><i class="fa fa-circle-o"></i> List Queries</a></li>
+            <li class="{{Request::is('visual/create')?'active':''}}"><a href="{{route('visual.query.create')}}"><i class="fa fa-circle-o"></i> Create New Query</a></li>
           </ul>
         </li>
 
@@ -270,6 +272,13 @@
             <i class="fa fa-gear"></i> <span>Settings</span>
           </a>
         </li> 
+        <li class="{{Request::is('view_log')?'active':''}}">
+          <a href="{{url('view_log')}}">
+            <i class="fa fa-gear"></i> <span>Log System</span>
+          </a>
+        </li> 
+        
+     
       
     </section>
     <!-- /.sidebar -->

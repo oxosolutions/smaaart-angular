@@ -17,4 +17,9 @@ class GeneratedVisual extends Model
 
     	return $this->belongsTo('App\User','created_by','id');
     }
+
+    public static function visualList(){
+    	
+    	return self::orderBy('id')->pluck('visual_name','id');
+    }
 }

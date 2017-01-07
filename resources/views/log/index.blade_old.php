@@ -7,7 +7,7 @@
   }
 </style>
   <div class="content-wrapper">
-
+  
     <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
@@ -21,7 +21,6 @@
     </section>
     <input type="hidden" value="{{Auth::user()->api_token}}" name="token_user" />
     <section class="content">
-
       <div class="col-xs-12">
         <div class="box-header">
           <div class="row">
@@ -67,77 +66,54 @@
         </div>
        
 
-         
-          <!-- /.box -->
-        </div>
-
-        <section class="content">
-
-      <!-- row -->
-      <div class="row">
-        <div class="col-md-12">
-          <!-- The time line -->
-          <ul class="timeline">
-            <!-- timeline time label -->
-             <?php $index=1; $date ='';  ?>
-             @if(count($log)>0)
+          <div class="box">
+            
+            <div class="box-body table-responsive no-padding">
+              <table class="table table-hover">
+                
+                <?php $index=1; $date ='';  ?>
                  @foreach($log as $value)
                    @if(Carbon\Carbon::parse($value->created_at)->format('d M Y')!=$date)
                       <?php $date = Carbon\Carbon::parse($value->created_at)->format('d M Y'); ?>
-                      <li class="time-label">
-                        <span class="bg-red">{{Carbon\Carbon::parse($value->created_at)->format('d M, Y') }}</span>
-                      </li>
+                     <tr> <td></td><td><h3>{{Carbon\Carbon::parse($value->created_at)->format('d M Y') }}</h3></td></tr>
                     @endif
-                    <li>
-                      <?php $text = json_decode($value->text, true); ?>
-                       @if(array_has($text,'query'))
-                          <i class="fa fa-space-shuttle bg-aqua"></i>
-                          @else
-                           <i class="fa  fa-television bg-yellow"></i>
-                        @endif
-                        <div class="timeline-item">
-                          <span class="time"><i class="fa fa-clock-o"></i> 
-                            <?php echo \Carbon\Carbon::createFromTimeStamp(strtotime($value->created_at))->diffForHumans() ?>
-                          </span>
+                  <tr>
+                 <td>{{Carbon\Carbon::parse($value->created_at)->format('g:i:s A') }}</td>
+                    
+                    <?php $text = json_decode($value->text, true); ?>
 
-                      <h3 class="timeline-header no-border"><a href="#">{{@$text['email']}}</a>
-                       @if(array_has($text,'query'))
-                           Query Run {{$text['query']}} with values 
-                          @else                          
+
+                    
+                    <td>{{@$text['email']}}
+                    @if(array_has($text,'query'))
+                   
+                          Query Run {{$text['query']}} with values 
+                        @else
+                          
                               @if($text['route']=="/")
-                                  View  Dashboard
+
+                              View  Dashboard
                               @else
-                                has Access this route {{url($text['route'])}} 
+
+                              has Access this route {{url($text['route'])}} At {{$value->created_at}}
                               @endif
-                        @endif
-                    </h3>
-                        </div>
-                    </li>
-                 
+                              </td>
 
+                      @endif
+
+
+                   </tr>
                    <?php $index++;?>
-                @endforeach
-              @else
-              <li>
-              <i class="fa fa-comments bg-yellow"></i>
-
-              <div class="timeline-item">
-                <h3 class="timeline-header"><a href="#">No Result Found Try Again.</a> </h3>
-              </div>
-            </li>
-             
-              @endif
-           
-          </ul>
+                    @endforeach
+                    
+                 
+                 
+              </table>
+            </div>
+            <!-- /.box-body -->
+          </div>
+          <!-- /.box -->
         </div>
-        <!-- /.col -->
-      </div>
-      <!-- /.row -->
-
-     
-      <!-- /.row -->
-
-    </section>
       </div>
          
     </section>

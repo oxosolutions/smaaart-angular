@@ -212,6 +212,21 @@
       ]
     });
 
+    $('#visual_query').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: route()+'/getQueries',
+      order:[[0,'desc']],
+      columns: [
+            { data: 'id', name: 'id' },
+            { data: 'visual_id', name: 'visual_id' },
+            { data: 'query', name: 'query' },
+            { data: 'created_by', name: 'created_by' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },
+      ]
+    });
+
     $('#datasets').DataTable({
       processing: true,
       serverSide: true,

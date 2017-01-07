@@ -147,7 +147,9 @@
     }
 
     public function __destruct() {
-        $uid = Auth::user()->id;          
+
+      $user = Auth::user();
+        $uid = $user->id;          
 
         foreach (DB::getQueryLog() as $key => $value){ 
 
@@ -168,7 +170,7 @@
                     $Lg             =   new LOG;
                     $Lg->user_id    =   $uid;
                     $Lg->type       =   "model";            
-                    $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time']]);
+                    $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time'],'email'=>$user->email]);
                     $Lg->ip_address =   $this->ipAdress;
                     $Lg->save(); 
                   }
@@ -176,7 +178,7 @@
                     $Lg             =   new LOG;
                     $Lg->user_id    =   $uid;
                     $Lg->type       =   "model";            
-                    $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time']]);
+                    $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time'],'email'=>$user->email]);
                     $Lg->ip_address =   $this->ipAdress;
                     $Lg->save(); 
                 }
