@@ -7,6 +7,16 @@
 	  </span>
 	@endif
 </div>
+
+<div class="form-group {{ $errors->has('columns') ? ' has-error' : '' }}">
+	{!!Form::label('filter_cols','Select Columns For Filter') !!}
+	{!!Form::select('filter_cols[]',$columns,@$prefilledFilter, ['class'=>'form-control select2','multiple']) !!}
+	@if($errors->has('filter_cols'))
+	  <span class="help-block">
+	        {{ $errors->first('filter_cols') }}
+	  </span>
+	@endif
+</div>
 <style type="text/css">
 	.select2-selection__choice{
 

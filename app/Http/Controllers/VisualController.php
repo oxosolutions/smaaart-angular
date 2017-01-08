@@ -67,11 +67,19 @@ class VisualController extends Controller
     		unset($model[0]);
     		$resultArray[$column] = $model;
     	}
+        $filterResultArray = [];
+        foreach($request->filter_cols as $key => $column){
+            $model = DB::table($datasetTable)->select([DB::raw('COUNT(id) as count'),$column])->groupBy($column)->get();
+            unset($model[0]);
+            $filterResultArray[$column] = $model;
+        }
     	$jsonData = json_encode($resultArray);
     	$model = new GV();
     	$model->visual_name = $request->visual_name;
     	$model->dataset_id = $request->dataset_id;
-    	$model->columns = json_encode($request->columns);
+        $model->columns = json_encode($request->columns);
+        $model->filter_columns = json_encode($request->filter_cols);
+    	$model->filter_counts = json_encode($filterResultArray);
     	$model->query_result = $jsonData;
     	$model->created_by = Auth::user()->id;
     	$model->save();
@@ -104,12 +112,14 @@ class VisualController extends Controller
         $dbModel = DB::table($dataList->dataset_table)->first();
         unset($dbModel->id);
         $selectedColumns = json_decode($model->columns);
+        $selectedFilterCol = json_decode($model->filter_columns);
         $plugins = [
             'js'  => ['select2','custom'=>['visual-create']],
             'css' => ['select2'],
             'model' => $model,
             'columns' => $dbModel,
-            'preFilled' => $selectedColumns
+            'preFilled' => $selectedColumns,
+            'prefilledFilter' => $selectedFilterCol
         ];
         return view('visual.edit',$plugins);
     }
@@ -124,11 +134,19 @@ class VisualController extends Controller
             unset($model[0]);
             $resultArray[$column] = $model;
         }
+        $filterResultArray = [];
+        foreach($request->filter_cols as $key => $column){
+            $model = DB::table($datasetTable)->select([DB::raw('COUNT(id) as count'),$column])->groupBy($column)->get();
+            unset($model[0]);
+            $filterResultArray[$column] = $model;
+        }
         $jsonData = json_encode($resultArray);
         $model = GV::find($id);
         $model->visual_name = $request->visual_name;
         $model->dataset_id = $request->dataset_id;
         $model->columns = json_encode($request->columns);
+        $model->filter_columns = json_encode($request->filter_cols);
+        $model->filter_counts = json_encode($filterResultArray);
         $model->query_result = $jsonData;
         $model->created_by = Auth::user()->id;
         $model->save();
