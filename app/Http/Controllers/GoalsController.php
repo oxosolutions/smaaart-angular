@@ -16,6 +16,7 @@ use App\GoalsTargetMappings as GTM;
 use App\GoalsSchemasMappings as GSM;
 use App\LogSystem as LOG;
 use Carbon\Carbon AS TM;
+use App\GoalFactMapping as GFM;
 
 class GoalsController extends Controller
 {
@@ -58,7 +59,7 @@ class GoalsController extends Controller
     public function store(Request $request){
 
         //$this->modelValidate($request);
-        if($request->goal_number =="" && $request->goal_title =="" &&  $request->goal_tagline =="" &&  $request->goal_description=="" && $request->goal_url  =="" && $request->goal_icon =="" && $request->goal_icon_url=="" && $request->goal_color_hex =="" &&  $request->goal_color_rgb =="" && $request->goal_color_rgb_a =="" && $request->goal_opacity=="" && $request->goal_nodal_ministry =="" && !$request->goal_other_ministries && !$request->goal_schemes && !$request->goal_interventions  && !$request->goal_targets && !$request->goal_resources )
+        if($request->goal_number =="" && $request->goal_title =="" &&  $request->goal_tagline =="" &&  $request->goal_description=="" && $request->goal_url  =="" && $request->goal_icon =="" && $request->goal_icon_url=="" && $request->goal_color_hex =="" &&  $request->goal_color_rgb =="" && $request->goal_color_rgb_a =="" && $request->goal_opacity=="" && $request->goal_nodal_ministry =="" && !$request->goal_other_ministries && !$request->goal_schemes && !$request->goal_interventions  && !$request->goal_targets && !$request->goal_resources && !$request->goal_fact)
         {
             return redirect()->route('goals.create');
         }
@@ -123,6 +124,19 @@ class GoalsController extends Controller
                    $resourceObj->resources_id = $value;
 
                    $model->resources()->save($resourceObj);
+                }
+            }
+
+
+            if(!empty($request->goal_fact)){
+
+                foreach ($request->goal_fact as $key => $value) {
+
+                   $factObj = new GFM();
+
+                   $factObj->fact_id = $value;
+
+                   $model->fact()->save($factObj);
                 }
             }
 
@@ -206,6 +220,11 @@ class GoalsController extends Controller
 
                 $intervention[] = $value->interventions_id;
             }
+
+            foreach($model->fact as $key => $value){
+
+                $fact[] = $value->fact_id;
+            }
             return view('goals.edit',[
                     'model' => $model,
                     'minis' => $minis,
@@ -213,6 +232,7 @@ class GoalsController extends Controller
                     'target'=> $target,
                     'resources' => $resources,
                     'intervention' => $intervention,
+                    'fact'=>$fact,
                     'css' => ['select2'],
                     'js' => ['select2','custom'=>['goals-create']]
                 ]);
@@ -236,7 +256,7 @@ class GoalsController extends Controller
 
         DB::beginTransaction();
         try{
-            $model->fill($request->except(['goal_other_ministries','_token','goal_schemes','goal_interventions','goal_targets','goal_resources']));
+            $model->fill($request->except(['goal_other_ministries','_token','goal_schemes','goal_interventions','goal_targets','goal_resources','goal_fact']));
 
             $model->save();
             $model->ministry()->delete();
@@ -298,6 +318,19 @@ class GoalsController extends Controller
                    $model->resources()->save($resourceObj);
                 }
             }
+
+            $model->fact()->delete();
+            if(!empty($request->goal_fact)){
+
+                            foreach ($request->goal_fact as $key => $value) {
+
+                               $factObj = new GFM();
+
+                               $factObj->fact_id = $value;
+
+                               $model->fact()->save($factObj);
+                            }
+                        }
 
             DB::commit();
             Session::flash('success','Successfully update!');

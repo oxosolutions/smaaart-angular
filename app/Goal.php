@@ -38,6 +38,10 @@ class Goal extends Model
     public function intervention(){
         return $this->morphMany('App\GoalsInterventionsMappings','goal');
     }
+    public function fact()
+    {
+        return $this->morphMany('App\GoalFactMapping','goal');
+    }
 
     public static function countGoal(){
         return self::count();

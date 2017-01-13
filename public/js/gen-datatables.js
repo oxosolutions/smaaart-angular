@@ -115,7 +115,21 @@
       ]
     });
 
-
+$('#fact').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: route()+'/fact_data',
+      order:[[0,'desc']],
+      columns: [
+            { data: 'id', name: 'id' },
+            { data: 'fact_id', name: 'fact_id' },
+            { data: 'fact_title', name: 'fact_title' },
+            { data: 'fact_desc', name: 'fact_desc' },
+            { data: 'created_by', name: 'created_by' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },
+      ]
+    });
     $('#target').DataTable({
       processing: true,
       serverSide: true,

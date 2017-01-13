@@ -21,6 +21,14 @@
 	Route::group(['middleware'=>['auth','approve','log']], function(){
 
 
+		Route::get('/fact_create',['as'=>'fact.create','uses'=>'FactController@create']);
+		Route::post('/fact_store',['as'=>'fact.store','uses'=>'FactController@store']);
+		Route::get('/facts',['as'=>'fact.list','uses'=>'FactController@index']);
+		Route::get('/fact_data',['as'=>'fact.indexdata','uses'=>'FactController@indexData']);
+		Route::get('/fact/edit/{id}',['as'=>'fact.edit','uses'=>'FactController@edit']);
+		Route::post('/fact/update/{id}',['as'=>'fact.update','uses'=>'FactController@update']);
+
+		Route::get('/fact/delete/{id}',['as'=>'fact.delete','uses'=>'FactController@delete']);
 
 		//dashboard
 		Route::get('/', ['as'=>'home', 'uses'=>'DashboardController@index']);
@@ -214,7 +222,7 @@
 	//Create Visual
 		Route::get('/visual', ['as'=>'list.visual','uses'=>'VisualController@index']);
 		Route::get('/visual/create', ['as'=>'create.visual','uses'=>'VisualController@create']);
-		Route::get('/dataset/columns/{id}', ['as'=>'dataset.columns','uses'=>'VisualController@getDatasetColumns']);
+		Route::get('/dataset/columns/{id}/{type?}/{chart?}', ['as'=>'dataset.columns','uses'=>'VisualController@getDatasetColumns']);
 		Route::post('/visual/savecolumns',['as'=>'save.dataset.columns','uses'=>'VisualController@saveVisualColumns']);
 		Route::get('/getVisual',['as'=>'visual.ajax','uses'=>'VisualController@getData']);
 		Route::get('/delete/visual/{id}',['as'=>'visual.delete','uses'=>'VisualController@deleteVisual']);

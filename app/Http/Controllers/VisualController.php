@@ -26,10 +26,6 @@ class VisualController extends Controller
     			->editColumn('dataset_id',function($model){
     				return $model->datasetName->dataset_name;
     			})
-    			->editColumn('columns', function($model){
-    				$columnsArray = (array)json_decode($model->columns);
-    				return implode(',',$columnsArray);
-    			})
     			->editColumn('created_by', function($model){
     				return $model->createdBy->name;
     			})
@@ -40,25 +36,47 @@ class VisualController extends Controller
 
     public function create(){
     	$plugins = [
-    		'js'  => ['select2','custom'=>['visual-create']],
-    		'css' => ['select2']
+    		'js'  => ['select2','icheck','custom'=>['visual-create']],
+    		'css' => ['select2','icheck']
     	];
 
     	return view('visual.create',$plugins);
     }
 
-    public function getDatasetColumns($id){
+    public function getDatasetColumns($id,$type = 'column', $chart = ''){
 
     	$model = DL::find($id);
     	$datasetTable = $model->dataset_table;
     	$model = DB::table($datasetTable)->first();
     	unset($model->id);
-    	return view('visual._columns', ['columns'=>$model])->render();
+        if($type == 'clone'){
+            return view('visual._clone', ['columns'=>$model,'chart'=>'chart_'.$chart])->render();
+        }else{
+            return view('visual._columns', ['columns'=>$model])->render();
+        }
     }
 
     public function saveVisualColumns(Request $request){
 
-    	$this->validateRequest($request);
+        
+
+        $model = new GV();
+        $model->visual_name = $request->visual_name;
+        $model->dataset_id = $request->dataset_id;
+        $model->columns = json_encode(
+                                        [
+                                            'column_one'=>$request->columns_one,
+                                            'columns_two'=>$request->columns_two,
+                                            'visual_settings'=>$request->visual_settings,
+                                            'count'=> @$request->count
+                                        ]);
+        $model->filter_columns = json_encode(@$request->filter_cols);
+        $model->created_by = Auth::user()->id;
+        $model->save();
+        Session::flash('success','Successfully created!');
+        return redirect()->route('list.visual');
+
+    	/*$this->validateRequest($request);
     	$model = DL::find($request->dataset_id);
     	$datasetTable = $model->dataset_table;
     	$resultArray = [];
@@ -85,7 +103,7 @@ class VisualController extends Controller
     	$model->created_by = Auth::user()->id;
     	$model->save();
     	Session::flash('success','Successfully created!');
-        return redirect()->route('list.visual');
+        return redirect()->route('list.visual');*/
     }
 
     protected function validateRequest($request){

@@ -94,6 +94,8 @@ class GoalsInterventionController extends Controller
             Session::flash('success','Successfully deleted!');
         }catch(\Exception $e){
 
+            Session::flash('error','Not deleted Try Again!');
+
             throw $e;
         }
 

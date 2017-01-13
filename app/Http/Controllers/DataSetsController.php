@@ -128,6 +128,32 @@ class DataSetsController extends Controller
     }
 
     public function runSqlFile($path){
+
+       //  $script = getcwd().'/database/seeds/localhost.sql';
+        /// $sql =   "sql/designations.sql";
+
+//      echo   $script = getcwd().'/sql/designations.sql'; 
+
+
+//     $username = "local";//Config::get('database.connections.mysql.username');
+//     $password = "local";//Config::get('database.connections.mysql.password');
+//     $database = "webapp_api";//Config::get('database.connections.mysql.database');
+
+//     $command = "mysql -u $username -p$password $database < $script";
+
+// //mysql -u local -plocal webapp_api < /var/www/html/smaart-angular/public/sql/designations.sql
+//     exec($command);
+
+
+//     die;
+
+//         $sql =   file_get_contents("sql/designations.sql");
+
+//         DB::unprepared($sql);
+//         //echo "<pre>";
+//        // print_r(explode("\n", $sql));
+
+//         die;
         $sql =   file_get_contents($path);
         $lines = explode("\n", $sql); 
         $create_table = $status = $output = ""; 
@@ -177,7 +203,6 @@ class DataSetsController extends Controller
                  
                 $result['status'] = 'error';
                 $result['message'] ="Not exist create & Insert";  
-            //return ['status'=>'error','message'=>"Not exist create & Insert"];
             } 
             else{   
                     try{
@@ -185,15 +210,12 @@ class DataSetsController extends Controller
 
                         $result['status'] = 'success';
                         $result['message'] ="Sql file Import Successfully";
-                        //return ['status'=>'sucess','message'=>"Sql file Import Successfully"];
 
                     }catch(\Exception $e){ 
                         if($e->getCode()==23000)
                             {  
                                 $result['status'] = 'error';
                                 $result['message'] ="Sql file Duplicate entry";
-                                                                     
-                           // return ['status'=>'error','message'=>""];
                             }  
                     }
                 } 

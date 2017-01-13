@@ -44,7 +44,7 @@ class PagesApiController extends Controller
             $responseArray['pages']['page_content']     = $model->content;
             $responseArray['pages']['page_image']       = asset('page_data').'/'.$model->page_image;
             $responseArray['pages']['page_status']      = $model->status;
-            $responseArray['pages']['page_status']      = $model->createdBy->name;
+            $responseArray['pages']['page_created_by']  = $model->createdBy->name;
 
             return ['status'=>'success','records'=>$responseArray];
         }catch(\Exception $e){

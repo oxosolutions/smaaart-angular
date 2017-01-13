@@ -62,7 +62,7 @@ class VisualApiController extends Controller
     	return ['status'=>'success','records'=>$tempArray];
     }*/
 
-    public function visualById($id){
+    /*public function visualById($id){
         $model = GV::find($id);
         $tempArray = [];
         $tempArray['id'] = $model->id;
@@ -133,6 +133,107 @@ class VisualApiController extends Controller
         //dd($chart_data);
         $response['data'] = $chart_data;
         return ['status'=>'success','records'=>$response];
+    }*/
+
+    public function visualById($id){
+        $responseArray = [];
+        $visual = GV::find($id);
+        $dataset_id = $visual->dataset_id;
+        $columns = json_decode($visual->columns, true);
+        $countCharts = '';
+        if(array_key_exists('count', $columns) && is_array(@$columns['count'])){
+            $countCharts = $columns['count'];
+        }
+        $responseArray['num_of_charts'] = count($columns['column_one']);
+        $chartsArray = [];
+        $datatableName = DL::find($dataset_id);
+        $datasetData = DB::table($datatableName->dataset_table)->where('id','!=',1)->get()->toArray();
+        $datasetColumns = (array)DB::table($datatableName->dataset_table)->where('id',1)->first();
+        foreach($columns['column_one'] as $key => $value){
+            $columnData = [];
+            if(in_array($key,$countCharts)){//Chart name chart_1 exist in count array
+                $tempArray = [];
+                foreach($columns['columns_two'][$key] as $colKey => $colVal){
+                    $resultData[$colVal] = $this->generateCountColumns($colVal,$datatableName->dataset_table);
+                }
+                $resultCorrectData = $this->correctDataforCount($resultData,$datasetColumns);
+                $columnData = $resultCorrectData;
+            }else{
+                $arrayData = array_column($datasetData, $value);
+                array_unshift($arrayData,$datasetColumns[$value]);
+                $columnData[] = $arrayData;
+                foreach($columns['columns_two'][$key] as $colKey => $colVal){
+                    $arrayData = array_column($datasetData, $colVal);
+                    array_unshift($arrayData,$datasetColumns[$colVal]);
+                    $columnData[] = $arrayData;
+                }
+            }
+            $chartsArray[$key] = $columnData;
+        }
+
+        $filtersArray = $this->getFIlters($datatableName->dataset_table, json_decode($visual->filter_columns), $datasetColumns);
+        $responseArray['chart_data'] = $chartsArray;
+        $responseArray['filters'] = $filtersArray;
+        $responseArray['status'] = 'success';
+        return $responseArray;
+    }
+
+    protected function getFIlters($table, $columns, $columnNames){
+        $resultArray = [];
+        $model = DB::table($table)->select($columns)->where('id','!=',1)->get()->toArray();
+        $tmpAry = [];
+        foreach($model as $k => $v){
+            $tmpAry[] = (array)$v;
+        }
+        foreach($columns as $key => $value){
+            $filter['column_name'] = $columnNames[$value];
+            $filter['column_data'] = array_column($tmpAry, $value);
+            $data[$value] = $filter;
+        }
+        return $data;
+    }
+
+    protected function generateCountColumns($column, $table){
+
+        $result = DB::table($table)->select([DB::raw('COUNT(id) as count'),$column])->groupBy($column)->get()->toArray();
+        return $result;
+    }
+
+    protected function correctDataforCount($dataForProcess,$datasetColumns){
+        
+        $dataProce = [];
+        foreach($dataForProcess as $colKey => $value){
+            $temp = [];
+            foreach($value as $k => $v){
+                $temp[] = (array)$v;
+            }
+            $dataProce[$colKey] = $temp;
+        }
+        $dataForProcess = $dataProce;
+        $columns = [];
+        $tempArray = [];
+        foreach($dataForProcess as $ky => $vl){
+            $tempArray[] = array_column($vl, $ky);
+        }
+        $columnOne = call_user_func_array('array_merge',$tempArray);
+        $addColumn = $columnOne;
+        array_unshift($addColumn, 'String');
+        $columns[] = $addColumn;
+
+        foreach($dataForProcess as $k => $v){
+            $tempArray = [];
+            foreach($columnOne as $key => $value){
+                $key = array_search($value, array_column($v, $k));
+                if($key == false){
+                    $tempArray[] = 0;
+                }else{
+                    $tempArray[] = $v[$key]['count'];
+                }
+            }
+            array_unshift($tempArray, $datasetColumns[$k]);
+            $columns[] = $tempArray;
+        }
+        return $columns;
     }
 
     public function getColumnByDataset($id){

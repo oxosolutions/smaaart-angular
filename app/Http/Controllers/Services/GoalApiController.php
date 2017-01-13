@@ -53,6 +53,28 @@ class GoalApiController extends Controller
             $minIndex = 0;
             $inIndex  = 0;
             $response['ministry'] = [];
+
+             $findex =0;
+            if($value->fact)
+            {
+                foreach($value->fact as $ky => $vl){
+                try{
+                    $response['facts'][$findex]['id'] = $vl->fact->id;
+                    $response['facts'][$findex]['fact_id'] =$vl->fact->fact_id; 
+                    $response['facts'][$findex]['fact_title'] =$vl->fact->fact_title;
+                    $response['facts'][$findex]['fact_image'] =$vl->fact->fact_image;
+                    $response['facts'][$findex]['fact_desc'] =$vl->fact->fact_desc;
+                        $findex++;
+                        
+                    }catch(\Exception $e)
+                    {
+                     if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
+
+                     }   
+                    }
+                }
+            }
+
             foreach ($value->ministry as  $ministryData) {
                 try{
                     $response['ministry'][$minIndex]['id']                  = $ministryData->ministry->id;
@@ -172,7 +194,7 @@ class GoalApiController extends Controller
 
     public function goalsList(){
 
-        $model = Goal::WithUsers()->get();
+        $model = Goal::orderBy('id','desc')->WithUsers()->get();
         if($model == null){
             $response = ['status'=>'success','message'=>'No result found!'];
             return $response;
@@ -195,6 +217,27 @@ class GoalApiController extends Controller
             $responseArray[$index]['goal_color_rgb'] = $goal->goal_color_rgb;
             $responseArray[$index]['goal_color_rgba'] = $goal->goal_color_rgb_a;
             $responseArray[$index]['goal_opacity'] = $goal->goal_opacity;
+           
+           $findex =0;
+            if($goal->fact)
+            {
+                foreach($goal->fact as $ky => $vl){
+                try{
+                    $responseArray[$index]['facts'][$findex]['id'] = $vl->fact->id;
+                    $responseArray[$index]['facts'][$findex]['fact_id'] =$vl->fact->fact_id; 
+                    $responseArray[$index]['facts'][$findex]['fact_title'] =$vl->fact->fact_title;
+                    $responseArray[$index]['facts'][$findex]['fact_image'] =$vl->fact->fact_image;
+                    $responseArray[$index]['facts'][$findex]['fact_desc'] =$vl->fact->fact_desc;
+                        $findex++;
+                        
+                    }catch(\Exception $e)
+                    {
+                     if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
+
+                     }   
+                    }
+                }
+            }
             try{
                 $responseArray[$index]['goal_nodal_ministry'] = [
                                                             'ministry_id' => $goal->goalNodalMinistry->ministry_id,
@@ -381,7 +424,28 @@ class GoalApiController extends Controller
                     if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
 
                 }
-            }                                               
+            } 
+
+            $findex =0;
+            if($model->fact)
+            {
+                foreach($model->fact as $ky => $vl){
+                try{
+                    $responseArray[$index]['facts'][$findex]['id'] = $vl->fact->id;
+                    $responseArray[$index]['facts'][$findex]['fact_id'] =$vl->fact->fact_id; 
+                    $responseArray[$index]['facts'][$findex]['fact_title'] =$vl->fact->fact_title;
+                    $responseArray[$index]['facts'][$findex]['fact_image'] =$vl->fact->fact_image;
+                    $responseArray[$index]['facts'][$findex]['fact_desc'] =$vl->fact->fact_desc;
+                        $findex++;
+                        
+                    }catch(\Exception $e)
+                    {
+                     if($e instanceOf \Symfony\Component\HttpKernel\Exception\ErrorException){
+
+                     }   
+                    }
+                }
+            }                                              
         $inIndex = 0;
           foreach($model->ministry as $ky => $vl){
            try

@@ -176,6 +176,17 @@
     @endif
   </div>
 
+   <div class="{{ $errors->has('goal_fact') ? ' has-error' : '' }} form-group">
+    {!!Form::label('goal_fact','Goal Facts') !!}
+        {!!Form::select('goal_fact[]',\App\GoalFact::factList(),@$fact, ['class'=>'form-control select2','multiple']) !!}
+
+    @if($errors->has('goal_resources'))
+      <span class="help-block">
+            {{ $errors->first('goal_resources') }}
+      </span>
+    @endif
+  </div>
+
 
 </div>
 

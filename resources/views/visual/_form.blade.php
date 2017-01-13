@@ -1,14 +1,23 @@
 <div class="box-body">
-  <div class="form-group {{ $errors->has('dataset_id') ? ' has-error' : '' }}">
-    {!!Form::label('dataset_id','Select Dataset') !!}
-    {!!Form::select('dataset_id',App\DatasetsList::datasetList(),null, ['class'=>'form-control select2','placeholder'=>'Select Dataset']) !!}
-    @if($errors->has('dataset_id'))
-      <span class="help-block">
-            {{ $errors->first('dataset_id') }}
-      </span>
-    @endif
-  </div>
-  <div>
+	<div class="form-group {{ $errors->has('visual_name') ? ' has-error' : '' }}">
+    	{!!Form::label('visual_name','Visual Name') !!}
+    	{!!Form::text('visual_name',null, ['class'=>'form-control','placeholder'=>'Enter Visual Name']) !!}
+    	@if($errors->has('visual_name'))
+      		<span class="help-block">
+            	{{ $errors->first('visual_name') }}
+      		</span>
+    	@endif
+  	</div>
+  	<div class="form-group {{ $errors->has('dataset_id') ? ' has-error' : '' }}">
+    	{!!Form::label('dataset_id','Select Dataset') !!}
+    	{!!Form::select('dataset_id',App\DatasetsList::datasetList(),null, ['class'=>'form-control select2','placeholder'=>'Select Dataset']) !!}
+    	@if($errors->has('dataset_id'))
+      		<span class="help-block">
+            	{{ $errors->first('dataset_id') }}
+      		</span>
+    	@endif
+  	</div>
+  	<div>
 		{!! Form::button('Get Columns', ['class' => 'btn btn-primary','id'=>'getColumns']) !!}
 		<!-- <span style="color:red;display: none;" id="mesg"></span> -->
 		<div id="floatingBarsG" style="display: none;">
@@ -22,17 +31,8 @@
 			<div class="blockG" id="rotateG_08"></div>
 		</div>
 	</div>
-	<div id="visual">
-	  <div class="form-group {{ $errors->has('visual_name') ? ' has-error' : '' }}" style="margin-top: 2%;">
-	    {!!Form::label('visual_name','Visual Name') !!}
-	    {!!Form::text('visual_name',null, ['class'=>'form-control','placeholder'=>'Enter Visual Name']) !!}
-	    @if($errors->has('visual_name'))
-	      <span class="help-block">
-	            {{ $errors->first('visual_name') }}
-	      </span>
-	    @endif
-	  </div>
-	  
+
+	<div id="visual" style="margin-top: 2%;">	  
 	  <div class="datasetColumns">
 	  	@if(!empty(@$model))
 	  		{{Form::hidden('model_id',$model->id,['class'=>'model_id'])}}

@@ -17,7 +17,8 @@
       public static function statusList(){
           return [
                   '0' => 'Not Published',
-                  '1' => 'Publish'
+                  '1' => 'Publish',
+                  '2' => 'Protected'
                 ];
       }
 

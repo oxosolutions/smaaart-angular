@@ -33,8 +33,6 @@ class ImportdatasetController extends Controller
              }else{
                     $path = 'datasets';
                 }
-
-
             try {
                  if(!in_array($request->file('file')->getClientOriginalExtension(),['csv','sql'])){
                     return ['status'=>'error','records'=>'File type not allowed!'];
@@ -182,6 +180,8 @@ class ImportdatasetController extends Controller
             } 
             else{   
                     try{                    
+                                        
+                        DB::select($output);
                         $model = new DL;
                         $model->dataset_table = $tableName;
                         $model->dataset_name = $name;
@@ -189,11 +189,8 @@ class ImportdatasetController extends Controller
                         $model->dataset_file_name = $origName;
                         $model->user_id = Auth::user()->id;
                         $model->uploaded_by = Auth::user()->name;
-                        $model->save();                    
-                        DB::select($output);
-
+                        $model->save();   
                         return ['status'=>'true','id'=>'','message'=>'Sql File  Import successfully!'];
-
                      }catch(\Exception $e){ 
                         if($e->getCode()==23000)
                             {  
