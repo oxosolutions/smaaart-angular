@@ -32,7 +32,7 @@
 
     public function indexData(){
 
-      $model = Page::orderBy('id','desc')->get();
+      $model = Page::with('createdBy')->orderBy('id','desc')->get();
       return Datatables::of($model)
             ->addColumn('actions',function($model){
                 return view('pages._actions',['model' => $model])->render();
@@ -44,8 +44,8 @@
     }
 
     public function create(){
-     
-        $plugins = [
+
+      $plugins = [
                         'css' => ['wysihtml5','fileupload'],
                         'js'  => ['wysihtml5','fileupload','ckeditor','custom'=>['page-create']]
                     ];
@@ -147,44 +147,44 @@
     }
 
     public function __destruct() {
+      parent::__destruct();
+      // $user = Auth::user();
+      //   $uid = $user->id;          
 
-      $user = Auth::user();
-        $uid = $user->id;          
+      //   foreach (DB::getQueryLog() as $key => $value){ 
 
-        foreach (DB::getQueryLog() as $key => $value){ 
+      //     if($value['query'] =="insert into `log_systems` (`user_id`, `type`, `text`, `ip_address`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?)" || $value['query'] =="select * from `log_systems` where `user_id` = ? order by `id` desc limit 1" || $value['query']=="select * from `users` where `users`.`id` = ? limit 1")
+      //     {  //Not put in log
+      //     }else{
+      //           $log    = LOG::orderBy('id','desc')->where('user_id',$uid)->first();
+      //           $logAr  = json_decode($log->text,true);
+      //           $insertTime = $log->created_at;
+      //           $currentTime = TM::now();
+      //           $addSecond = $insertTime->addSeconds(30);
+      //           if(array_key_exists('query', $logAr))
+      //           {
+      //             if($addSecond > $currentTime  && $logAr['query'] == $value['query'])
+      //             {
+      //             // dump('not insert log forthis');
+      //             }else{
+      //               $Lg             =   new LOG;
+      //               $Lg->user_id    =   $uid;
+      //               $Lg->type       =   "model";            
+      //               $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time'],'email'=>$user->email]);
+      //               $Lg->ip_address =   $this->ipAdress;
+      //               $Lg->save(); 
+      //             }
+      //           }else{
+      //               $Lg             =   new LOG;
+      //               $Lg->user_id    =   $uid;
+      //               $Lg->type       =   "model";            
+      //               $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time'],'email'=>$user->email]);
+      //               $Lg->ip_address =   $this->ipAdress;
+      //               $Lg->save(); 
+      //           }
+      //     }
 
-          if($value['query'] =="insert into `log_systems` (`user_id`, `type`, `text`, `ip_address`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?)" || $value['query'] =="select * from `log_systems` where `user_id` = ? order by `id` desc limit 1" || $value['query']=="select * from `users` where `users`.`id` = ? limit 1")
-          {  //Not put in log
-          }else{
-                $log    = LOG::orderBy('id','desc')->where('user_id',$uid)->first();
-                $logAr  = json_decode($log->text,true);
-                $insertTime = $log->created_at;
-                $currentTime = TM::now();
-                $addSecond = $insertTime->addSeconds(30);
-                if(array_key_exists('query', $logAr))
-                {
-                  if($addSecond > $currentTime  && $logAr['query'] == $value['query'])
-                  {
-                  // dump('not insert log forthis');
-                  }else{
-                    $Lg             =   new LOG;
-                    $Lg->user_id    =   $uid;
-                    $Lg->type       =   "model";            
-                    $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time'],'email'=>$user->email]);
-                    $Lg->ip_address =   $this->ipAdress;
-                    $Lg->save(); 
-                  }
-                }else{
-                    $Lg             =   new LOG;
-                    $Lg->user_id    =   $uid;
-                    $Lg->type       =   "model";            
-                    $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time'],'email'=>$user->email]);
-                    $Lg->ip_address =   $this->ipAdress;
-                    $Lg->save(); 
-                }
-          }
-
-        }    
+      //   }    
 
       }
 

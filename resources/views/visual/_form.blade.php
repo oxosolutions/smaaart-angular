@@ -39,7 +39,6 @@
 	  		@include('visual._columns')
 	  	@endif
 	  </div>
-
 	</div>
 
 

@@ -169,7 +169,8 @@ class GoalsSchemaController extends Controller
         }
     }
     public function __destruct() {
-        $uid = Auth::user()->id;          
+        parent::__destruct();
+      /*  $uid = Auth::user()->id;          
 
         foreach (DB::getQueryLog() as $key => $value){ 
 
@@ -204,7 +205,7 @@ class GoalsSchemaController extends Controller
                 }
           }
 
-        }    
+        }*/    
 
       }
 

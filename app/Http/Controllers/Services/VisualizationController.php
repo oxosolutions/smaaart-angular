@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Carbon\Carbon;
 use App\Visualisation as VS;
 use Auth;
+use App\GeneratedVisual as GV;
+use App\DatasetsList as DL;
 class VisualizationController extends Controller
 {
 
@@ -20,12 +22,10 @@ class VisualizationController extends Controller
         }
         try{
 
-            $model = new VS();
+            $model = new GV();
 
             $model->dataset_id = $request->dataset;
             $model->visual_name = $request->visual_name;
-            $model->options = $request->options;
-            $model->settings = $request->settings;
             $model->created_by = Auth::User()->id;
             $model->save();
         }catch(\Exception $e){
@@ -129,4 +129,9 @@ class VisualizationController extends Controller
 				return ['status'=>'error','message'=>'No visualization found with this id!'];
 			}
 		}
+
+    public function getColumnsByDataset($datasetId){
+
+        
+    }
 }

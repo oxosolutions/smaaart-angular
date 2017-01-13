@@ -51,6 +51,16 @@
     @endif
   </div>
 
+  <div class="form-group {{ $errors->has('intervention_desc') ? ' has-error' : '' }} " style="margin-top: 2%;">
+    {!!Form::label('content','Intervention Content') !!}
+    {!!Form::textarea('content',null,['class'=>'form-control','placeholder'=>'Eenter Content','id'=>'content']) !!}
+    @if($errors->has('content'))
+      <span class="help-block">
+            {{ $errors->first('content') }}
+      </span>
+    @endif
+  </div>
+
 
 </div>
 <!-- /.box-body -->

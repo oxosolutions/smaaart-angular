@@ -16,6 +16,8 @@ class ImportdatasetController extends Controller
 {
 
     function uploadDataset(Request $request){
+
+
 	   $validate = $this->validateRequst($request);
         
     	if($validate['status'] == 'false'){
@@ -24,9 +26,17 @@ class ImportdatasetController extends Controller
     	}
 
         if($request->source == 'file'){
-            $path = 'datasets';
+           
+             if($request->file('file')->getClientOriginalExtension()=='sql' )
+             {
+                    $path = 'sql'; 
+             }else{
+                    $path = 'datasets';
+                }
+
+
             try {
-                 if(!in_array($request->file('file')->getClientOriginalExtension(),['csv'])){
+                 if(!in_array($request->file('file')->getClientOriginalExtension(),['csv','sql'])){
                     return ['status'=>'error','records'=>'File type not allowed!'];
                 }
             } catch (Exception $e) {
@@ -118,6 +128,81 @@ class ImportdatasetController extends Controller
     	}
     }
 
+    public function runSqlFile($filepath ,$name ,$origName){
+           
+        $sql =  file_get_contents($filepath);
+        $lines = explode("\n", $sql); 
+        $create_table = $status = $output = ""; 
+        $linecount = count($lines); 
+        $create=$next=0;
+        for($i = 0; $i < $linecount; $i++) 
+         { 
+            if(starts_with($lines[$i], "CREATE") )
+            {
+                $create_table .= $lines[$i];
+                $table = explode(' ', $lines[$i]); 
+                $tableName = str_replace('`', '', $table[2]); 
+                $status .=1;
+                $create=$i;
+            }
+            if(starts_with($lines[$i],'--'))
+             {
+                $create =0;
+             }
+            if($create>0 && $create<$i)
+            {
+                $create_table .= $lines[$i];
+            }
+            if(starts_with($lines[$i], "INSERT") )
+            {
+                $output .= $lines[$i];
+                $next = $i;
+                $status .=2;
+            }
+            if($next>0 && $i>$next)
+            {
+                if(str_contains($lines[$i], ['--','ALTER','ADD','/*','MODIFY']))
+                     { $next=0;}
+                 else{
+                         $output .= $lines[$i];
+                    }
+            } 
+         }            
+            try{
+            DB::select($create_table);
+            }catch(\Exception $e)
+            {
+                if($e->getCode() =="42S01")
+                {
+                }
+            }
+            if($status !='12')
+            {
+                return ['status'=>'false','id'=>'','message'=>'Not exist create & Inset'];
+            } 
+            else{   
+                    try{                    
+                        $model = new DL;
+                        $model->dataset_table = $tableName;
+                        $model->dataset_name = $name;
+                        $model->dataset_file = $filepath;
+                        $model->dataset_file_name = $origName;
+                        $model->user_id = Auth::user()->id;
+                        $model->uploaded_by = Auth::user()->name;
+                        $model->save();                    
+                        DB::select($output);
+
+                        return ['status'=>'true','id'=>'','message'=>'Sql File  Import successfully!'];
+
+                     }catch(\Exception $e){ 
+                        if($e->getCode()==23000)
+                            {  
+                            return ['status'=>'false','id'=>'','message'=>'Duplicate entry'];                                           
+                            }  
+                    }
+                }       
+    }
+
     public function getColumns($id){
         try{
             $model = DL::where('id',$id)->first();
@@ -154,28 +239,37 @@ class ImportdatasetController extends Controller
         if(!File::exists($filePath)){
             return ['status'=>'false','id'=>'','message'=>'File not found on given path!'];
         }
-        DB::beginTransaction();
-        $model = new MySQLWrapper();
-        $tableName = 'data_table_'.time();
-        
-        $result = $model->wrapper->createTableFromCSV($filePath,$tableName,',','"', '\\', 0, array(), 'generate','\r\n');
-        
-        if($result){
-            $model = new DL;
-            $model->dataset_table = $tableName;
-            $model->dataset_name = $origName;
-            $model->dataset_file = $filePath;
-            $model->dataset_file_name = $orName;
-            $model->user_id = Auth::user()->id;
-            $model->uploaded_by = Auth::user()->name;
-            $model->dataset_records = '{}';
-            $model->save();
-            DB::commit();
-            return ['status'=>'true','id'=>$model->id,'message'=>'Dataset upload successfully!'];
-        }else{
-            DB::rollback();
-            return ['status'=>'false','id'=>'','message'=>$result['error']];
-        }
+    if(File::extension($filename)=="sql")
+           {
+           
+               return $this->runSqlFile($filename ,$origName , $orName);
+            // return ['status'=>'true','id'=>'','message'=>'Dataset sql upload successfully!'];
+
+           }else{
+
+                DB::beginTransaction();
+                $model = new MySQLWrapper();
+                $tableName = 'data_table_'.time();
+                
+                $result = $model->wrapper->createTableFromCSV($filePath,$tableName,',','"', '\\', 0, array(), 'generate','\r\n');
+                
+                if($result){
+                    $model = new DL;
+                    $model->dataset_table = $tableName;
+                    $model->dataset_name = $origName;
+                    $model->dataset_file = $filePath;
+                    $model->dataset_file_name = $orName;
+                    $model->user_id = Auth::user()->id;
+                    $model->uploaded_by = Auth::user()->name;
+                    $model->dataset_records = '{}';
+                    $model->save();
+                    DB::commit();
+                    return ['status'=>'true','id'=>$model->id,'message'=>'Dataset upload successfully!'];
+                }else{
+                    DB::rollback();
+                    return ['status'=>'false','id'=>'','message'=>$result['error']];
+                }
+            }
     }
 
     protected function replaceDataset($request, $origName, $filename){

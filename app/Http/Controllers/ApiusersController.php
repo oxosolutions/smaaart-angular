@@ -18,21 +18,22 @@ use App\Mail\AfterApproveUser;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use App\LogSystem as LOG;
 use Carbon\Carbon AS TM;
+
 class ApiusersController extends Controller
 {
-  protected $ipAdress;
-   public function __construct(Request $request)
+    public $ipAdress;
+    public function __construct(Request $request)
     { 
-      $this->ipAdress =  $request->ip();
+       $this->ipAdress =  $request->ip();
       DB::enableQueryLog();  
     }
 
     public function index(){
-          $plugins = [
-                    	'css' => ['datatables'],
-                    	'js'  => ['datatables','custom'=>['gen-datatables']]
-                   ];
-    	     return view('apiusers.index',$plugins);
+      $plugins = [
+                	'css' => ['datatables'],
+                	'js'  => ['datatables','custom'=>['gen-datatables']]
+               ];
+	     return view('apiusers.index',$plugins);
     }
 
     public function get_users(){
@@ -46,11 +47,11 @@ class ApiusersController extends Controller
     }
 
     public function create(){
-        $plugins = [
-                    'css' => ['fileupload','select2'],
-                    'js'  => ['fileupload','select2','custom'=>['api-user']]
-                  ];
-    	   return view('apiusers.create',$plugins);
+      $plugins = [
+                  'css' => ['fileupload','select2'],
+                  'js'  => ['fileupload','select2','custom'=>['api-user']]
+                ];
+      return view('apiusers.create',$plugins);
     }
 
     public function store(Request $request){
@@ -80,14 +81,13 @@ class ApiusersController extends Controller
 
     public function delete($id)
     { 
-            try{
-                   $model  = User::findOrFail($id);
-                   UM::where('user_id',$id)->delete();
-                    $model->delete();
-              }catch(\Exception $e)
-             {
-             throw $e;
-             }
+      try{
+        $model  = User::findOrFail($id);
+        UM::where('user_id',$id)->delete();
+        $model->delete();
+      }catch(\Exception $e){
+        throw $e;
+      }
         return redirect()->route('api.users');
     }
 
@@ -538,8 +538,8 @@ class ApiusersController extends Controller
 
         }
 
-        public function approveUser($from = 0, $api_token = 0){
-            if($from == 'email' && $api_token != 0){
+        public function approveUser($from = 0, $api_token = null){
+            if($from == 'email' && $api_token != null){
                
                 $gs_model = GS::where('meta_key','user_approvel_settings')->first();
                 $settings = json_decode($gs_model->meta_value);
@@ -559,49 +559,12 @@ class ApiusersController extends Controller
                     return view('approvel.approved');
                 }
             }else{
-                  
+                
                 return view('approvel.not-approved');
             }
         }
 
- public function __destruct() {
-        $uid = Auth::user()->id;          
-
-        foreach (DB::getQueryLog() as $key => $value){ 
-
-          if($value['query'] =="insert into `log_systems` (`user_id`, `type`, `text`, `ip_address`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?)" || $value['query'] =="select * from `log_systems` where `user_id` = ? order by `id` desc limit 1" || $value['query']=="select * from `users` where `users`.`id` = ? limit 1")
-          {  //Not put in log
-          }else{
-                $log    = LOG::orderBy('id','desc')->where('user_id',$uid)->first();
-                $logAr  = json_decode($log->text,true);
-                $insertTime = $log->created_at;
-                $currentTime = TM::now();
-                $addSecond = $insertTime->addSeconds(10);
-                if(array_key_exists('query', $logAr))
-                {
-                  if($addSecond > $currentTime  && $logAr['query'] == $value['query'])
-                  {
-                  // dump('not insert log forthis');
-                  }else{
-                    $Lg             =   new LOG;
-                    $Lg->user_id    =   $uid;
-                    $Lg->type       =   "model";            
-                    $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time']]);
-                    $Lg->ip_address =   $this->ipAdress;
-                    $Lg->save(); 
-                  }
-                }else{
-                    $Lg             =   new LOG;
-                    $Lg->user_id    =   $uid;
-                    $Lg->type       =   "model";            
-                    $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time']]);
-                    $Lg->ip_address =   $this->ipAdress;
-                    $Lg->save(); 
-                }
-          }
-
-        }
-    }   
+  
     public function updateProfile(Request $request)
     {
       User::where('id',Auth::user()->id)->update(["name"=>$request->name]);
@@ -623,15 +586,15 @@ class ApiusersController extends Controller
        }
        
        if (in_array('ministry',$data)){
-          UM::where(['key'=> 'ministry','user_id'=>Auth::user()->id])->update(["value"=>$request->ministry]);
+          UM::where(['key'=> 'ministry','user_id'=>Auth::user()->id])->update(["value"=>json_encode($request->ministry)]);
        }else{
-          UM::create(['key'=> 'ministry','user_id'=>Auth::user()->id,"value"=>$request->ministry]);
+          UM::create(['key'=> 'ministry','user_id'=>Auth::user()->id,"value"=>json_encode($request->ministry)]);
        }
        
        if (in_array('department',$data)){
-          UM::where(['key'=> 'department','user_id'=>Auth::user()->id])->update(["value"=>$request->department]);
+          UM::where(['key'=> 'department','user_id'=>Auth::user()->id])->update(["value"=>json_encode($request->department)]);
        }else{
-          UM::create(['key'=> 'department','user_id'=>Auth::user()->id,"value"=>$request->department]);
+          UM::create(['key'=> 'department','user_id'=>Auth::user()->id,"value"=>json_encode($request->department)]);
        }
        
        if (in_array('designation',$data)){
@@ -642,4 +605,45 @@ class ApiusersController extends Controller
        
       return redirect()->route('home');
   }
+  public function __destruct() {
+    
+      parent::__destruct();
+        // $uid = Auth::user()->id;          
+
+        // foreach (DB::getQueryLog() as $key => $value){ 
+
+        //   if($value['query'] =="insert into `log_systems` (`user_id`, `type`, `text`, `ip_address`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?)" || $value['query'] =="select * from `log_systems` where `user_id` = ? order by `id` desc limit 1" || $value['query']=="select * from `users` where `users`.`id` = ? limit 1")
+        //   {  //Not put in log
+        //   }else{
+        //         $log    = LOG::orderBy('id','desc')->where('user_id',$uid)->first();
+        //         $logAr  = json_decode($log->text,true);
+        //         $insertTime = $log->created_at;
+        //         $currentTime = TM::now();
+        //         $addSecond = $insertTime->addSeconds(10);
+        //         if(array_key_exists('query', $logAr))
+        //         {
+        //           if($addSecond > $currentTime  && $logAr['query'] == $value['query'])
+        //           {
+        //           // dump('not insert log forthis');
+        //           }else{
+        //             $Lg             =   new LOG;
+        //             $Lg->user_id    =   $uid;
+        //             $Lg->type       =   "model";            
+        //             $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time']]);
+        //             $Lg->ip_address =   $this->ipAdress;
+        //             $Lg->save(); 
+        //           }
+        //         }else{
+        //             $Lg             =   new LOG;
+        //             $Lg->user_id    =   $uid;
+        //             $Lg->type       =   "model";            
+        //             $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time']]);
+        //             $Lg->ip_address =   $this->ipAdress;
+        //             $Lg->save(); 
+        //         }
+        //   }
+
+        // }
+    }  
+  
 }

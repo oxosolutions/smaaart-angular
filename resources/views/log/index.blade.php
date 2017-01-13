@@ -25,7 +25,7 @@
       <div class="col-xs-12">
         <div class="box-header">
           <div class="row">
-             {!! Form::open(['route' => 'log.search', 'files'=>true]) !!}
+             {!! Form::open(['route' => 'log.search', 'files'=>true,  'method' => 'get']) !!}
 
                     <div class="col-xs-2">
                       <div class=" form-group {{ $errors->has('user_name') ? ' has-error' : '' }} floating-select-div">
@@ -75,7 +75,10 @@
 
       <!-- row -->
       <div class="row">
+       <div class="pull-right">{{ $log->links() }} </div>
         <div class="col-md-12">
+             
+
           <!-- The time line -->
           <ul class="timeline">
             <!-- timeline time label -->
@@ -100,15 +103,39 @@
                             <?php echo \Carbon\Carbon::createFromTimeStamp(strtotime($value->created_at))->diffForHumans() ?>
                           </span>
 
-                      <h3 class="timeline-header no-border"><a href="#">{{@$text['email']}}</a>
+                      <h3 class="timeline-header no-border"><a href="#">{{@$text['name']}} <span style="color:#999;" > ({{@$text['email']}})</span></a>
                        @if(array_has($text,'query'))
-                           Query Run {{$text['query']}} with values 
-                          @else                          
+
+                           
+                              @if(starts_with($text['query'], 'select'))
+                              <span class="text-green"> Query Run SELECT
+                                 <?php $arra = explode(' ',$text['query']);
+                                       // print_r($arra);
+                                        $key = array_search('from',$arra )+1;
+                                        echo strtoupper(str_replace(['`',"_"]," ",$arra[$key]));
+                                 ?>  
+                                 </span>                                
+                              @elseif(starts_with($text['query'], 'update'))
+                               <div class="text-orange">Query Run  UPDATE 
+                              <?php $arra = explode(' ',$text['query']);
+                                       // print_r($arra);
+                                        
+                                        echo strtoupper(str_replace(['`',"_"]," ",$arra[1]));
+                                 ?>
+                                 @if(count($text['value']) >0)
+                                   With value {{  implode(", ",$text['value']) }}
+                                 @endif      
+                               </div>
+                              @endif
+                                                  
+                          @else 
+                          <span class="text-light-blue">                       
                               @if($text['route']=="/")
                                   View  Dashboard
                               @else
                                 has Access this route {{url($text['route'])}} 
                               @endif
+                          </span>  
                         @endif
                     </h3>
                         </div>
@@ -132,6 +159,8 @@
         </div>
         <!-- /.col -->
       </div>
+
+
       <!-- /.row -->
 
      

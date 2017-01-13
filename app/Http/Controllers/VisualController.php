@@ -81,6 +81,7 @@ class VisualController extends Controller
         $model->filter_columns = json_encode($request->filter_cols);
     	$model->filter_counts = json_encode($filterResultArray);
     	$model->query_result = $jsonData;
+        $mode->visual_settings = $request->visual_settings;
     	$model->created_by = Auth::user()->id;
     	$model->save();
     	Session::flash('success','Successfully created!');
@@ -148,6 +149,7 @@ class VisualController extends Controller
         $model->filter_columns = json_encode($request->filter_cols);
         $model->filter_counts = json_encode($filterResultArray);
         $model->query_result = $jsonData;
+        $model->visual_settings = $request->visual_settings;
         $model->created_by = Auth::user()->id;
         $model->save();
         Session::flash('success','Successfully updated!');

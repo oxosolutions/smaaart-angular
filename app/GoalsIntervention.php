@@ -9,7 +9,7 @@ class GoalsIntervention extends Model
 {
 	use SoftDeletes;
 
-    protected $fillable = ['intervent_id','intervent_title','intervent_image','intervent_desc','created_by'];
+    protected $fillable = ['intervent_id','intervent_title','intervent_image','intervent_desc','created_by','content'];
     protected $dates = ['deleted_at'];
     protected $softDelete = true;
 

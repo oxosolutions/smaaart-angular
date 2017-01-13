@@ -62,12 +62,20 @@ class DataSetsController extends Controller
 
 
     public function store(Request $request){
+
+     $request->file('file')->getClientOriginalExtension(); 
       
       $this->modelValidate($request);
         if($request->source == 'file'){
-            $path = 'datasets';
+
+             if($request->file('file')->getClientOriginalExtension()=='sql' )
+             {
+                    $path = 'sql';
+             }else{
+                    $path = 'datasets';
+                }
             try {
-                 if(!in_array($request->file('file')->getClientOriginalExtension(),['csv'])){
+                 if(!in_array($request->file('file')->getClientOriginalExtension(),['csv','sql'])){
                    Session::flash('error','Some thing goes wrong Try again!');
                 }
             } catch (Exception $e) {
@@ -75,10 +83,9 @@ class DataSetsController extends Controller
             }
             $file = $request->file('file');
             if($file->isValid()){
-
                 $filename = date('Y-m-d-H-i-s')."-".$request->file('file')->getClientOriginalName();
                 $uploadFile = $request->file('file')->move($path, $filename);
-                 $filePath = $path.'/'.$filename;               
+                $filePath = $path.'/'.$filename;               
             }
         }
         
@@ -109,7 +116,7 @@ class DataSetsController extends Controller
             }
            
             DB::commit();
-            Session::flash('success','Successfully upload!');
+            Session::flash($result['status'], $result['message']);
             return redirect()->route('datasets.list');
         } catch(\Exception $e){
             DB::rollback();
@@ -118,6 +125,80 @@ class DataSetsController extends Controller
         
         Session::flash('success','Successfully created!');
         return redirect()->route('datasets.list');
+    }
+
+    public function runSqlFile($path){
+        $sql =   file_get_contents($path);
+        $lines = explode("\n", $sql); 
+        $create_table = $status = $output = ""; 
+        $linecount = count($lines); 
+        $create=$next=0;
+        for($i = 0; $i < $linecount; $i++) 
+         { 
+            if(starts_with($lines[$i], "CREATE") )
+            {
+                $create_table .= $lines[$i];
+                $status .=1;
+                $create=$i;
+            }
+            if(starts_with($lines[$i],'--'))
+             {
+                $create =0;
+             }
+            if($create>0 && $create<$i)
+            {
+                  $create_table .= $lines[$i];
+            }
+        if(starts_with($lines[$i], "INSERT") )
+                {
+                    $output .= $lines[$i];
+                    $next = $i;
+                    $status .=2;
+                }
+                 if($next>0 && $i>$next)
+                {
+                    if(str_contains($lines[$i], ['--','ALTER','ADD','/*','MODIFY']))
+                         { $next=0;}
+                     else{
+                             $output .= $lines[$i];
+                        }
+                } 
+         }            
+            try{
+            DB::select($create_table);
+            }catch(\Exception $e)
+            {
+                if($e->getCode() =="42S01")
+                {
+                }
+            }
+            if($status !='12')
+            {
+                 
+                $result['status'] = 'error';
+                $result['message'] ="Not exist create & Insert";  
+            //return ['status'=>'error','message'=>"Not exist create & Insert"];
+            } 
+            else{   
+                    try{
+                        DB::select($output);
+
+                        $result['status'] = 'success';
+                        $result['message'] ="Sql file Import Successfully";
+                        //return ['status'=>'sucess','message'=>"Sql file Import Successfully"];
+
+                    }catch(\Exception $e){ 
+                        if($e->getCode()==23000)
+                            {  
+                                $result['status'] = 'error';
+                                $result['message'] ="Sql file Duplicate entry";
+                                                                     
+                           // return ['status'=>'error','message'=>""];
+                            }  
+                    }
+                } 
+
+                return $result;      
     }
 
     protected function appendDataset($datasetName, $source, $filename, $filePath, $request){
@@ -147,7 +228,9 @@ class DataSetsController extends Controller
         
         if($new != $old){
             DB::select('DROP TABLE '.$tableName);
-            return ['status'=>'false','message'=>'File columns are note same!'];
+                        $result['status'] = 'error';
+                        $result['message'] ="File columns are note same!";
+           // return ['status'=>'false','message'=>'File columns are note same!'];
         }
         unset($new['id']);
 
@@ -155,7 +238,9 @@ class DataSetsController extends Controller
         DB::select('INSERT INTO `'.$model_DL->dataset_table.'` ('.$appendColumns.') SELECT '.$appendColumns.' FROM '.$tableName.' WHERE id != 1;');
         DB::select('DROP TABLE '.$tableName);
         
-        return ['status'=>'true','message'=>'Dataset updated successfully!!', 'id'=>$model_DL->id];
+        $result['status'] = 'success';
+        $result['message'] ="Dataset updated successfully!!";
+      return $result;  
     }
 
    
@@ -176,10 +261,14 @@ class DataSetsController extends Controller
         $model->validated = 0;
         $model->save();
         if($model){
-            return ['status'=>'true','id'=>$model->id,'message'=>'Dataset replaced successfully!'];
+
+                        $result['status'] = 'success';
+                        $result['message'] ="Dataset replaced successfully!";
         }else{
-            return ['status'=>'false','message'=>'unable to replace dataset!'];
+                        $result['status'] = 'error';
+                        $result['message'] ="unable to replace dataset!";
         }
+        return $result;
     }
 
  protected function storeInDatabase($filename, $origName, $source, $orName){
@@ -193,30 +282,46 @@ class DataSetsController extends Controller
             $filePath = 'datasets/'.$randName;
         }
         if(!File::exists($filePath)){
-            return ['status'=>'false','id'=>'','message'=>'File not found on given path!'];
+
+            $message['status'] = 'error';
+            $message['message'] ="File not found on given path!";
         }
-        DB::beginTransaction();
-        $model = new MySQLWrapper();
-        $tableName = 'data_table_'.time();
-        
-        $result = $model->wrapper->createTableFromCSV($filePath,$tableName,',','"', '\\', 0, array(), 'generate','\r\n');
-        
-        if($result){
-            $model = new DL;
-            $model->dataset_table = $tableName;
-            $model->dataset_name = $origName;
-            $model->dataset_file = $filePath;
-            $model->dataset_file_name = $orName;
-            $model->user_id = Auth::user()->id;
-            $model->uploaded_by = Auth::user()->name;
-            $model->dataset_records = '{}';
-            $model->save();
-            DB::commit();
-            return ['status'=>'true','id'=>$model->id,'message'=>'Dataset upload successfully!'];
-        }else{
-            DB::rollback();
-            return ['status'=>'false','id'=>'','message'=>'unable to upload datsaet!'];
+
+       if(File::extension($filename)=="sql")
+       {
+          $message =  $this->runSqlFile($filename);
+       }else{
+
+      
+            DB::beginTransaction();
+            $model = new MySQLWrapper();
+            $tableName = 'data_table_'.time();
+            
+            $result = $model->wrapper->createTableFromCSV($filePath,$tableName,',','"', '\\', 0, array(), 'generate','\r\n');
+            
+            if($result){
+                $model = new DL;
+                $model->dataset_table = $tableName;
+                $model->dataset_name = $origName;
+                $model->dataset_file = $filePath;
+                $model->dataset_file_name = $orName;
+                $model->user_id = Auth::user()->id;
+                $model->uploaded_by = Auth::user()->name;
+                $model->dataset_records = '{}';
+                $model->save();
+                DB::commit();
+                $message['status'] = 'success';
+                $message['message'] ="Dataset upload successfully!";
+                //return ['status'=>'true','id'=>$model->id,'message'=>'Dataset upload successfully!'];
+            }else{
+                DB::rollback();
+                $message['status'] = 'error';
+                $message['message'] ="unable to upload datsaet!";
+                //return ['status'=>'false','id'=>'','message'=>'unable to upload datsaet!'];
+            }
         }
+
+        return $message;
     }
 
  
@@ -271,42 +376,43 @@ class DataSetsController extends Controller
         return redirect()->route('datasets.list');
     }
     public function __destruct() {
-        $uid = Auth::user()->id;          
+        parent::__destruct();
+        // $uid = Auth::user()->id;          
 
-        foreach (DB::getQueryLog() as $key => $value){ 
+        // foreach (DB::getQueryLog() as $key => $value){ 
 
-          if($value['query'] =="insert into `log_systems` (`user_id`, `type`, `text`, `ip_address`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?)" || $value['query'] =="select * from `log_systems` where `user_id` = ? order by `id` desc limit 1" || $value['query']=="select * from `users` where `users`.`id` = ? limit 1")
-          {  //Not put in log
-          }else{
-                $log    = LOG::orderBy('id','desc')->where('user_id',$uid)->first();
-                $logAr  = json_decode($log->text,true);
-                $insertTime = $log->created_at;
-                $currentTime = TM::now();
-                $addSecond = $insertTime->addSeconds(10);
-                if(array_key_exists('query', $logAr))
-                {
-                  if($addSecond > $currentTime  && $logAr['query'] == $value['query'])
-                  {
-                  // dump('not insert log forthis');
-                  }else{
-                    $Lg             =   new LOG;
-                    $Lg->user_id    =   $uid;
-                    $Lg->type       =   "model";            
-                    $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time']]);
-                    $Lg->ip_address =   $this->ipAdress;
-                    $Lg->save(); 
-                  }
-                }else{
-                    $Lg             =   new LOG;
-                    $Lg->user_id    =   $uid;
-                    $Lg->type       =   "model";            
-                    $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time']]);
-                    $Lg->ip_address =   $this->ipAdress;
-                    $Lg->save(); 
-                }
-          }
+        //   if($value['query'] =="insert into `log_systems` (`user_id`, `type`, `text`, `ip_address`, `updated_at`, `created_at`) values (?, ?, ?, ?, ?, ?)" || $value['query'] =="select * from `log_systems` where `user_id` = ? order by `id` desc limit 1" || $value['query']=="select * from `users` where `users`.`id` = ? limit 1")
+        //   {  //Not put in log
+        //   }else{
+        //         $log    = LOG::orderBy('id','desc')->where('user_id',$uid)->first();
+        //         $logAr  = json_decode($log->text,true);
+        //         $insertTime = $log->created_at;
+        //         $currentTime = TM::now();
+        //         $addSecond = $insertTime->addSeconds(10);
+        //         if(array_key_exists('query', $logAr))
+        //         {
+        //           if($addSecond > $currentTime  && $logAr['query'] == $value['query'])
+        //           {
+        //           // dump('not insert log forthis');
+        //           }else{
+        //             $Lg             =   new LOG;
+        //             $Lg->user_id    =   $uid;
+        //             $Lg->type       =   "model";            
+        //             $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time']]);
+        //             $Lg->ip_address =   $this->ipAdress;
+        //             $Lg->save(); 
+        //           }
+        //         }else{
+        //             $Lg             =   new LOG;
+        //             $Lg->user_id    =   $uid;
+        //             $Lg->type       =   "model";            
+        //             $Lg->text       =   json_encode(['query'=>$value['query'] , 'value'=>$value['bindings'] ,'time'=> $value['time']]);
+        //             $Lg->ip_address =   $this->ipAdress;
+        //             $Lg->save(); 
+        //         }
+        //   }
 
-        }    
+        // }    
 
       }
     

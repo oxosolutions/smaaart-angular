@@ -274,7 +274,7 @@
         </li> 
         <li class="{{Request::is('view_log')?'active':''}}">
           <a href="{{url('view_log')}}">
-            <i class="fa fa-gear"></i> <span>Log System</span>
+            <i class="fa fa-history"></i> <span>Log System</span>
           </a>
         </li> 
         

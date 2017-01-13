@@ -29,7 +29,7 @@ class DatasetsController extends Controller
 
     public function getDatasets($id,$skip = 0){
         $datasetDetails = DL::find($id);
-        $datasetTable = DB::table($datasetDetails->dataset_table)->skip($skip)->take(1000)->get();
+        $datasetTable = DB::table($datasetDetails->dataset_table)->skip($skip)->take(500)->get();
         if(empty($datasetTable)){
             return ['status'=>'success','records'=>[]];
         }
@@ -269,18 +269,14 @@ class DatasetsController extends Controller
 
         $model = DL::find($id);
         if(!empty($model)){
+            $error = false;
             $wrongDataRows = [];
             $datasetTable = DB::table($model->dataset_table)->get()->toArray();
             $columnsTypeArray = (array)json_decode($model->dataset_columns);
-            // dd($columnsTypeArray);
-            // dump($columnsTypeArray);
-            foreach($datasetTable as $key => $row){
-                //$columnsArray = [];
-                foreach($row as $colKey => $colVal){
-                    $error = false;
-                    // dd((bool)strtotime('2016-12-32'));
-                    // dump($colKey);
-                    // dd(gettype($colVal));
+            foreach($datasetTable as $key => $row){// for each row
+                $tempCol = [];
+                foreach($row as $colKey => $colVal){// for each column
+                    
                     if(array_key_exists($colKey,$columnsTypeArray)){
                         $type = $columnsTypeArray[$colKey];
                         if($type == 'areacode'){
@@ -289,9 +285,12 @@ class DatasetsController extends Controller
                         if($type != 'date'){
                             if($type == 'integer'){
                                 if(!is_numeric($colVal)){
-                                    $wrongDataRows[] = $row;
-                                    break;
+                                    $error = true;
+                                    $tempCol[$colKey] = '<span>'.$colVal.'</span>';
+                                }else{
+                                    $tempCol[$colKey] = $colVal;
                                 }
+
                             }
                             /*if($type == 'string'){
                                if(is_numeric($colVal)){
@@ -307,6 +306,15 @@ class DatasetsController extends Controller
                             }
                         }
                     }
+                }
+                if($error == true){
+                    foreach($row as $key => $col){
+                        if(!array_key_exists($key, $tempCol)){
+                            $tempCol[$key] = $col;
+                        }
+                    }
+                    $wrongDataRows[] = $tempCol;
+                    break;
                 }
             }
             return ['status'=>'success','message'=>'Columns valudated successfully!','wrong_rows'=>$wrongDataRows,'dataset_name'=>$model->dataset_name];

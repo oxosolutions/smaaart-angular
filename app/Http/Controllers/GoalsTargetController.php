@@ -29,7 +29,6 @@ class GoalsTargetController extends Controller
     	return view('target.index',$plugins);
     }
 
-
     public function indexData(){
 
     	$model = GT::orderBy('id','desc')->withUsers()->get();
@@ -50,7 +49,7 @@ class GoalsTargetController extends Controller
     }
 
     public function store(Request $request){
-
+        
     	$this->modelValidate($request);
     	DB::beginTransaction();
     	try{
@@ -157,7 +156,8 @@ class GoalsTargetController extends Controller
     }
 
      public function __destruct() {
-        $uid = Auth::user()->id;          
+        parent::__destruct();
+      /*  $uid = Auth::user()->id;          
 
         foreach (DB::getQueryLog() as $key => $value){ 
 
@@ -192,7 +192,7 @@ class GoalsTargetController extends Controller
                 }
           }
 
-        }    
+        }  */  
 
       }
 }

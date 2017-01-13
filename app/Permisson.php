@@ -49,7 +49,7 @@ class Permisson extends Model
 
     public function routeMapping()
     {
-        return  $this->hasMany('App\PermissonRouteMapping','permisson_id','id');
+        return $this->hasMany('App\PermissonRouteMapping','permisson_id','id');
     }
 
     

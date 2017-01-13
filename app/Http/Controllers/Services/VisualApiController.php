@@ -8,6 +8,7 @@ use App\GeneratedVisual as GV;
 use App\DatasetsList as DL;
 use DB;
 use App\GeneratedVisualQuerie as GVQ;
+use Auth;
 class VisualApiController extends Controller
 {
     public function visualList(){
@@ -19,14 +20,14 @@ class VisualApiController extends Controller
     		$tempArray['id'] = $value->id;
     		$tempArray['visual_name'] = $value->visual_name;
     		$tempArray['dataset'] = array('dataset_id'=>$value->dataset_id,'dataset_name'=>$value->datasetName->dataset_name);
-    		$datasetData = DL::find($value->dataset_id);
-    		$dataTableData = DB::table($datasetData->dataset_table)->select(json_decode($value->columns))->where('id',1)->first();
-    		$columnArray = [];
-    		foreach(json_decode($value->columns) as $colKey => $colValue){
-    			$columnArray[$colValue] = $dataTableData->{$colValue};
-    		}
-    		$tempArray['columns'] = $columnArray;
-    		$tempArray['gen_columns'] = json_decode($value->query_result);
+    		//$datasetData = DL::find($value->dataset_id);
+    		//$dataTableData = DB::table($datasetData->dataset_table)->select(json_decode($value->columns))->where('id',1)->first();
+    		//$columnArray = [];
+    		//foreach(json_decode($value->columns) as $colKey => $colValue){
+    		//	$columnArray[$colValue] = $dataTableData->{$colValue};
+    		//}
+    		//$tempArray['columns'] = $columnArray;
+    		//$tempArray['gen_columns'] = json_decode($value->query_result);
     		$tempArray['created_by'] = $value->createdBy->name;
     		$tempArray['created_at'] = $value->created_at->format('Y-m-d H:i:s');
     		$resultArray[] = $tempArray;
@@ -66,7 +67,7 @@ class VisualApiController extends Controller
         $tempArray = [];
         $tempArray['id'] = $model->id;
         $ColumnsCount = json_decode($model->filter_counts);
-       
+        $data_columns = json_decode($model->columns);
         $datasetData = DL::find($model->dataset_id);
         $dataTableData = DB::table($datasetData->dataset_table)->where('id',1)->first();
         
@@ -78,69 +79,207 @@ class VisualApiController extends Controller
             }
         }
         $response['filters'] = $columnsArray;
+        foreach ($data_columns as $columnKey => $columnValue) {
+            $response['column_names'][] = $dataTableData->{$columnValue};
+        }
         $dataArary = [];
         foreach(json_decode($model->query_result) as $key => $value){
             $dataArary[$key]['column_name'] = $dataTableData->{$key};
             $dataArary[$key]['column_data'] = $value;
         }
-		
+       
         //Process Data 
         $temp_array = [];
         foreach($dataArary as $key => $value){
-			$column_name = $value['column_name'];
-			$column_data = [];
+            $column_name = $value['column_name'];
+            $column_data = [];
             foreach ( $value['column_data'] as $column_key => $column_value ) {
-				$column_data[$column_value->$key] = $column_value->count;
+                $column_data[$column_value->$key] = $column_value->count;
+                
             }
-			$temp_array[$column_name] = $column_data;
+            $temp_array[$column_name] = $column_data;
         }
-		
-		//Process Data according to google charts
-		$data_keys = [];
+        
+        //Process Data according to google charts
+        $data_keys = [];
         foreach($temp_array as $key => $value){
             foreach ( $value as $k => $v ) {
-				$data_keys[] = $k;
+                $data_keys[] = $k;
             }
         }
-		
-		$final_data = [];
-		$final_data['variables'] = $data_keys;
-		foreach($temp_array as $key => $value){
-			$temp_data_row = [];
-            foreach ( $data_keys as $k => $v ) {	
-				if(isset($value[$v])){
-					$temp_data_row[] = $value[$v];
-				} else{
-					$temp_data_row[] = 0;
-				}
+        
+        $final_data = [];
+        $final_data['variables'] = $data_keys;
+        foreach($temp_array as $key => $value){
+            $temp_data_row = [];
+            foreach ( $data_keys as $k => $v ) {    
+                if(isset($value[$v])){
+                    $temp_data_row[] = $value[$v];
+                } else{
+                    $temp_data_row[] = 0;
+                }
             }
-			$final_data[$key] = $temp_data_row;
+            $final_data[$key] = $temp_data_row;
         }
-		
-		$chart_data = array();
+        
+        $chart_data = array();
 
-		foreach ($final_data as $row => $columns) {
-		  foreach ($columns as $row2 => $column2) {
-			  $chart_data[$row2][$row] = $column2;
-		  }
-		}
-		/*
-		echo "<br>......................";
-		echo "<pre>";
-		print_r($final_data);
-		echo "</pre>";
-		
-		echo "<br>......................";
-		echo "<pre>";
-		print_r($chart_data);
-		echo "</pre>";
-		
-		*/
-
+        foreach ($final_data as $row => $columns) {
+          foreach ($columns as $row2 => $column2) {
+              $chart_data[$row2][$row] = $column2;
+          }
+        }
 		
         //dd($chart_data);
         $response['data'] = $chart_data;
         return ['status'=>'success','records'=>$response];
     }
 
+    public function getColumnByDataset($id){
+
+        $model = DL::find($id);
+        $datasetTable = $model->dataset_table;
+        $model = DB::table($datasetTable)->first();
+        unset($model->id);
+        return ['status'=>'success','columns'=>$model];
+    }
+
+    public function getVisualDetails($id){
+
+        $model = GV::find($id);
+        $returnArray['visual_name'] = $model->visual_name;
+        $returnArray['dataset_id'] = $model->dataset_id;
+        $returnArray['columns'] = $model->columns;
+        $returnArray['filter_columns'] = $model->filter_columns;
+        $returnArray['visual_settings'] = $model->visual_settings;
+        return ['status'=>'success','data'=>$returnArray];
+    }
+    public function saveVisualData(Request $request){
+
+    	$validate = $this->validateRequest($request);
+        if($validate['status'] == 'false'){
+            return ['status'=>'error','message'=>$validate['message']];
+        }
+
+        $model = DL::find($request->dataset_id);
+        $datasetTable = $model->dataset_table;
+        $resultArray = [];
+        foreach(json_decode($request->columns) as $key => $column){
+            $model = DB::table($datasetTable)->select([DB::raw('COUNT(id) as count'),$column])->groupBy($column)->get();
+            unset($model[0]);
+            $resultArray[$column] = $model;
+        }
+        $filterResultArray = [];
+        foreach(json_decode($request->filter_cols) as $key => $column){
+            $model = DB::table($datasetTable)->select([DB::raw('COUNT(id) as count'),$column])->groupBy($column)->get();
+            unset($model[0]);
+            $filterResultArray[$column] = $model;
+        }
+        $jsonData = json_encode($resultArray);
+        $model = GV::find($request->visual_id);
+        $model->visual_name = $request->visual_name;
+        $model->dataset_id = $request->dataset_id;
+        $model->columns = $request->columns;
+        $model->filter_columns = $request->filter_cols;
+        $model->filter_counts = json_encode($filterResultArray);
+        $model->query_result = $jsonData;
+        $model->visual_settings = $request->visual_settings;
+        $model->created_by = Auth::user()->id;
+        $model->save();
+        return ['status'=>'success','message'=>'Visual update successfully!'];
+    }
+
+    public function validateRequest($request){
+
+        if($request->has('dataset_id') && $request->has('visual_name') && $request->has('columns') && $request->has('filter_cols') && $request->has('visual_id')){
+            if($request->dataset_id != 'undefined' || $request->visual_name != 'undefined' || $request->columns != 'undefined' || $request->filter_cols != 'undefined' || $request->visual_id != 'undefined'){
+                $return = ['status'=>'true','message'=>''];
+                return $return;
+            }else{
+                $return = ['status'=>'false','message'=>'Required fields are missing!'];
+                return $return;
+            }
+        }else{
+            $return = ['status'=>'false','message'=>'Required fields are missing!'];
+            return $return;
+        }
+    }
+
+    public function calculateVisuals($id){
+        
+        $model = GV::find($id);
+        $dataset_id = $model->dataset_id;
+        $datasetTable = DL::find($dataset_id)->dataset_table;
+        $filterColumns = json_decode($model->filter_columns);
+        $columnsUniqueData = [];
+        foreach($filterColumns as $colKey => $column){
+
+            $result = DB::table($datasetTable)->select($column)->where('id','!=',1)->groupBy($column)->get()->toArray();
+            $columnsUniqueData[$column] = $result;
+        }
+        $correctArray = [];
+        foreach ($columnsUniqueData as $key => $value) {
+            foreach($value as $ikey => $ival){
+                $correctArray[$key][] = $ival->{$key};
+            }
+        }
+        function permutations(array $array, $inb = false){
+
+            switch (count($array)){
+                case 1:
+                    return reset($array);
+                    break;
+                case 0:
+                    throw new InvalidArgumentException('Requires at least one array');
+                    break;
+            }
+            $keys = array_keys($array);
+            $a = array_shift($array);
+            $k = array_shift($keys);
+            $b = permutations($array, 'recursing');
+            $return = array();
+            foreach ($a as $nk => $v) {
+                if($v){
+                    foreach ($b as $bk => $v2) {
+                        if($inb == 'recursing')
+                            $return[] = array_merge(array($v), (array) $v2);
+                        else
+                            $return[] = array($k => $v) + array_combine($keys, (array)$v2);
+                    }
+                }
+            }
+            return $return;
+        }
+        if(count($correctArray) != 1){
+            $combinations = permutations($correctArray);
+        }else{
+            $correct = [];
+            foreach($correctArray as $k => $v){
+                foreach($v as $ik => $iv){
+                    $correct[][$k] = $iv;
+                }
+            }
+            $combinations = $correct;
+        }
+        $columns = json_decode($model->columns);
+        foreach($combinations as $comKey => $comVal){
+            $resultArray = [];
+            foreach($columns as $key => $column){
+                $index = 1;
+                $model = DB::table($datasetTable)->select([DB::raw('COUNT(id) as count'),$column])->where($comVal)->where('id','!=',1)->groupBy($column)->get();
+                foreach($model as $mKey => $mVal){
+                    $resultArray[$column][$index] = $mVal;
+                    $index++;
+                }
+            }
+
+            $checkExistence = GVQ::where([]);
+            echo json_encode($comVal);
+            dd();
+            /*echo json_encode($resultArray);
+            exit;*/
+            dump($comVal);
+            dump($resultArray);
+        }
+    }
 }

@@ -82,5 +82,9 @@ class User extends Authenticatable
         return $this->belongsToMany('App\UserMeta','user_id','id');
     }
 
+    public function pages(){
+
+        return $this->belongsToMany('App\Page','created_by','id');
+    }
 
 }

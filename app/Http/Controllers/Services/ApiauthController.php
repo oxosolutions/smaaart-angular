@@ -21,17 +21,20 @@ use App\GlobalSetting as GS;
 use App\Designation as DES;
 use App\Ministrie   as min;
 use App\Department  as DEP;
+
 class ApiauthController extends Controller
 {
+
+   
 
    public  function Authenicates(Request $request)
     {
 
         if(empty ( $request->email )){
-                return ['status'=>'error','message'=>'We need to know your e-mail address!'];
+            return ['status'=>'error','message'=>'We need to know your e-mail address!'];
         }
         else if(!filter_var($request->email, FILTER_VALIDATE_EMAIL)){
-                return ['status'=>'error','message'=>'Invalid email format!'];
+            return ['status'=>'error','message'=>'Invalid email format!'];
         }
         else if($request->password==""){
             return ['status'=>'error','message'=>'We need to know your Password!'];
@@ -54,7 +57,7 @@ class ApiauthController extends Controller
         }else{
             return ['status'=>'error','message'=>'Invalid email or password!'];
         }
-
+ 
     }
     public function listUser()
     {   
@@ -534,4 +537,5 @@ class ApiauthController extends Controller
         }
    }
 
+ 
 }

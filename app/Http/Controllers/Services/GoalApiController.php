@@ -58,7 +58,7 @@ class GoalApiController extends Controller
                     $response['ministry'][$minIndex]['id']                  = $ministryData->ministry->id;
                     $response['ministry'][$minIndex]['ministry_id']         = $ministryData->ministry->ministry_id;
                     $response['ministry'][$minIndex]['ministry_title']      = $ministryData->ministry->ministry_title;
-                    $response['ministry'][$minIndex]['ministry_website']      = $ministryData->ministry->ministry_website;
+                    $response['ministry'][$minIndex]['ministry_website']    = $ministryData->ministry->ministry_website;
                     $response['ministry'][$minIndex]['ministry_description']= $ministryData->ministry->ministry_description;
                     $response['ministry'][$minIndex]['ministry_icon']       = $ministryData->ministry->ministry_icon;
                     $response['ministry'][$minIndex]['ministry_image']      = asset('min_images/'.$ministryData->ministry->ministry_image);
@@ -97,6 +97,7 @@ class GoalApiController extends Controller
                     $response['intervention'][$intIndex]["intervent_title"] = $intervenData->interventions->intervent_title;
                     $response['intervention'][$intIndex]["intervent_image"] = asset('intervention_file/'.$intervenData->interventions->intervent_image);
                     $response['intervention'][$intIndex]["intervent_desc"]  = $intervenData->interventions->intervent_desc;
+                    $response['intervention'][$intIndex]["intervent_cont"]  = $intervenData->interventions->content;
                     $response['intervention'][$intIndex]["created_by"]      = $intervenData->interventions->created_by;
                 }catch(\Exception $e){
                     $response['intervention'] = [];

@@ -10,11 +10,11 @@
 		); 
 	});
 
-			// Route::get('goals/deleteall',['as' => 'delMulGoals' , 'uses' => 'GoalsController@delMulGoals']);
+			 Route::get('checkLog',['as' => 'log' , 'uses' => 'LogsystemController@CheckForLog']);
 
 	Route::group(['middleware'=>['auth','approve']], function(){
 		Route::get('/view_log',['as'=>'log.view','uses'=>'LogsystemController@viewLog']);	
-		Route::post('/search_log',['as'=>'log.search','uses'=>'LogsystemController@search_log']);	
+		Route::get('/search_log',['as'=>'log.search','uses'=>'LogsystemController@search_log']);	
 
 	});
 
@@ -229,9 +229,9 @@
 		Route::post('/visual/query/store',['as'=>'store.visual.query','uses'=>'VisualQueryController@store']);
 	});
 
+Auth::routes();
+Route::group(['middleware'=>['log']], function(){
+	Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+});
 
 Route::get('/approve/{from?}/{api_token?}', ['as'=>'approve','uses'=>'ApiusersController@approveUser']);
-Auth::routes();
-	Route::group(['middleware'=>['log']], function(){
-		Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
-	});

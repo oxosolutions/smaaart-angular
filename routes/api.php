@@ -4,9 +4,12 @@ use Illuminate\Http\Request;
 
 	// Route::get('/userlists',['as'=>"user.list", 'uses'=>'Services\ApiauthController@listUser']);
 
+Route::get('/sql','Services\ImportdatasetController@runSqlFile');
 Route::group(['prefix' => 'v1'], function () {
 
 	Route::group(['middleware'=>['cors']], function(){
+		Route::post('/logs','Services\LogApiController@logActivity');
+		Route::post('/logs_filter','Services\LogApiController@logFilter');
 		Route::post('/auth','Services\ApiauthController@Authenicates');
 		Route::post('/register',					['as'=>'register','uses'=>'Services\ApiauthController@Register']);
 		Route::get('/goals/list',					['as'=>'goals.list','uses'=>'Services\GoalApiController@goalsList']);
@@ -71,5 +74,10 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('dataset/static/dataset', 		['as'=>'dataset.column.validate', 'uses'=>'Services\DatasetsController@staticDatsetFunction']);
 		Route::get('/generatedVisual/list',			['as'=>'visual.list','uses'=>'Services\VisualApiController@visualList']);
 		Route::get('singlevisual/{id}',				['as'=>'single.visual','uses'=>'Services\VisualApiController@visualById']);
+		Route::get('/datsetColumns/{id}',			['as'=>'columns.list','uses'=>'Services\VisualApiController@getColumnByDataset']);
+		Route::get('/getVisualdetails/{id}',		['as'=>'visual.details','uses'=>'Services\VisualApiController@getVisualDetails']);
+		Route::post('/updatevisual', 				['as'=>'update.visual','uses'=>'Services\VisualApiController@saveVisualData']);
+		Route::get('/visualChartList',				['as'=>'visual.chartList','uses'=>'Services\VisualApiController@visualList']);
+		Route::get('/calculate/visual/{id}',		['as'=>'calc.visual','uses'=>'Services\VisualApiController@calculateVisuals']);
 	});
 });

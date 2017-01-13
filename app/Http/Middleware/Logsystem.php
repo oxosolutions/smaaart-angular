@@ -34,7 +34,7 @@ class Logsystem
             $addSecond = $insertTime->addSeconds(30);
             if($addSecond < $mytime && $current_url ==  $text['route'])
             {
-               $this->createLog($current_url , $ip ,$user_id , $user->email);
+               $this->createLog($current_url , $ip ,$user_id , $user->email, $user->name);
                             
             }else if($current_url !=  $text['route'])
                 {
@@ -42,16 +42,16 @@ class Logsystem
                 }   
         }catch(\Exception $e)
         {
-            $this->createLog($current_url , $ip ,$user_id, $user->email);
+            $this->createLog($current_url , $ip ,$user_id, $user->email,$user->name );
         }
           return $next($request);
     }
-        Public function createLog($url ,$ip, $uid,$email)
+        Public function createLog($url ,$ip, $uid,$email, $name)
         {
             $Lg = new LG();
             $Lg->user_id = $uid;
             $Lg->type ="frontend";
-            $Lg->text =json_encode(['route'=>$url,'email'=>$email]);
+            $Lg->text =json_encode(['route'=>$url,'email'=>$email, 'name'=>$name]);
             $Lg->ip_address =  $ip;
             $Lg->save();                      
         }

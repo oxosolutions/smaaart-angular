@@ -1,4 +1,4 @@
-<?php
+ <?php
 
 namespace App\Http\Controllers;
 use Yajra\Datatables\Datatables;
@@ -38,22 +38,22 @@ class RoleController extends Controller
 
     public function store(Request $request)
     {
-    		$this->modelValidation($request);
-			DB::beginTransaction();
-			try{
-	    		$role = new Role($request->except(['_token']));
-	    		
-	    		$role->save();
-	    		DB::commit();
-	    	Session::flash('success',"Role Successful Created!");
+		$this->modelValidation($request);
+		DB::beginTransaction();
+		try{
+    		$role = new Role($request->except(['_token']));
+    		
+    		$role->save();
+    		DB::commit();
+    	Session::flash('success',"Role Successful Created!");
 
-	    	}catch(\Exception $e)
-	    	{
-	    		echo "roll back";
-	    		DB::rollback();	
-	    	}
+    	}catch(\Exception $e)
+    	{
+    		echo "roll back";
+    		DB::rollback();	
+    	}
 
-	         return redirect()->route('role.list');
+         return redirect()->route('role.list');
     }
 
     public function edit($id)

@@ -31,26 +31,32 @@ class ProfileApiController extends Controller
                         $ministries = json_decode($metaValue->value);
 
                         $index = 0;
-                        foreach($ministries as $minKey => $minVal){
-                            $MinisModel = MIN::find($minVal);
-                            $responseArray['ministries'][$index]['id'] = $MinisModel->id;
-                            $responseArray['ministries'][$index]['ministry_title'] = $MinisModel->ministry_title;
-                            $index++;
+                        try{
+                            foreach($ministries as $minKey => $minVal){
+                                $MinisModel = MIN::find($minVal);
+                                $responseArray['ministries'][$index]['id'] = $MinisModel->id;
+                                $responseArray['ministries'][$index]['ministry_title'] = $MinisModel->ministry_title;
+                                $index++;
+                            }
+                        }catch(\Exception $e){
+                            $responseArray['ministries'][0]['id'] = '';
+                            $responseArray['ministries'][0]['ministry_title'] = '';
                         }
                     break;
                     case'department':
                         $departments = json_decode($metaValue->value);
                         $index = 0;
-                        foreach($departments as $depKey => $depVal){
-                            $DepModel = DP::find($depVal);
-                            try{
+                        try{
+                            foreach($departments as $depKey => $depVal){
+                                $DepModel = DP::find($depVal);
                                 $responseArray['departments'][$index]['id'] = $DepModel->id;
                                 $responseArray['departments'][$index]['department_name'] = $DepModel->dep_name;
                                 $index++;
-                            }catch(\Exception $e){
-                                $responseArray['departments'][$index]['id'] = '';
-                                $responseArray['departments'][$index]['department_name'] = '';
                             }
+                        }catch(\Exception $e){
+
+                            $responseArray['departments'][0]['id'] = '';
+                            $responseArray['departments'][0]['department_name'] = '';
                         }
                     break;
                     case'designation':
