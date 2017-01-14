@@ -171,6 +171,20 @@
           </ul>
         </li>
 
+        <li class="treeview {{in_array(Request::path(),array('fact_create','fact'))?'active':''}}">
+          <a href="#">
+            <i class="fa fa-dot-circle-o"></i>
+            <span>Goal Facts</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li class="{{Request::is('fact')?'active':''}}"><a href="{{ route('fact.list') }}"><i class="fa fa-sort-amount-desc"></i> List Goal Facts</a></li>
+            <li class="{{Request::is('fact_create')?'active':''}}"><a href="{{route('fact.create')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
+          </ul>
+        </li>
+
       <!-- role -->
       <!-- <li class="treeview {{in_array(Request::path(),array('visualisation/create','visualisation'))?'active':''}}">
           <a href="#">

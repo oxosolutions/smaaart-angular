@@ -148,6 +148,13 @@ class VisualApiController extends Controller
         $chartsArray = [];
         $datatableName = DL::find($dataset_id);
         $datasetData = DB::table($datatableName->dataset_table)->where('id','!=',1)->get()->toArray();
+        $dataProce = [];
+        foreach($datasetData as $colKey => $value){
+           
+            $dataProce[] = (array)$value;
+        
+        }
+        $datasetData = $dataProce;
         $datasetColumns = (array)DB::table($datatableName->dataset_table)->where('id',1)->first();
         foreach($columns['column_one'] as $key => $value){
             $columnData = [];
@@ -165,6 +172,7 @@ class VisualApiController extends Controller
                 foreach($columns['columns_two'][$key] as $colKey => $colVal){
                     $arrayData = array_column($datasetData, $colVal);
                     array_unshift($arrayData,$datasetColumns[$colVal]);
+                    $arrayData = array_merge(array($arrayData[0]),array_map('intval', array_slice($arrayData, 1)));
                     $columnData[] = $arrayData;
                 }
             }
@@ -187,7 +195,7 @@ class VisualApiController extends Controller
         }
         foreach($columns as $key => $value){
             $filter['column_name'] = $columnNames[$value];
-            $filter['column_data'] = array_column($tmpAry, $value);
+            $filter['column_data'] = array_unique(array_column($tmpAry, $value));
             $data[$value] = $filter;
         }
         return $data;

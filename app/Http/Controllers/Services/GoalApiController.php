@@ -194,7 +194,7 @@ class GoalApiController extends Controller
 
     public function goalsList(){
 
-        $model = Goal::orderBy('id','desc')->WithUsers()->get();
+        $model = Goal::WithUsers()->get();
         if($model == null){
             $response = ['status'=>'success','message'=>'No result found!'];
             return $response;

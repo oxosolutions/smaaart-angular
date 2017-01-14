@@ -196,6 +196,7 @@ class GoalsController extends Controller
             $target = [];
             $resources = [];
             $intervention = [];
+            $fact= [];
             foreach($model->ministry as $key => $value){
 
                 $minis[] = $value->ministry_id;
