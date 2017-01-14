@@ -180,7 +180,7 @@
             </span>
           </a>
           <ul class="treeview-menu">
-            <li class="{{Request::is('fact')?'active':''}}"><a href="{{ route('fact.list') }}"><i class="fa fa-sort-amount-desc"></i> List Goal Facts</a></li>
+            <li class="{{Request::is('fact')?'active':''}}"><a href="{{ route('fact.list') }}"><i class="fa fa-circle-o"></i> List Goal Facts</a></li>
             <li class="{{Request::is('fact_create')?'active':''}}"><a href="{{route('fact.create')}}"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
         </li>

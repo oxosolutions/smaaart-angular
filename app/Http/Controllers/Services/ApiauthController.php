@@ -61,7 +61,9 @@ class ApiauthController extends Controller
     }
     public function listUser()
     {   
-         $i =0;
+      $i =0;
+      if(Auth::user()->id ==1)
+      {
         foreach(User::where('api_token','!=',Auth::user()->api_token)->get() as  $val)
         {
             $arr[$i]['id']=  $val->id;
@@ -111,6 +113,9 @@ class ApiauthController extends Controller
         $i++;
         }//end main loop
         return ['status'=>'success','user_list'=>$arr];
+      }else{
+        return ['status'=>'success','Have not permisson to view'];
+      }
     }
 
     public function editUser($id)

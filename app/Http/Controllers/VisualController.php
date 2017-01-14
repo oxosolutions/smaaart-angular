@@ -24,7 +24,9 @@ class VisualController extends Controller
 
     	return Datatables::of($model)
     			->editColumn('dataset_id',function($model){
+
     				return $model->datasetName->dataset_name;
+
     			})
     			->editColumn('created_by', function($model){
     				return $model->createdBy->name;
@@ -57,8 +59,6 @@ class VisualController extends Controller
     }
 
     public function saveVisualColumns(Request $request){
-
-        
 
         $model = new GV();
         $model->visual_name = $request->visual_name;
@@ -130,21 +130,38 @@ class VisualController extends Controller
         $dataList = DL::find($model->dataset_id);
         $dbModel = DB::table($dataList->dataset_table)->first();
         unset($dbModel->id);
-        $selectedColumns = json_decode($model->columns);
+        $columnData = json_decode($model->columns,true);
         $selectedFilterCol = json_decode($model->filter_columns);
         $plugins = [
             'js'  => ['select2','custom'=>['visual-create']],
             'css' => ['select2'],
             'model' => $model,
             'columns' => $dbModel,
-            'preFilled' => $selectedColumns,
+            'preFilled' => $columnData,
             'prefilledFilter' => $selectedFilterCol
         ];
         return view('visual.edit',$plugins);
     }
 
     public function update(Request $request, $id){
-        $this->validateRequest($request);
+
+        $model = GV::find($id);
+        $model->visual_name = $request->visual_name;
+        $model->dataset_id = $request->dataset_id;
+        $model->columns = json_encode(
+                                        [
+                                            'column_one'=>$request->columns_one,
+                                            'columns_two'=>$request->columns_two,
+                                            'visual_settings'=>$request->visual_settings,
+                                            'count'=> @$request->count
+                                        ]);
+        $model->filter_columns = json_encode(@$request->filter_cols);
+        $model->created_by = Auth::user()->id;
+        $model->save();
+        Session::flash('success','Successfully update!');
+        return redirect()->route('list.visual');
+
+        /*$this->validateRequest($request);
         $model = DL::find($request->dataset_id);
         $datasetTable = $model->dataset_table;
         $resultArray = [];
@@ -171,6 +188,6 @@ class VisualController extends Controller
         $model->created_by = Auth::user()->id;
         $model->save();
         Session::flash('success','Successfully updated!');
-        return redirect()->route('list.visual');
+        return redirect()->route('list.visual');*/
     }
 }

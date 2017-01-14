@@ -10,6 +10,7 @@
 		); 
 	});
 
+
 			 Route::get('checkLog',['as' => 'log' , 'uses' => 'LogsystemController@CheckForLog']);
 
 	Route::group(['middleware'=>['auth','approve']], function(){
@@ -239,7 +240,8 @@
 
 Auth::routes();
 Route::group(['middleware'=>['log']], function(){
-	Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+		Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout');
+
 });
 
 Route::get('/approve/{from?}/{api_token?}', ['as'=>'approve','uses'=>'ApiusersController@approveUser']);

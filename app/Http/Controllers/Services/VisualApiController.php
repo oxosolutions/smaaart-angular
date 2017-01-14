@@ -135,9 +135,9 @@ class VisualApiController extends Controller
         return ['status'=>'success','records'=>$response];
     }*/
 
-    public function visualById($id){
+    public function visualById(Request $request){
         $responseArray = [];
-        $visual = GV::find($id);
+        $visual = GV::find($request->id);
         $dataset_id = $visual->dataset_id;
         $columns = json_decode($visual->columns, true);
         $countCharts = '';
@@ -147,7 +147,11 @@ class VisualApiController extends Controller
         $responseArray['num_of_charts'] = count($columns['column_one']);
         $chartsArray = [];
         $datatableName = DL::find($dataset_id);
-        $datasetData = DB::table($datatableName->dataset_table)->where('id','!=',1)->get()->toArray();
+        if($request->type == 'filter'){
+        	$datasetData = DB::table($datatableName->dataset_table)->where('id','!=',1)->where(json_decode($request->filter_array,true))->get()->toArray();
+        }else{
+        	$datasetData = DB::table($datatableName->dataset_table)->where('id','!=',1)->get()->toArray();
+        }
         $dataProce = [];
         foreach($datasetData as $colKey => $value){
            
@@ -158,7 +162,7 @@ class VisualApiController extends Controller
         $datasetColumns = (array)DB::table($datatableName->dataset_table)->where('id',1)->first();
         foreach($columns['column_one'] as $key => $value){
             $columnData = [];
-            if(in_array($key,$countCharts)){//Chart name chart_1 exist in count array
+            if(@in_array($key,$countCharts)){//Chart name chart_1 exist in count array
                 $tempArray = [];
                 foreach($columns['columns_two'][$key] as $colKey => $colVal){
                     $resultData[$colVal] = $this->generateCountColumns($colVal,$datatableName->dataset_table);

@@ -73,7 +73,7 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('dataset/validate/columns/{id}', ['as'=>'dataset.column.validate', 'uses'=>'Services\DatasetsController@validateColums']);
 		Route::get('dataset/static/dataset', 		['as'=>'dataset.column.validate', 'uses'=>'Services\DatasetsController@staticDatsetFunction']);
 		Route::get('/generatedVisual/list',			['as'=>'visual.list','uses'=>'Services\VisualApiController@visualList']);
-		Route::get('singlevisual/{id}',				['as'=>'single.visual','uses'=>'Services\VisualApiController@visualById']);
+		Route::post('/singlevisual',				['as'=>'single.visual','uses'=>'Services\VisualApiController@visualById']);
 		Route::get('/datsetColumns/{id}',			['as'=>'columns.list','uses'=>'Services\VisualApiController@getColumnByDataset']);
 		Route::get('/getVisualdetails/{id}',		['as'=>'visual.details','uses'=>'Services\VisualApiController@getVisualDetails']);
 		Route::post('/updatevisual', 				['as'=>'update.visual','uses'=>'Services\VisualApiController@saveVisualData']);
