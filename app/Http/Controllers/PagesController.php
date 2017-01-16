@@ -34,6 +34,7 @@
 
       $model = Page::with('createdBy')->orderBy('id','desc')->get();
       return Datatables::of($model)
+         ->addColumn('selector', '<input type="checkbox" name="items[]" class="icheckbox_minimal-blue item-selector" value="{{$id}}" >')
             ->addColumn('actions',function($model){
                 return view('pages._actions',['model' => $model])->render();
             })->editColumn('created_by',function($model){
@@ -127,7 +128,17 @@
             $model->save();
             DB::commit();
             Session::flash('success','Successfully updated!');
-            return redirect()->route('pages.list');
+
+
+            $model = Page::findOrFail($id);
+              $plugins = [
+                          'css' => ['wysihtml5','fileupload'],
+                          'js'  => ['wysihtml5','fileupload','ckeditor','custom'=>['page-create']],
+                          'model' => $model
+                        ];
+
+          return view('pages.edit',$plugins);
+           // return redirect()->route('pages.edit');
           }catch(\Exception $e){
             DB::rollback(); 
             throw $e;
@@ -144,6 +155,23 @@
         }catch(\Exception $e){
             throw $e;
         }
+    }
+
+    public function delAllPages(Request $request){
+
+     
+
+        $sizeOfId = count($request->check);
+        for($i=0; $i<$sizeOfId; $i++)
+        {
+            $id = $request->check[$i];
+            $model = Page::findOrFail($id);
+            $model->delete();               
+        }
+            Session::flash('success','Successfully deleted!');
+
+            return 1;// redirect()->route('goals.list');
+
     }
 
     public function __destruct() {

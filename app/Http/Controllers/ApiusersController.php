@@ -40,6 +40,7 @@ class ApiusersController extends Controller
         $model = Auth::user()->id;
         $model = User::where('id','!=',$model)->orderBy('id','desc')->get();
              return Datatables::of($model)
+             ->addColumn('selector', '<input type="checkbox" name="items[]" class="icheckbox_minimal-blue item-selector" value="{{$id}}" >')
               ->addColumn('actions',function($model){
             return view('apiusers._actions',['model'=>$model])->render();
         })
@@ -605,6 +606,23 @@ class ApiusersController extends Controller
        
       return redirect()->route('home');
   }
+
+  public function delAllUser(Request $request){
+
+     
+
+        $sizeOfId = count($request->check);
+        for($i=0; $i<$sizeOfId; $i++)
+        {
+            $id = $request->check[$i];
+            $model = User::findOrFail($id);
+            $model->delete();               
+        }
+            Session::flash('success','Successfully deleted!');
+
+            return 1;// redirect()->route('goals.list');
+
+    }
   public function __destruct() {
     
       parent::__destruct();

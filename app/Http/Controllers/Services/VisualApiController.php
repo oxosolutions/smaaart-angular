@@ -13,27 +13,24 @@ class VisualApiController extends Controller
 {
     public function visualList(){
 
-    	$model = GV::all();
-    	$resultArray = [];
-    	foreach($model as $key => $value){
-    		$tempArray = [];
-    		$tempArray['id'] = $value->id;
-    		$tempArray['visual_name'] = $value->visual_name;
-    		$tempArray['dataset'] = array('dataset_id'=>$value->dataset_id,'dataset_name'=>$value->datasetName->dataset_name);
-    		//$datasetData = DL::find($value->dataset_id);
-    		//$dataTableData = DB::table($datasetData->dataset_table)->select(json_decode($value->columns))->where('id',1)->first();
-    		//$columnArray = [];
-    		//foreach(json_decode($value->columns) as $colKey => $colValue){
-    		//	$columnArray[$colValue] = $dataTableData->{$colValue};
-    		//}
-    		//$tempArray['columns'] = $columnArray;
-    		//$tempArray['gen_columns'] = json_decode($value->query_result);
-    		$tempArray['created_by'] = $value->createdBy->name;
-    		$tempArray['created_at'] = $value->created_at->format('Y-m-d H:i:s');
-    		$resultArray[] = $tempArray;
-    	}
+        $model = GV::all();
+        $resultArray = [];
+        foreach($model as $key => $value){
+            $tempArray = [];
+            $tempArray['id'] = $value->id;
+            $tempArray['visual_name'] = $value->visual_name;
+            try{
+                $tempArray['dataset'] = array('dataset_id'=>$value->dataset_id,'dataset_name'=>$value->datasetName->dataset_name);
+            }catch(\Exception $e){
+                $tempArray['dataset'] = [];
+            }
+            
+            $tempArray['created_by'] = $value->createdBy->name;
+            $tempArray['created_at'] = $value->created_at->format('Y-m-d H:i:s');
+            $resultArray[] = $tempArray;
+        }
 
-    	return ['status'=>'success','records'=>$resultArray];
+        return ['status'=>'success','records'=>$resultArray];
     }
 
     /*public function visualById($id){
@@ -141,6 +138,9 @@ class VisualApiController extends Controller
         $dataset_id = $visual->dataset_id;
         $columns = json_decode($visual->columns, true);
         $countCharts = '';
+        if($columns == null){
+            return ['status'=>'error','message'=>'No settings found!'];
+        }
         if(array_key_exists('count', $columns) && is_array(@$columns['count'])){
             $countCharts = $columns['count'];
         }
@@ -182,10 +182,16 @@ class VisualApiController extends Controller
             }
             $chartsArray[$key] = $columnData;
         }
-
-        $filtersArray = $this->getFIlters($datatableName->dataset_table, json_decode($visual->filter_columns), $datasetColumns);
+        if(!empty(json_decode($visual->filter_columns))){
+            $filtersArray = $this->getFIlters($datatableName->dataset_table, json_decode($visual->filter_columns), $datasetColumns);
+        }else{
+            $filtersArray = [];
+        }
+        
         $responseArray['chart_data'] = $chartsArray;
         $responseArray['filters'] = $filtersArray;
+        $responseArray['chart_types'] = $visual->chart_type;
+        $responseArray['settings'] = $columns['visual_settings'];
         $responseArray['status'] = 'success';
         return $responseArray;
     }
@@ -265,38 +271,37 @@ class VisualApiController extends Controller
         $returnArray['columns'] = $model->columns;
         $returnArray['filter_columns'] = $model->filter_columns;
         $returnArray['visual_settings'] = $model->visual_settings;
+        $returnArray['chart_types'] = $model->chart_type;
         return ['status'=>'success','data'=>$returnArray];
     }
     public function saveVisualData(Request $request){
 
-    	$validate = $this->validateRequest($request);
+        $validate = $this->validateRequest($request);
         if($validate['status'] == 'false'){
             return ['status'=>'error','message'=>$validate['message']];
         }
 
-        $model = DL::find($request->dataset_id);
-        $datasetTable = $model->dataset_table;
-        $resultArray = [];
-        foreach(json_decode($request->columns) as $key => $column){
-            $model = DB::table($datasetTable)->select([DB::raw('COUNT(id) as count'),$column])->groupBy($column)->get();
-            unset($model[0]);
-            $resultArray[$column] = $model;
+        
+        $columns = json_decode($request->columns, true);
+        $count = json_decode($request->count, true);
+        unset($columns['count']);
+        
+        $newCount = [];
+        foreach($count as $key => $value){
+            if($value == 'Yes'){
+                $newCount[] = $key;
+            }
         }
-        $filterResultArray = [];
-        foreach(json_decode($request->filter_cols) as $key => $column){
-            $model = DB::table($datasetTable)->select([DB::raw('COUNT(id) as count'),$column])->groupBy($column)->get();
-            unset($model[0]);
-            $filterResultArray[$column] = $model;
-        }
-        $jsonData = json_encode($resultArray);
+        $columns['count'] = $newCount;
+        $filterCOlumns = json_decode($request->filter_cols, true);
+        
+        
         $model = GV::find($request->visual_id);
         $model->visual_name = $request->visual_name;
         $model->dataset_id = $request->dataset_id;
-        $model->columns = $request->columns;
+        $model->columns = json_encode($columns);
         $model->filter_columns = $request->filter_cols;
-        $model->filter_counts = json_encode($filterResultArray);
-        $model->query_result = $jsonData;
-        $model->visual_settings = $request->visual_settings;
+        $model->chart_type = $request->chartTypes;
         $model->created_by = Auth::user()->id;
         $model->save();
         return ['status'=>'success','message'=>'Visual update successfully!'];

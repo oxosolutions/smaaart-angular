@@ -24,5 +24,15 @@ class GoalFact extends Model
     	return	self::orderBy('id')->pluck('fact_title','id');
     }
 
+    public static function countFact()
+    {
+     return   self::count();
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo('App\User','created_by','id');
+    }
+
 
 }

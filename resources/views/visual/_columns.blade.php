@@ -46,6 +46,16 @@
 			      </span>
 			    @endif
 			</div>
+			<div class="form-group {{ $errors->has('columns') ? ' has-error' : '' }} second_col">
+				{!!Form::label('columns','Select Chart type') !!}
+				{!!Form::select('chartType[chart_1]',App\GeneratedVisual::chartTypes(),@$chartTypes['chart_1'], ['class'=>'form-control select2']) !!}
+				@if($errors->has('columns'))
+				  <span class="help-block">
+				        {{ $errors->first('columns') }}
+				  </span>
+				@endif
+			</div>
+
 			<hr/>
 		@if(!empty(@$model))
 			@php

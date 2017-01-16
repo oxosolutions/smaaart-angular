@@ -43,13 +43,23 @@
         <div class="col-xs-12">
           <div class="box-header">
               <button class="btn btn-primary" onclick="window.location='{{url('api_users/create')}}'">Create New User</button>
+
+              <div class="dropdown" style="float: right">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Action
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="javascript:void(0)" onclick="delAll('/api_users/del_all')" class="delGoals">Delete Goals</a></li>
+                </ul>
+              </div>
           </div>
+           
           <div class="box">
             <!-- /.box-header -->
             <div class="box-body">
               <table id="apiusers" class="table table-bordered table-striped">
                 <thead>
                   <tr>
+                  <th><input type="checkbox" class="icheckbox_minimal-blue selectall"></th>
                     <th>Id</th>
                     <th>Name</th>
                     <th>Email</th>
@@ -64,6 +74,7 @@
                 </tbody>
                 <tfoot>
                   <tr>
+                    <th></th>
                     <th>Id</th>
                     <th>Name</th>
                     <th>Email</th>

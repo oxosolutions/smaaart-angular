@@ -71,6 +71,7 @@ class VisualController extends Controller
                                             'count'=> @$request->count
                                         ]);
         $model->filter_columns = json_encode(@$request->filter_cols);
+        $model->chart_type = json_encode($request->chartType);
         $model->created_by = Auth::user()->id;
         $model->save();
         Session::flash('success','Successfully created!');
@@ -138,7 +139,8 @@ class VisualController extends Controller
             'model' => $model,
             'columns' => $dbModel,
             'preFilled' => $columnData,
-            'prefilledFilter' => $selectedFilterCol
+            'prefilledFilter' => $selectedFilterCol,
+            'chartTypes' => json_decode($model->chart_type,true)
         ];
         return view('visual.edit',$plugins);
     }
@@ -156,6 +158,7 @@ class VisualController extends Controller
                                             'count'=> @$request->count
                                         ]);
         $model->filter_columns = json_encode(@$request->filter_cols);
+        $model->chart_type = json_encode($request->chartType);
         $model->created_by = Auth::user()->id;
         $model->save();
         Session::flash('success','Successfully update!');

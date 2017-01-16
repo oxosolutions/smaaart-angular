@@ -36,12 +36,12 @@ class DataSetsController extends Controller
 
     public function indexData(){
         ini_set('memory_limit', '-1');
-        $model = DL::orderBy('id','desc')->get();
+        $model = DL::orderBy('id','desc')->with('createdBy')->get();
         return Datatables::of($model)
             ->addColumn('actions',function($model){
                 return view('datasets._actions',['model' => $model])->render();
             })->editColumn('user_id',function($model){
-                return ucfirst($model->userId->name);
+                 return $model->createdBy->name; //return ucfirst($model->userId->name);
             })->editColumn('dataset_records',function($model){
                 try{
                     return DB::table($model->dataset_table)->count();

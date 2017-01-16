@@ -6,6 +6,8 @@
       ajax: route()+'/get_users',
       order: [[0,"desc"]],
       columns: [
+                  { data: 'selector', name: 'selector',orderable: false, searchable: false},
+
             { data: 'id', name: 'id' },
             { data: 'name', name: 'name' },
             { data: 'email', name: 'email' },
@@ -182,6 +184,7 @@ $('#fact').DataTable({
       ajax: route()+'/pages_list',
       order:[[0,"desc"]],
       columns: [
+            { data: 'selector', name: 'selector',orderable: false, searchable: false},
             { data: 'id', name: 'id' },
             { data: 'page_title', name: 'page_title' },
             { data: 'page_subtitle', name: 'page_subtitle' },
@@ -318,20 +321,43 @@ $('#fact').DataTable({
     }); 
   });
 
-  function delAll()
+  function delAll(url)
   {
+    check =  confirm("Are You confirm to delete ?");
+    if(check==true)
+    {
+      var inputs = $(".item-selector:checkbox:checked");
+      var data = new Array();
+      for(var i = 0; i < inputs.length; i++){
+              data[i] =  $(inputs[i]).val();
+          }
+          $.ajax({
+            url:route()+url,
+            type:'GET',
+            data:{'check':data},
+            success:function(res)
+            {
+              window.location.reload();
+            }
+          });
+      }
+  }
+
+  function delAllPages(url)
+  {
+    alert(url);
     var inputs = $(".item-selector:checkbox:checked");
     var data = new Array();
     for(var i = 0; i < inputs.length; i++){
             data[i] =  $(inputs[i]).val();
         }
         $.ajax({
-          url:route()+"/goals/deleteall",
+          url:route()+url,
           type:'GET',
           data:{'check':data},
           success:function(res)
           {
-            window.location.reload();
+           // window.location.reload();
           }
 
 

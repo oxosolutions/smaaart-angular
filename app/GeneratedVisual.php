@@ -22,4 +22,16 @@ class GeneratedVisual extends Model
     	
     	return self::orderBy('id')->pluck('visual_name','id');
     }
+
+    public static function chartTypes(){
+        return [
+
+                'ColumnChart' => 'Column Chart',
+                'BarChart' => 'Bar Chart',
+                'AreaChart' => 'Area Chart',
+                'PieChart' => 'Pie Chart',
+                'LineChart' => 'Pie Chart',
+                'BubbleChart' => 'Bubble Chart'
+        ];
+    }
 }

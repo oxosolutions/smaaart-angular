@@ -36,11 +36,17 @@
     @endif
   </div>
 
-  @if(!empty(@$model))
+  @if(!empty(@$model->page_image))
     <div class="input-group input-group-sm">
       {!!Form::label('page_image','Current Image') !!}<br/>
       <img src="{{asset('pages_data/').'/'.$model->page_image}}" width="160px" />
     </div><br/>
+    @else
+     <div class="input-group input-group-sm">
+     
+      <img src="{{asset('/No_Image_Available.png')}}" width="100px" />
+    </div><br/>
+   
   @endif
   <div class="{{ $errors->has('page_image') ? ' has-error' : '' }} input-group input-group-sm">
     {!!Form::label('page_image','Image') !!}

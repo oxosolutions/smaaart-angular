@@ -48,11 +48,13 @@ class FactController extends Controller
 	}
 	public function indexData()
 	{
-			 $model = GF::orderBy('id','desc')->get();
+			 $model = GF::orderBy('id','desc')->with('createdBy')->get();
 
-        return Datatables::of($model)
+        	return Datatables::of($model)
             ->addColumn('actions',function($model){
                 return view('fact._actions',['model' => $model])->render();
+            })->editColumn('created_by',function($model){
+            	return $model->createdBy->name;
             })->make(true);
 	}
 	public function edit($id)

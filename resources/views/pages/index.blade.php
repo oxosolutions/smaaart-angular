@@ -32,6 +32,13 @@
         <div class="col-xs-12">
           <div class="box-header">
               <button class="btn btn-primary" onclick="window.location='{{route('pages.create')}}'">Create New Page</button>
+              <div class="dropdown" style="float: right">
+                <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Action
+                <span class="caret"></span></button>
+                <ul class="dropdown-menu">
+                  <li><a href="javascript:void(0)" onclick="delAll('/pages/deleteall')" class="delGoals">Delete Goals</a></li>
+                </ul>
+              </div>
           </div>
           <div class="box">
             <!-- /.box-header -->
@@ -39,6 +46,7 @@
               <table id="pages" class="table table-bordered table-striped">
                 <thead>
                 <tr>
+                 <th><input type="checkbox" class="icheckbox_minimal-blue selectall"></th>
                   <th>ID</th>
                   <th>Page Title</th>
                   <th>Page Sub Title</th>
@@ -54,6 +62,7 @@
                     </tbody>
                 <tfoot>
                 <tr>
+                  <th></th>
                   <th>ID</th>
                   <th>Page Title</th>
                   <th>Page Sub Title</th>

@@ -16,6 +16,9 @@ class DatasetsList extends Model
     	return $this->belongsTo('App\User','user_id','id');
     }
 
+public function createdBy(){
+        return $this->belongsTo('App\User','user_id','id');
+      }
     public static function datasetOperations(){
 
     	return [
