@@ -12,6 +12,16 @@
 	<div class="panel-body">
 		<h4 style="text-align: center;">Chart <span class="chart_count">1</span></h4>
 		<div class="repeat_div">
+			<div class="form-group {{ $errors->has('title') ? ' has-error' : '' }}">
+		    	{!!Form::label('title','Title') !!}
+		    	{!!Form::text('title[chart_1]',@$preFilled['title']['chart_1'], ['class'=>'form-control','placeholder'=>'Enter Title Name']) !!}
+		    	@if($errors->has('title'))
+		      		<span class="help-block">
+		            	{{ $errors->first('title') }}
+		      		</span>
+		    	@endif
+		  	</div>
+
 			<div class="form-group {{ $errors->has('columns') ? ' has-error' : '' }}">
 				{!!Form::label('columns_one','Select Column One') !!} <span style="font-size: 11px;"> (preferable column first should be string type)</span>
 				{!!Form::select('columns_one[chart_1]',$columns,@$preFilled['column_one']['chart_1'], ['class'=>'form-control select2','placeholder'=>'Select Column One']) !!}

@@ -7,6 +7,15 @@
 			<button class="btn btn-danger pull-right delete-clone">X</button>
 		</div>
 	</div>
+	<div class="form-group {{ $errors->has('title') ? ' has-error' : '' }}">
+		    	{!!Form::label('title','Title') !!}
+		    	{!!Form::text('title['.$chart.']',@$preFilled['title'][$chart], ['class'=>'form-control','placeholder'=>'Enter Title Name']) !!}
+		    	@if($errors->has('title'))
+		      		<span class="help-block">
+		            	{{ $errors->first('title') }}
+		      		</span>
+		    	@endif
+		  	</div>
 
 	<div class="form-group {{ $errors->has('columns') ? ' has-error' : '' }}">
 		{!!Form::label('columns_one','Select Column One') !!}<span style="font-size: 11px;"> (preferable*: column first should be string type)</span>

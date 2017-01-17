@@ -182,12 +182,12 @@ class VisualApiController extends Controller
             }
             $chartsArray[$key] = $columnData;
         }
+
         if(!empty(json_decode($visual->filter_columns))){
             $filtersArray = $this->getFIlters($datatableName->dataset_table, json_decode($visual->filter_columns), $datasetColumns);
         }else{
             $filtersArray = [];
         }
-        
         $responseArray['chart_data'] = $chartsArray;
         $responseArray['filters'] = $filtersArray;
         $responseArray['chart_types'] = $visual->chart_type;

@@ -23,6 +23,12 @@ class VisualController extends Controller
     	$model = GV::orderBy('id','desc')->get();
 
     	return Datatables::of($model)
+
+            ->editColumn('columns',function($model){
+
+                    return substr($model->columns, 0,20).'....';
+                })
+
     			->editColumn('dataset_id',function($model){
 
     				return $model->datasetName->dataset_name;
@@ -64,7 +70,7 @@ class VisualController extends Controller
         $model->visual_name = $request->visual_name;
         $model->dataset_id = $request->dataset_id;
         $model->columns = json_encode(
-                                        [
+                                        [   'title'=>$request->title,
                                             'column_one'=>$request->columns_one,
                                             'columns_two'=>$request->columns_two,
                                             'visual_settings'=>$request->visual_settings,
@@ -132,6 +138,8 @@ class VisualController extends Controller
         $dbModel = DB::table($dataList->dataset_table)->first();
         unset($dbModel->id);
         $columnData = json_decode($model->columns,true);
+
+       // dd( $columnData);
         $selectedFilterCol = json_decode($model->filter_columns);
         $plugins = [
             'js'  => ['select2','custom'=>['visual-create']],
@@ -151,7 +159,7 @@ class VisualController extends Controller
         $model->visual_name = $request->visual_name;
         $model->dataset_id = $request->dataset_id;
         $model->columns = json_encode(
-                                        [
+                                        [   'title'=>$request->title,
                                             'column_one'=>$request->columns_one,
                                             'columns_two'=>$request->columns_two,
                                             'visual_settings'=>$request->visual_settings,
