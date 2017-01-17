@@ -152,6 +152,7 @@ class VisualApiController extends Controller
         }else{
         	$datasetData = DB::table($datatableName->dataset_table)->where('id','!=',1)->get()->toArray();
         }
+
         $dataProce = [];
         foreach($datasetData as $colKey => $value){
            
@@ -165,7 +166,7 @@ class VisualApiController extends Controller
             if(@in_array($key,$countCharts)){//Chart name chart_1 exist in count array
                 $tempArray = [];
                 foreach($columns['columns_two'][$key] as $colKey => $colVal){
-                    $resultData[$colVal] = $this->generateCountColumns($colVal,$datatableName->dataset_table);
+                    $resultData[$colVal] = $this->generateCountColumns($colVal,$datatableName->dataset_table,$request->type == 'filter'?true:false,json_decode($request->filter_array,true));
                 }
                 $resultCorrectData = $this->correctDataforCount($resultData,$datasetColumns);
                 $columnData = $resultCorrectData;
@@ -188,12 +189,22 @@ class VisualApiController extends Controller
         }else{
             $filtersArray = [];
         }
-        $responseArray['chart_data'] = $chartsArray;
+        $transposeArray = [];
+        foreach($chartsArray as $tKey => $tValue){
+            $transposeArray[$tKey] = $this->transpose($tValue);
+        }
+        $responseArray['chart_data'] = $transposeArray;
         $responseArray['filters'] = $filtersArray;
         $responseArray['chart_types'] = $visual->chart_type;
         $responseArray['settings'] = $columns['visual_settings'];
+        $responseArray['titles'] = $columns['title'];
         $responseArray['status'] = 'success';
         return $responseArray;
+    }
+
+    protected function transpose($array) {
+        array_unshift($array, null);
+        return call_user_func_array('array_map', $array);
     }
 
     protected function getFIlters($table, $columns, $columnNames){
@@ -211,9 +222,13 @@ class VisualApiController extends Controller
         return $data;
     }
 
-    protected function generateCountColumns($column, $table){
+    protected function generateCountColumns($column, $table, $filters = false, $filterArray){
 
-        $result = DB::table($table)->select([DB::raw('COUNT(id) as count'),$column])->groupBy($column)->get()->toArray();
+        if($filters == true){
+            $result = DB::table($table)->select([DB::raw('COUNT(id) as count'),$column])->where($filterArray)->groupBy($column)->get()->toArray();
+        }else{
+            $result = DB::table($table)->select([DB::raw('COUNT(id) as count'),$column])->groupBy($column)->get()->toArray();
+        }
         return $result;
     }
 

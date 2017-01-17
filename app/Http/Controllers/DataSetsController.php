@@ -14,6 +14,7 @@ use File;
 use App\LogSystem as LOG;
 use Carbon\Carbon AS TM;
 use App\Department as D;
+use Illuminate\Support\Facades\Schema;
 
 
 class DataSetsController extends Controller
@@ -53,17 +54,20 @@ class DataSetsController extends Controller
     }
     public function exportTable($type, $table)
     {
-
-        
-        
-       $dataA =  DB::table($table)->get()->toArray(); 
-       $data = json_decode(json_encode($dataA), true);      
+        if(Schema::hasTable($table))
+        {
+             $dataA =  DB::table($table)->get()->toArray(); 
+             $data = json_decode(json_encode($dataA), true);      
          return Excel::create($table, function($excel) use ($data) {
-            $excel->sheet('mySheet', function($sheet) use ($data)
-            {
-                $sheet->fromArray($data);
-            });
-        })->download($type);
+              $excel->sheet('mySheet', function($sheet) use ($data)
+                {
+                    $sheet->fromArray($data);
+                });
+            })->download($type);
+        }
+        else{
+            Session::flash('error',"$table not exist!");
+        }
     }
 
     public function create(){
