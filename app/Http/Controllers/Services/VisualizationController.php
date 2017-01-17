@@ -120,7 +120,7 @@ class VisualizationController extends Controller
 
 		public function deleteVisual($id){
 
-			$model = VS::find($id);
+			$model = GV::find($id);
 
 			if(!empty($model)){
 				$model->delete();
@@ -129,9 +129,4 @@ class VisualizationController extends Controller
 				return ['status'=>'error','message'=>'No visualization found with this id!'];
 			}
 		}
-
-    public function getColumnsByDataset($datasetId){
-
-        
-    }
 }

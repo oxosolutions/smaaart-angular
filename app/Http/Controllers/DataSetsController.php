@@ -13,6 +13,7 @@ use MySQLWrapper;
 use File;
 use App\LogSystem as LOG;
 use Carbon\Carbon AS TM;
+use App\Department as D;
 
 
 class DataSetsController extends Controller
@@ -50,7 +51,20 @@ class DataSetsController extends Controller
                 }
             })->make(true);
     }
+    public function exportTable($type, $table)
+    {
 
+        
+        
+       $dataA =  DB::table($table)->get()->toArray(); 
+       $data = json_decode(json_encode($dataA), true);      
+         return Excel::create($table, function($excel) use ($data) {
+            $excel->sheet('mySheet', function($sheet) use ($data)
+            {
+                $sheet->fromArray($data);
+            });
+        })->download($type);
+    }
 
     public function create(){
         $plugin = [

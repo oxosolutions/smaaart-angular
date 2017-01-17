@@ -59,6 +59,7 @@
 		Route::get('/designations/create',['as'=>'designations.create', 'uses'=>'DesignationController@create']);
 		Route::get('/designations/delete/{id}',['as'=>'designations.delete', 'uses'=>'DesignationController@destroy']);
 	//Dataset
+		Route::get('/export/{type}/table/{table}',['as'=>'export.data' , 'uses'=>'DataSetsController@exportTable']);
 		Route::get('/dataset',['as'=>'datasets.list','uses'=>'DataSetsController@index']);
 		Route::get('/dataset/create',['as'=>'dataset.create','uses'=>'DataSetsController@create']);
 		Route::get('/dataset/delete/{id}',['as'=>'datasets.delete', 'uses'=>'DataSetsController@destroy']);
