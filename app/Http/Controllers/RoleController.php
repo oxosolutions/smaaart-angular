@@ -95,7 +95,6 @@ class RoleController extends Controller
 
     protected function modelValidation($request)
     {
-
             $rules =['name'=>'required'];
             $this->validate($request, $rules);
     }

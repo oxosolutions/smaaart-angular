@@ -48,7 +48,7 @@ class Logsystem
                 $this->createLog($current_url , $ip ,$user_id, $user->email,$user->name );
             }
         }
-          return $next($request);
+        return $next($request);
     }
         Public function createLog($url ,$ip, $uid,$email, $name)
         {

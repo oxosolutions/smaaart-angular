@@ -574,6 +574,10 @@ class ApiusersController extends Controller
       foreach ($user_meta as $key => $value) {
         $data[] = $value->key;
       }
+     
+       if ($request->password != "" || !empty($request->password)){
+        User::where('id',Auth::user()->id)->update(['password' => Hash::make($request->password)] );
+       }
        if (in_array('phone',$data)){
           UM::where(['key'=> 'phone','user_id'=>Auth::user()->id])->update(["value"=>$request->phone]);
        }else{

@@ -15,14 +15,17 @@ class ProfileApiController extends Controller
 {
     public function getUserProfile(Request $request){
 
-        $model = $request->user();
-        
+
+        $model = $request->user();        
         $responseArray = [];
         $responseArray['departments'] = [];
         $responseArray['ministries'] = [];
         $responseArray['name']  = $model->name;
         $responseArray['email'] = $model->email;
+        $responseArray['phone'] = $model->phone;
+
         $responseArray['token'] = $model->api_token;
+        $responseArray['profile_pic'] = asset('profile_pic/profile.jpg');//'profile.jpg';
         if($model->meta != null){
 
             foreach ($model->meta as $metaKey => $metaValue) {
@@ -72,8 +75,10 @@ class ProfileApiController extends Controller
                     break;
                     case'profile_pic': 
                         if($metaValue->value == '' || $metaValue->value == null){
-                            $responseArray[$metaValue->key] = asset('profile_pic/profile.jpg');
+                           $responseArray[$metaValue->key] = asset('profile_pic/profile.jpg');
                         }else{
+
+
                             $responseArray[$metaValue->key] = asset('profile_pic/'.$metaValue->value);
                         }
                     break;
@@ -213,21 +218,18 @@ class ProfileApiController extends Controller
     public function profilePicUpdate(Request $request)
     {
         $userId = $request->user()->id;
-        if ($request->profile_pic == "" || empty($request->profile_pic)){
-            return ['status'=>'error','message'=>'Required fields are missing!'];
-        }else{
+        $name = $request->file('profile_pic')->getClientOriginalName();
+
+        if($request->hasFile('profile_pic')){
             $path = 'profile_pic';
-            if($request->hasFile('profile_pic')){
-                $filename = date('Y-m-d-H-i-s')."-".$request->file('profile_pic')->getClientOriginalName();
-                $move = $request->file('profile_pic')->move($path, $filename);
-                if ($move ){
-                    dd("moved");
-                }else{
-                    dd("not moved");
-                    
-                }
-            }
-        }
+            $filename = date('Y-m-d-H-i-s')."-".$request->file('profile_pic')->getClientOriginalName();
+            $request->file('profile_pic')->move($path, $filename);
+            UserMeta::where(['key'=>'profile_pic', 'user_id' => $userId])->update(['value' => $filename]);
+            return ['status'=>'success','message'=>'update successfully!'];
+       }
+        else{
+             return ['status'=>'error','message'=>'Required fields are missing!'];
+        }      
     }
     public function editProfile()
        {

@@ -31,7 +31,12 @@ class VisualController extends Controller
 
     			->editColumn('dataset_id',function($model){
 
-    				return $model->datasetName->dataset_name;
+                    try{
+                        return $model->datasetName->dataset_name;
+                    }catch(\Exception $e){
+                        return '<i style=\'color:red;\'>No dataset found</i>';
+                        throw $e;
+                    }
 
     			})
     			->editColumn('created_by', function($model){

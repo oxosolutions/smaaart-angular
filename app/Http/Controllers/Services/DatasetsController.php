@@ -8,8 +8,31 @@ use App\DatasetsList as DL;
 use Carbon\Carbon;
 use Auth;
 use DB;
+use App\GlobalSetting as GS;
 class DatasetsController extends Controller
 {
+
+    public function create_dataset(Request $request)
+    {
+        $tableName = 'data_table_'.time();
+        $dl = new DL;
+        $dl->dataset_name = $request->dataset_name;
+        $dl->dataset_table = $tableName;
+        $dl->user_id = Auth::user()->id;
+        $dl->save();
+
+        $dataset_columns = json_decode($request->dataset_columns,true);
+        $i=1;
+        foreach($dataset_columns as $key  => $value){                       
+            $c = 'column_' . $i++;
+            $assoc[] = $c;
+            $columns[] = "`{$c}` TEXT NULL";
+        }
+        DB::select("CREATE TABLE `{$tableName}` ( " . implode(', ', $columns) . " ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
+                    DB::select("ALTER TABLE `{$tableName}` ADD `id` INT(100) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Row ID' FIRST");
+                    DB::table($tableName)->insert($dataset_columns);
+        return ['status'=>'success' , 'message'=>"Create & Insert Successfully ",'dataset_id'=>$dl->id];       
+    }
     function getDatasetsList(){
     	$list = DL::orderBy('id', 'DESC')->get();
     	$responseArray = [];
@@ -23,13 +46,27 @@ class DatasetsController extends Controller
     		$responseArray[$index]['created_date'] = $value->created_at->format('Y-m-d H:i:s');
     		$index++;
     	}
-
     	return ['data'=>$responseArray];
     }
 
+    protected function datasetSetting()
+    {
+        $gs = GS::where('meta_key','dataset_setting')->first();
+        $data = json_decode($gs->meta_value);
+        if($data->activate == 'true')
+        { 
+           return $data->num_row;
+        }
+        else{
+            return 500;
+        }
+    }
+
     public function getDatasets($id,$skip = 0){
+        
         $datasetDetails = DL::find($id);
-        $datasetTable = DB::table($datasetDetails->dataset_table)->skip($skip)->take(500)->get();
+        $limit = $this->datasetSetting();
+        $datasetTable = DB::table($datasetDetails->dataset_table)->skip($skip)->take($limit)->get();
         if(empty($datasetTable)){
             return ['status'=>'success','records'=>[]];
         }
@@ -39,12 +76,12 @@ class DatasetsController extends Controller
         $responseArray['dataset_name'] = $datasetDetails->dataset_name;
         $responseArray['records'] = json_decode($datasetTable);
         $totalRecords = DB::table($datasetDetails->dataset_table)->count();
-        return ['status'=>'success','records'=>$responseArray, 'total'=>$totalRecords,'skip'=>$skip];
+        return ['status'=>'success','records'=>$responseArray, 'total'=>$totalRecords,'skip'=>$skip,'limit'=>$limit];
     }
 
     public function getDatasetsColumnsForSubset($id){
         $datasetDetails = DL::find($id);
-        $datasetTable = DB::table($datasetDetails->dataset_table)->take(100)->get();
+        $datasetTable = DB::table($datasetDetails->dataset_table)->take($this->datasetSetting())->get();
         if(empty($datasetTable)){
             return ['status'=>'success','records'=>[]];
         }
@@ -269,12 +306,13 @@ class DatasetsController extends Controller
 
         $model = DL::find($id);
         if(!empty($model)){
-            $error = false;
+            
             $wrongDataRows = [];
-            $datasetTable = DB::table($model->dataset_table)->get()->toArray();
+            $datasetTable = DB::table($model->dataset_table)->where('id','!=',1)->get()->toArray();
             $columnsTypeArray = (array)json_decode($model->dataset_columns);
             foreach($datasetTable as $key => $row){// for each row
                 $tempCol = [];
+                $error = false;
                 foreach($row as $colKey => $colVal){// for each column
                     
                     if(array_key_exists($colKey,$columnsTypeArray)){
@@ -290,7 +328,6 @@ class DatasetsController extends Controller
                                 }else{
                                     $tempCol[$colKey] = $colVal;
                                 }
-
                             }
                             /*if($type == 'string'){
                                if(is_numeric($colVal)){
@@ -314,13 +351,25 @@ class DatasetsController extends Controller
                         }
                     }
                     $wrongDataRows[] = $tempCol;
-                    break;
                 }
+            }
+            if(empty($wrongDataRows)){
+                $this->updateDatasetAsValidated($id,1);
+            }else{
+                $this->updateDatasetAsValidated($id,0);
             }
             return ['status'=>'success','message'=>'Columns valudated successfully!','wrong_rows'=>$wrongDataRows,'dataset_name'=>$model->dataset_name];
         }else{
             return ['stauts'=>'error','message'=>'No dataset found!'];
         }
+    }
+
+    protected function updateDatasetAsValidated($dataset_id,$status){
+
+        $model = DL::find($dataset_id);
+        $model->validated = $status;
+        $model->save();
+        return true;
     }
 
     public function staticDatsetFunction(){

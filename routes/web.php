@@ -10,8 +10,14 @@
 		); 
 	});
 
+	
 
-			 Route::get('checkLog',['as' => 'log' , 'uses' => 'LogsystemController@CheckForLog']);
+	Route::get('/correctCsv',['as'=>'datasets.list','uses'=>'DataSetsController@correctCsv']);
+
+
+	Route::get ('/export/dataset/{id}',['as'=>'export.dataset', 'uses'=>'DataSetsController@apiExportDataset']);
+
+	Route::get('checkLog',['as' => 'log' , 'uses' => 'LogsystemController@CheckForLog']);
 
 	Route::group(['middleware'=>['auth','approve']], function(){
 		Route::get('/view_log',['as'=>'log.view','uses'=>'LogsystemController@viewLog']);	
@@ -49,7 +55,7 @@
 
 	//Pages
 		
-	Route::get('/pages/deleteall',['middleware'=>'log','as'=>'pages.del','uses'=>'PagesController@delAllPages']);
+		Route::get('/pages/deleteall',['middleware'=>'log','as'=>'pages.del','uses'=>'PagesController@delAllPages']);
 
 		Route::get('/pages',['middleware'=>'log','as'=>'pages.list','uses'=>'PagesController@index']);
 		Route::get('/pages/create',['middleware'=>'log','as'=>'pages.create','uses'=>'PagesController@create']);

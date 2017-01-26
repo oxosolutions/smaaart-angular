@@ -341,26 +341,53 @@ class ImportdatasetController extends Controller
         }
 
         $tableName = 'table_temp_'.rand(5,1000);
-        $model = new MySQLWrapper;
-        $result = $model->wrapper->createTableFromCSV($filePath,$tableName,',','"', '\\', 0, array(), 'generate','\r\n');
-        $tempTableData = DB::table($tableName)->get();
-
         $model_DL = DL::find($request->with_dataset);
         $oldTable = DB::table($model_DL->dataset_table)->get();
-        
-        $oldColumns = [];
-        $new = (array)$tempTableData[0];
-        $old = (array)$oldTable[0];
-        
-        if($new != $old){
-            DB::select('DROP TABLE '.$tableName);
-            return ['status'=>'false','message'=>'File columns are note same!'];
-        }
-        unset($new['id']);
+        if(File::extension($filePath)=="xlsx" || File::extension($filePath)=="xls"){
+            $assoc = [];
+            $finalArray = [];
+            $headers = [];
+            $data = Excel::load($filePath, function($reader){ })->get();
+            foreach($data as $key => $value){
+                $FileData[] = $value->all();
+            }
+            $i = 1;
+            foreach($FileData[0] as $key  => $value){
+                $headers['column_'.$i] = $key;
+                $c = 'column_' . $i;
+                $assoc[] = $c;
+                $i++;
+            }
+            
+            foreach($FileData as $values){
+                $finalArray[] = array_combine($assoc, array_values($values));
+            }
+            unset($oldTable[0]->id);
+            $new = (array)$headers;
+            $old = (array)$oldTable[0];
+            if($new != $old){
+                return ['status'=>'false','message'=>'File columns are note same!'];
+            }
+            DB::table($model_DL->dataset_table)->insert($finalArray);
+        }else{
+            $model = new MySQLWrapper;
+            $result = $model->wrapper->createTableFromCSV($filePath,$tableName,',','"', '\\', 0, array(), 'generate','\r\n');
+            $tempTableData = DB::table($tableName)->get();
+            
+            $oldColumns = [];
+            $new = (array)$tempTableData[0];
+            $old = (array)$oldTable[0];
+            
+            if($new != $old){
+                DB::select('DROP TABLE '.$tableName);
+                return ['status'=>'false','message'=>'File columns are note same!'];
+            }
+            unset($new['id']);
 
-        $appendColumns = implode(',', array_keys($new));
-        DB::select('INSERT INTO `'.$model_DL->dataset_table.'` ('.$appendColumns.') SELECT '.$appendColumns.' FROM '.$tableName.' WHERE id != 1;');
-        DB::select('DROP TABLE '.$tableName);
+            $appendColumns = implode(',', array_keys($new));
+            DB::select('INSERT INTO `'.$model_DL->dataset_table.'` ('.$appendColumns.') SELECT '.$appendColumns.' FROM '.$tableName.' WHERE id != 1;');
+            DB::select('DROP TABLE '.$tableName);
+        }
         
         return ['status'=>'true','message'=>'Dataset updated successfully!!', 'id'=>$model_DL->id];
     }

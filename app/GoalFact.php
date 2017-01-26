@@ -14,11 +14,6 @@ class GoalFact extends Model
     protected $dates = ['deleted_at'];
     protected $softDelete = true;
 
-    // public function goal()
-    // {
-    	
-    // }
-
     public static function factList()
     {
     	return	self::orderBy('id')->pluck('fact_title','id');
@@ -33,6 +28,4 @@ class GoalFact extends Model
     {
         return $this->belongsTo('App\User','created_by','id');
     }
-
-
 }

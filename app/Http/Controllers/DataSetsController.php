@@ -35,6 +35,51 @@ class DataSetsController extends Controller
         return view('datasets.index',$plugins);
     }
 
+    public function correctCsv()
+    {
+           // $filename ='output_new.csv';
+
+         $filename ='19child5000.csv';
+
+             echo "<pre>";
+             //Config::set(excel::csv.delimiter, '|');
+
+            // Excel::setDelimiter('|');
+
+             $ar = array();
+             $data = [];
+
+             Excel::filter('chunk')->load($filename)->chunk(100, function($reader){
+
+                foreach ($reader->toArray() as $row) {
+
+                     $data[] = $row;
+                }
+
+                   
+                for($i=0; $i< count($data); $i++ )
+                {
+                    echo "size $i <br>";
+                    // array_push($ar, $data[$i]);
+                    if(count($data[$i])!=262)
+                    {
+                      echo "size $i ->".count($data[$i]);
+                    }
+                }
+
+                 print_r($data);
+                 
+            });//->setDelimiter("|")->get();
+
+       //  print_r($data);
+
+            
+
+
+    }
+
+
+
 
     public function indexData(){
         ini_set('memory_limit', '-1');
@@ -52,8 +97,24 @@ class DataSetsController extends Controller
                 }
             })->make(true);
     }
-    public function exportTable($type, $table)
+    public function apiExportDataset($dataset_id)
     {
+
+         $model = DL::find($dataset_id);
+         $table_name = $model->dataset_table; 
+         $name     =  str_replace(" ","-", $model->dataset_name); 
+        $datas =   DB::table($table_name)->get()->toArray();
+        $model =   json_decode(json_encode($datas),true);
+
+        return Excel::create($name, function($excel) use ($model) {
+              $excel->sheet('mySheet', function($sheet) use ($model)
+                {
+                    $sheet->fromArray($model);
+                });
+            })->download('csv');
+    }
+    public function exportTable($type, $table)
+    {   
         if(Schema::hasTable($table))
         {
              $dataA =  DB::table($table)->get()->toArray(); 
@@ -67,7 +128,7 @@ class DataSetsController extends Controller
         }
         else{
             Session::flash('error',"$table not exist!");
-        }
+        }   
     }
 
     public function create(){
@@ -80,7 +141,7 @@ class DataSetsController extends Controller
 
 
     public function store(Request $request){
-
+       echo $request->_token; die;
      $request->file('file')->getClientOriginalExtension(); 
       
       $this->modelValidate($request);

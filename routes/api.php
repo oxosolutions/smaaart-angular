@@ -2,10 +2,11 @@
 
 use Illuminate\Http\Request;
 
-	// Route::get('/userlists',['as'=>"user.list", 'uses'=>'Services\ApiauthController@listUser']);
 
+	
 Route::get('/sql','Services\ImportdatasetController@runSqlFile');
 Route::group(['prefix' => 'v1'], function () {
+
 
 	Route::group(['middleware'=>['cors']], function(){
 		Route::post('/logs','Services\LogApiController@logActivity');
@@ -32,10 +33,14 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::post('/resetpass',					['as'=>'forget.token.validate','uses'=>'Services\ApiauthController@resetUserPassword']);
 	});
 
-	//No need to put in middleware['cors'], needs to access directly from browser
+	
+	Route::get ('/dataset/file/{id}/{type}',['as'=>'export.dataset', 'uses'=>'Services\ExportDatasetController@export']);
+
 	Route::get('/dataset/download/{fileName}',  ['as'=>'dataset.download','uses'=>'Services\ExportDatasetController@downloadFile']);
 
 	Route::group(['middleware'=>['auth:api','cors']], function(){
+		Route::post('/create_dataset',['as'=>'dataset.create', 'uses'=>'Services\DatasetsController@create_dataset']);
+
 
 		Route::get('/users', function (Request $request) {
 		    return $request->user();
@@ -63,12 +68,12 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('/dataset/delete/{id}',			['as'=>'validate.columns','uses'=>'Services\DatasetsController@deleteDataset']);
 		Route::get('/visual/delete/{id}',			['as'=>'validate.columns','uses'=>'Services\VisualizationController@deleteVisual']);
 		//User Profile API
-		Route::get('/profile',						['as'=>'user.profile','uses'=>'Services\ProfileApiController@getUserProfile']);
+		 Route::get('/profile',						['as'=>'user.profile','uses'=>'Services\ProfileApiController@getUserProfile']);
 		Route::post('/profile/changepass',			['as'=>'change.password','uses'=>'Services\ProfileApiController@changePassword']);
 		Route::post('dataset/saveEditedDatset',		['as'=>'dataset.save_edited','uses'=>'Services\DatasetsController@saveEditedDatset']);
 		Route::post('dataset/saveSubset',			['as'=>'dataset.save_subset','uses'=>'Services\DatasetsController@saveNewSubset']);
 		Route::post('update/profile',				['as'=>'profile.update','uses'=>'Services\ProfileApiController@saveProfile']);
-		Route::post('update/profilePic',			['as'=>'profilePic.update','uses'=>'Services\ProfileApiController@profilePicUpdate']);
+		Route::post('update/profilePicUpdate',			['as'=>'profilePic.update','uses'=>'Services\ProfileApiController@profilePicUpdate']);
 		Route::post('editProfile',			['as'=>'profile.edit','uses'=>'Services\ProfileApiController@editProfile']);
 		Route::get('dataset/validate/columns/{id}', ['as'=>'dataset.column.validate', 'uses'=>'Services\DatasetsController@validateColums']);
 		Route::get('dataset/static/dataset', 		['as'=>'dataset.column.validate', 'uses'=>'Services\DatasetsController@staticDatsetFunction']);
@@ -79,5 +84,6 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::post('/updatevisual', 				['as'=>'update.visual','uses'=>'Services\VisualApiController@saveVisualData']);
 		Route::get('/visualChartList',				['as'=>'visual.chartList','uses'=>'Services\VisualApiController@visualList']);
 		Route::get('/calculate/visual/{id}',		['as'=>'calc.visual','uses'=>'Services\VisualApiController@calculateVisuals']);
+		Route::post('/saveVisualSettings',			['as'=>'save.visual.settings','uses'=>'Services\VisualApiController@saveVisualSettings']);
 	});
 });

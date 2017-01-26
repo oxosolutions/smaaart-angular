@@ -9,6 +9,7 @@ use App\DatasetsList as DL;
 use DB;
 use App\GeneratedVisualQuerie as GVQ;
 use Auth;
+use App\GlobalSetting as GS;
 class VisualApiController extends Controller
 {
     public function visualList(){
@@ -193,9 +194,11 @@ class VisualApiController extends Controller
         foreach($chartsArray as $tKey => $tValue){
             $transposeArray[$tKey] = $this->transpose($tValue);
         }
+        $globalVisualSettings = GS::where('meta_key','visual_setting')->first();
         $responseArray['chart_data'] = $transposeArray;
         $responseArray['filters'] = $filtersArray;
         $responseArray['chart_types'] = $visual->chart_type;
+        $responseArray['default_settings'] = $globalVisualSettings->meta_value;
         $responseArray['settings'] = $columns['visual_settings'];
         $responseArray['titles'] = $columns['title'];
         $responseArray['status'] = 'success';
@@ -281,12 +284,15 @@ class VisualApiController extends Controller
     public function getVisualDetails($id){
 
         $model = GV::find($id);
+        $vSettings = GS::where('meta_key','visual_setting')->first();
+        $settings = json_decode($model->columns);
         $returnArray['visual_name'] = $model->visual_name;
         $returnArray['dataset_id'] = $model->dataset_id;
         $returnArray['columns'] = $model->columns;
         $returnArray['filter_columns'] = $model->filter_columns;
-        $returnArray['visual_settings'] = $model->visual_settings;
+        $returnArray['visual_settings'] = @$settings->visual_settings;
         $returnArray['chart_types'] = $model->chart_type;
+        $returnArray['visual_set'] = $vSettings;
         return ['status'=>'success','data'=>$returnArray];
     }
     public function saveVisualData(Request $request){
@@ -414,5 +420,15 @@ class VisualApiController extends Controller
             dump($comVal);
             dump($resultArray);
         }
+    }
+
+    public function saveVisualSettings(Request $request){
+
+        $model = GV::find($request->visual_id);
+        $modelColumns = json_decode($model->columns,true);
+        $modelColumns['visual_settings'][$request->chart][0] = $request->settings;
+        $model->columns = json_encode($modelColumns);
+        $model->save();
+        return ['status'=>'success','message'=>'Settings saved successfully!'];
     }
 }

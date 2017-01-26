@@ -43,6 +43,13 @@
                       <input type="email" class="form-control" disabled="" name="email" value="{{$value->email}}" id="email" placeholder="Enter email">
                     </div>
                   </div> 
+                  <div class="form-group">
+                    <label class="control-label col-sm-2" for="email">Password:</label>
+                    <div class="col-sm-8">
+                      <input type="password" class="form-control" name="password" value="" id="email" placeholder="click here for new password">
+                      <span style="color:grey;font-size:12px">( <strong>Note: </strong>Leave Blank if you don't want to change the password)</span>
+                    </div>
+                  </div> 
                   @endforeach  
                   @foreach($user_meta as $value)
                   @if($value->key == "phone" || $value->key == "address")

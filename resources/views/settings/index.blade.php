@@ -173,7 +173,25 @@
           </div>
         </div>
       </div>
+
+
     <!-- User Data set  Settings Form End-->
+    <div class="row">
+        <div class="col-md-12">
+          <div class="box box-primary">
+            <div class="box-header with-border">
+              <h3 class="box-title">Visual Setting</h3>
+            </div>
+              {!! Form::model($visual_setting, ['method' => 'PATCH','route'=>['sitevalue.settings', $visual_setting->id], 'files'=>true]) !!}
+              {{--{!! Form::open(['route' => 'designations.store', 'files'=>true]) !!}--}}
+                @include('settings._visual_setting')
+              <div class="box-footer">
+                {!! Form::submit('Save Settings', ['class' => 'btn btn-primary']) !!}
+              </div>
+              {!! Form::close() !!}
+          </div>
+        </div>
+      </div>
 
     </section>
   </div>

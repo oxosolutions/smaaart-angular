@@ -25,6 +25,8 @@ class GlobalSettingsController extends Controller
         $plugins['siteTitle_model']    = $this->getSiteSetting('site_title');
         $plugins['siteTagline_model']  = $this->getSiteSetting('site_tagline'); 
         $plugins['siteUrl_model']      = $this->getSiteSetting('site_url'); 
+        $plugins['visual_setting']      = $this->getSiteSetting('visual_setting'); 
+
 
     	return view('settings.index',$plugins);
     }
