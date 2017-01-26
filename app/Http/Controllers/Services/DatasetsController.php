@@ -223,7 +223,12 @@ class DatasetsController extends Controller
                     $id = $colValue;
                 }
             }
-            DB::table($table)->where('id',$id)->update($columns);
+            if($id == ''){
+                DB::table($table)->insert($columns);
+            }else{
+                DB::table($table)->where('id',$id)->update($columns);
+            }
+            
         }
         return ['status'=>'success','message'=>'Dataset updated successfully!','dataset_id'=>$request->dataset_id];
     }
