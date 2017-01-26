@@ -22,12 +22,22 @@ class DatasetsController extends Controller
         $dl->save();
 
         $dataset_columns = json_decode($request->dataset_columns,true);
+
         $i=1;
-        foreach($dataset_columns as $key  => $value){                       
-            $c = 'column_' . $i++;
-            $assoc[] = $c;
-            $columns[] = "`{$c}` TEXT NULL";
+        if(empty($dataset_columns)){
+            for($len = 1; $len <= $request->number_of_columns; $len++){
+                $c = 'column_' . $len;
+                $assoc[] = $c;
+                $columns[] = "`{$c}` TEXT NULL";
+            }
+        }else{
+            foreach($dataset_columns as $key  => $value){                       
+                $c = 'column_' . $i++;
+                $assoc[] = $c;
+                $columns[] = "`{$c}` TEXT NULL";
+            }
         }
+        
         DB::select("CREATE TABLE `{$tableName}` ( " . implode(', ', $columns) . " ) ENGINE=InnoDB DEFAULT CHARSET=utf8;");
                     DB::select("ALTER TABLE `{$tableName}` ADD `id` INT(100) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Row ID' FIRST");
                     DB::table($tableName)->insert($dataset_columns);
