@@ -39,16 +39,13 @@ class DataSetsController extends Controller
     {
            // $filename ='output_new.csv';
 
-         $filename ='19child5000.csv';
+         $filename ='23ch5.csv';
 
              echo "<pre>";
-             //Config::set(excel::csv.delimiter, '|');
-
-            // Excel::setDelimiter('|');
 
              $ar = array();
              $data = [];
-
+                Excel::SetDelimiter("|");
              Excel::filter('chunk')->load($filename)->chunk(100, function($reader){
 
                 foreach ($reader->toArray() as $row) {
@@ -60,7 +57,7 @@ class DataSetsController extends Controller
                 for($i=0; $i< count($data); $i++ )
                 {
                     echo "size $i <br>";
-                    // array_push($ar, $data[$i]);
+                    
                     if(count($data[$i])!=262)
                     {
                       echo "size $i ->".count($data[$i]);
@@ -69,12 +66,7 @@ class DataSetsController extends Controller
 
                  print_r($data);
                  
-            });//->setDelimiter("|")->get();
-
-       //  print_r($data);
-
-            
-
+            });
 
     }
 
@@ -141,7 +133,7 @@ class DataSetsController extends Controller
 
 
     public function store(Request $request){
-       echo $request->_token; die;
+    
      $request->file('file')->getClientOriginalExtension(); 
       
       $this->modelValidate($request);
@@ -179,7 +171,6 @@ class DataSetsController extends Controller
             $filep = explode('/',$filePath);
             $filename = $filep[count($filep)-1];
         }
-
         DB::beginTransaction();
         try{
              if($request->select_operation == 'new'){

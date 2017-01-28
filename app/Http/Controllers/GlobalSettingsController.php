@@ -274,7 +274,19 @@ class GlobalSettingsController extends Controller
                
             $num_row['num_row'] = $request->dataset_num_row;
 
-            GS::where('meta_key','dataset_setting')->update(['meta_value'=>json_encode($num_row)]);
+          $count =  GS::where('meta_key','dataset_setting')->count();
+          if($count==0)
+          {
+            print_r($num_row);
+            $GS =  new GS();
+            $GS->meta_key = 'dataset_setting';
+            $GS->meta_value = json_encode($num_row);
+            $GS->updated_by  = Auth::user()->id;
+            $GS->save();
+           
+          }else{
+           GS::where('meta_key','dataset_setting')->update(['meta_value'=>json_encode($num_row)]);
+        }
             Session::flash('success','Dataset setings Saved Successfuly!');
 
            }catch(\Exception $e)
@@ -286,7 +298,20 @@ class GlobalSettingsController extends Controller
     public function siteValue(Request $request)
     {
         try{
-             GS::where('meta_key',$request->meta_type)->update(['meta_value'=>$request->value]);
+                 $count =GS::where('meta_key',$request->meta_type)->count();
+                 if($count==0)
+                 {
+                       $GS =  new GS;
+                       $GS->meta_key = $request->meta_type;
+                       $GS->meta_value = $request->value;
+                        $GS->updated_by = Auth::user()->id;
+                       $GS->save();
+                 }else{
+                    GS::where('meta_key',$request->meta_type)->update(['meta_value'=>$request->value]);
+                 }
+
+
+
             }catch(\Exception $e)
             {
                 throw $e;

@@ -25,10 +25,12 @@ class DatasetsController extends Controller
 
         $i=1;
         if(empty($dataset_columns)){
+            $dataset_columns = [];
             for($len = 1; $len <= $request->number_of_columns; $len++){
                 $c = 'column_' . $len;
                 $assoc[] = $c;
                 $columns[] = "`{$c}` TEXT NULL";
+                $dataset_columns[$c] = 'header_'.$len;
             }
         }else{
             foreach($dataset_columns as $key  => $value){                       

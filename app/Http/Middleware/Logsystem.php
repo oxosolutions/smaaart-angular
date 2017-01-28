@@ -21,8 +21,10 @@ class Logsystem
 
     public function handle($request, Closure $next)
     {
-      
-        if (Auth::check())
+
+        
+       $action = $request->route()->getAction();
+       if (Auth::check())
         {
             $user = Auth::user();
                 
@@ -37,7 +39,7 @@ class Logsystem
                 $addSecond = $insertTime->addSeconds(30);
                 if($addSecond < $mytime && $current_url ==  $text['route'])
                 {
-                   $this->createLog($current_url , $ip ,$user_id , $user->email, $user->name);
+                   $this->createLog($current_url , $ip ,$user_id , $user->email, $user->name,$action);
                                 
                 }else if($current_url !=  $text['route'])
                     {
@@ -45,16 +47,20 @@ class Logsystem
                     }   
             }catch(\Exception $e)
             {
-                $this->createLog($current_url , $ip ,$user_id, $user->email,$user->name );
+                $this->createLog($current_url , $ip ,$user_id, $user->email,$user->name  ,$action);
             }
         }
         return $next($request);
     }
-        Public function createLog($url ,$ip, $uid,$email, $name)
+        Public function createLog($url ,$ip, $uid,$email, $name,$action )
         {
             $Lg = new LG();
             $Lg->user_id = $uid;
             $Lg->type ="frontend";
+            if(array_key_exists('route_name', $action))
+            {
+                $Lg->route_name = $action['route_name'];
+            }
             $Lg->text =json_encode(['route'=>$url,'email'=>$email, 'name'=>$name]);
             $Lg->ip_address =  $ip;
             $Lg->save();                      

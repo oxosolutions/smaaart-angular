@@ -127,7 +127,7 @@
             <div class="box-header with-border">
               <h3 class="box-title">Site Title Setting</h3>
             </div>
-              {!! Form::model($siteTitle_model, ['method' => 'PATCH','route'=>['sitevalue.settings', $siteTitle_model->id], 'files'=>true]) !!}
+              {!! Form::model(@$siteTitle_model, ['method' => 'PATCH','route'=>['sitevalue.settings', @$siteTitle_model->id], 'files'=>true]) !!}
               {{--{!! Form::open(['route' => 'designations.store', 'files'=>true]) !!}--}}
                 @include('settings._site_title')
               <div class="box-footer">
@@ -145,7 +145,7 @@
             <div class="box-header with-border">
               <h3 class="box-title">Site Tagline Setting</h3>
             </div>
-              {!! Form::model($siteTagline_model, ['method' => 'PATCH','route'=>['sitevalue.settings', $siteTagline_model->id], 'files'=>true]) !!}
+              {!! Form::model(@$siteTagline_model, ['method' => 'PATCH','route'=>['sitevalue.settings', @$siteTagline_model->id], 'files'=>true]) !!}
               {{--{!! Form::open(['route' => 'designations.store', 'files'=>true]) !!}--}}
                 @include('settings._site_tagline')
               <div class="box-footer">
@@ -163,7 +163,7 @@
             <div class="box-header with-border">
               <h3 class="box-title">Site Url Setting</h3>
             </div>
-              {!! Form::model($siteUrl_model, ['method' => 'PATCH','route'=>['sitevalue.settings', $siteUrl_model->id], 'files'=>true]) !!}
+              {!! Form::model(@$siteUrl_model, ['method' => 'PATCH','route'=>['sitevalue.settings', @$siteUrl_model->id], 'files'=>true]) !!}
               {{--{!! Form::open(['route' => 'designations.store', 'files'=>true]) !!}--}}
                 @include('settings._site_url')
               <div class="box-footer">
@@ -182,7 +182,7 @@
             <div class="box-header with-border">
               <h3 class="box-title">Visual Setting</h3>
             </div>
-              {!! Form::model($visual_setting, ['method' => 'PATCH','route'=>['sitevalue.settings', $visual_setting->id], 'files'=>true]) !!}
+              {!! Form::model(@$visual_setting, ['method' => 'PATCH','route'=>['sitevalue.settings', @$visual_setting->id], 'files'=>true]) !!}
               {{--{!! Form::open(['route' => 'designations.store', 'files'=>true]) !!}--}}
                 @include('settings._visual_setting')
               <div class="box-footer">

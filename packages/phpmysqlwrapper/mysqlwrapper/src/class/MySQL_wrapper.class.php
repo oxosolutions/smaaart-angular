@@ -921,7 +921,7 @@ class MySQL_wrapper {
 					return FALSE;
 				}
 			}
-			$this->query("CREATE TABLE `{$table}` ( " . implode(', ', $columns) . " ) ENGINE=InnoDB DEFAULT CHARSET={$this->charset};");
+			$this->query("CREATE TABLE `{$table}` ( " . implode(', ', $columns) . " ) ENGINE=MYISAM DEFAULT CHARSET={$this->charset};");
 
 			$result = $this->importCSV2Table($file, $table, $delimiter, $enclosure, $escape, $ignore, $update, ($getColumnsFrom == 'generate') ? 'table' : 'file', $newLine);
 			$this->query("ALTER TABLE `{$table}` ADD `id` INT(100) NOT NULL AUTO_INCREMENT PRIMARY KEY COMMENT 'Row ID' FIRST");

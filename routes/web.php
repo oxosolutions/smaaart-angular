@@ -28,19 +28,19 @@
 	Route::group(['middleware'=>['auth','approve','log']], function(){
 
 
-		Route::get('/fact_create',['as'=>'fact.create','uses'=>'FactController@create']);
-		Route::post('/fact_store',['as'=>'fact.store','uses'=>'FactController@store']);
-		Route::get('/facts',['as'=>'fact.list','uses'=>'FactController@index']);
-		Route::get('/fact_data',['as'=>'fact.indexdata','uses'=>'FactController@indexData']);
-		Route::get('/fact/edit/{id}',['as'=>'fact.edit','uses'=>'FactController@edit']);
-		Route::post('/fact/update/{id}',['as'=>'fact.update','uses'=>'FactController@update']);
+		Route::get('/fact_create',['as'=>'fact.create','uses'=>'FactController@create' ,'route_name'=>  'Create Facts']);
+		Route::post('/fact_store',['as'=>'fact.store','uses'=>'FactController@store' ,'route_name'=>'Save Fact']);
+		Route::get('/facts',['as'=>'fact.list','uses'=>'FactController@index', 'route_name'=>  'View Fact List']);
+		Route::get('/fact_data',['as'=>'fact.indexdata','uses'=>'FactController@indexData' ]);
+		Route::get('/fact/edit/{id}',['as'=>'fact.edit','uses'=>'FactController@edit' ,'route_name'=>  'Edit Fact']);
+		Route::post('/fact/update/{id}',['as'=>'fact.update','uses'=>'FactController@update','route_name'=>  'Update Fact ']);
 
-		Route::get('/fact/delete/{id}',['as'=>'fact.delete','uses'=>'FactController@delete']);
+		Route::get('/fact/delete/{id}',['as'=>'fact.delete','uses'=>'FactController@delete','route_name'=>  'Delete Fact']);
 
 		//dashboard
-		Route::get('/', ['as'=>'home', 'uses'=>'DashboardController@index']);
+		Route::get('/', ['as'=>'home', 'uses'=>'DashboardController@index' ,'route_name'=>  'View Dashboard']);
 	//Api user
-	Route::get('/api_users/del_all', ['as'=>'user.del', 'uses'=>'ApiusersController@delAllUser']);
+	Route::get('/api_users/del_all', ['as'=>'user.del', 'uses'=>'ApiusersController@delAllUser' ,'route_name'=>  'Delete User']);
 
 		Route::get('/api_users', ['as'=>'api.users', 'uses'=>'ApiusersController@index']);
 		Route::get('/api_users/create', ['as'=>'api.create_users', 'uses'=>'ApiusersController@create']);

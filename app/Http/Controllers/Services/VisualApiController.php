@@ -431,4 +431,19 @@ class VisualApiController extends Controller
         $model->save();
         return ['status'=>'success','message'=>'Settings saved successfully!'];
     }
+
+    public function getVisualsFromDatsetID($dataset_id){
+
+        $model = GV::select(['visual_name','id'])->where('dataset_id',$dataset_id)->get();
+
+        $responseArray = [];
+        $index = 0;
+        foreach($model as $key => $value){
+            $responseArray[$index]['id'] = $value->id;
+            $responseArray[$index]['visual_name'] = $value->visual_name;
+            $index++;
+        }
+
+        return ['status'=>'success','list_visuals'=>$responseArray];
+    }
 }
