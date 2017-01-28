@@ -134,6 +134,8 @@ class VisualApiController extends Controller
     }*/
 
     public function visualById(Request $request){
+
+
         $responseArray = [];
         $visual = GV::find($request->id);
         $dataset_id = $visual->dataset_id;
@@ -148,12 +150,28 @@ class VisualApiController extends Controller
         $responseArray['num_of_charts'] = count($columns['column_one']);
         $chartsArray = [];
         $datatableName = DL::find($dataset_id);
-        if($request->type == 'filter'){
-        	$datasetData = DB::table($datatableName->dataset_table)->where('id','!=',1)->where(json_decode($request->filter_array,true))->get()->toArray();
+        if($request->type == 'filter'){ 
+               
+            $dbObj =  DB::table($datatableName->dataset_table);
+            $range_filter = json_decode($request->range_filters,true);
+            
+            if($range_filter != null){
+                foreach ($range_filter as $key => $value) {
+                    $dbObj->whereBetween($key,[$value['min'],$value['max']]);
+                }
+            }
+            
+            if(!empty($request->filter_array) && $request->filter_array!=null && $request->filter_array!= 'undefined')
+            {
+                $filter_array = json_decode($request->filter_array,true);
+                $dbObj->where($filter_array);
+            }
+            $datasetData =  $dbObj->get()->toArray();
+               
         }else{
+
         	$datasetData = DB::table($datatableName->dataset_table)->where('id','!=',1)->get()->toArray();
         }
-
         $dataProce = [];
         foreach($datasetData as $colKey => $value){
            
@@ -186,7 +204,7 @@ class VisualApiController extends Controller
         }
 
         if(!empty(json_decode($visual->filter_columns))){
-            $filtersArray = $this->getFIlters($datatableName->dataset_table, json_decode($visual->filter_columns), $datasetColumns);
+            $filtersArray = $this->getFIlters($datatableName->dataset_table, json_decode($visual->filter_columns, true), $datasetColumns);
         }else{
             $filtersArray = [];
         }
@@ -211,15 +229,37 @@ class VisualApiController extends Controller
     }
 
     protected function getFIlters($table, $columns, $columnNames){
+        $columnsWithType = $columns;
+        $columns = (array)$columns;
+        $columns = array_column($columns, 'column');
         $resultArray = [];
         $model = DB::table($table)->select($columns)->where('id','!=',1)->get()->toArray();
         $tmpAry = [];
+        $max =0;
         foreach($model as $k => $v){
+            
             $tmpAry[] = (array)$v;
         }
+        
+        
+        $index = 1;
         foreach($columns as $key => $value){
-            $filter['column_name'] = $columnNames[$value];
-            $filter['column_data'] = array_unique(array_column($tmpAry, $value));
+            $filter = [];
+            if($columnsWithType['filter_'.$index]['type'] == 'range'){
+                $allData = array_column($tmpAry, $value);
+                $min = min($allData);
+                $max = max($allData);
+                $filter['column_name'] = $columnNames[$value];
+                $filter['column_min'] = $min;
+                $filter['column_max'] = $max;
+                $filter['column_type'] = $columnsWithType['filter_'.$index]['type'];
+            }else{
+                $filter['column_name'] = $columnNames[$value];
+                $filter['column_data'] = array_unique(array_column($tmpAry, $value));
+                $filter['column_type'] = $columnsWithType['filter_'.$index]['type'];
+            }
+            
+            $index++;
             $data[$value] = $filter;
         }
         return $data;
@@ -227,7 +267,8 @@ class VisualApiController extends Controller
 
     protected function generateCountColumns($column, $table, $filters = false, $filterArray){
 
-        if($filters == true){
+        if($filters == true && $filterArray != null){
+        
             $result = DB::table($table)->select([DB::raw('COUNT(id) as count'),$column])->where($filterArray)->groupBy($column)->get()->toArray();
         }else{
             $result = DB::table($table)->select([DB::raw('COUNT(id) as count'),$column])->groupBy($column)->get()->toArray();

@@ -281,10 +281,8 @@ class DatasetsController extends Controller
     protected function validateNewSubset($request){
 
         if($request->has('subset_name') && $request->has('subset_columns') && $request->has('dataset_id')){
-
             return true;
         }else{
-
             return false;
         }
     }

@@ -18,16 +18,12 @@ class Logsystem
      * @param  \Closure  $next
      * @return mixed
      */
-
     public function handle($request, Closure $next)
     {
-
-        
        $action = $request->route()->getAction();
        if (Auth::check())
         {
             $user = Auth::user();
-                
             $current_url =  \Route::current()->uri(); 
             $user_id     =  $user->id; 
             $ip          =  $request->ip();
@@ -47,7 +43,7 @@ class Logsystem
                     }   
             }catch(\Exception $e)
             {
-                $this->createLog($current_url , $ip ,$user_id, $user->email,$user->name  ,$action);
+                $this->createLog($current_url , $ip, $user_id, $user->email, $user->name  ,$action);
             }
         }
         return $next($request);
