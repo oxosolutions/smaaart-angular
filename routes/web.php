@@ -27,6 +27,16 @@
 
 	Route::group(['middleware'=>['auth','approve','log']], function(){
 
+		Route::get('maps',['as'=>'map.list' , 'uses'=>'MapController@index' ]);
+		Route::get('mapData',['as'=>'map.data' , 'uses'=>'MapController@indexData' ]);
+		Route::get('map/edit/{id}',['as'=>'map.edit' , 'uses'=>'MapController@edit' ]);
+		Route::post('/map/update/{id}',['as'=>'map.update' , 'uses'=>'MapController@update' ]);
+		Route::get('/map/enable/{id}',['as'=>'map.enable' , 'uses'=>'MapController@statusEnable' ]);
+		Route::get('/map/disable/{id}',['as'=>'map.disable' , 'uses'=>'MapController@statusDisable' ]);
+
+
+		Route::get('map/create',['as'=>'map.create' , 'uses'=>'MapController@create' ]);
+		Route::post('map/save',['as'=>'map.save' , 'uses'=>'MapController@save' ]);
 
 		Route::get('/fact_create',['as'=>'fact.create','uses'=>'FactController@create' ,'route_name'=>  'Create Facts']);
 		Route::post('/fact_store',['as'=>'fact.store','uses'=>'FactController@store' ,'route_name'=>'Save Fact']);

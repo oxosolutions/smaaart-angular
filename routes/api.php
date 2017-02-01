@@ -9,6 +9,9 @@ Route::group(['prefix' => 'v1'], function () {
 
 
 	Route::group(['middleware'=>['cors','log']], function(){
+
+	
+
 		Route::post('/logs_filter','Services\LogApiController@logFilter');
 		Route::post('/auth','Services\ApiauthController@Authenicates');
 		Route::post('/register',					['as'=>'register','uses'=>'Services\ApiauthController@Register']);
@@ -38,6 +41,9 @@ Route::group(['prefix' => 'v1'], function () {
 	Route::get('/dataset/download/{fileName}',  ['as'=>'dataset.download','uses'=>'Services\ExportDatasetController@downloadFile']);
 
 	Route::group(['middleware'=>['auth:api','cors','log']], function(){
+
+		Route::get('maps',['as'=>'map.list','uses'=>'Services\MapApiController@mapList']);
+		Route::get('singelMap/{id}',['as'=>'map.single','uses'=>'Services\MapApiController@singleMap']);
 		Route::get('/logs','Services\LogApiController@logActivity');
 
 		Route::post('/create_dataset',['as'=>'dataset.create', 'uses'=>'Services\DatasetsController@create_dataset']);
@@ -82,10 +88,10 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::post('/singlevisual',				['as'=>'single.visual','uses'=>'Services\VisualApiController@visualById']);
 		Route::get('/datsetColumns/{id}',			['as'=>'columns.list','uses'=>'Services\VisualApiController@getColumnByDataset']);
 		Route::get('/getVisualdetails/{id}',		['as'=>'visual.details','uses'=>'Services\VisualApiController@getVisualDetails']);
-		Route::post('/updatevisual', 				['as'=>'update.visual','uses'=>'Services\VisualApiController@saveVisualData']);
+		Route::post('/updatevisual', 				['as'=>'update.visual','uses'=>'Services\VisualApiController@saveVisualData' ,'route_name'=>  'Update Visual']);
 		Route::get('/visualChartList',				['as'=>'visual.chartList','uses'=>'Services\VisualApiController@visualList']);
 		Route::get('/calculate/visual/{id}',		['as'=>'calc.visual','uses'=>'Services\VisualApiController@calculateVisuals']);
-		Route::post('/saveVisualSettings',			['as'=>'save.visual.settings','uses'=>'Services\VisualApiController@saveVisualSettings']);
+		Route::post('/saveVisualSettings',			['as'=>'save.visual.settings','uses'=>'Services\VisualApiController@saveVisualSettings' ,'route_name'=>  'Save Visual Setting']);
 		Route::get('/getVisualList/{dataset_id}',	['as'=>'visual.list.byDataset','uses'=>'Services\VisualApiController@getVisualsFromDatsetID' ]);
 	});
 });

@@ -117,6 +117,23 @@
       ]
     });
 
+    $('#map').DataTable({
+      processing: true,
+      serverSide: true,
+      ajax: route()+'/mapData',
+      order:[[0,'desc']],
+      columns: [
+            { data: 'id', name: 'id' },
+            { data: 'title', name: 'title' },
+            { data: 'code', name: 'code' },
+            { data: 'parent', name: 'parent' },
+            { data: 'code_albha_2', name: 'code_albha_2' },
+            { data: 'code_albha_3', name: 'code_albha_3' },
+            { data: 'created_at', name: 'created_at' },
+            { data: 'actions', name: 'actions', orderable: false, searchable: false, "className": 'actions' },
+      ]
+    });
+
 $('#fact').DataTable({
       processing: true,
       serverSide: true,

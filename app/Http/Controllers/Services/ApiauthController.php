@@ -24,12 +24,8 @@ use App\Department  as DEP;
 
 class ApiauthController extends Controller
 {
-
-   
-
    public  function Authenicates(Request $request)
     {
-
         if(empty ( $request->email )){
             return ['status'=>'error','message'=>'We need to know your e-mail address!'];
         }

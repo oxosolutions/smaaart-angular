@@ -10,6 +10,7 @@ use DB;
 use App\GeneratedVisualQuerie as GVQ;
 use Auth;
 use App\GlobalSetting as GS;
+use App\Map;
 class VisualApiController extends Controller
 {
     public function visualList(){
@@ -154,10 +155,23 @@ class VisualApiController extends Controller
                
             $dbObj =  DB::table($datatableName->dataset_table);
             $range_filter = json_decode($request->range_filters,true);
-            
+            $filter_multi = json_decode($request->filter_array_multi, true);
             if($range_filter != null){
                 foreach ($range_filter as $key => $value) {
                     $dbObj->whereBetween($key,[$value['min'],$value['max']]);
+                }
+            }
+            if($filter_multi != null){
+                foreach($filter_multi as $key => $mValue){
+                    $firstWhere = 0;
+                    foreach($mValue as $vKey => $vVal){
+                        if($firstWhere == 0){
+                            $dbObj->Where($key,$vVal);
+                        }else{
+                            $dbObj->orWhere($key,$vVal);
+                        }
+                        $firstWhere++;
+                    }
                 }
             }
             
@@ -184,11 +198,13 @@ class VisualApiController extends Controller
             $columnData = [];
             if(@in_array($key,$countCharts)){//Chart name chart_1 exist in count array
                 $tempArray = [];
+                $resultData = [];
                 foreach($columns['columns_two'][$key] as $colKey => $colVal){
-                    $resultData[$colVal] = $this->generateCountColumns($colVal,$datatableName->dataset_table,$request->type == 'filter'?true:false,json_decode($request->filter_array,true));
+                    $resultData[$colVal] = $this->generateCountColumns($colVal,$datatableName->dataset_table,$request->type == 'filter'?true:false,json_decode($request->filter_array,true),json_decode($request->filter_array_multi, true),json_decode($request->range_filters,true));
                 }
                 $resultCorrectData = $this->correctDataforCount($resultData,$datasetColumns);
                 $columnData = $resultCorrectData;
+
             }else{
                 $arrayData = array_column($datasetData, $value);
                 array_unshift($arrayData,$datasetColumns[$value]);
@@ -243,7 +259,7 @@ class VisualApiController extends Controller
         
         
         $index = 1;
-        foreach($columns as $key => $value){
+        foreach($columns as $key => $value){           
             $filter = [];
             if($columnsWithType['filter_'.$index]['type'] == 'range'){
                 $allData = array_column($tmpAry, $value);
@@ -262,17 +278,50 @@ class VisualApiController extends Controller
             $index++;
             $data[$value] = $filter;
         }
+     
         return $data;
     }
 
-    protected function generateCountColumns($column, $table, $filters = false, $filterArray){
+    protected function generateCountColumns($column, $table, $filters = false, $filterArray, $filter_multi, $range_filter){
 
-        if($filters == true && $filterArray != null){
+        $result = DB::table($table);
+        $result->select([DB::raw('COUNT(id) as count'),$column]);
+        if($filters == true){
+            if($filterArray != null){
+                $result->where($filterArray);
+            }
+
+            if($filter_multi != null){
+                foreach($filter_multi as $key => $mValue){
+                    $firstWhere = 0;
+                    foreach($mValue as $vKey => $vVal){
+                        if($firstWhere == 0){
+                            $result->Where($key,$vVal);
+                        }else{
+                            $result->orWhere($key,$vVal);
+                        }
+                        $firstWhere++;
+                    }
+                }
+            }
+
+            if($range_filter != null){
+                foreach ($range_filter as $key => $value) {
+                    $result->whereBetween($key,[$value['min'],$value['max']]);
+                }
+            }
+
+        }
+        $result->groupBy($column);
+        $result = $result->get()->toArray();
+
+        /*if($filters == true && $filterArray != null){
         
             $result = DB::table($table)->select([DB::raw('COUNT(id) as count'),$column])->where($filterArray)->groupBy($column)->get()->toArray();
         }else{
             $result = DB::table($table)->select([DB::raw('COUNT(id) as count'),$column])->groupBy($column)->get()->toArray();
-        }
+        }*/
+
         return $result;
     }
 
@@ -334,7 +383,10 @@ class VisualApiController extends Controller
         $returnArray['visual_settings'] = @$settings->visual_settings;
         $returnArray['chart_types'] = $model->chart_type;
         $returnArray['visual_set'] = $vSettings;
-        return ['status'=>'success','data'=>$returnArray];
+
+        $mapData  = Map::where('status','enable')->select(['id','title','code','parent','code_albha_2','code_albha_3','status'])->get();
+
+        return ['status'=>'success','data'=>$returnArray,'map_list'=> $mapData];
     }
     public function saveVisualData(Request $request){
 

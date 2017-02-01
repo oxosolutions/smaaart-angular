@@ -17,15 +17,6 @@ class LogApiController extends Controller
 		$log = LOG::orderBy('id','desc')->Where('user_id',$id )->whereNotNull('route_name')->get();
 		return ['log'=>$log];
 	}
-	// public function logFilter(Request $request)
-	// {
-		
-	// 	if($request->user_id)
- //    		{
- //    			$log = LOG::orderBy('id','desc')->Where('user_id',$request->user_id)->get();
- //    		}
-
-	// 	return ['log'=>$log];
-	// }
+	
 
 }
