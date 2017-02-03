@@ -45,6 +45,17 @@ class DatasetsController extends Controller
                     DB::table($tableName)->insert($dataset_columns);
         return ['status'=>'success' , 'message'=>"Create & Insert Successfully ",'dataset_id'=>$dl->id];       
     }
+    public function updateDataSetName(Request $request)
+    {
+        try{
+            DL::where('id',$request->id)->update(['dataset_name'=>$request->dataset_name]);
+            return ['status'=>"success","message"=>"Successfully Update Dataset Name!" ];
+        }catch(\Exception $e)
+        {
+            return ['status'=>'error', 'message'=>'something goes wrong try Again.'];
+        }
+    }
+
     function getDatasetsList(){
     	$list = DL::orderBy('id', 'DESC')->get();
     	$responseArray = [];

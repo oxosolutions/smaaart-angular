@@ -33,8 +33,6 @@
 		Route::post('/map/update/{id}',['as'=>'map.update' , 'uses'=>'MapController@update' ]);
 		Route::get('/map/enable/{id}',['as'=>'map.enable' , 'uses'=>'MapController@statusEnable' ]);
 		Route::get('/map/disable/{id}',['as'=>'map.disable' , 'uses'=>'MapController@statusDisable' ]);
-
-
 		Route::get('map/create',['as'=>'map.create' , 'uses'=>'MapController@create' ]);
 		Route::post('map/save',['as'=>'map.save' , 'uses'=>'MapController@save' ]);
 

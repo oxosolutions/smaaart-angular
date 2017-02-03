@@ -138,9 +138,11 @@ class VisualApiController extends Controller
 
 
         $responseArray = [];
+        $mapChartsArray = [];
         $visual = GV::find($request->id);
         $dataset_id = $visual->dataset_id;
         $columns = json_decode($visual->columns, true);
+        $chartType = json_decode($visual->chart_type, true);
         $countCharts = '';
         if($columns == null){
             return ['status'=>'error','message'=>'No settings found!'];
@@ -195,6 +197,9 @@ class VisualApiController extends Controller
         $datasetData = $dataProce;
         $datasetColumns = (array)DB::table($datatableName->dataset_table)->where('id',1)->first();
         foreach($columns['column_one'] as $key => $value){
+            if($chartType[$key] == 'CustomMap'){
+                $mapChartsArray[$key] = $this->createMaps($columns,$key);
+            }
             $columnData = [];
             if(@in_array($key,$countCharts)){//Chart name chart_1 exist in count array
                 $tempArray = [];
@@ -229,6 +234,7 @@ class VisualApiController extends Controller
             $transposeArray[$tKey] = $this->transpose($tValue);
         }
         $globalVisualSettings = GS::where('meta_key','visual_setting')->first();
+        $responseArray['maps']  =   $mapChartsArray;
         $responseArray['chart_data'] = $transposeArray;
         $responseArray['filters'] = $filtersArray;
         $responseArray['chart_types'] = $visual->chart_type;
@@ -237,6 +243,11 @@ class VisualApiController extends Controller
         $responseArray['titles'] = $columns['title'];
         $responseArray['status'] = 'success';
         return $responseArray;
+    }
+
+    protected function createMaps($columnsData, $chart){
+        $mapModel = Map::find($columnsData['mapArea'][$chart]);
+        return $mapModel->map_data;
     }
 
     protected function transpose($array) {

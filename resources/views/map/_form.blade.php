@@ -1,10 +1,21 @@
-<?php $parent = array(0=>'world'); ?>
+<?php
+      $parent = App\Map::getParent();
+      if(count($parent)>0)
+      {
+        $parent = App\Map::getParent();
+      }else{
+         $parent = array(0=>'world'); 
+
+      }
+
+?>
+
 
 <div class="box-body">
 
  <div class="form-group {{ $errors->has('parent') ? ' has-error' : '' }}"><!-- fOR MULTIPLE SELECT  select2-department -->
     {!!Form::label('parent','Parent') !!}
-    {!!Form::select('parent',App\Map::getParent(),null, ['class'=>'form-control select2','placeholder'=>'Select Parent']) !!}
+    {!!Form::select('parent',$parent,null, ['class'=>'form-control select2','placeholder'=>'Select Parent']) !!}
     @if($errors->has('parent'))
       <span class="help-block">
             {{ $errors->first('parent') }}

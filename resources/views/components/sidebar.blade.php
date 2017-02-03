@@ -273,8 +273,21 @@
             <li class="{{Request::is('resource')?'active':''}}"><a href="{{ route('resource.list') }}"><i class="fa fa-circle-o"></i> List Goal Resources</a></li>
             <li class="{{Request::is('resource/create')?'active':''}}"><a href="{{ route('resource.create') }}"><i class="fa fa-circle-o"></i> Add New</a></li>
           </ul>
+          
         </li>
-
+        <li class="treeview {{in_array(Request::path(),array('map/create','maps'))?'active':''}}">
+                  <a href="#">
+                    <i class="fa  fa-map-pin"></i>
+                    <span>Maps</span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                <ul class="treeview-menu">
+                    <li class="{{Request::is('maps')?'active':''}}"><a href="{{ route('map.list') }}"><i class="fa fa-circle-o"></i> List Maps</a></li>
+                    <li class="{{Request::is('map/create')?'active':''}}"><a href="{{ route('map.create') }}"><i class="fa fa-circle-o"></i> Add New</a></li>
+                  </ul>
+        </li>
         <li class="{{Request::is('config')?'active':''}}">
           <a href="{{url('config')}}">
             <i class="fa fa-gears"></i> <span>API Config</span>

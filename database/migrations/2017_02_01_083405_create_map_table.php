@@ -22,7 +22,7 @@ class CreateMapTable extends Migration
             $table->integer('parent')->nullable();
             $table->string('title')->nullable();
             $table->string('description')->nullable();
-            $table->text('map_data')->nullable();
+            $table->longText('map_data')->nullable();
             $table->enum('status', ['enable', 'disable']);
             $table->timestamps();
         });

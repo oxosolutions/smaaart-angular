@@ -9,6 +9,7 @@ Route::group(['prefix' => 'v1'], function () {
 
 
 	Route::group(['middleware'=>['cors','log']], function(){
+	Route::post('/dataset/save',['as'=>'dataset.save','uses'=>'Services\SaveServeController@saveDataset']);
 
 	
 
@@ -42,6 +43,8 @@ Route::group(['prefix' => 'v1'], function () {
 
 	Route::group(['middleware'=>['auth:api','cors','log']], function(){
 
+
+
 		Route::get('maps',['as'=>'map.list','uses'=>'Services\MapApiController@mapList']);
 		Route::get('singelMap/{id}',['as'=>'map.single','uses'=>'Services\MapApiController@singleMap']);
 		Route::get('/logs','Services\LogApiController@logActivity');
@@ -62,6 +65,8 @@ Route::group(['prefix' => 'v1'], function () {
 		Route::get('users/list',					['as' => 'users' , 'uses' => 'Services\ApiauthController@UserList']);
 		Route::post('/dataset/import',				['as'=>'import','uses'=>'Services\ImportdatasetController@uploadDataset' , 'route_name'=>  'Import Data Set']);
 		Route::get('/dataset/list',					['as'=>'list','uses'=>'Services\DatasetsController@getDatasetsList'  , 'route_name'=>  'View Dataset']);
+		Route::post('/datasetname/update',		['as'=>'list','uses'=>'Services\DatasetsController@updateDataSetName']);
+		
 		Route::get('/dataset/view/{id}/{skip}',		['as'=>'list','uses'=>'Services\DatasetsController@getDatasets']);
 		Route::get('/dataset/columns/{id}',			['as'=>'list','uses'=>'Services\DatasetsController@getDatasetsColumnsForSubset']);
 		Route::get('/dataset/export/{id}',			['as'=>'dataset.export','uses'=>'Services\ExportDatasetController@export'  , 'route_name'=>  'Export Dataset']);
