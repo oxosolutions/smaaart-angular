@@ -15,6 +15,7 @@ class LogsystemServiceProvider extends ServiceProvider
     {
 
         echo 12314332324513535636346525642134;
+        die;
         //
     }
 

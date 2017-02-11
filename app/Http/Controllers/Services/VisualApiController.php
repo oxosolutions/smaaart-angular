@@ -136,7 +136,6 @@ class VisualApiController extends Controller
 
     public function visualById(Request $request){
 
-
         $responseArray = [];
         $mapChartsArray = [];
         $visual = GV::find($request->id);
@@ -166,14 +165,20 @@ class VisualApiController extends Controller
             if($filter_multi != null){
                 foreach($filter_multi as $key => $mValue){
                     $firstWhere = 0;
-                    foreach($mValue as $vKey => $vVal){
-                        if($firstWhere == 0){
-                            $dbObj->Where($key,$vVal);
-                        }else{
-                            $dbObj->orWhere($key,$vVal);
+                    $where = [];
+                    $dbObj->where(function($query) use ($mValue, $key){
+                        foreach($mValue as $vKey => $vVal){
+                            // $dbObj->orWhere(array($key=>$vVal));
+                            //$where[] = array($key=>$vVal);
+                            /*if($firstWhere == 0){
+                                $dbObj->Where($key,$vVal);
+                            }else{
+                                $dbObj->orWhere($key,$vVal);
+                            }
+                            $firstWhere++;*/
+                            $query->orWhere($key, $vVal);
                         }
-                        $firstWhere++;
-                    }
+                    });
                 }
             }
             
@@ -183,7 +188,6 @@ class VisualApiController extends Controller
                 $dbObj->where($filter_array);
             }
             $datasetData =  $dbObj->get()->toArray();
-               
         }else{
 
         	$datasetData = DB::table($datatableName->dataset_table)->where('id','!=',1)->get()->toArray();

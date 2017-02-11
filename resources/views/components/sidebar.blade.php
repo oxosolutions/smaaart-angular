@@ -288,6 +288,19 @@
                     <li class="{{Request::is('map/create')?'active':''}}"><a href="{{ route('map.create') }}"><i class="fa fa-circle-o"></i> Add New</a></li>
                   </ul>
         </li>
+        <li class="treeview {{in_array(Request::path(),array('surrvey/add','surrveys'))?'active':''}}">
+                  <a href="#">
+                    <i class="fa  fa-hospital-o"></i>
+                    <span>Surrvey Form</span>
+                    <span class="pull-right-container">
+                      <i class="fa fa-angle-left pull-right"></i>
+                    </span>
+                  </a>
+                <ul class="treeview-menu">
+                    <li class="{{Request::is('surrveys')?'active':''}}"><a href="{{ route('surrvey.index') }}"><i class="fa fa-circle-o"></i> List Surrveys</a></li>
+                    <li class="{{Request::is('surrvey/add')?'active':''}}"><a href="{{ route('surrvey.add') }}"><i class="fa fa-circle-o"></i> Add New</a></li>
+                  </ul>
+        </li>
         <li class="{{Request::is('config')?'active':''}}">
           <a href="{{url('config')}}">
             <i class="fa fa-gears"></i> <span>API Config</span>
@@ -305,8 +318,6 @@
           </a>
         </li> 
         
-     
-      
-    </section>
+     </section>
     <!-- /.sidebar -->
   </aside>

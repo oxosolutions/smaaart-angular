@@ -36,8 +36,7 @@ class SaveServeController extends Controller
 	                	}                	
                 }
     		}
-    		$newdata[] = $new;
-    		
+    		$newdata[] = $new;    		
     	}
     	$unique_column = array_unique($columns); 
     	if(!Schema::hasTable($surrveyTable))
@@ -49,7 +48,6 @@ class SaveServeController extends Controller
         {
          DB::table($surrveyTable)->insert($newdata[$i]);
         }
-
         return ['status'=>'success' , 'message'=>'Succefully save surrvey'];
 	}
 }

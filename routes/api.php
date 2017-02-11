@@ -43,7 +43,8 @@ Route::group(['prefix' => 'v1'], function () {
 
 	Route::group(['middleware'=>['auth:api','cors','log']], function(){
 
-
+	//surrvey
+		Route::get('surrveyData/{id}',['as'=>'surrvey.data','uses'=>'Services\SurrveyApiController@surrveyData']);
 
 		Route::get('maps',['as'=>'map.list','uses'=>'Services\MapApiController@mapList']);
 		Route::get('singelMap/{id}',['as'=>'map.single','uses'=>'Services\MapApiController@singleMap']);

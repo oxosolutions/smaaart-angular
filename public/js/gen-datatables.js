@@ -134,6 +134,21 @@
       ]
     });
 
+    $('#surrvey').DataTable({
+      processing:true,
+      serverSide:true,
+      ajax: route()+'/surrveyData',
+      order:[[0,'desc']],
+      columns:[
+       { data:'id',name:'id'},
+       { data:'name',name:'name'},
+       { data:'description',name:'description'},
+       { data:'created_at',name:'created_at'},
+
+       { data:'actions',name:'actions',orderable:false, searchable: false, "className": 'actions'},
+      ]
+    });
+
 $('#fact').DataTable({
       processing: true,
       serverSide: true,

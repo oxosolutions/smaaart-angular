@@ -1,4 +1,12 @@
 $(function(){
+$(".hid").hide();
+	 $(document).on('change','#source',function(e){
+		    e.preventDefault();
+		    $(".hid").hide();
+		   	idVal =  $(this).val();
+		   $("#"+idVal).show();		    
+		});
+
 	$(".select2").select2();
 	/*$('input[type="checkbox"].minimal, input[type="radio"].minimal').iCheck({
       checkboxClass: 'icheckbox_minimal-blue',

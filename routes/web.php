@@ -2,30 +2,29 @@
 
 
 
+		Route::get('/viewemail',function(){
+			return view('mail.layout.email',
+			['username' => 'sgssandhu'],
+			['user_name' => 'SGS Sandhu']
+			); 
+		});
 
-	Route::get('/viewemail',function(){
-		return view('mail.layout.email',
-		['username' => 'sgssandhu'],
-		['user_name' => 'SGS Sandhu']
-		); 
-	});
+		
 
-	
-
-	Route::get('/correctCsv',['as'=>'datasets.list','uses'=>'DataSetsController@correctCsv']);
+		Route::get('/correctCsv',['as'=>'datasets.list','uses'=>'DataSetsController@correctCsv']);
 
 
-	Route::get ('/export/dataset/{id}',['as'=>'export.dataset', 'uses'=>'DataSetsController@apiExportDataset']);
+		Route::get ('/export/dataset/{id}',['as'=>'export.dataset', 'uses'=>'DataSetsController@apiExportDataset']);
 
-	Route::get('checkLog',['as' => 'log' , 'uses' => 'LogsystemController@CheckForLog']);
+		Route::get('checkLog',['as' => 'log' , 'uses' => 'LogsystemController@CheckForLog']);
 
-	Route::group(['middleware'=>['auth','approve']], function(){
-		Route::get('/view_log',['as'=>'log.view','uses'=>'LogsystemController@viewLog']);	
-		Route::get('/search_log',['as'=>'log.search','uses'=>'LogsystemController@search_log']);	
+		Route::group(['middleware'=>['auth','approve']], function(){
+			Route::get('/view_log',['as'=>'log.view','uses'=>'LogsystemController@viewLog']);	
+			Route::get('/search_log',['as'=>'log.search','uses'=>'LogsystemController@search_log']);	
 
-	});
+		});
 
-	Route::group(['middleware'=>['auth','approve','log']], function(){
+		Route::group(['middleware'=>['auth','approve','log']], function(){
 
 		Route::get('maps',['as'=>'map.list' , 'uses'=>'MapController@index' ]);
 		Route::get('mapData',['as'=>'map.data' , 'uses'=>'MapController@indexData' ]);
@@ -47,8 +46,8 @@
 
 		//dashboard
 		Route::get('/', ['as'=>'home', 'uses'=>'DashboardController@index' ,'route_name'=>  'View Dashboard']);
-	//Api user
-	Route::get('/api_users/del_all', ['as'=>'user.del', 'uses'=>'ApiusersController@delAllUser' ,'route_name'=>  'Delete User']);
+		//Api user
+		Route::get('/api_users/del_all', ['as'=>'user.del', 'uses'=>'ApiusersController@delAllUser' ,'route_name'=>  'Delete User']);
 
 		Route::get('/api_users', ['as'=>'api.users', 'uses'=>'ApiusersController@index']);
 		Route::get('/api_users/create', ['as'=>'api.create_users', 'uses'=>'ApiusersController@create']);
@@ -250,12 +249,30 @@
 		Route::get('/visual/edit/{id}',['as'=>'visual.edit','uses'=>'VisualController@edit']);
 		Route::patch('/visual/update/{id}',['as'=>'visual.update','uses'=>'VisualController@update']);
 
+	//Form Builder 
+		Route::get('surrveys', ['as'=>'surrvey.index', 'uses'=>'FormBuilderController@index']);
+		Route::get('surrveyData', ['as'=>'surrvey.data', 'uses'=>'FormBuilderController@index_data']);
+		Route::get('surrvey/add', ['as'=>'surrvey.add', 'uses'=>'FormBuilderController@create_surrvey']);
+		Route::get('surrvey_edit/{id}', ['as'=>'surrvey.edit', 'uses'=>'FormBuilderController@surrvey_edit']);
+		Route::post('surrvey_update/{id}', ['as'=>'surrvey.update', 'uses'=>'FormBuilderController@surrvey_update']);
+		Route::get('surrvey_del/{id}', ['as'=>'surrvey.del', 'uses'=>'FormBuilderController@surrvey_del']);
+
+		Route::post('surrvey/surrvey_save', ['as'=>'surrvey.surrvey_save', 'uses'=>'FormBuilderController@surrvey_save']);
+
+		Route::get('surrvey/create/{id}', ['as'=>'surrvey.create', 'uses'=>'FormBuilderController@create']);
+		Route::post('surrvey/save', ['as'=>'surrvey.save', 'uses'=>'FormBuilderController@save']);
+		Route::get('surrvey/ques/{sid}', ['as'=>'surrvey.ques', 'uses'=>'FormBuilderController@surrvey_ques']);
+		Route::get('ques/{id}', ['as'=>'ques.single', 'uses'=>'FormBuilderController@get_ques']);
+
 	//Generated Visuals Queries
 		Route::get('/visual/queries',['as'=>'visual.queries','uses'=>'VisualQueryController@index']);
 		Route::get('/getQueries',['as'=>'query.ajax','uses'=>'VisualQueryController@getQueryList']);
 		Route::get('/visual/query/create/{id?}',['as'=>'visual.query.create','uses'=>'VisualQueryController@create']);
 		Route::post('/visual/query/getColValue',['as'=>'visual.query.ajax','uses'=>'VisualQueryController@getColData']);
 		Route::post('/visual/query/store',['as'=>'store.visual.query','uses'=>'VisualQueryController@store']);
+
+	//Ajax Routes
+		Route::get('survey/field',['as'=>'survey.fields','uses'=>'FormBuilderController@addField']);
 	});
 
 Auth::routes();

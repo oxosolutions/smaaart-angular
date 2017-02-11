@@ -1,3 +1,6 @@
+<?php 
+    $source = array('dataset'=>'Dataset','surrvey_data'=> "Surrvey Data" , "google_spread_sheet"=> "Google Spread Sheet",'api'=> 'API');      
+?>
 <div class="box-body">
 	<div class="form-group {{ $errors->has('visual_name') ? ' has-error' : '' }}">
     	{!!Form::label('visual_name','Visual Name') !!}
@@ -8,7 +11,50 @@
       		</span>
     	@endif
   	</div>
-  	<div class="form-group {{ $errors->has('dataset_id') ? ' has-error' : '' }}">
+      <div class="form-group {{ $errors->has('source') ? ' has-error' : '' }}">
+      {!!Form::label('source','Select Source') !!}
+      {!!Form::select('source',$source,null, ['id'=>'source' ,'class'=>'form-control select2','placeholder'=>'Select Source']) !!}
+      @if($errors->has('source'))
+          <span class="help-block">
+              {{ $errors->first('source') }}
+          </span>
+      @endif
+    </div>
+    <div id="api" class="hid">
+        <div class="form-group {{ $errors->has('spread_sheet') ? ' has-error' : '' }}">
+          {!!Form::label('api','API') !!}
+          {!!Form::text('value',null, ['class'=>'form-control','placeholder'=>'Enter Link']) !!}
+          @if($errors->has('api'))
+              <span class="help-block">
+                  {{ $errors->first('api') }}
+              </span>
+          @endif
+        </div>
+  </div>
+  <div id="google_spread_sheet" class="hid" >
+    <div id="google_spread_sheet" class="form-group{{ $errors->has('spread_sheet') ? ' has-error' : '' }}">
+      {!!Form::label('spread_sheet','Spread Sheet') !!}
+      {!!Form::text('value',null, ['class'=>'form-control','placeholder'=>'Enter Link']) !!}
+      @if($errors->has('visual_name'))
+          <span class="help-block">
+              {{ $errors->first('visual_name') }}
+          </span>
+      @endif
+    </div>
+  </div>
+  <div id="surrvey_data" class="hid">
+    <div class="form-group  {{ $errors->has('source') ? ' has-error' : '' }}">
+      {!!Form::label('source','Select Surrvey') !!}
+      {!!Form::select('value',App\Surrvey::getSurrvey(),null, ['id'=>'surrvey' ,'class'=>'form-control select2','placeholder'=>'Select Surrvey']) !!}
+      @if($errors->has('source'))
+          <span class="help-block">
+              {{ $errors->first('source') }}
+          </span>
+      @endif
+    </div>
+  </div>
+  <div id="dataset" class="hid">
+  	<div  class="form-group {{ $errors->has('dataset_id') ? ' has-error' : '' }}">
     	{!!Form::label('dataset_id','Select Dataset') !!}
     	{!!Form::select('dataset_id',App\DatasetsList::datasetList(),null, ['class'=>'form-control select2','placeholder'=>'Select Dataset']) !!}
     	@if($errors->has('dataset_id'))
@@ -17,6 +63,7 @@
       		</span>
     	@endif
   	</div>
+  </div>
   	<div>
 		{!! Form::button('Get Columns', ['class' => 'btn btn-primary','id'=>'getColumns']) !!}
 		<!-- <span style="color:red;display: none;" id="mesg"></span> -->
