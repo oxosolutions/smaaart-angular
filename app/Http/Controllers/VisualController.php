@@ -139,13 +139,15 @@ class VisualController extends Controller
     public function edit($id){
 
         $model = GV::find($id);
+
         $dataList = DL::find($model->dataset_id);
         $dbModel = DB::table($dataList->dataset_table)->first();
+         
         unset($dbModel->id);
         $columnData = json_decode($model->columns,true);
-
        // dd( $columnData);
         $selectedFilterCol = json_decode($model->filter_columns);
+         
         $plugins = [
             'js'  => ['select2','custom'=>['visual-create']],
             'css' => ['select2'],

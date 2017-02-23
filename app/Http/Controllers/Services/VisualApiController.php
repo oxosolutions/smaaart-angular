@@ -136,6 +136,7 @@ class VisualApiController extends Controller
 
     public function visualById(Request $request){
 
+
         $responseArray = [];
         $mapChartsArray = [];
         $visual = GV::find($request->id);
@@ -155,6 +156,7 @@ class VisualApiController extends Controller
         if($request->type == 'filter'){ 
                
             $dbObj =  DB::table($datatableName->dataset_table);
+
             $range_filter = json_decode($request->range_filters,true);
             $filter_multi = json_decode($request->filter_array_multi, true);
             if($range_filter != null){
@@ -191,6 +193,7 @@ class VisualApiController extends Controller
         }else{
 
         	$datasetData = DB::table($datatableName->dataset_table)->where('id','!=',1)->get()->toArray();
+
         }
         $dataProce = [];
         foreach($datasetData as $colKey => $value){
@@ -200,6 +203,7 @@ class VisualApiController extends Controller
         }
         $datasetData = $dataProce;
         $datasetColumns = (array)DB::table($datatableName->dataset_table)->where('id',1)->first();
+
         foreach($columns['column_one'] as $key => $value){
             if($chartType[$key] == 'CustomMap'){
                 $mapChartsArray[$key] = $this->createMaps($columns,$key);
@@ -211,6 +215,8 @@ class VisualApiController extends Controller
                 foreach($columns['columns_two'][$key] as $colKey => $colVal){
                     $resultData[$colVal] = $this->generateCountColumns($colVal,$datatableName->dataset_table,$request->type == 'filter'?true:false,json_decode($request->filter_array,true),json_decode($request->filter_array_multi, true),json_decode($request->range_filters,true));
                 }
+
+
                 $resultCorrectData = $this->correctDataforCount($resultData,$datasetColumns);
                 $columnData = $resultCorrectData;
 
@@ -225,14 +231,19 @@ class VisualApiController extends Controller
                     $columnData[] = $arrayData;
                 }
             }
+
             $chartsArray[$key] = $columnData;
         }
-
-        if(!empty(json_decode($visual->filter_columns))){
+        
+        $filter_chk = json_decode($visual->filter_columns,true);
+     
+        if(!empty($filter_chk) && !empty($filter_chk["filter_1"]["column"]) && !empty($filter_chk["filter_1"]["type"]) ){
             $filtersArray = $this->getFIlters($datatableName->dataset_table, json_decode($visual->filter_columns, true), $datasetColumns);
+          
         }else{
             $filtersArray = [];
         }
+
         $transposeArray = [];
         foreach($chartsArray as $tKey => $tValue){
             $transposeArray[$tKey] = $this->transpose($tValue);
@@ -264,7 +275,7 @@ class VisualApiController extends Controller
         $columns = (array)$columns;
         $columns = array_column($columns, 'column');
         $resultArray = [];
-        $model = DB::table($table)->select($columns)->where('id','!=',1)->get()->toArray();
+        $model = DB::table($table)->select($columns)->where('id','!=',1)->get()->toArray();// 
         $tmpAry = [];
         $max =0;
         foreach($model as $k => $v){

@@ -232,25 +232,27 @@
             @endif
             </div>  
         </div>
-        <div class="row field_row number">
+@if(isset($fieldData['minimum']))
+        <div class="row field_row ">
             <div class="col-md-3" >
                 <span class="field-title">Minimum Value</span><br>
                 <span class="field-description">Add the Minimum Value</span>
             </div>
             <div class="col-md-8 form-group">
-                <input type="number" name="minimum[]"  class="form-control">
+                <input type="number" name="minimum[]" value="{{@$fieldData['minimum']}}" class="form-control">
             </div>  
         </div>
-        <div class="row field_row number">
+        <div class="row field_row ">
             <div class="col-md-3" >
                 <span class="field-title">Maximum Value</span><br>
                 <span class="field-description">Add the Maximum Value</span>
                
             </div>
             <div class="col-md-8 form-group">
-                <input type="number" name="maximum[]" class="form-control">
+                <input type="number" name="maximum[]" value="{{@$fieldData['maximum']}}" class="form-control">
             </div>  
         </div>
+@endif        
 @if(isset($fieldData['option']))
            <div class="row field_row  ">
            
